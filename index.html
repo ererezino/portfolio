@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Samuel Ererezino Asamaige</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Karla:wght@300;400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <nav class="nav">
+        <a href="/" class="nav-logo">SEA</a>
+        <div class="nav-links">
+            <a href="#writing">Writing</a>
+            <a href="#photography">Photography</a>
+            <a href="#about">About</a>
+        </div>
+    </nav>
+
+    <main>
+        <section class="hero">
+            <div class="hero-content">
+                <h1 class="hero-title">Samuel Ererezino<br>Asamaige</h1>
+                <p class="hero-subtitle">Writer & Photographer</p>
+                <div class="hero-line"></div>
+            </div>
+        </section>
+
+        <section id="writing" class="section writing-section">
+            <header class="section-header">
+                <span class="section-number">01</span>
+                <h2 class="section-title">Writing</h2>
+            </header>
+            
+            <div class="writings-grid">
+                <article class="writing-card">
+                    <time class="writing-date">December 2024</time>
+                    <h3 class="writing-title">The Weight of Departure</h3>
+                    <p class="writing-excerpt">On leaving familiar shores and the strange comfort found in displacement. A meditation on what we carry and what we leave behind.</p>
+                    <a href="writing/weight-of-departure.html" class="writing-link">Read essay</a>
+                </article>
+
+                <article class="writing-card">
+                    <time class="writing-date">November 2024</time>
+                    <h3 class="writing-title">Conversations at Dawn</h3>
+                    <p class="writing-excerpt">The city reveals itself differently in those liminal hours. Notes from early morning walks through sleeping streets.</p>
+                    <a href="writing/conversations-at-dawn.html" class="writing-link">Read essay</a>
+                </article>
+
+                <article class="writing-card">
+                    <time class="writing-date">October 2024</time>
+                    <h3 class="writing-title">Small Hungers</h3>
+                    <p class="writing-excerpt">How food becomes memory, and memory becomes longing. Reflections on taste, place, and belonging.</p>
+                    <a href="writing/small-hungers.html" class="writing-link">Read essay</a>
+                </article>
+            </div>
+        </section>
+
+        <section id="photography" class="section photography-section">
+            <header class="section-header">
+                <span class="section-number">02</span>
+                <h2 class="section-title">Photography</h2>
+            </header>
+
+            <div class="photo-categories">
+                <button class="category-btn active" data-category="all">All</button>
+                <button class="category-btn" data-category="travel">Travel</button>
+                <button class="category-btn" data-category="food">Food</button>
+                <button class="category-btn" data-category="streets">Streets</button>
+            </div>
+
+            <div class="photo-grid">
+                <figure class="photo-item" data-category="travel">
+                    <div class="photo-placeholder">
+                        <span>Travel Photo 1</span>
+                    </div>
+                    <figcaption>Lisbon, Portugal</figcaption>
+                </figure>
+
+                <figure class="photo-item" data-category="streets">
+                    <div class="photo-placeholder">
+                        <span>Streets Photo 1</span>
+                    </div>
+                    <figcaption>Morning Light, Lagos</figcaption>
+                </figure>
+
+                <figure class="photo-item" data-category="food">
+                    <div class="photo-placeholder">
+                        <span>Food Photo 1</span>
+                    </div>
+                    <figcaption>Market Spices</figcaption>
+                </figure>
+
+                <figure class="photo-item" data-category="travel">
+                    <div class="photo-placeholder">
+                        <span>Travel Photo 2</span>
+                    </div>
+                    <figcaption>Amalfi Coast</figcaption>
+                </figure>
+
+                <figure class="photo-item" data-category="streets">
+                    <div class="photo-placeholder">
+                        <span>Streets Photo 2</span>
+                    </div>
+                    <figcaption>Quiet Corner</figcaption>
+                </figure>
+
+                <figure class="photo-item" data-category="food">
+                    <div class="photo-placeholder">
+                        <span>Food Photo 2</span>
+                    </div>
+                    <figcaption>Sunday Bread</figcaption>
+                </figure>
+            </div>
+        </section>
+
+        <section id="about" class="section about-section">
+            <header class="section-header">
+                <span class="section-number">03</span>
+                <h2 class="section-title">About</h2>
+            </header>
+
+            <div class="about-content">
+                <div class="about-image">
+                    <div class="photo-placeholder about-photo">
+                        <span>Your Photo</span>
+                    </div>
+                </div>
+                <div class="about-text">
+                    <p>I'm Samuel Ererezino Asamaige, a writer and photographer drawn to the quiet moments between the obvious ones.</p>
+                    <p>My work explores the textures of everyday life: the way light falls on unfamiliar streets, the stories held in shared meals, the weight of places we've left and those we're yet to find.</p>
+                    <p>Based between cities, always in transit.</p>
+                    <div class="about-contact">
+                        <a href="mailto:hello@ererezino.com">hello@ererezino.com</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <p>&copy; 2025 Samuel Ererezino Asamaige</p>
+    </footer>
+
+    <div class="lightbox" id="lightbox">
+        <button class="lightbox-close">&times;</button>
+        <img src="" alt="" class="lightbox-img">
+        <p class="lightbox-caption"></p>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
