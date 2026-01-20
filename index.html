@@ -1,152 +1,407 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Samuel Ererezino Asamaige</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Samuel Ererezino Asamaige</title>
 
-        :root {
-            --bg: #FAFAF8;
-            --text: #1A1A1A;
-            --text-soft: #6B6B6B;
-            --accent: #2C2C2C;
-            --border: #E8E8E6;
-        }
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap"
+    rel="stylesheet"
+  />
 
-        html {
-            scroll-behavior: smooth;
-        }
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
-        body {
-            font-family: 'DM Sans', -apple-system, sans-serif;
-            font-weight: 300;
-            background: var(--bg);
-            color: var(--text);
-            line-height: 1.6;
-            font-size: 16px;
-            -webkit-font-smoothing: antialiased;
-        }
+    :root {
+      --bg: #FAFAF8;
+      --text: #1A1A1A;
+      --text-soft: #6B6B6B;
+      --accent: #2C2C2C;
+      --border: #E8E8E6;
+    }
 
-        a {
-            color: inherit;
-            text-decoration: none;
-        }
+    html {
+      scroll-behavior: smooth;
+    }
 
-        /* Layout */
-        .container {
-            max-width: 1000px;
-            margin: 0 auto;
-            padding: 0 24px;
-        }
+    body {
+      font-family: 'DM Sans', -apple-system, sans-serif;
+      font-weight: 300;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      font-size: 16px;
+      -webkit-font-smoothing: antialiased;
+    }
 
-        /* Header */
-        header {
-            padding: 40px 0;
-            border-bottom: 1px solid var(--border);
-        }
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
 
-        .header-inner {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
+    /* Layout */
+    .container {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
 
-        .logo {
-            width: 48px;
-            height: 48px;
-            border-radius: 50%;
-            background: var(--border);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            overflow: hidden;
-        }
+    /* Header */
+    header {
+      padding: 40px 0;
+      border-bottom: 1px solid var(--border);
+    }
 
-        .logo img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
+    .header-inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+    }
 
-        .logo-placeholder {
-            font-family: 'Instrument Serif', Georgia, serif;
-            font-size: 20px;
-            color: var(--text-soft);
-        }
+    .logo {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      flex: 0 0 auto;
+    }
 
-        nav {
-            display: flex;
-            gap: 32px;
-        }
+    .logo img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
 
-        nav a {
-            font-size: 14px;
-            color: var(--text-soft);
-            letter-spacing: 0.02em;
-            transition: color 0.2s ease;
-        }
+    .logo-placeholder {
+      font-family: 'Instrument Serif', Georgia, serif;
+      font-size: 20px;
+      color: var(--text-soft);
+    }
 
-        nav a:hover {
-            color: var(--text);
-        }
+    nav {
+      display: flex;
+      gap: 32px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
 
-        /* Hero */
-        .hero {
-            padding: 120px 0 100px;
-            animation: fadeIn 0.8s ease-out;
-        }
+    nav a {
+      font-size: 14px;
+      color: var(--text-soft);
+      letter-spacing: 0.02em;
+      transition: color 0.2s ease;
+    }
 
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
+    nav a:hover {
+      color: var(--text);
+    }
 
-        .hero h1 {
-            font-family: 'Instrument Serif', Georgia, serif;
-            font-size: clamp(48px, 8vw, 72px);
-            font-weight: 400;
-            line-height: 1.1;
-            letter-spacing: -0.02em;
-            margin-bottom: 24px;
-        }
+    /* Hero */
+    .hero {
+      padding: 120px 0 100px;
+      animation: fadeIn 0.8s ease-out;
+    }
 
-        .hero-subtitle {
-            font-size: 18px;
-            color: var(--text-soft);
-            max-width: 480px;
-            margin-bottom: 40px;
-        }
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
 
-        .hero-links {
-            display: flex;
-            gap: 24px;
-            flex-wrap: wrap;
-        }
+    .hero h1 {
+      font-family: 'Instrument Serif', Georgia, serif;
+      font-size: clamp(48px, 8vw, 72px);
+      font-weight: 400;
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+      margin-bottom: 24px;
+    }
 
-        .hero-links a {
-            font-size: 14px;
-            color: var(--text-soft);
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            transition: color 0.2s ease;
-        }
+    .hero-subtitle {
+      font-size: 18px;
+      color: var(--text-soft);
+      max-width: 560px;
+      margin-bottom: 40px;
+    }
 
-        .hero-links a:hover {
-            color: var(--text);
-        }
+    .hero-links {
+      display: flex;
+      gap: 24px;
+      flex-wrap: wrap;
+    }
+
+    .hero-links a {
+      font-size: 14px;
+      color: var(--text-soft);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: color 0.2s ease;
+      border-bottom: 1px solid transparent;
+      padding-bottom: 2px;
+    }
+
+    .hero-links a:hover {
+      color: var(--text);
+      border-bottom: 1px solid var(--border);
+    }
+
+    /* Sections */
+    .section {
+      padding: 80px 0;
+      border-top: 1px solid var(--border);
+    }
+
+    .section-title {
+      font-family: 'Instrument Serif', Georgia, serif;
+      font-size: 28px;
+      font-weight: 400;
+      margin-bottom: 18px;
+      letter-spacing: -0.01em;
+    }
+
+    .section-lead {
+      color: var(--text-soft);
+      max-width: 720px;
+      margin-bottom: 28px;
+    }
+
+    /* Cards */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .card {
+      border: 1px solid var(--border);
+      background: rgba(255, 255, 255, 0.45);
+      border-radius: 14px;
+      padding: 18px;
+      transition: transform 0.15s ease, border-color 0.15s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-2px);
+      border-color: #d8d8d6;
+    }
+
+    .card-title {
+      font-weight: 500;
+      margin-bottom: 8px;
+      letter-spacing: 0.01em;
+    }
+
+    .card-meta {
+      font-size: 14px;
+      color: var(--text-soft);
+      margin-bottom: 10px;
+    }
+
+    .tagrow {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .tag {
+      font-size: 12px;
+      color: var(--text-soft);
+      border: 1px solid var(--border);
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.55);
+    }
+
+    /* Footer */
+    footer {
+      padding: 40px 0 60px;
+      border-top: 1px solid var(--border);
+      color: var(--text-soft);
+      font-size: 14px;
+    }
+
+    .footer-inner {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    /* Responsive */
+    @media (max-width: 800px) {
+      .hero {
+        padding: 90px 0 70px;
+      }
+      .grid {
+        grid-template-columns: 1fr;
+      }
+      nav {
+        gap: 18px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <div class="container header-inner">
+      <a class="logo" href="#top" aria-label="Home">
+        <span class="logo-placeholder">S</span>
+        <!-- If you want a headshot later, replace the span above with an img:
+        <img src="your-photo.jpg" alt="Samuel Ererezino Asamaige">
+        -->
+      </a>
+
+      <nav aria-label="Primary">
+        <a href="#about">About</a>
+        <a href="#work">Work</a>
+        <a href="#contact">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="top">
+    <section class="hero">
+      <div class="container">
+        <h1>Samuel Ererezino Asamaige</h1>
+        <p class="hero-subtitle">
+          Product & operations leader across fintech and growth. I build systems that scale—clean execution, clear metrics, and strong customer experience.
+        </p>
+
+        <div class="hero-links">
+          <a href="mailto:me@ererezino.com">Email ↗</a>
+          <a href="https://www.linkedin.com/" target="_blank" rel="noopener noreferrer">LinkedIn ↗</a>
+          <a href="https://github.com/ererezino" target="_blank" rel="noopener noreferrer">GitHub ↗</a>
+          <a href="#work">View work ↓</a>
+        </div>
+      </div>
+    </section>
+
+    <section id="about" class="section">
+      <div class="container">
+        <h2 class="section-title">About</h2>
+        <p class="section-lead">
+          I’m focused on building high-leverage operations and product strategy—especially where execution quality and trust matter. I like roles where the work is measurable and the outcomes are clear.
+        </p>
+
+        <div class="tagrow" aria-label="Skills">
+          <span class="tag">Product strategy</span>
+          <span class="tag">Ops & execution</span>
+          <span class="tag">Analytics</span>
+          <span class="tag">Stakeholder management</span>
+          <span class="tag">Experimentation</span>
+          <span class="tag">Process design</span>
+        </div>
+      </div>
+    </section>
+
+    <section id="work" class="section">
+      <div class="container">
+        <h2 class="section-title">Selected work</h2>
+        <p class="section-lead">
+          A few projects and areas I’ve led. Replace the placeholders with your real items when ready.
+        </p>
+
+        <div class="grid">
+          <article class="card">
+            <div class="card-title">Operations & growth systems</div>
+            <div class="card-meta">Playbooks • Metrics • Team workflows</div>
+            <p>
+              Built operating rhythms and dashboards to improve response time, clarity, and ownership across teams.
+            </p>
+            <div class="tagrow">
+              <span class="tag">Notion</span>
+              <span class="tag">Analytics</span>
+              <span class="tag">Process</span>
+            </div>
+          </article>
+
+          <article class="card">
+            <div class="card-title">Product improvements</div>
+            <div class="card-meta">Onboarding • Activation • Retention</div>
+            <p>
+              Led iteration cycles using customer feedback and data to reduce drop-offs and improve conversion.
+            </p>
+            <div class="tagrow">
+              <span class="tag">A/B testing</span>
+              <span class="tag">UX</span>
+              <span class="tag">Funnels</span>
+            </div>
+          </article>
+
+          <article class="card">
+            <div class="card-title">Research & strategy</div>
+            <div class="card-meta">Market scans • Insights • Recommendations</div>
+            <p>
+              Produced research memos on emerging trends and practical strategies for execution and compliance.
+            </p>
+            <div class="tagrow">
+              <span class="tag">Synthesis</span>
+              <span class="tag">Writing</span>
+              <span class="tag">Strategy</span>
+            </div>
+          </article>
+
+          <article class="card">
+            <div class="card-title">Portfolio site (this)</div>
+            <div class="card-meta">Cloudflare Pages • Simple static build</div>
+            <p>
+              Minimal static site to keep things fast, clean, and easy to update.
+            </p>
+            <div class="tagrow">
+              <span class="tag">HTML</span>
+              <span class="tag">CSS</span>
+              <span class="tag">Cloudflare</span>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="contact" class="section">
+      <div class="container">
+        <h2 class="section-title">Contact</h2>
+        <p class="section-lead">
+          Want to reach me? Email is best.
+        </p>
+
+        <div class="hero-links">
+          <a href="mailto:me@ererezino.com">me@ererezino.com ↗</a>
+          <a href="#top">Back to top ↑</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container footer-inner">
+      <div>© <span id="year"></span> Samuel Ererezino Asamaige</div>
+      <div>Built with HTML + CSS on Cloudflare Pages</div>
+    </div>
+  </footer>
+
+  <script>
+    // small nicety for footer year
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
