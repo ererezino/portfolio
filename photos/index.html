@@ -1,1 +1,434 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Photos • Zino Asamaige</title>
 
+  <link rel="icon" type="image/png" href="/assets/logo.png">
+  <link rel="apple-touch-icon" href="/assets/logo.png">
+  <meta name="theme-color" content="#FAFAF8">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap"
+    rel="stylesheet"
+  />
+
+  <style>
+    :root{
+      --bg:#FAFAF8;
+      --text:#141414;
+      --muted:#6B6B6B;
+      --border:rgba(20,20,20,.10);
+      --shadow: 0 12px 34px rgba(20,20,20,.10);
+      --shadow-soft: 0 8px 22px rgba(20,20,20,.06);
+      --radius:18px;
+      --container: 1100px;
+      --pad: 24px;
+    }
+
+    *{ box-sizing:border-box; }
+    body{
+      margin:0;
+      font-family:'DM Sans', -apple-system, system-ui, sans-serif;
+      font-weight:300;
+      background:var(--bg);
+      color:var(--text);
+      line-height:1.6;
+      -webkit-font-smoothing:antialiased;
+    }
+    a{ color:inherit; text-decoration:none; }
+    img{ display:block; max-width:100%; }
+
+    .container{
+      max-width:var(--container);
+      margin:0 auto;
+      padding:0 var(--pad);
+    }
+
+    header{
+      position:sticky;
+      top:0;
+      z-index:20;
+      background: rgba(250,250,248,.78);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(20,20,20,.08);
+    }
+    .head{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:16px;
+      padding: 16px 0;
+    }
+    .brand{
+      display:flex;
+      gap: 12px;
+      align-items:center;
+      min-width: 0;
+    }
+    .logo{
+      width:42px; height:42px;
+      border-radius:50%;
+      overflow:hidden;
+      background:#fff;
+      border: 1px solid rgba(20,20,20,.10);
+      box-shadow: 0 6px 18px rgba(20,20,20,.06);
+      flex: 0 0 auto;
+    }
+    .brand strong{ font-weight:500; letter-spacing:-0.01em; }
+    .brand span{ font-size:13px; color:var(--muted); display:block; line-height:1.15; }
+    .brand-text{ min-width:0; }
+    .brand-text strong,
+    .brand-text span{
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .btn{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding: 10px 12px;
+      border-radius: 12px;
+      border:1px solid rgba(20,20,20,.12);
+      background:#fff;
+      box-shadow: 0 10px 22px rgba(20,20,20,.06);
+      font-size:14px;
+      color: rgba(20,20,20,.85);
+      transition: transform .15s ease, box-shadow .15s ease;
+      white-space:nowrap;
+    }
+    .btn:hover{
+      transform: translateY(-1px);
+      box-shadow: 0 14px 28px rgba(20,20,20,.08);
+    }
+
+    main{ padding: 28px 0 60px; }
+
+    h1{
+      font-family:'Instrument Serif', Georgia, serif;
+      font-weight:400;
+      font-size: 44px;
+      margin: 0 0 8px;
+      letter-spacing:-0.01em;
+    }
+    .lead{
+      margin:0 0 18px;
+      color: var(--muted);
+      max-width: 78ch;
+    }
+    code{
+      padding: 2px 6px;
+      border-radius: 8px;
+      border: 1px solid rgba(20,20,20,.10);
+      background: rgba(255,255,255,.6);
+      font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+      font-size: 12.5px;
+    }
+
+    .section{
+      margin-top: 26px;
+      border-top: 1px solid rgba(20,20,20,.08);
+      padding-top: 22px;
+    }
+    .section-head{
+      display:flex;
+      align-items:flex-end;
+      justify-content:space-between;
+      gap:16px;
+      margin-bottom: 12px;
+    }
+    .section-title{
+      margin:0;
+      font-weight:500;
+      letter-spacing:.01em;
+    }
+    .meta{
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    /* Masonry using CSS columns:
+       - preserves aspect ratio
+       - small thumbs, more density
+       - no cropping
+    */
+    .masonry{
+      columns: 3 260px;
+      column-gap: 14px;
+    }
+    .tile{
+      break-inside: avoid;
+      margin: 0 0 14px;
+      border-radius: 18px;
+      overflow:hidden;
+      border: 1px solid rgba(20,20,20,.10);
+      background:#fff;
+      box-shadow: var(--shadow-soft);
+      cursor: zoom-in;
+      transition: transform .12s ease, box-shadow .12s ease;
+    }
+    .tile:hover{
+      transform: translateY(-2px);
+      box-shadow: 0 14px 32px rgba(20,20,20,.10);
+    }
+    .tile img{
+      width:100%;
+      height:auto; /* keeps real ratio */
+      display:block;
+    }
+    .caption{
+      padding: 10px 12px;
+      font-size: 13px;
+      color: var(--muted);
+      border-top: 1px solid rgba(20,20,20,.08);
+      background: rgba(255,255,255,.7);
+    }
+
+    /* Lightbox */
+    .lightbox{
+      position: fixed;
+      inset: 0;
+      background: rgba(10,10,10,.62);
+      display:none;
+      align-items:center;
+      justify-content:center;
+      padding: 24px;
+      z-index: 999;
+    }
+    .lightbox.open{ display:flex; }
+    .lb-inner{
+      width: min(1100px, 96vw);
+      max-height: 90vh;
+      border-radius: 18px;
+      overflow:hidden;
+      box-shadow: var(--shadow);
+      background: #000;
+      position: relative;
+    }
+    .lb-img{
+      width:100%;
+      height: 100%;
+      max-height: 90vh;
+      object-fit: contain;
+      background: #000;
+    }
+    .lb-bar{
+      position:absolute;
+      left: 10px;
+      right: 10px;
+      bottom: 10px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap: 10px;
+      pointer-events: none;
+    }
+    .lb-pill{
+      pointer-events: none;
+      border:1px solid rgba(255,255,255,.20);
+      background: rgba(0,0,0,.35);
+      color:#fff;
+      padding: 7px 10px;
+      border-radius: 999px;
+      font-size: 12.5px;
+      backdrop-filter: blur(6px);
+      opacity: .95;
+    }
+    .lb-close,
+    .lb-nav{
+      pointer-events: auto;
+      border:1px solid rgba(255,255,255,.22);
+      background: rgba(0,0,0,.35);
+      color:#fff;
+      padding: 8px 10px;
+      border-radius: 12px;
+      font-size: 13px;
+      cursor:pointer;
+      backdrop-filter: blur(6px);
+    }
+    .lb-actions{
+      display:flex;
+      gap: 8px;
+    }
+
+    @media (max-width: 720px){
+      .masonry{ columns: 2 220px; }
+    }
+    @media (max-width: 480px){
+      .masonry{ columns: 1; }
+      h1{ font-size: 38px; }
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <div class="container head">
+      <a class="brand" href="/" aria-label="Back home">
+        <span class="logo"><img src="/assets/logo.png" alt="Zino Asamaige logo"></span>
+        <div class="brand-text">
+          <strong>Photos</strong>
+          <span>Grouped by city/year • click to enlarge</span>
+        </div>
+      </a>
+
+      <a class="btn" href="/">Home ↩</a>
+    </div>
+  </header>
+
+  <main class="container">
+    <h1>Photography</h1>
+    <p class="lead">
+      Small thumbnails with proper aspect ratio (no cropping). Click any photo to open it full size.
+      To add photos: upload images to <code>/assets/photos/</code> and update the arrays below.
+    </p>
+
+    <!-- SECTION: Example city/year -->
+    <section class="section">
+      <div class="section-head">
+        <h2 class="section-title">Frankfurt • 2026</h2>
+        <div class="meta">Street, architecture, light</div>
+      </div>
+
+      <div class="masonry" id="gallery-frankfurt"></div>
+    </section>
+
+    <section class="section">
+      <div class="section-head">
+        <h2 class="section-title">Bologna • 2025</h2>
+        <div class="meta">Small moments</div>
+      </div>
+
+      <div class="masonry" id="gallery-bologna"></div>
+    </section>
+  </main>
+
+  <!-- Lightbox -->
+  <div class="lightbox" id="lightbox" aria-hidden="true">
+    <div class="lb-inner" role="dialog" aria-modal="true" aria-label="Photo viewer">
+      <img class="lb-img" id="lbImg" alt="Full size photo">
+
+      <div class="lb-bar">
+        <div class="lb-pill" id="lbCaption"></div>
+
+        <div class="lb-actions">
+          <button class="lb-nav" id="lbPrev" aria-label="Previous photo">←</button>
+          <button class="lb-nav" id="lbNext" aria-label="Next photo">→</button>
+          <button class="lb-close" id="lbClose" aria-label="Close viewer">Close ✕</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // ============================
+    // EDIT THESE LISTS
+    // - src: path to your uploaded files in /assets/photos/
+    // - caption: optional (shows in the lightbox + under the photo if provided)
+    // ============================
+
+    const FRANKFURT_2026 = [
+      { src: "/assets/photos/photo-1.jpg", caption: "Frankfurt • 2026" },
+      { src: "/assets/photos/photo-2.jpg", caption: "Frankfurt • 2026" }
+    ];
+
+    const BOLOGNA_2025 = [
+      { src: "/assets/photos/photo-3.jpg", caption: "Bologna • 2025" },
+      { src: "/assets/photos/photo-4.jpg", caption: "Bologna • 2025" }
+    ];
+
+    // Render galleries
+    function renderGallery(targetId, items){
+      const el = document.getElementById(targetId);
+      el.innerHTML = items.map((p) => `
+        <figure class="tile" data-src="${p.src}" data-caption="${(p.caption || '').replace(/"/g, '&quot;')}">
+          <img src="${p.src}" alt="${p.caption || 'Photo'}" loading="lazy">
+          ${p.caption ? `<figcaption class="caption">${p.caption}</figcaption>` : ``}
+        </figure>
+      `).join('');
+    }
+
+    renderGallery("gallery-frankfurt", FRANKFURT_2026);
+    renderGallery("gallery-bologna", BOLOGNA_2025);
+
+    // ============================
+    // Lightbox behavior (click to open, arrows/esc to navigate)
+    // ============================
+
+    const lightbox = document.getElementById('lightbox');
+    const lbImg = document.getElementById('lbImg');
+    const lbCaption = document.getElementById('lbCaption');
+    const lbClose = document.getElementById('lbClose');
+    const lbPrev = document.getElementById('lbPrev');
+    const lbNext = document.getElementById('lbNext');
+
+    // Flatten all photos into one list for navigation
+    const ALL = [
+      ...FRANKFURT_2026.map(p => ({...p, group: "Frankfurt • 2026"})),
+      ...BOLOGNA_2025.map(p => ({...p, group: "Bologna • 2025"})),
+    ];
+
+    let currentIndex = -1;
+
+    function openLightboxByIndex(idx){
+      if (idx < 0) idx = ALL.length - 1;
+      if (idx >= ALL.length) idx = 0;
+
+      currentIndex = idx;
+      const photo = ALL[currentIndex];
+
+      lbImg.src = photo.src;
+      lbCaption.textContent = photo.caption ? photo.caption : photo.group;
+
+      lightbox.classList.add('open');
+      lightbox.setAttribute('aria-hidden', 'false');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeLightbox(){
+      lightbox.classList.remove('open');
+      lightbox.setAttribute('aria-hidden', 'true');
+      document.body.style.overflow = '';
+      // optional: keep image loaded for snappiness, but you can clear it:
+      // lbImg.src = '';
+    }
+
+    function nextPhoto(){ openLightboxByIndex(currentIndex + 1); }
+    function prevPhoto(){ openLightboxByIndex(currentIndex - 1); }
+
+    // Click any tile to open
+    document.addEventListener('click', (e) => {
+      const tile = e.target.closest('.tile');
+      if (!tile) return;
+
+      const src = tile.getAttribute('data-src');
+      const idx = ALL.findIndex(p => p.src === src);
+      openLightboxByIndex(idx === -1 ? 0 : idx);
+    });
+
+    // Buttons
+    lbClose.addEventListener('click', closeLightbox);
+    lbNext.addEventListener('click', nextPhoto);
+    lbPrev.addEventListener('click', prevPhoto);
+
+    // Click outside image closes
+    lightbox.addEventListener('click', (e) => {
+      if (e.target === lightbox) closeLightbox();
+    });
+
+    // Keyboard controls
+    document.addEventListener('keydown', (e) => {
+      if (!lightbox.classList.contains('open')) return;
+
+      if (e.key === 'Escape') closeLightbox();
+      if (e.key === 'ArrowRight') nextPhoto();
+      if (e.key === 'ArrowLeft') prevPhoto();
+    });
+  </script>
+</body>
+</html>
