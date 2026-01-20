@@ -31,10 +31,12 @@
       --text: #1A1A1A;
       --text-secondary: #5C5C5C;
       --text-tertiary: #8A8A8A;
-      --accent: #E07A5F;
-      --accent-soft: rgba(224, 122, 95, 0.10);
-      --accent-medium: rgba(224, 122, 95, 0.18);
-      --accent-hover: #D4694F;
+      --accent: #1A7F7F;
+      --accent-soft: rgba(26, 127, 127, 0.10);
+      --accent-medium: rgba(26, 127, 127, 0.18);
+      --accent-hover: #156B6B;
+      --accent-secondary: #D4915D;
+      --accent-secondary-soft: rgba(212, 145, 93, 0.12);
       --green: #4CAF50;
       --green-soft: rgba(76, 175, 80, 0.12);
       --border: rgba(26, 26, 26, 0.08);
@@ -46,8 +48,8 @@
       --radius: 16px;
       --radius-sm: 10px;
       --radius-xs: 6px;
-      --container: 720px;
-      --container-wide: 1000px;
+      --container: 820px;
+      --container-wide: 1120px;
       --pad: 24px;
       --transition: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
       --transition-slow: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
@@ -61,10 +63,12 @@
       --text: #FAFAFA;
       --text-secondary: #A8A8A8;
       --text-tertiary: #6A6A6A;
-      --accent: #E8A090;
-      --accent-soft: rgba(232, 160, 144, 0.10);
-      --accent-medium: rgba(232, 160, 144, 0.18);
-      --accent-hover: #F0B0A0;
+      --accent: #3AABAB;
+      --accent-soft: rgba(58, 171, 171, 0.12);
+      --accent-medium: rgba(58, 171, 171, 0.20);
+      --accent-hover: #4CBFBF;
+      --accent-secondary: #E8A870;
+      --accent-secondary-soft: rgba(232, 168, 112, 0.15);
       --green: #66BB6A;
       --green-soft: rgba(102, 187, 106, 0.15);
       --border: rgba(255, 255, 255, 0.08);
@@ -82,7 +86,7 @@
       color: var(--text);
       font-family: 'Outfit', -apple-system, system-ui, sans-serif;
       font-weight: 400;
-      line-height: 1.65;
+      line-height: 1.6;
       -webkit-font-smoothing: antialiased;
       transition: background var(--transition-slow), color var(--transition);
       overflow-x: hidden;
@@ -135,16 +139,20 @@
       transform: translateY(0);
     }
 
-    /* ===== Header ===== */
+    /* ===== Header with proper glass effect ===== */
     header {
       position: sticky;
       top: 0;
       z-index: 100;
-      background: var(--bg);
+      background: rgba(250, 250, 248, 0.82);
       border-bottom: 1px solid var(--border);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
       transition: background var(--transition-slow), border-color var(--transition);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
+    }
+
+    [data-theme="dark"] header {
+      background: rgba(10, 10, 10, 0.78);
     }
 
     .head {
@@ -273,10 +281,11 @@
     }
     .burger svg { width: 20px; height: 20px; color: var(--text-secondary); }
 
+    /* Mobile panel - positioned relative to header */
     .mobile-panel {
       display: none;
-      position: fixed;
-      top: 68px;
+      position: absolute;
+      top: 100%;
       left: var(--pad);
       right: var(--pad);
       background: var(--bg-card);
@@ -335,7 +344,7 @@
     h1 {
       font-family: 'Newsreader', Georgia, serif;
       font-weight: 400;
-      font-size: clamp(36px, 6vw, 48px);
+      font-size: clamp(36px, 6vw, 56px);
       line-height: 1.15;
       letter-spacing: -0.02em;
       margin-bottom: 20px;
@@ -349,7 +358,7 @@
 
     .intro {
       font-size: 17px;
-      line-height: 1.7;
+      line-height: 1.75;
       color: var(--text-secondary);
       margin-bottom: 28px;
       animation: fadeInUp 0.6s ease 0.25s both;
@@ -372,11 +381,12 @@
       animation: fadeInUp 0.6s ease 0.35s both;
     }
 
+    /* ===== Enhanced Buttons ===== */
     .btn {
       display: inline-flex;
       align-items: center;
-      gap: 6px;
-      padding: 10px 18px;
+      gap: 8px;
+      padding: 12px 20px;
       border-radius: 999px;
       font-size: 14px;
       font-weight: 500;
@@ -407,6 +417,11 @@
     .btn:active {
       transform: translateY(0);
     }
+    .btn svg {
+      width: 16px;
+      height: 16px;
+      flex-shrink: 0;
+    }
     .btn.primary {
       background: var(--accent);
       border-color: var(--accent);
@@ -418,7 +433,35 @@
     .btn.primary:hover {
       background: var(--accent-hover);
       border-color: var(--accent-hover);
-      box-shadow: 0 4px 16px rgba(224, 122, 95, 0.3);
+      box-shadow: 0 4px 16px rgba(26, 127, 127, 0.3);
+    }
+
+    .btn.linkedin {
+      background: #0A66C2;
+      border-color: #0A66C2;
+      color: #fff;
+    }
+    .btn.linkedin::before {
+      background: rgba(255,255,255,0.1);
+    }
+    .btn.linkedin:hover {
+      background: #004182;
+      border-color: #004182;
+      box-shadow: 0 4px 16px rgba(10, 102, 194, 0.35);
+    }
+
+    .btn.secondary {
+      background: var(--accent-secondary);
+      border-color: var(--accent-secondary);
+      color: #fff;
+    }
+    .btn.secondary::before {
+      background: rgba(255,255,255,0.1);
+    }
+    .btn.secondary:hover {
+      background: #C07D4A;
+      border-color: #C07D4A;
+      box-shadow: 0 4px 16px rgba(212, 145, 93, 0.35);
     }
 
     /* ===== Sections ===== */
@@ -442,6 +485,7 @@
     .section-lead {
       color: var(--text-secondary);
       font-size: 15px;
+      line-height: 1.6;
     }
 
     /* ===== About ===== */
@@ -489,7 +533,7 @@
       line-height: 1.6;
     }
 
-    /* ===== Photography ===== */
+    /* ===== Photography with Lightbox ===== */
     .photo-row {
       display: flex;
       gap: 12px;
@@ -513,6 +557,7 @@
       position: relative;
       transition: transform var(--transition), border-color var(--transition), box-shadow var(--transition);
       scroll-snap-align: start;
+      cursor: pointer;
     }
     .photo-thumb:hover {
       transform: translateY(-4px) scale(1.02);
@@ -550,6 +595,94 @@
       margin-top: 20px;
     }
 
+    /* ===== Lightbox ===== */
+    .lightbox {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.92);
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.3s ease, visibility 0.3s ease;
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+    }
+    .lightbox.active {
+      opacity: 1;
+      visibility: visible;
+    }
+    .lightbox-content {
+      position: relative;
+      max-width: 90vw;
+      max-height: 90vh;
+      animation: scaleIn 0.3s ease;
+    }
+    .lightbox-content img {
+      max-width: 90vw;
+      max-height: 85vh;
+      object-fit: contain;
+      border-radius: var(--radius-sm);
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+    }
+    .lightbox-caption {
+      text-align: center;
+      color: #fff;
+      font-size: 14px;
+      margin-top: 16px;
+      opacity: 0.8;
+    }
+    .lightbox-close {
+      position: absolute;
+      top: -48px;
+      right: 0;
+      width: 40px;
+      height: 40px;
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: #fff;
+      font-size: 24px;
+      transition: background var(--transition), transform var(--transition);
+    }
+    .lightbox-close:hover {
+      background: rgba(255, 255, 255, 0.2);
+      transform: scale(1.1);
+    }
+    .lightbox-nav {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 48px;
+      height: 48px;
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: #fff;
+      font-size: 20px;
+      transition: background var(--transition), transform var(--transition);
+    }
+    .lightbox-nav:hover {
+      background: rgba(255, 255, 255, 0.2);
+      transform: translateY(-50%) scale(1.1);
+    }
+    .lightbox-prev { left: -70px; }
+    .lightbox-next { right: -70px; }
+    @media (max-width: 768px) {
+      .lightbox-prev { left: 10px; }
+      .lightbox-next { right: 10px; }
+    }
+
     /* ===== Activity / Movement ===== */
     .activity-hero {
       background: linear-gradient(135deg, var(--accent-soft) 0%, var(--bg-card) 50%, var(--green-soft) 100%);
@@ -578,6 +711,8 @@
       justify-content: space-between;
       margin-bottom: 20px;
       position: relative;
+      flex-wrap: wrap;
+      gap: 12px;
     }
 
     .activity-hero-title {
@@ -603,9 +738,12 @@
 
     .year-stats {
       display: grid;
-      grid-template-columns: repeat(2, 1fr);
+      grid-template-columns: repeat(3, 1fr);
       gap: 16px;
       position: relative;
+    }
+    @media (max-width: 480px) {
+      .year-stats { grid-template-columns: 1fr; }
     }
 
     .year-stat {
@@ -623,7 +761,7 @@
 
     .year-stat-value {
       font-family: 'Newsreader', Georgia, serif;
-      font-size: 36px;
+      font-size: 32px;
       font-weight: 400;
       letter-spacing: -0.03em;
       color: var(--accent);
@@ -656,6 +794,9 @@
       border-color: var(--border-hover);
       box-shadow: var(--shadow);
       transform: translateX(4px);
+    }
+    @media (max-width: 480px) {
+      .month-card:hover { transform: none; }
     }
 
     .month-card.current {
@@ -719,6 +860,17 @@
       color: #fff;
       border-radius: 999px;
       animation: pulse 2s ease infinite;
+    }
+
+    .month-goal-met {
+      font-size: 10px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      padding: 4px 10px;
+      background: var(--green);
+      color: #fff;
+      border-radius: 999px;
     }
 
     .month-card-body {
@@ -837,11 +989,12 @@
       border: 1px solid var(--border);
       border-radius: var(--radius);
       overflow: hidden;
-      transition: border-color var(--transition), box-shadow var(--transition);
+      transition: border-color var(--transition), box-shadow var(--transition), transform var(--transition);
     }
     .into-card:hover {
       border-color: var(--border-hover);
       box-shadow: var(--shadow);
+      transform: translateY(-2px);
     }
 
     .into-card-header {
@@ -951,6 +1104,9 @@
       box-shadow: var(--shadow);
       transform: translateY(-2px);
     }
+    @media (max-width: 480px) {
+      .press-item:hover { transform: none; }
+    }
 
     .press-logo {
       width: 48px;
@@ -1043,7 +1199,7 @@
       top: 0;
       left: 0;
       height: 3px;
-      background: linear-gradient(90deg, var(--accent) 0%, var(--accent-hover) 100%);
+      background: linear-gradient(90deg, var(--accent) 0%, var(--accent-secondary) 100%);
       z-index: 1000;
       transition: width 0.1s linear;
     }
@@ -1062,6 +1218,17 @@
   <!-- Scroll Progress Bar -->
   <div class="scroll-progress" id="scrollProgress"></div>
 
+  <!-- Lightbox -->
+  <div class="lightbox" id="lightbox">
+    <div class="lightbox-content">
+      <button class="lightbox-close" aria-label="Close">&times;</button>
+      <button class="lightbox-nav lightbox-prev" aria-label="Previous">&#8249;</button>
+      <button class="lightbox-nav lightbox-next" aria-label="Next">&#8250;</button>
+      <img src="" alt="" id="lightboxImg">
+      <div class="lightbox-caption" id="lightboxCaption"></div>
+    </div>
+  </div>
+
   <header>
     <div class="head">
       <a class="brand" href="#top" aria-label="Home">
@@ -1075,7 +1242,7 @@
         <nav class="desktop" aria-label="Primary">
           <a href="#about">About</a>
           <a href="#photos">Photos</a>
-          <a href="/articles/">Articles</a>
+          <a href="/articles.html">Articles</a>
           <a href="#into">Currently into</a>
           <a href="#contact">Contact</a>
         </nav>
@@ -1100,7 +1267,7 @@
     <div class="mobile-panel" id="mobilePanel">
       <a href="#about">About</a>
       <a href="#photos">Photos</a>
-      <a href="/articles/">Articles</a>
+      <a href="/articles.html">Articles</a>
       <a href="#into">Currently into</a>
       <a href="#contact">Contact</a>
     </div>
@@ -1118,9 +1285,27 @@
           When I'm not working, I'm probably walking somewhere with my camera, playing FIFA, or trying to convince someone to let me back in the pool.
         </p>
         <div class="cta-row">
-          <a class="btn primary" href="mailto:hello@ererezino.com">Say hello</a>
-          <a class="btn" href="https://www.linkedin.com/in/ererezino/" target="_blank" rel="noopener">LinkedIn</a>
-          <a class="btn" href="#photos">See photos</a>
+          <a class="btn primary" href="mailto:hello@ererezino.com">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+              <polyline points="22,6 12,13 2,6"/>
+            </svg>
+            Say hello
+          </a>
+          <a class="btn linkedin" href="https://www.linkedin.com/in/ererezino/" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="currentColor">
+              <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+            </svg>
+            LinkedIn
+          </a>
+          <a class="btn secondary" href="#photos">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+              <circle cx="8.5" cy="8.5" r="1.5"/>
+              <polyline points="21 15 16 10 5 21"/>
+            </svg>
+            See photos
+          </a>
         </div>
       </section>
 
@@ -1201,14 +1386,18 @@
       <section id="activity" class="section animate-on-scroll">
         <div class="section-header">
           <h2 class="section-title">Movement</h2>
-          <p class="section-lead">Tracking my walks and runs. Staying active, one month at a time.</p>
+          <p class="section-lead">Tracking my walks and runs. Goal: 310,000 steps per month (~237km).</p>
         </div>
 
         <!-- Year Hero -->
         <div class="activity-hero" id="yearHero"></div>
 
-        <!-- Monthly Cards -->
+        <!-- Monthly Cards (current + last month only) -->
         <div class="monthly-grid" id="monthlyGrid"></div>
+
+        <div class="section-footer">
+          <a href="/movement.html" class="link-arrow">See all months <span>→</span></a>
+        </div>
       </section>
 
       <section id="into" class="section animate-on-scroll">
@@ -1258,8 +1447,19 @@
         <div class="contact-box">
           <p>Email is best. I try to respond within a day or two.</p>
           <div class="cta-row" style="justify-content: center;">
-            <a class="btn primary" href="mailto:hello@ererezino.com">hello@ererezino.com</a>
-            <a class="btn" href="https://twitter.com/ererezino" target="_blank" rel="noopener">Twitter</a>
+            <a class="btn primary" href="mailto:hello@ererezino.com">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                <polyline points="22,6 12,13 2,6"/>
+              </svg>
+              hello@ererezino.com
+            </a>
+            <a class="btn" href="https://twitter.com/ererezino" target="_blank" rel="noopener">
+              <svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16">
+                <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+              </svg>
+              Twitter
+            </a>
           </div>
         </div>
       </section>
@@ -1322,55 +1522,52 @@
       }
     ];
 
-    // ========= ACTIVITY DATA - EDIT THIS =========
+    // ========= ACTIVITY DATA - Real figures =========
     
     // 2025 Year totals
     const YEAR_2025 = {
-      totalKm: 245.8,
-      totalSteps: 321500
+      totalSteps: 2600000,
+      avgStepsPerDay: 7072,
+      totalKm: 1980
     };
 
+    // Monthly goal: 310,000 steps (~237km) = 10k steps/day
+    const MONTHLY_GOAL_STEPS = 310000;
+    const MONTHLY_GOAL_KM = 237;
+
     // Monthly logs (newest first)
-    // isCurrent: true marks the active month
-    // goal: optional monthly km goal
+    // Only showing current + previous month on homepage
     const MONTHLY_ACTIVITY = [
       {
         month: "January",
         year: 2026,
         isCurrent: true,
-        km: 28.4,
-        steps: 37200,
-        workouts: 12,
-        goal: 50
+        steps: 198000,
+        km: 140,
+        avgStepsPerDay: 9914,
+        daysElapsed: 20 // Update this as the month progresses
       },
       {
         month: "December",
         year: 2025,
         isCurrent: false,
-        km: 42.1,
-        steps: 55000,
-        workouts: 18,
-        goal: 50
+        steps: 401117,
+        km: 307,
+        avgStepsPerDay: 12939
       }
-      // Add more months here as you go...
     ];
 
-    const PRESS = [
-      {
-        title: "Article Title Here",
-        publication: "Publication Name",
-        description: "Brief description of what the article is about.",
-        date: "January 2026",
-        url: "https://example.com/article",
-        logo: "📰"
-      }
-    ];
+    // Press - empty for now
+    const PRESS = [];
 
     // ========= UTILITIES =========
 
     const esc = s => String(s || '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 
     function formatNumber(num) {
+      if (num >= 1000000) {
+        return (num / 1000000).toFixed(1) + 'M';
+      }
       return num.toLocaleString();
     }
 
@@ -1414,7 +1611,6 @@
       }
     });
 
-    // Close panel when clicking outside
     document.addEventListener('click', e => {
       if (!panel.contains(e.target) && !burger.contains(e.target)) {
         panel.classList.remove('open');
@@ -1422,14 +1618,14 @@
       }
     });
 
-    // ========= SCROLL PROGRESS =========
+    // ========= SCROLL PROGRESS (with NaN guard) =========
 
     const scrollProgress = document.getElementById('scrollProgress');
     
     window.addEventListener('scroll', () => {
       const scrollTop = window.scrollY;
       const docHeight = document.documentElement.scrollHeight - window.innerHeight;
-      const progress = (scrollTop / docHeight) * 100;
+      const progress = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
       scrollProgress.style.width = progress + '%';
     });
 
@@ -1453,15 +1649,55 @@
       observer.observe(el);
     });
 
+    // ========= LIGHTBOX =========
+
+    const lightbox = document.getElementById('lightbox');
+    const lightboxImg = document.getElementById('lightboxImg');
+    const lightboxCaption = document.getElementById('lightboxCaption');
+    let currentPhotoIndex = 0;
+
+    function openLightbox(index) {
+      currentPhotoIndex = index;
+      lightboxImg.src = PHOTOS[index].src;
+      lightboxCaption.textContent = PHOTOS[index].caption;
+      lightbox.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeLightbox() {
+      lightbox.classList.remove('active');
+      document.body.style.overflow = '';
+    }
+
+    function navigateLightbox(direction) {
+      currentPhotoIndex = (currentPhotoIndex + direction + PHOTOS.length) % PHOTOS.length;
+      lightboxImg.src = PHOTOS[currentPhotoIndex].src;
+      lightboxCaption.textContent = PHOTOS[currentPhotoIndex].caption;
+    }
+
+    lightbox.querySelector('.lightbox-close').addEventListener('click', closeLightbox);
+    lightbox.querySelector('.lightbox-prev').addEventListener('click', () => navigateLightbox(-1));
+    lightbox.querySelector('.lightbox-next').addEventListener('click', () => navigateLightbox(1));
+    lightbox.addEventListener('click', (e) => {
+      if (e.target === lightbox) closeLightbox();
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (!lightbox.classList.contains('active')) return;
+      if (e.key === 'Escape') closeLightbox();
+      if (e.key === 'ArrowLeft') navigateLightbox(-1);
+      if (e.key === 'ArrowRight') navigateLightbox(1);
+    });
+
     // ========= RENDER PHOTOS =========
 
     function renderPhotos() {
       const row = document.getElementById('photoRow');
-      row.innerHTML = PHOTOS.map(p => `
-        <a href="/photos/" class="photo-thumb">
-          <img src="${esc(p.src)}" alt="${esc(p.caption)}" loading="lazy">
+      row.innerHTML = PHOTOS.map((p, i) => `
+        <div class="photo-thumb" onclick="openLightbox(${i})">
+          <img src="${esc(p.src)}" alt="${esc(p.caption)}" loading="lazy" decoding="async">
           <span class="photo-thumb-caption">${esc(p.caption)}</span>
-        </a>
+        </div>
       `).join('');
     }
 
@@ -1471,7 +1707,7 @@
       const el = document.getElementById('musicList');
       el.innerHTML = MUSIC.map(m => `
         <a class="into-item" href="${esc(m.url)}" target="_blank" rel="noopener">
-          <span class="into-cover"><img src="${esc(m.cover)}" alt="" loading="lazy"></span>
+          <span class="into-cover"><img src="${esc(m.cover)}" alt="" loading="lazy" decoding="async"></span>
           <span class="into-text">
             <p class="into-title">${esc(m.title)}</p>
             <p class="into-meta">${esc(m.artist)}</p>
@@ -1485,7 +1721,7 @@
       const el = document.getElementById('bookList');
       el.innerHTML = BOOKS.map(b => `
         <a class="into-item" href="${esc(b.url)}" target="_blank" rel="noopener">
-          <span class="into-cover book"><img src="${esc(b.cover)}" alt="" loading="lazy"></span>
+          <span class="into-cover book"><img src="${esc(b.cover)}" alt="" loading="lazy" decoding="async"></span>
           <span class="into-text">
             <p class="into-title">${esc(b.title)}</p>
             <p class="into-meta">${esc(b.author)}</p>
@@ -1499,7 +1735,7 @@
       const el = document.getElementById('TVList');
       el.innerHTML = TV.map(m => `
         <a class="into-item" href="${esc(m.url)}" target="_blank" rel="noopener">
-          <span class="into-cover"><img src="${esc(m.cover)}" alt="" loading="lazy"></span>
+          <span class="into-cover"><img src="${esc(m.cover)}" alt="" loading="lazy" decoding="async"></span>
           <span class="into-text">
             <p class="into-title">${esc(m.title)}</p>
             <p class="into-meta">${esc(m.year)}</p>
@@ -1522,12 +1758,16 @@
         
         <div class="year-stats">
           <div class="year-stat">
-            <div class="year-stat-value">${YEAR_2025.totalKm.toFixed(1)}</div>
+            <div class="year-stat-value">${formatNumber(YEAR_2025.totalSteps)}</div>
+            <div class="year-stat-label">Steps</div>
+          </div>
+          <div class="year-stat">
+            <div class="year-stat-value">${formatNumber(YEAR_2025.totalKm)}</div>
             <div class="year-stat-label">Kilometers</div>
           </div>
           <div class="year-stat">
-            <div class="year-stat-value">${formatNumber(YEAR_2025.totalSteps)}</div>
-            <div class="year-stat-label">Steps</div>
+            <div class="year-stat-value">${formatNumber(YEAR_2025.avgStepsPerDay)}</div>
+            <div class="year-stat-label">Avg/Day</div>
           </div>
         </div>
       `;
@@ -1536,50 +1776,54 @@
     function renderMonthlyActivity() {
       const container = document.getElementById('monthlyGrid');
       
-      container.innerHTML = MONTHLY_ACTIVITY.map(month => {
-        const progress = month.goal ? Math.min((month.km / month.goal) * 100, 100) : 0;
-        const isComplete = progress >= 100;
+      // Only show first 2 months (current + previous) on homepage
+      const displayMonths = MONTHLY_ACTIVITY.slice(0, 2);
+      
+      container.innerHTML = displayMonths.map(month => {
+        // Calculate progress based on steps against monthly goal
+        const progress = Math.min((month.steps / MONTHLY_GOAL_STEPS) * 100, 100);
+        const isComplete = month.steps >= MONTHLY_GOAL_STEPS;
+        const percentOfGoal = ((month.steps / MONTHLY_GOAL_STEPS) * 100).toFixed(0);
         
         return `
           <div class="month-card ${month.isCurrent ? 'current' : ''}">
             <div class="month-card-header">
               <div class="month-card-title">
-                <div class="month-icon"><span>${month.isCurrent ? '🔥' : '📅'}</span></div>
+                <div class="month-icon"><span>${month.isCurrent ? '🔥' : (isComplete ? '✅' : '📅')}</span></div>
                 <div>
                   <div class="month-name">${esc(month.month)}</div>
                   <div class="month-year">${month.year}</div>
                 </div>
               </div>
               ${month.isCurrent ? '<span class="month-current-tag">In Progress</span>' : ''}
+              ${!month.isCurrent && isComplete ? '<span class="month-goal-met">Goal Met!</span>' : ''}
             </div>
             
             <div class="month-card-body">
               <div class="month-stats">
                 <div class="month-stat">
-                  <div class="month-stat-value">${month.km.toFixed(1)}</div>
-                  <div class="month-stat-label">km</div>
-                </div>
-                <div class="month-stat">
                   <div class="month-stat-value">${formatNumber(month.steps)}</div>
                   <div class="month-stat-label">steps</div>
                 </div>
                 <div class="month-stat">
-                  <div class="month-stat-value">${month.workouts}</div>
-                  <div class="month-stat-label">workouts</div>
+                  <div class="month-stat-value">${month.km}</div>
+                  <div class="month-stat-label">km</div>
+                </div>
+                <div class="month-stat">
+                  <div class="month-stat-value">${formatNumber(month.avgStepsPerDay)}</div>
+                  <div class="month-stat-label">avg/day</div>
                 </div>
               </div>
               
-              ${month.goal ? `
-                <div class="month-progress">
-                  <div class="progress-header">
-                    <span class="progress-label">${isComplete ? '🎉 Goal reached!' : 'Monthly goal'}</span>
-                    <span class="progress-value">${month.km.toFixed(1)} / ${month.goal} km</span>
-                  </div>
-                  <div class="progress-bar">
-                    <div class="progress-fill ${isComplete ? 'progress-complete' : ''}" style="width: ${progress}%"></div>
-                  </div>
+              <div class="month-progress">
+                <div class="progress-header">
+                  <span class="progress-label">${isComplete ? '🎉 Goal surpassed!' : 'Monthly goal (310k steps)'}</span>
+                  <span class="progress-value">${percentOfGoal}%</span>
                 </div>
-              ` : ''}
+                <div class="progress-bar">
+                  <div class="progress-fill ${isComplete ? 'progress-complete' : ''}" style="width: ${progress}%"></div>
+                </div>
+              </div>
             </div>
           </div>
         `;
@@ -1589,11 +1833,15 @@
     // ========= RENDER PRESS =========
 
     function renderPress() {
+      const section = document.getElementById('press');
       const el = document.getElementById('pressList');
+      
+      // Hide entire section if no press items
       if (!PRESS.length) {
-        el.innerHTML = '<p style="color: var(--text-tertiary); font-size: 14px;">Nothing here yet.</p>';
+        section.style.display = 'none';
         return;
       }
+      
       el.innerHTML = PRESS.map(p => `
         <a class="press-item" href="${esc(p.url)}" target="_blank" rel="noopener">
           <div class="press-logo">${p.logo}</div>
