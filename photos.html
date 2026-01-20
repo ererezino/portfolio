@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Photos - Zino Asamaige</title>
+
+  <meta name="description" content="Photography by Zino Asamaige - travel and street photography.">
+  <link rel="icon" type="image/png" href="/assets/logo.png">
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --bg: #FFFFFF;
+      --bg-alt: #F7F7F7;
+      --text: #0A0A0A;
+      --text-secondary: #555555;
+      --text-tertiary: #888888;
+      --border: #E8E8E8;
+      --container: 1200px;
+      --transition: 0.2s ease;
+    }
+
+    [data-theme="dark"] {
+      --bg: #0A0A0A;
+      --bg-alt: #111111;
+      --text: #FFFFFF;
+      --text-secondary: #AAAAAA;
+      --text-tertiary: #666666;
+      --border: #222222;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Space Mono', monospace;
+      font-size: 14px;
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a { color: inherit; text-decoration: none; }
+    img { display: block; max-width: 100%; }
+
+    .container {
+      max-width: var(--container);
+      margin: 0 auto;
+      padding: 0 40px;
+    }
+    @media (max-width: 768px) {
+      .container { padding: 0 20px; }
+    }
+
+    header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      padding: 20px 0;
+      background: var(--bg);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .header-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      max-width: var(--container);
+      margin: 0 auto;
+      padding: 0 40px;
+    }
+    @media (max-width: 768px) {
+      .header-inner { padding: 0 20px; }
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 15px;
+      font-weight: 700;
+    }
+
+    .logo-img {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 1px solid var(--border);
+    }
+
+    .header-nav {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+    }
+    .header-nav a {
+      font-size: 12px;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .header-nav a:hover { color: var(--text); }
+
+    .theme-btn {
+      width: 32px;
+      height: 32px;
+      border: 1px solid var(--border);
+      background: transparent;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+    }
+    .theme-btn svg { width: 14px; height: 14px; color: var(--text-secondary); }
+    .theme-btn .sun { display: none; }
+    [data-theme="dark"] .theme-btn .sun { display: block; }
+    [data-theme="dark"] .theme-btn .moon { display: none; }
+
+    main { padding-top: 80px; }
+
+    .page-header {
+      padding: 48px 0;
+    }
+
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--text-tertiary);
+      margin-bottom: 32px;
+      transition: color var(--transition);
+    }
+    .back-link:hover { color: var(--text); }
+    .back-link svg { width: 14px; height: 14px; }
+
+    .page-title {
+      font-size: clamp(32px, 5vw, 48px);
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      margin-bottom: 16px;
+    }
+
+    .page-lead {
+      font-size: 15px;
+      color: var(--text-secondary);
+      max-width: 500px;
+      line-height: 1.8;
+    }
+
+    .photos-section { padding: 48px 0; }
+
+    .photos-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2px;
+    }
+    @media (max-width: 900px) {
+      .photos-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 500px) {
+      .photos-grid { grid-template-columns: 1fr; }
+    }
+
+    .photo-item {
+      position: relative;
+      cursor: pointer;
+      overflow: hidden;
+    }
+    .photo-item img {
+      width: 100%;
+      aspect-ratio: 1;
+      object-fit: cover;
+      transition: transform 0.4s ease;
+    }
+    .photo-item:hover img { transform: scale(1.05); }
+
+    .photo-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(0,0,0,0.7) 0%, transparent 50%);
+      display: flex;
+      align-items: flex-end;
+      padding: 16px;
+      opacity: 0;
+      transition: opacity var(--transition);
+    }
+    .photo-item:hover .photo-overlay { opacity: 1; }
+    .photo-caption {
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #fff;
+    }
+
+    /* Lightbox */
+    .lightbox {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.95);
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.3s ease;
+    }
+    .lightbox.active { opacity: 1; visibility: visible; }
+    .lightbox img {
+      max-width: 90vw;
+      max-height: 90vh;
+      object-fit: contain;
+    }
+    .lightbox-close {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      width: 40px;
+      height: 40px;
+      border: 1px solid rgba(255,255,255,0.2);
+      background: transparent;
+      color: #fff;
+      font-size: 20px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .lightbox-caption {
+      position: absolute;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      color: rgba(255,255,255,0.6);
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+    .lightbox-nav {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 40px;
+      height: 40px;
+      border: 1px solid rgba(255,255,255,0.2);
+      background: transparent;
+      color: #fff;
+      font-size: 18px;
+      cursor: pointer;
+    }
+    .lightbox-prev { left: 20px; }
+    .lightbox-next { right: 20px; }
+
+    footer {
+      padding: 32px 0;
+      border-top: 1px solid var(--border);
+    }
+
+    .footer-inner {
+      display: flex;
+      justify-content: space-between;
+      font-size: 11px;
+      color: var(--text-tertiary);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <div class="header-inner">
+      <a href="/" class="logo">
+        <img src="/assets/logo.png" alt="" class="logo-img">
+        Zino Asamaige
+      </a>
+      <nav class="header-nav">
+        <a href="/about.html">About</a>
+        <a href="/articles.html">Articles</a>
+        <a href="/movement.html">Movement</a>
+        <a href="/travels.html">Travels</a>
+        <button class="theme-btn" id="themeToggle">
+          <svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+          <svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <div class="lightbox" id="lightbox">
+    <button class="lightbox-close">&times;</button>
+    <button class="lightbox-nav lightbox-prev">&#8249;</button>
+    <button class="lightbox-nav lightbox-next">&#8250;</button>
+    <img src="" alt="" id="lightboxImg">
+    <div class="lightbox-caption" id="lightboxCaption"></div>
+  </div>
+
+  <main>
+    <div class="container">
+      <div class="page-header">
+        <a href="/" class="back-link">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+          Back to home
+        </a>
+        <h1 class="page-title">Photography</h1>
+        <p class="page-lead">Exploring place, memory, and belonging through travel and street photography. Mostly shot on iPhone.</p>
+      </div>
+
+      <section class="photos-section">
+        <div class="photos-grid" id="photosGrid"></div>
+      </section>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container footer-inner">
+      <span>© 2026 Zino Asamaige</span>
+      <span>Lagos, Nigeria</span>
+    </div>
+  </footer>
+
+  <script>
+    // Theme
+    const toggle = document.getElementById('themeToggle');
+    const saved = localStorage.getItem('theme');
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    document.documentElement.setAttribute('data-theme', saved || (prefersDark ? 'dark' : 'light'));
+    toggle.onclick = () => {
+      const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+      document.documentElement.setAttribute('data-theme', isDark ? 'light' : 'dark');
+      localStorage.setItem('theme', isDark ? 'light' : 'dark');
+    };
+
+    // Photos data - add your photos here
+    const PHOTOS = [
+      { src: "/assets/photos/photo-1.jpg", caption: "Frankfurt, 2025" },
+      { src: "/assets/photos/photo-2.jpg", caption: "Frankfurt, 2025" },
+      { src: "/assets/photos/photo-3.jpg", caption: "Frankfurt, 2025" },
+      { src: "/assets/photos/photo-4.jpg", caption: "Frankfurt, 2025" },
+      // Add more photos here
+    ];
+
+    // Render grid
+    document.getElementById('photosGrid').innerHTML = PHOTOS.map((p, i) => `
+      <div class="photo-item" onclick="openLb(${i})">
+        <img src="${p.src}" alt="${p.caption}" loading="lazy">
+        <div class="photo-overlay"><span class="photo-caption">${p.caption}</span></div>
+      </div>
+    `).join('');
+
+    // Lightbox
+    const lb = document.getElementById('lightbox');
+    const lbImg = document.getElementById('lightboxImg');
+    const lbCap = document.getElementById('lightboxCaption');
+    let idx = 0;
+
+    function openLb(i) {
+      idx = i;
+      lbImg.src = PHOTOS[i].src;
+      lbCap.textContent = PHOTOS[i].caption;
+      lb.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeLb() {
+      lb.classList.remove('active');
+      document.body.style.overflow = '';
+    }
+
+    function navLb(d) {
+      idx = (idx + d + PHOTOS.length) % PHOTOS.length;
+      lbImg.src = PHOTOS[idx].src;
+      lbCap.textContent = PHOTOS[idx].caption;
+    }
+
+    lb.querySelector('.lightbox-close').onclick = closeLb;
+    lb.querySelector('.lightbox-prev').onclick = () => navLb(-1);
+    lb.querySelector('.lightbox-next').onclick = () => navLb(1);
+    lb.onclick = e => { if (e.target === lb) closeLb(); };
+    document.onkeydown = e => {
+      if (!lb.classList.contains('active')) return;
+      if (e.key === 'Escape') closeLb();
+      if (e.key === 'ArrowLeft') navLb(-1);
+      if (e.key === 'ArrowRight') navLb(1);
+    };
+  </script>
+</body>
+</html>
