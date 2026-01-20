@@ -874,9 +874,9 @@
 
           <div class="into-card">
             <div class="into-card-header">
-              <h3>🎬 Movies</h3>
+              <h3>🎬 TV</h3>
             </div>
-            <div class="into-list" id="movieList"></div>
+            <div class="into-list" id="TVList"></div>
           </div>
         </div>
       </section>
@@ -947,12 +947,12 @@
       }
     ];
 
-    const MOVIES = [
+    const TV = [
       {
-        title: "Movie Title",
+        title: "Elsbeth",
         year: "2024",
-        url: "https://www.imdb.com/",
-        cover: "/assets/covers/movie-1.jpg"
+        url: "https://www.imdb.com/title/tt26591110/",
+        cover: "https://m.media-amazon.com/images/M/MV5BOTcwYzc0M2QtM2NiYy00MWU1LWEwYmYtZGYzYWM4MTZjZmU1XkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg"
       }
     ];
 
@@ -1059,9 +1059,9 @@
       `).join('');
     }
 
-    function renderMovies() {
-      const el = document.getElementById('movieList');
-      el.innerHTML = MOVIES.map(m => `
+    function renderTV() {
+      const el = document.getElementById('TVList');
+      el.innerHTML = TV.map(m => `
         <a class="into-item" href="${esc(m.url)}" target="_blank" rel="noopener">
           <span class="into-cover"><img src="${esc(m.cover)}" alt="" loading="lazy"></span>
           <span class="into-text">
@@ -1127,7 +1127,7 @@
     renderPhotos();
     renderMusic();
     renderBooks();
-    renderMovies();
+    renderTV();
     renderActivity();
     renderPress();
   </script>
