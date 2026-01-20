@@ -106,8 +106,13 @@
       color: var(--text-secondary);
       text-transform: uppercase;
       letter-spacing: 0.05em;
+      transition: color var(--transition);
     }
     .header-nav a:hover { color: var(--text); }
+
+    @media (max-width: 768px) {
+      .header-nav { display: none; }
+    }
 
     .theme-btn {
       width: 32px;
@@ -123,6 +128,87 @@
     .theme-btn .sun { display: none; }
     [data-theme="dark"] .theme-btn .sun { display: block; }
     [data-theme="dark"] .theme-btn .moon { display: none; }
+
+    .mobile-menu-btn {
+      display: none;
+      width: 32px;
+      height: 32px;
+      border: 1px solid var(--border);
+      background: transparent;
+      cursor: pointer;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+    }
+    .mobile-menu-btn span {
+      width: 14px;
+      height: 1px;
+      background: var(--text);
+    }
+
+    .mobile-controls {
+      display: none;
+      align-items: center;
+      gap: 8px;
+    }
+
+    @media (max-width: 768px) {
+      .mobile-controls { display: flex; }
+      .mobile-menu-btn { display: flex; }
+    }
+
+    /* Mobile Menu */
+    .mobile-menu {
+      position: fixed;
+      inset: 0;
+      background: var(--bg);
+      z-index: 200;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity var(--transition), visibility var(--transition);
+    }
+    .mobile-menu.open { opacity: 1; visibility: visible; }
+
+    .mobile-menu-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 48px;
+    }
+
+    .mobile-menu-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .mobile-menu-close {
+      width: 32px;
+      height: 32px;
+      border: 1px solid var(--border);
+      background: transparent;
+      font-size: 20px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text);
+    }
+
+    .mobile-menu nav {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    .mobile-menu nav a {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--text);
+    }
 
     main { padding-top: 80px; }
 
@@ -295,8 +381,37 @@
           <svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
         </button>
       </nav>
+      <div class="mobile-controls">
+        <button class="theme-btn" id="mobileThemeToggle">
+          <svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+          <svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+        </button>
+        <button class="mobile-menu-btn" id="mobileMenuBtn">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
     </div>
   </header>
+
+  <div class="mobile-menu" id="mobileMenu">
+    <div class="mobile-menu-header">
+      <a href="/" class="logo">
+        <img src="/assets/logo.png" alt="" class="logo-img">
+        Zino
+      </a>
+      <div class="mobile-menu-actions">
+        <button class="mobile-menu-close" id="mobileMenuClose">&times;</button>
+      </div>
+    </div>
+    <nav>
+      <a href="/about.html">About</a>
+      <a href="/photos.html">Photos</a>
+      <a href="/articles.html">Articles</a>
+      <a href="/movement.html">Movement</a>
+      <a href="/travels.html">Travels</a>
+      <a href="/contact.html">Contact</a>
+    </nav>
+  </div>
 
   <div class="lightbox" id="lightbox">
     <button class="lightbox-close">&times;</button>
@@ -333,14 +448,24 @@
   <script>
     // Theme
     const toggle = document.getElementById('themeToggle');
+    const mobileToggle = document.getElementById('mobileThemeToggle');
     const saved = localStorage.getItem('theme');
     const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
     document.documentElement.setAttribute('data-theme', saved || (prefersDark ? 'dark' : 'light'));
-    toggle.onclick = () => {
+    
+    function toggleTheme() {
       const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
       document.documentElement.setAttribute('data-theme', isDark ? 'light' : 'dark');
       localStorage.setItem('theme', isDark ? 'light' : 'dark');
-    };
+    }
+    toggle.onclick = toggleTheme;
+    mobileToggle.onclick = toggleTheme;
+
+    // Mobile menu
+    const mm = document.getElementById('mobileMenu');
+    document.getElementById('mobileMenuBtn').onclick = () => mm.classList.add('open');
+    document.getElementById('mobileMenuClose').onclick = () => mm.classList.remove('open');
+    mm.querySelectorAll('a').forEach(a => a.onclick = () => mm.classList.remove('open'));
 
     // Photos data - add your photos here
     const PHOTOS = [
