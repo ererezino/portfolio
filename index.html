@@ -1330,7 +1330,9 @@
 
     // Months
     document.getElementById('monthsGrid').innerHTML = MONTHS.slice(0, 2).map(m => {
-      const pct = Math.min((m.steps / MONTHLY_GOAL) * 100, 100);
+      const pct = (m.steps / MONTHLY_GOAL) * 100;
+      const displayPct = Math.round(pct);
+      const barWidth = Math.min(pct, 100);
       const met = m.steps >= MONTHLY_GOAL;
       const stateClass = m.isCurrent ? 'current' : (met ? 'completed' : '');
       return `
@@ -1341,9 +1343,9 @@
           </div>
           <div class="movement-month-steps">${fmt(m.steps)}</div>
           <div class="movement-month-goal">
-            <span class="movement-month-pct">${Math.round(pct)}%</span> of 310k goal
+            <span class="movement-month-pct">${displayPct}%</span> of 310k goal
           </div>
-          <div class="movement-month-bar"><div class="movement-month-bar-fill" style="width:${pct}%"></div></div>
+          <div class="movement-month-bar"><div class="movement-month-bar-fill" style="width:${barWidth}%"></div></div>
           <div class="movement-month-details">
             <div>
               <div class="movement-month-detail-value">${m.km} km</div>
