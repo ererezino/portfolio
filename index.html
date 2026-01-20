@@ -5,48 +5,39 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Zino Asamaige</title>
 
-  <!-- Favicon / thumbnail -->
-  <link rel="icon" type="image/png" href="/assets/logo.png" />
-  <link rel="apple-touch-icon" href="/assets/logo.png" />
-  <meta name="theme-color" content="#FAFAF8" />
+  <!-- Favicon / tab icon -->
+  <link rel="icon" type="image/png" href="/assets/logo.png">
+  <link rel="apple-touch-icon" href="/assets/logo.png">
+  <meta name="theme-color" content="#FAFAF8">
 
-  <!-- Social preview (optional but nice) -->
-  <meta property="og:title" content="Zino Asamaige" />
-  <meta property="og:description" content="Product & operations leader. Systems, taste, and a few things I'm into." />
-  <meta property="og:image" content="https://ererezino.com/assets/logo.png" />
-  <meta property="og:url" content="https://ererezino.com" />
-  <meta name="twitter:card" content="summary_large_image" />
-
-  <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link
-    href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap"
+    href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap"
     rel="stylesheet"
   />
 
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
-
-    :root {
-      --bg: #FAFAF8;
-      --surface: rgba(255, 255, 255, 0.70);
-      --surface-2: rgba(255, 255, 255, 0.52);
-      --text: #141414;
-      --text-soft: #5F5F5F;
-      --border: rgba(20, 20, 20, 0.10);
-      --shadow: 0 12px 32px rgba(0, 0, 0, 0.06);
-      --shadow-soft: 0 7px 18px rgba(0, 0, 0, 0.05);
-      --radius: 16px;
-      --radius-sm: 12px;
-      --ring: 0 0 0 4px rgba(20, 20, 20, 0.08);
-    }
-
     html { scroll-behavior: smooth; }
 
-    body {
-      font-family: "DM Sans", -apple-system, sans-serif;
-      font-weight: 400;
+    :root{
+      --bg: #FAFAF8;
+      --panel: rgba(255,255,255,0.55);
+      --panel-solid: rgba(255,255,255,0.75);
+      --text: #1A1A1A;
+      --muted: #6B6B6B;
+      --border: rgba(20, 20, 20, 0.10);
+      --border-2: rgba(20, 20, 20, 0.14);
+      --shadow: 0 14px 40px rgba(0,0,0,0.08);
+      --shadow-soft: 0 10px 28px rgba(0,0,0,0.06);
+      --radius: 18px;
+      --radius-sm: 14px;
+    }
+
+    body{
+      font-family: 'DM Sans', -apple-system, system-ui, sans-serif;
+      font-weight: 300;
       background: var(--bg);
       color: var(--text);
       line-height: 1.55;
@@ -55,689 +46,609 @@
       text-rendering: optimizeLegibility;
     }
 
-    a { color: inherit; text-decoration: none; }
+    a{ color: inherit; text-decoration: none; }
+    img{ max-width: 100%; }
 
-    /* subtle background texture */
-    .bg-glow {
-      position: fixed;
-      inset: -200px;
-      z-index: -1;
-      background:
-        radial-gradient(600px 320px at 20% 10%, rgba(0,0,0,0.06), transparent 60%),
-        radial-gradient(720px 420px at 85% 20%, rgba(0,0,0,0.05), transparent 60%),
-        radial-gradient(640px 420px at 40% 85%, rgba(0,0,0,0.05), transparent 60%);
-      filter: blur(10px);
-      opacity: 0.9;
-      pointer-events: none;
-    }
-
-    .container {
-      max-width: 1060px;
+    .container{
+      max-width: 1040px;
       margin: 0 auto;
       padding: 0 24px;
     }
 
+    /* Subtle background glow (modern product vibe) */
+    .bg-glow{
+      position: fixed;
+      inset: -200px;
+      pointer-events: none;
+      z-index: -1;
+      background:
+        radial-gradient(800px 500px at 15% 10%, rgba(0,0,0,0.06), transparent 60%),
+        radial-gradient(800px 500px at 80% 25%, rgba(0,0,0,0.05), transparent 65%),
+        radial-gradient(900px 600px at 45% 85%, rgba(0,0,0,0.05), transparent 60%);
+      filter: blur(2px);
+      opacity: 0.9;
+    }
+
     /* Header */
-    header {
+    header{
       position: sticky;
       top: 0;
-      z-index: 10;
+      z-index: 50;
       backdrop-filter: blur(10px);
-      background: rgba(250, 250, 248, 0.70);
+      background: rgba(250,250,248,0.75);
       border-bottom: 1px solid var(--border);
     }
 
-    .header-inner {
+    .header-inner{
       display: flex;
       justify-content: space-between;
       align-items: center;
-      gap: 16px;
-      padding: 18px 0;
+      gap: 18px;
+      padding: 16px 0;
     }
 
-    .logo {
-      width: 44px;
-      height: 44px;
-      border-radius: 50%;
-      background: var(--surface);
-      border: 1px solid var(--border);
-      display: inline-flex;
+    .brand{
+      display: flex;
       align-items: center;
-      justify-content: center;
-      overflow: hidden;
-      box-shadow: var(--shadow-soft);
-      transform: translateZ(0);
+      gap: 12px;
+      min-width: 180px;
     }
 
-    .logo img {
+    .logo{
+      width: 42px;
+      height: 42px;
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,0.65);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.06);
+      flex: 0 0 auto;
+    }
+    .logo img{
       width: 100%;
       height: 100%;
-      object-fit: cover;
+      object-fit: cover; /* fine for a square logo */
       display: block;
     }
 
-    nav {
+    .brand-name{
+      font-weight: 500;
+      letter-spacing: 0.01em;
+      font-size: 14px;
+      color: var(--muted);
+    }
+
+    nav{
       display: flex;
-      gap: 10px;
+      gap: 18px;
       flex-wrap: wrap;
       justify-content: flex-end;
       align-items: center;
     }
 
-    nav a {
-      font-size: 14px;
-      color: var(--text-soft);
-      letter-spacing: 0.01em;
-      padding: 10px 12px;
+    nav a{
+      font-size: 13px;
+      color: var(--muted);
+      padding: 8px 10px;
       border-radius: 999px;
       border: 1px solid transparent;
-      transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+      transition: all 0.18s ease;
     }
-
-    nav a:hover {
+    nav a:hover{
       color: var(--text);
-      background: rgba(255,255,255,0.55);
       border-color: var(--border);
+      background: rgba(255,255,255,0.55);
     }
-
-    nav a:focus-visible { outline: none; box-shadow: var(--ring); }
 
     /* Hero */
-    main { padding-top: 22px; }
-
-    .hero {
-      padding: 78px 0 46px;
+    .hero{
+      padding: 86px 0 54px;
       animation: fadeIn 0.7s ease-out;
     }
 
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(14px); }
-      to { opacity: 1; transform: translateY(0); }
+    @keyframes fadeIn{
+      from{ opacity: 0; transform: translateY(14px); }
+      to{ opacity: 1; transform: translateY(0); }
     }
 
-    .hero h1 {
-      font-family: "Instrument Serif", Georgia, serif;
-      font-size: clamp(44px, 6vw, 68px);
+    h1{
+      font-family: 'Instrument Serif', Georgia, serif;
+      font-size: clamp(46px, 7vw, 74px);
       font-weight: 400;
-      line-height: 1.05;
+      line-height: 1.03;
       letter-spacing: -0.02em;
-      margin-bottom: 14px;
-    }
-
-    .hero-subtitle {
-      font-size: 18px;
-      color: var(--text-soft);
-      max-width: 720px;
-      margin-bottom: 22px;
-    }
-
-    .hero-links {
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-      align-items: center;
-    }
-
-    .pill {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 10px 12px;
-      font-size: 14px;
-      color: var(--text-soft);
-      background: rgba(255, 255, 255, 0.55);
-      border: 1px solid var(--border);
-      border-radius: 999px;
-      box-shadow: 0 1px 0 rgba(0,0,0,0.03);
-      transition: transform 0.15s ease, background 0.15s ease, color 0.15s ease, box-shadow 0.15s ease;
-    }
-
-    .pill:hover {
-      transform: translateY(-1px);
-      color: var(--text);
-      background: rgba(255, 255, 255, 0.75);
-      box-shadow: var(--shadow-soft);
-    }
-
-    .pill:focus-visible { outline: none; box-shadow: var(--ring); }
-
-    /* Sections */
-    .section {
-      padding: 52px 0;
-      border-top: 1px solid var(--border);
-    }
-
-    .section-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-end;
-      gap: 14px;
-      flex-wrap: wrap;
       margin-bottom: 16px;
     }
 
-    .section-title {
-      font-family: "Instrument Serif", Georgia, serif;
+    .subtitle{
+      font-size: 18px;
+      color: var(--muted);
+      max-width: 640px;
+    }
+
+    .cta-row{
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 22px;
+    }
+
+    .btn{
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 14px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,0.65);
+      box-shadow: 0 10px 24px rgba(0,0,0,0.06);
+      color: var(--text);
+      font-size: 13px;
+      font-weight: 400;
+      transition: transform 0.15s ease, border-color 0.15s ease;
+    }
+    .btn:hover{
+      transform: translateY(-1px);
+      border-color: var(--border-2);
+    }
+
+    /* Sections */
+    .section{
+      padding: 56px 0;
+      border-top: 1px solid var(--border);
+    }
+
+    .section-head{
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 16px;
+    }
+
+    .section-title{
+      font-family: 'Instrument Serif', Georgia, serif;
       font-size: 28px;
       font-weight: 400;
       letter-spacing: -0.01em;
     }
 
-    .section-lead {
-      color: var(--text-soft);
-      max-width: 860px;
-      font-size: 16px;
+    .section-lead{
+      color: var(--muted);
+      max-width: 720px;
       margin-top: 10px;
     }
 
-    .muted {
-      color: var(--text-soft);
-      font-size: 13px;
-    }
-
-    /* Cards */
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 16px;
-      margin-top: 14px;
-    }
-
-    .card {
-      border: 1px solid var(--border);
-      background: var(--surface);
-      border-radius: var(--radius);
-      padding: 18px;
-      box-shadow: 0 1px 0 rgba(0,0,0,0.03);
-      transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
-    }
-
-    .card:hover {
-      transform: translateY(-2px);
-      box-shadow: var(--shadow);
-      border-color: rgba(20, 20, 20, 0.14);
-    }
-
-    .card-title {
-      font-weight: 600;
-      margin-bottom: 6px;
-      letter-spacing: 0.01em;
-      font-size: 16px;
-    }
-
-    .card-meta {
-      font-size: 13px;
-      color: var(--text-soft);
-      margin-bottom: 10px;
-    }
-
-    .card p { color: rgba(20, 20, 20, 0.82); }
-
-    /* Lists */
-    .list {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 10px;
-      margin-top: 14px;
-    }
-
-    .item {
-      border: 1px solid var(--border);
-      background: var(--surface-2);
-      border-radius: var(--radius-sm);
-      padding: 14px 14px;
-      display: flex;
-      justify-content: space-between;
-      gap: 14px;
-      align-items: flex-start;
-      transition: transform 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
-    }
-
-    .item:hover {
-      transform: translateY(-1px);
-      border-color: rgba(20, 20, 20, 0.14);
-      box-shadow: var(--shadow-soft);
-    }
-
-    .item-main { min-width: 0; }
-    .item-title {
-      font-weight: 600;
-      margin-bottom: 3px;
-      line-height: 1.25;
-    }
-
-    .item-sub {
-      color: var(--text-soft);
-      font-size: 13px;
-      line-height: 1.35;
-    }
-
-    .item-meta {
-      color: var(--text-soft);
+    .pill{
       font-size: 12px;
+      color: var(--muted);
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,0.55);
+      padding: 8px 12px;
+      border-radius: 999px;
       white-space: nowrap;
-      margin-top: 2px;
     }
 
-    .badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
+    /* Tags */
+    .tagrow{
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 14px;
+    }
+    .tag{
       font-size: 12px;
-      color: var(--text-soft);
+      color: var(--muted);
       border: 1px solid var(--border);
-      padding: 6px 10px;
+      padding: 7px 10px;
       border-radius: 999px;
       background: rgba(255,255,255,0.55);
     }
 
-    /* Photo gallery */
-    .photo-grid {
+    /* Cards grid */
+    .grid{
       display: grid;
-      grid-template-columns: repeat(12, 1fr);
-      gap: 12px;
-      margin-top: 16px;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 16px;
+      margin-top: 18px;
     }
 
-    .photo {
-      position: relative;
+    .card{
+      border: 1px solid var(--border);
+      background: var(--panel);
+      border-radius: var(--radius);
+      padding: 18px;
+      box-shadow: var(--shadow-soft);
+      transition: transform 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
+    }
+    .card:hover{
+      transform: translateY(-2px);
+      border-color: var(--border-2);
+      box-shadow: var(--shadow);
+    }
+
+    .card-title{
+      font-weight: 500;
+      letter-spacing: 0.01em;
+      margin-bottom: 8px;
+    }
+
+    .card-meta{
+      font-size: 13px;
+      color: var(--muted);
+      margin-bottom: 10px;
+    }
+
+    .card p{ color: var(--text); }
+
+    /* Photography (IMPORTANT: keep real ratio = no cropping) */
+    .photo-grid{
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 16px;
+      margin-top: 18px;
+    }
+
+    .photo{
       border-radius: var(--radius);
       overflow: hidden;
       border: 1px solid var(--border);
-      background: rgba(255,255,255,0.55);
-      box-shadow: 0 1px 0 rgba(0,0,0,0.03);
-      transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+      background: var(--panel-solid);
+      box-shadow: var(--shadow-soft);
+      transition: transform 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
+      cursor: zoom-in;
     }
-
-    .photo:hover {
+    .photo:hover{
       transform: translateY(-2px);
+      border-color: var(--border-2);
       box-shadow: var(--shadow);
-      border-color: rgba(20, 20, 20, 0.14);
     }
-
-    .photo img {
+    .photo img{
       width: 100%;
-      height: 100%;
-      object-fit: cover;
+      height: auto;           /* KEY: preserves aspect ratio */
       display: block;
+      object-fit: contain;    /* no crop */
     }
 
-    .photo-caption {
-      position: absolute;
-      left: 10px;
-      right: 10px;
-      bottom: 10px;
-      padding: 10px 10px;
-      border-radius: 12px;
-      background: rgba(250, 250, 248, 0.72);
-      border: 1px solid rgba(20,20,20,0.10);
-      backdrop-filter: blur(8px);
-      color: rgba(20,20,20,0.82);
-      font-size: 12px;
+    /* Lists */
+    .list{
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 16px;
+      margin-top: 18px;
+    }
+
+    .item{
+      border: 1px solid var(--border);
+      background: var(--panel);
+      border-radius: var(--radius);
+      padding: 16px;
+      box-shadow: var(--shadow-soft);
+      transition: transform 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
+    }
+    .item:hover{
+      transform: translateY(-2px);
+      border-color: var(--border-2);
+      box-shadow: var(--shadow);
+    }
+
+    .item-top{
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      align-items: baseline;
+      margin-bottom: 8px;
+    }
+
+    .item-title{
+      font-weight: 500;
       line-height: 1.25;
-      opacity: 0;
-      transform: translateY(6px);
-      transition: opacity 0.15s ease, transform 0.15s ease;
     }
-
-    .photo:hover .photo-caption {
-      opacity: 1;
-      transform: translateY(0);
+    .item-meta{
+      font-size: 12px;
+      color: var(--muted);
+      white-space: nowrap;
     }
-
-    /* Photo sizing (nice masonry-ish layout without JS) */
-    .span-6 { grid-column: span 6; }
-    .span-4 { grid-column: span 4; }
-    .span-8 { grid-column: span 8; }
-    .h-260 { height: 260px; }
-    .h-320 { height: 320px; }
-    .h-380 { height: 380px; }
+    .item-note{
+      color: var(--muted);
+      font-size: 14px;
+      margin-top: 8px;
+    }
 
     /* Footer */
-    footer {
-      padding: 32px 0 56px;
+    footer{
+      padding: 36px 0 60px;
       border-top: 1px solid var(--border);
-      color: var(--text-soft);
-      font-size: 14px;
+      color: var(--muted);
+      font-size: 13px;
     }
-
-    .footer-inner {
+    .footer-inner{
       display: flex;
       justify-content: space-between;
       gap: 16px;
       flex-wrap: wrap;
     }
 
-    /* Accessibility */
-    .skip {
-      position: absolute;
-      left: -9999px;
-      top: 10px;
-      padding: 10px 12px;
-      background: #fff;
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      box-shadow: var(--shadow-soft);
+    /* Lightbox */
+    .lightbox{
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.65);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 28px;
+      z-index: 200;
     }
-    .skip:focus { left: 16px; z-index: 20; }
+    .lightbox.open{ display: flex; }
+
+    .lightbox-inner{
+      max-width: min(1100px, 95vw);
+      max-height: 85vh;
+      background: rgba(255,255,255,0.10);
+      border: 1px solid rgba(255,255,255,0.18);
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 30px 80px rgba(0,0,0,0.35);
+    }
+
+    .lightbox-inner img{
+      display: block;
+      width: auto;
+      height: auto;
+      max-width: 95vw;
+      max-height: 85vh;
+    }
+
+    .lightbox-close{
+      position: absolute;
+      top: 14px;
+      right: 14px;
+      padding: 10px 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.22);
+      background: rgba(0,0,0,0.25);
+      color: rgba(255,255,255,0.92);
+      font-size: 13px;
+      cursor: pointer;
+    }
 
     /* Responsive */
-    @media (max-width: 920px) {
-      .grid { grid-template-columns: 1fr; }
-      .span-6, .span-4, .span-8 { grid-column: span 12; }
-      .h-260, .h-320, .h-380 { height: 320px; }
-    }
-
-    @media (max-width: 820px) {
-      .hero { padding: 64px 0 40px; }
+    @media (max-width: 900px){
+      .grid, .photo-grid, .list{
+        grid-template-columns: 1fr;
+      }
+      .hero{
+        padding: 68px 0 44px;
+      }
     }
   </style>
 </head>
 
 <body>
   <div class="bg-glow" aria-hidden="true"></div>
-  <a class="skip" href="#main">Skip to content</a>
 
   <header>
     <div class="container header-inner">
-      <a class="logo" href="#top" aria-label="Home">
-        <img src="/assets/logo.png" alt="Zino Asamaige logo" />
+      <a class="brand" href="#top" aria-label="Home">
+        <span class="logo">
+          <img src="/assets/logo.png" alt="Zino Asamaige logo">
+        </span>
+        <span class="brand-name">Zino Asamaige</span>
       </a>
 
       <nav aria-label="Primary">
         <a href="#about">About</a>
         <a href="#work">Work</a>
-        <a href="#photos">Photos</a>
-        <a href="#now">Now</a>
-        <a href="#library">Library</a>
+        <a href="#photos">Photography</a>
+        <a href="#notes">Notes</a>
         <a href="#contact">Contact</a>
       </nav>
     </div>
   </header>
 
-  <main id="main">
-    <div id="top"></div>
-
+  <main id="top">
     <section class="hero">
       <div class="container">
         <h1>Zino Asamaige</h1>
-        <p class="hero-subtitle">
+        <p class="subtitle">
           Product & operations leader across fintech and growth. I build systems that scale—clean execution, clear metrics, and strong customer experience.
         </p>
 
-        <div class="hero-links">
-          <a class="pill" href="mailto:me@ererezino.com">Email ↗</a>
-          <a class="pill" href="https://www.linkedin.com/in/ererezino/" target="_blank" rel="noopener noreferrer">LinkedIn ↗</a>
-          <a class="pill" href="https://github.com/ererezino" target="_blank" rel="noopener noreferrer">GitHub ↗</a>
-          <a class="pill" href="#photos">View photos ↓</a>
+        <div class="cta-row">
+          <a class="btn" href="mailto:hello@ererezino.com">Email ↗</a>
+          <a class="btn" href="https://www.linkedin.com/in/ererezino/" target="_blank" rel="noopener noreferrer">LinkedIn ↗</a>
+          <a class="btn" href="https://github.com/ererezino" target="_blank" rel="noopener noreferrer">GitHub ↗</a>
+          <a class="btn" href="#work">View work ↓</a>
         </div>
       </div>
     </section>
 
     <section id="about" class="section">
       <div class="container">
-        <div class="section-header">
+        <div class="section-head">
           <div>
             <h2 class="section-title">About</h2>
             <p class="section-lead">
-              I’m focused on building high-leverage operations and product strategy—especially where execution quality and trust matter. I like roles where the work is measurable and the outcomes are clear.
+              I’m focused on building high-leverage operations and product strategy—especially where execution quality and trust matter.
+              I like roles where the work is measurable and the outcomes are clear.
             </p>
           </div>
-          <div class="muted">Last updated: <span id="lastUpdated">—</span></div>
+          <span class="pill">Product • Ops • Growth</span>
         </div>
 
-        <div class="grid">
-          <article class="card">
-            <div class="card-title">What I do</div>
-            <div class="card-meta">Ops • Product • Growth</div>
-            <p>
-              I build operating rhythms, dashboards, and product improvements that keep teams aligned and execution clean.
-            </p>
-          </article>
-
-          <article class="card">
-            <div class="card-title">What I care about</div>
-            <div class="card-meta">Quality • Trust • Speed</div>
-            <p>
-              Strong customer experience, clear ownership, measurable outcomes, and high standards in the details.
-            </p>
-          </article>
+        <div class="tagrow" aria-label="Skills">
+          <span class="tag">Product strategy</span>
+          <span class="tag">Ops & execution</span>
+          <span class="tag">Analytics</span>
+          <span class="tag">Stakeholder management</span>
+          <span class="tag">Experimentation</span>
+          <span class="tag">Process design</span>
         </div>
       </div>
     </section>
 
     <section id="work" class="section">
       <div class="container">
-        <div class="section-header">
+        <div class="section-head">
           <div>
             <h2 class="section-title">Selected work</h2>
-            <p class="section-lead">
-              A few projects and areas I’ve led. Replace these placeholders with your real items when ready.
-            </p>
+            <p class="section-lead">A few projects and areas I’ve led. Replace the placeholders with your real items when ready.</p>
           </div>
-          <span class="badge">Simple • Fast • Static</span>
+          <span class="pill">Clean cards • Subtle shadow</span>
         </div>
 
         <div class="grid">
           <article class="card">
             <div class="card-title">Operations & growth systems</div>
             <div class="card-meta">Playbooks • Metrics • Team workflows</div>
-            <p>
-              Built operating rhythms and dashboards to improve response time, clarity, and ownership across teams.
-            </p>
+            <p>Built operating rhythms and dashboards to improve response time, clarity, and ownership across teams.</p>
+            <div class="tagrow">
+              <span class="tag">Notion</span>
+              <span class="tag">Analytics</span>
+              <span class="tag">Process</span>
+            </div>
           </article>
 
           <article class="card">
             <div class="card-title">Product improvements</div>
             <div class="card-meta">Onboarding • Activation • Retention</div>
-            <p>
-              Led iteration cycles using customer feedback and data to reduce drop-offs and improve conversion.
-            </p>
+            <p>Led iteration cycles using customer feedback and data to reduce drop-offs and improve conversion.</p>
+            <div class="tagrow">
+              <span class="tag">A/B testing</span>
+              <span class="tag">UX</span>
+              <span class="tag">Funnels</span>
+            </div>
           </article>
 
           <article class="card">
             <div class="card-title">Research & strategy</div>
             <div class="card-meta">Market scans • Insights • Recommendations</div>
-            <p>
-              Produced research memos on emerging trends and practical strategies for execution and compliance.
-            </p>
+            <p>Produced research memos on emerging trends and practical strategies for execution and compliance.</p>
+            <div class="tagrow">
+              <span class="tag">Synthesis</span>
+              <span class="tag">Writing</span>
+              <span class="tag">Strategy</span>
+            </div>
           </article>
 
           <article class="card">
             <div class="card-title">Portfolio site (this)</div>
-            <div class="card-meta">Cloudflare Pages • Minimal build</div>
-            <p>
-              A minimal site that’s easy to update—now with photos, music, books, and movies.
-            </p>
+            <div class="card-meta">Cloudflare Pages • Simple static build</div>
+            <p>Minimal static site to keep things fast, clean, and easy to update.</p>
+            <div class="tagrow">
+              <span class="tag">HTML</span>
+              <span class="tag">CSS</span>
+              <span class="tag">Cloudflare</span>
+            </div>
           </article>
         </div>
       </div>
     </section>
 
-    <!-- PHOTOGRAPHY -->
     <section id="photos" class="section">
       <div class="container">
-        <div class="section-header">
+        <div class="section-head">
           <div>
             <h2 class="section-title">Photography</h2>
-            <p class="section-lead">
-              iPhone shots I like. I’ll keep adding to this—mostly street, light, and small moments.
-            </p>
+            <p class="section-lead">iPhone shots I like. I’ll keep adding to this—mostly street, light, and small moments.</p>
           </div>
-          <span class="badge">Shot on iPhone</span>
+          <span class="pill">Shot on iPhone</span>
         </div>
 
-        <!--
-          HOW TO ADD PHOTOS
-          1) Upload images to /assets/photos/ (create the folder in GitHub if needed)
-          2) Add a new <figure class="photo ..."> block below
-          Tip: export JPGs ~2000px wide for fast loading
-        -->
+        <!-- IMPORTANT: these will display in the correct ratio -->
         <div class="photo-grid">
-          <figure class="photo span-8 h-380">
-            <img src="/assets/photos/photo-1.jpg" alt="City light on a quiet street" loading="lazy" />
-            <figcaption class="photo-caption">City light • 2026</figcaption>
+          <figure class="photo">
+            <img src="/assets/photos/photo-1.jpg" alt="Photo 1" loading="lazy">
           </figure>
-
-          <figure class="photo span-4 h-380">
-            <img src="/assets/photos/photo-2.jpg" alt="Portrait in soft window light" loading="lazy" />
-            <figcaption class="photo-caption">Window light • 2026</figcaption>
+          <figure class="photo">
+            <img src="/assets/photos/photo-2.jpg" alt="Photo 2" loading="lazy">
           </figure>
-
-          <figure class="photo span-6 h-320">
-            <img src="/assets/photos/photo-3.jpg" alt="Cafe table detail" loading="lazy" />
-            <figcaption class="photo-caption">Small details • 2026</figcaption>
+          <figure class="photo">
+            <img src="/assets/photos/photo-3.jpg" alt="Photo 3" loading="lazy">
           </figure>
-
-          <figure class="photo span-6 h-320">
-            <img src="/assets/photos/photo-4.jpg" alt="Sunset over rooftops" loading="lazy" />
-            <figcaption class="photo-caption">Golden hour • 2026</figcaption>
+          <figure class="photo">
+            <img src="/assets/photos/photo-4.jpg" alt="Photo 4" loading="lazy">
           </figure>
-        </div>
-
-        <div style="margin-top:14px;">
-          <a class="pill" href="#contact">Want prints? Email me ↗</a>
         </div>
       </div>
     </section>
 
-    <!-- NOW (Music) -->
-    <section id="now" class="section">
+    <section id="notes" class="section">
       <div class="container">
-        <div class="section-header">
+        <div class="section-head">
           <div>
-            <h2 class="section-title">Now</h2>
-            <p class="section-lead">
-              What I’m listening to lately + a few discoveries. I’ll update this whenever something hits.
-            </p>
+            <h2 class="section-title">Currently into</h2>
+            <p class="section-lead">Music I’m playing, books I’ve read this year, and movies I’ve watched.</p>
           </div>
-          <span class="badge">Music</span>
+          <span class="pill">Easy to update</span>
         </div>
 
-        <div class="grid">
-          <article class="card">
-            <div class="card-title">On repeat</div>
-            <div class="card-meta">Current rotation</div>
-            <div class="list">
-              <div class="item">
-                <div class="item-main">
-                  <div class="item-title">Song Title — Artist</div>
-                  <div class="item-sub">Why it’s good (one line). Optional.</div>
-                </div>
-                <div class="item-meta">Jan</div>
-              </div>
-
-              <div class="item">
-                <div class="item-main">
-                  <div class="item-title">Song Title — Artist</div>
-                  <div class="item-sub">Optional note.</div>
-                </div>
-                <div class="item-meta">Jan</div>
-              </div>
+        <div class="list">
+          <div class="item" id="music">
+            <div class="item-top">
+              <div class="item-title">Music</div>
+              <div class="item-meta">Updated anytime</div>
             </div>
-          </article>
-
-          <article class="card">
-            <div class="card-title">Recently discovered</div>
-            <div class="card-meta">New finds</div>
-            <div class="list">
-              <div class="item">
-                <div class="item-main">
-                  <div class="item-title">Album / Track — Artist</div>
-                  <div class="item-sub">Genre / vibe.</div>
-                </div>
-                <div class="item-meta">Jan</div>
-              </div>
-
-              <div class="item">
-                <div class="item-main">
-                  <div class="item-title">Album / Track — Artist</div>
-                  <div class="item-sub">Genre / vibe.</div>
-                </div>
-                <div class="item-meta">Jan</div>
-              </div>
+            <div class="item-note">
+              <div><strong>Artist — Track</strong> <span style="color:var(--muted)">• note</span></div>
+              <div style="margin-top:8px;"><strong>Artist — Track</strong> <span style="color:var(--muted)">• note</span></div>
+              <div style="margin-top:8px;"><strong>Artist — Track</strong> <span style="color:var(--muted)">• note</span></div>
             </div>
-          </article>
-        </div>
-      </div>
-    </section>
-
-    <!-- LIBRARY (Books / Movies) -->
-    <section id="library" class="section">
-      <div class="container">
-        <div class="section-header">
-          <div>
-            <h2 class="section-title">Library</h2>
-            <p class="section-lead">
-              Books and movies from this year. I keep it lightweight: title, creator, and a quick note.
-            </p>
           </div>
-          <span class="badge">This year</span>
-        </div>
 
-        <div class="grid">
-          <article class="card">
-            <div class="card-title">Books (2026)</div>
-            <div class="card-meta">Reading log</div>
-
-            <div class="list">
-              <div class="item">
-                <div class="item-main">
-                  <div class="item-title">Book Title — Author</div>
-                  <div class="item-sub">One sentence takeaway or rating (optional).</div>
-                </div>
-                <div class="item-meta">Jan</div>
-              </div>
-
-              <div class="item">
-                <div class="item-main">
-                  <div class="item-title">Book Title — Author</div>
-                  <div class="item-sub">One sentence takeaway.</div>
-                </div>
-                <div class="item-meta">Feb</div>
-              </div>
+          <div class="item" id="books">
+            <div class="item-top">
+              <div class="item-title">Books (this year)</div>
+              <div class="item-meta">2026</div>
             </div>
-          </article>
-
-          <article class="card">
-            <div class="card-title">Movies (2026)</div>
-            <div class="card-meta">Watch log</div>
-
-            <div class="list">
-              <div class="item">
-                <div class="item-main">
-                  <div class="item-title">Movie Title (Year)</div>
-                  <div class="item-sub">Quick note: what stood out.</div>
-                </div>
-                <div class="item-meta">Jan</div>
-              </div>
-
-              <div class="item">
-                <div class="item-main">
-                  <div class="item-title">Movie Title (Year)</div>
-                  <div class="item-sub">Quick note.</div>
-                </div>
-                <div class="item-meta">Mar</div>
-              </div>
+            <div class="item-note">
+              <div><strong>Book Title</strong> — Author <span style="color:var(--muted)">• rating / quick take</span></div>
+              <div style="margin-top:8px;"><strong>Book Title</strong> — Author <span style="color:var(--muted)">• rating / quick take</span></div>
+              <div style="margin-top:8px;"><strong>Book Title</strong> — Author <span style="color:var(--muted)">• rating / quick take</span></div>
             </div>
-          </article>
+          </div>
+
+          <div class="item" id="movies">
+            <div class="item-top">
+              <div class="item-title">Movies</div>
+              <div class="item-meta">Recently watched</div>
+            </div>
+            <div class="item-note">
+              <div><strong>Movie Title</strong> <span style="color:var(--muted)">• year • quick note</span></div>
+              <div style="margin-top:8px;"><strong>Movie Title</strong> <span style="color:var(--muted)">• year • quick note</span></div>
+              <div style="margin-top:8px;"><strong>Movie Title</strong> <span style="color:var(--muted)">• year • quick note</span></div>
+            </div>
+          </div>
+
+          <div class="item" id="misc">
+            <div class="item-top">
+              <div class="item-title">Links / finds</div>
+              <div class="item-meta">Optional</div>
+            </div>
+            <div class="item-note">
+              <div><strong>Interesting thing</strong> <span style="color:var(--muted)">• short why it’s interesting</span></div>
+              <div style="margin-top:8px;"><strong>Interesting thing</strong> <span style="color:var(--muted)">• short why it’s interesting</span></div>
+            </div>
+          </div>
+
         </div>
       </div>
     </section>
 
     <section id="contact" class="section">
       <div class="container">
-        <div class="section-header">
+        <div class="section-head">
           <div>
             <h2 class="section-title">Contact</h2>
             <p class="section-lead">Want to reach me? Email is best.</p>
           </div>
-          <span class="badge">Say hi</span>
+          <span class="pill">hello@ererezino.com</span>
         </div>
 
-        <div class="hero-links">
-          <a class="pill" href="mailto:hello@ererezino.com">hello@ererezino.com ↗</a>
-          <a class="pill" href="#top">Back to top ↑</a>
+        <div class="cta-row">
+          <a class="btn" href="mailto:hello@ererezino.com">hello@ererezino.com ↗</a>
+          <a class="btn" href="#top">Back to top ↑</a>
         </div>
       </div>
     </section>
@@ -750,11 +661,41 @@
     </div>
   </footer>
 
-  <script>
-    document.getElementById("year").textContent = new Date().getFullYear();
+  <!-- Lightbox -->
+  <div class="lightbox" id="lightbox" aria-hidden="true">
+    <button class="lightbox-close" id="lightboxClose" aria-label="Close">Close ✕</button>
+    <div class="lightbox-inner">
+      <img id="lightboxImg" alt="">
+    </div>
+  </div>
 
-    // Optional: set a “last updated” label (edit the date string whenever you update)
-    document.getElementById("lastUpdated").textContent = "Jan 2026";
+  <script>
+    // Footer year
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // Simple photo lightbox (click any photo)
+    const lb = document.getElementById('lightbox');
+    const lbImg = document.getElementById('lightboxImg');
+    const lbClose = document.getElementById('lightboxClose');
+
+    document.querySelectorAll('.photo img').forEach(img => {
+      img.addEventListener('click', () => {
+        lbImg.src = img.src;
+        lbImg.alt = img.alt || 'Photo';
+        lb.classList.add('open');
+        lb.setAttribute('aria-hidden', 'false');
+      });
+    });
+
+    function closeLb(){
+      lb.classList.remove('open');
+      lb.setAttribute('aria-hidden', 'true');
+      lbImg.src = '';
+    }
+
+    lbClose.addEventListener('click', closeLb);
+    lb.addEventListener('click', (e) => { if(e.target === lb) closeLb(); });
+    window.addEventListener('keydown', (e) => { if(e.key === 'Escape') closeLb(); });
   </script>
 </body>
 </html>
