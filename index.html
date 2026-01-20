@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Zino Asamaige</title>
 
-  <!-- Favicon / tab icon -->
   <link rel="icon" type="image/png" href="/assets/logo.png">
   <link rel="apple-touch-icon" href="/assets/logo.png">
   <meta name="theme-color" content="#FAFAF8">
@@ -18,452 +17,590 @@
   />
 
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    html { scroll-behavior: smooth; }
-
     :root{
-      --bg: #FAFAF8;
-      --panel: rgba(255,255,255,0.55);
-      --panel-solid: rgba(255,255,255,0.75);
-      --text: #1A1A1A;
-      --muted: #6B6B6B;
-      --border: rgba(20, 20, 20, 0.10);
-      --border-2: rgba(20, 20, 20, 0.14);
-      --shadow: 0 14px 40px rgba(0,0,0,0.08);
-      --shadow-soft: 0 10px 28px rgba(0,0,0,0.06);
-      --radius: 18px;
-      --radius-sm: 14px;
+      --bg:#FAFAF8;
+      --card:#FFFFFF;
+      --text:#141414;
+      --muted:#6B6B6B;
+      --border:rgba(20,20,20,.10);
+      --shadow: 0 10px 30px rgba(20,20,20,.08);
+      --shadow-soft: 0 8px 22px rgba(20,20,20,.06);
+      --radius:18px;
+      --radius-lg:24px;
+      --accent:#111111;
+
+      --container: 1100px;
+      --pad: 24px;
     }
 
+    *{ box-sizing:border-box; }
+    html{ scroll-behavior:smooth; }
     body{
-      font-family: 'DM Sans', -apple-system, system-ui, sans-serif;
-      font-weight: 300;
-      background: var(--bg);
-      color: var(--text);
-      line-height: 1.55;
-      font-size: 16px;
-      -webkit-font-smoothing: antialiased;
-      text-rendering: optimizeLegibility;
+      margin:0;
+      font-family:'DM Sans', -apple-system, system-ui, sans-serif;
+      font-weight:300;
+      background:var(--bg);
+      color:var(--text);
+      line-height:1.6;
+      -webkit-font-smoothing:antialiased;
+      text-rendering:optimizeLegibility;
     }
 
-    a{ color: inherit; text-decoration: none; }
-    img{ max-width: 100%; }
+    a{ color:inherit; text-decoration:none; }
+    img{ display:block; max-width:100%; }
 
     .container{
-      max-width: 1040px;
-      margin: 0 auto;
-      padding: 0 24px;
-    }
-
-    /* Subtle background glow (modern product vibe) */
-    .bg-glow{
-      position: fixed;
-      inset: -200px;
-      pointer-events: none;
-      z-index: -1;
-      background:
-        radial-gradient(800px 500px at 15% 10%, rgba(0,0,0,0.06), transparent 60%),
-        radial-gradient(800px 500px at 80% 25%, rgba(0,0,0,0.05), transparent 65%),
-        radial-gradient(900px 600px at 45% 85%, rgba(0,0,0,0.05), transparent 60%);
-      filter: blur(2px);
-      opacity: 0.9;
+      max-width:var(--container);
+      margin:0 auto;
+      padding:0 var(--pad);
     }
 
     /* Header */
     header{
-      position: sticky;
-      top: 0;
-      z-index: 50;
+      position:sticky;
+      top:0;
+      z-index:30;
       backdrop-filter: blur(10px);
-      background: rgba(250,250,248,0.75);
-      border-bottom: 1px solid var(--border);
+      background: rgba(250,250,248,.75);
+      border-bottom: 1px solid rgba(20,20,20,.08);
     }
-
     .header-inner{
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 18px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:16px;
       padding: 16px 0;
     }
-
     .brand{
-      display: flex;
-      align-items: center;
-      gap: 12px;
+      display:flex;
+      align-items:center;
+      gap:12px;
       min-width: 180px;
     }
-
     .logo{
-      width: 42px;
-      height: 42px;
-      border-radius: 12px;
-      overflow: hidden;
-      border: 1px solid var(--border);
-      background: rgba(255,255,255,0.65);
-      box-shadow: 0 8px 20px rgba(0,0,0,0.06);
+      width:42px;
+      height:42px;
+      border-radius:50%;
+      overflow:hidden;
+      border: 1px solid rgba(20,20,20,.10);
+      box-shadow: 0 6px 18px rgba(20,20,20,.06);
+      background:#fff;
       flex: 0 0 auto;
     }
-    .logo img{
-      width: 100%;
-      height: 100%;
-      object-fit: cover; /* fine for a square logo */
-      display: block;
-    }
-
     .brand-name{
-      font-weight: 500;
-      letter-spacing: 0.01em;
-      font-size: 14px;
-      color: var(--muted);
+      display:flex;
+      flex-direction:column;
+      line-height:1.1;
+    }
+    .brand-name strong{
+      font-weight:500;
+      letter-spacing:-0.01em;
+    }
+    .brand-name span{
+      font-size:13px;
+      color:var(--muted);
     }
 
     nav{
-      display: flex;
-      gap: 18px;
-      flex-wrap: wrap;
-      justify-content: flex-end;
-      align-items: center;
+      display:flex;
+      gap:18px;
+      flex-wrap:wrap;
+      justify-content:flex-end;
+      align-items:center;
     }
-
     nav a{
-      font-size: 13px;
-      color: var(--muted);
-      padding: 8px 10px;
-      border-radius: 999px;
-      border: 1px solid transparent;
-      transition: all 0.18s ease;
+      font-size:14px;
+      color:var(--muted);
+      padding:8px 10px;
+      border-radius:999px;
+      transition: background .15s ease, color .15s ease;
     }
     nav a:hover{
+      background: rgba(20,20,20,.06);
       color: var(--text);
-      border-color: var(--border);
-      background: rgba(255,255,255,0.55);
+    }
+
+    .nav-cta{
+      border:1px solid rgba(20,20,20,.12);
+      background:#fff;
+      box-shadow: 0 10px 24px rgba(20,20,20,.06);
     }
 
     /* Hero */
     .hero{
-      padding: 86px 0 54px;
-      animation: fadeIn 0.7s ease-out;
+      padding: 72px 0 34px;
     }
-
-    @keyframes fadeIn{
-      from{ opacity: 0; transform: translateY(14px); }
-      to{ opacity: 1; transform: translateY(0); }
+    .hero-grid{
+      display:grid;
+      grid-template-columns: 1.2fr .8fr;
+      gap: 24px;
+      align-items: stretch;
     }
+    .hero-card{
+      border:1px solid rgba(20,20,20,.10);
+      background: rgba(255,255,255,.65);
+      box-shadow: var(--shadow-soft);
+      border-radius: var(--radius-lg);
+      padding: 28px;
+      position: relative;
+      overflow:hidden;
+    }
+    .hero-card::before{
+      content:"";
+      position:absolute;
+      inset:-2px;
+      background: radial-gradient(800px 280px at 10% 0%, rgba(20,20,20,.06), transparent 60%),
+                  radial-gradient(800px 280px at 90% 10%, rgba(20,20,20,.05), transparent 65%);
+      pointer-events:none;
+    }
+    .hero-card > *{ position:relative; }
 
     h1{
-      font-family: 'Instrument Serif', Georgia, serif;
-      font-size: clamp(46px, 7vw, 74px);
-      font-weight: 400;
-      line-height: 1.03;
-      letter-spacing: -0.02em;
-      margin-bottom: 16px;
+      margin:0 0 14px;
+      font-family:'Instrument Serif', Georgia, serif;
+      font-weight:400;
+      font-size: clamp(46px, 6vw, 72px);
+      line-height:1.05;
+      letter-spacing:-0.02em;
     }
-
     .subtitle{
-      font-size: 18px;
+      margin:0 0 22px;
       color: var(--muted);
-      max-width: 640px;
+      max-width: 62ch;
+      font-size: 17px;
     }
 
-    .cta-row{
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-      margin-top: 22px;
+    .pill-row{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      margin-top:16px;
     }
-
-    .btn{
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 10px 14px;
+    .pill{
+      font-size: 12px;
+      color: rgba(20,20,20,.72);
+      border:1px solid rgba(20,20,20,.10);
+      background: rgba(255,255,255,.65);
+      padding: 7px 10px;
       border-radius: 999px;
-      border: 1px solid var(--border);
-      background: rgba(255,255,255,0.65);
-      box-shadow: 0 10px 24px rgba(0,0,0,0.06);
-      color: var(--text);
-      font-size: 13px;
-      font-weight: 400;
-      transition: transform 0.15s ease, border-color 0.15s ease;
+      backdrop-filter: blur(6px);
+    }
+
+    .links{
+      display:flex;
+      gap: 12px;
+      flex-wrap:wrap;
+      margin-top: 18px;
+    }
+    .btn{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding: 10px 12px;
+      border-radius: 12px;
+      border:1px solid rgba(20,20,20,.12);
+      background:#fff;
+      box-shadow: 0 10px 22px rgba(20,20,20,.06);
+      font-size:14px;
+      color: rgba(20,20,20,.85);
+      transition: transform .15s ease, box-shadow .15s ease;
     }
     .btn:hover{
       transform: translateY(-1px);
-      border-color: var(--border-2);
+      box-shadow: 0 14px 28px rgba(20,20,20,.08);
+    }
+    .btn-ghost{
+      background: transparent;
+      box-shadow:none;
+    }
+
+    /* Sidebar card */
+    .side-stack{
+      display:grid;
+      grid-template-rows: 1fr 1fr;
+      gap: 16px;
+    }
+    .mini{
+      border:1px solid rgba(20,20,20,.10);
+      background:#fff;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow-soft);
+      padding: 18px;
+    }
+    .mini h3{
+      margin:0 0 8px;
+      font-weight:500;
+      font-size:14px;
+      letter-spacing: .01em;
+    }
+    .mini p{
+      margin:0;
+      color: var(--muted);
+      font-size:14px;
+    }
+    .mini a{
+      display:inline-flex;
+      margin-top: 12px;
+      color: rgba(20,20,20,.85);
+      border-bottom: 1px solid rgba(20,20,20,.16);
+      padding-bottom: 2px;
+      font-size: 14px;
     }
 
     /* Sections */
     .section{
       padding: 56px 0;
-      border-top: 1px solid var(--border);
     }
-
     .section-head{
-      display: flex;
-      align-items: flex-end;
-      justify-content: space-between;
+      display:flex;
+      align-items:flex-end;
+      justify-content:space-between;
       gap: 16px;
       margin-bottom: 16px;
     }
-
     .section-title{
-      font-family: 'Instrument Serif', Georgia, serif;
-      font-size: 28px;
-      font-weight: 400;
+      margin:0;
+      font-family:'Instrument Serif', Georgia, serif;
+      font-weight:400;
+      font-size: 34px;
       letter-spacing: -0.01em;
     }
-
     .section-lead{
+      margin: 0;
       color: var(--muted);
-      max-width: 720px;
-      margin-top: 10px;
+      max-width: 70ch;
     }
-
-    .pill{
-      font-size: 12px;
-      color: var(--muted);
-      border: 1px solid var(--border);
-      background: rgba(255,255,255,0.55);
-      padding: 8px 12px;
+    .badge{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      border:1px solid rgba(20,20,20,.10);
+      background: rgba(255,255,255,.65);
       border-radius: 999px;
-      white-space: nowrap;
-    }
-
-    /* Tags */
-    .tagrow{
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      margin-top: 14px;
-    }
-    .tag{
+      padding: 8px 10px;
       font-size: 12px;
-      color: var(--muted);
-      border: 1px solid var(--border);
-      padding: 7px 10px;
-      border-radius: 999px;
-      background: rgba(255,255,255,0.55);
+      color: rgba(20,20,20,.72);
+      white-space:nowrap;
     }
 
     /* Cards grid */
     .grid{
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
+      display:grid;
+      grid-template-columns: repeat(12, 1fr);
       gap: 16px;
-      margin-top: 18px;
     }
-
     .card{
-      border: 1px solid var(--border);
-      background: var(--panel);
+      grid-column: span 6;
+      border:1px solid rgba(20,20,20,.10);
+      background:#fff;
       border-radius: var(--radius);
-      padding: 18px;
       box-shadow: var(--shadow-soft);
-      transition: transform 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
+      padding: 18px;
+      transition: transform .15s ease, box-shadow .15s ease;
+      min-height: 140px;
     }
     .card:hover{
       transform: translateY(-2px);
-      border-color: var(--border-2);
       box-shadow: var(--shadow);
     }
-
-    .card-title{
-      font-weight: 500;
-      letter-spacing: 0.01em;
-      margin-bottom: 8px;
+    .card h4{
+      margin:0 0 6px;
+      font-weight:500;
+      font-size: 16px;
+      letter-spacing: .01em;
     }
-
-    .card-meta{
-      font-size: 13px;
-      color: var(--muted);
-      margin-bottom: 10px;
-    }
-
-    .card p{ color: var(--text); }
-
-    /* Photography (IMPORTANT: keep real ratio = no cropping) */
-    .photo-grid{
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 16px;
-      margin-top: 18px;
-    }
-
-    .photo{
-      border-radius: var(--radius);
-      overflow: hidden;
-      border: 1px solid var(--border);
-      background: var(--panel-solid);
-      box-shadow: var(--shadow-soft);
-      transition: transform 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
-      cursor: zoom-in;
-    }
-    .photo:hover{
-      transform: translateY(-2px);
-      border-color: var(--border-2);
-      box-shadow: var(--shadow);
-    }
-    .photo img{
-      width: 100%;
-      height: auto;           /* KEY: preserves aspect ratio */
-      display: block;
-      object-fit: contain;    /* no crop */
-    }
-
-    /* Lists */
-    .list{
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 16px;
-      margin-top: 18px;
-    }
-
-    .item{
-      border: 1px solid var(--border);
-      background: var(--panel);
-      border-radius: var(--radius);
-      padding: 16px;
-      box-shadow: var(--shadow-soft);
-      transition: transform 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
-    }
-    .item:hover{
-      transform: translateY(-2px);
-      border-color: var(--border-2);
-      box-shadow: var(--shadow);
-    }
-
-    .item-top{
-      display: flex;
-      justify-content: space-between;
-      gap: 10px;
-      align-items: baseline;
-      margin-bottom: 8px;
-    }
-
-    .item-title{
-      font-weight: 500;
-      line-height: 1.25;
-    }
-    .item-meta{
-      font-size: 12px;
-      color: var(--muted);
-      white-space: nowrap;
-    }
-    .item-note{
+    .card p{
+      margin:0;
       color: var(--muted);
       font-size: 14px;
-      margin-top: 8px;
     }
 
-    /* Footer */
-    footer{
-      padding: 36px 0 60px;
-      border-top: 1px solid var(--border);
-      color: var(--muted);
+    /* Photography preview strip */
+    .photo-strip{
+      display:grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 12px;
+      margin-top: 14px;
+    }
+    .thumb{
+      grid-column: span 3;
+      border-radius: 16px;
+      overflow:hidden;
+      border: 1px solid rgba(20,20,20,.10);
+      background:#fff;
+      box-shadow: var(--shadow-soft);
+      aspect-ratio: 1 / 1;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+    }
+    .thumb img{
+      width:100%;
+      height:100%;
+      object-fit: cover;
+    }
+
+    /* Currently into (media cards) */
+    .media-grid{
+      display:grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 14px;
+      margin-top: 16px;
+    }
+    .media-card{
+      grid-column: span 6;
+      border:1px solid rgba(20,20,20,.10);
+      background:#fff;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow-soft);
+      overflow:hidden;
+      display:flex;
+      gap: 14px;
+      padding: 14px;
+      transition: transform .15s ease, box-shadow .15s ease;
+      min-height: 120px;
+    }
+    .media-card:hover{
+      transform: translateY(-2px);
+      box-shadow: var(--shadow);
+    }
+    .media-cover{
+      width: 92px;
+      height: 92px;
+      border-radius: 14px;
+      overflow:hidden;
+      flex: 0 0 auto;
+      border:1px solid rgba(20,20,20,.10);
+      background: rgba(20,20,20,.04);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+    }
+    .media-cover img{
+      width:100%;
+      height:100%;
+      object-fit: cover;
+    }
+    .media-body{
+      display:flex;
+      flex-direction:column;
+      gap: 6px;
+      min-width:0;
+      flex:1;
+    }
+    .media-top{
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap: 10px;
+    }
+    .media-title{
+      font-weight:500;
+      line-height:1.2;
+      margin:0;
+      font-size: 15px;
+      letter-spacing: .01em;
+      overflow:hidden;
+      text-overflow:ellipsis;
+      white-space:nowrap;
+    }
+    .media-sub{
+      margin:0;
       font-size: 13px;
+      color: var(--muted);
+      overflow:hidden;
+      text-overflow:ellipsis;
+      white-space:nowrap;
+    }
+    .media-note{
+      margin:0;
+      font-size: 13px;
+      color: rgba(20,20,20,.78);
+    }
+    .media-actions{
+      margin-top:auto;
+      display:flex;
+      gap: 10px;
+      align-items:center;
+      flex-wrap: wrap;
+    }
+    .chip{
+      font-size: 12px;
+      border:1px solid rgba(20,20,20,.10);
+      background: rgba(255,255,255,.65);
+      border-radius: 999px;
+      padding: 6px 9px;
+      color: rgba(20,20,20,.72);
+    }
+    .link-btn{
+      margin-left:auto;
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      font-size: 13px;
+      padding: 8px 10px;
+      border-radius: 12px;
+      border:1px solid rgba(20,20,20,.12);
+      background:#fff;
+      box-shadow: 0 10px 18px rgba(20,20,20,.05);
+      transition: transform .15s ease, box-shadow .15s ease;
+      white-space:nowrap;
+    }
+    .link-btn:hover{
+      transform: translateY(-1px);
+      box-shadow: 0 14px 26px rgba(20,20,20,.07);
+    }
+
+    /* Articles preview */
+    .article-grid{
+      display:grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 14px;
+      margin-top: 16px;
+    }
+    .article-card{
+      grid-column: span 6;
+      border:1px solid rgba(20,20,20,.10);
+      background:#fff;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow-soft);
+      overflow:hidden;
+      transition: transform .15s ease, box-shadow .15s ease;
+    }
+    .article-card:hover{
+      transform: translateY(-2px);
+      box-shadow: var(--shadow);
+    }
+    .article-cover{
+      height: 160px;
+      background: rgba(20,20,20,.04);
+      border-bottom: 1px solid rgba(20,20,20,.08);
+    }
+    .article-cover img{
+      width:100%;
+      height:100%;
+      object-fit: cover;
+    }
+    .article-body{
+      padding: 14px;
+    }
+    .article-meta{
+      font-size: 12px;
+      color: var(--muted);
+      display:flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 6px;
+    }
+    .article-title{
+      margin:0 0 6px;
+      font-weight:500;
+      letter-spacing: .01em;
+      font-size: 16px;
+      line-height:1.2;
+    }
+    .article-excerpt{
+      margin:0;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    footer{
+      padding: 34px 0 60px;
+      color: var(--muted);
+      font-size: 14px;
+      border-top: 1px solid rgba(20,20,20,.08);
+      margin-top: 20px;
     }
     .footer-inner{
-      display: flex;
-      justify-content: space-between;
+      display:flex;
+      justify-content:space-between;
       gap: 16px;
       flex-wrap: wrap;
     }
 
-    /* Lightbox */
-    .lightbox{
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,0.65);
-      display: none;
-      align-items: center;
-      justify-content: center;
-      padding: 28px;
-      z-index: 200;
-    }
-    .lightbox.open{ display: flex; }
-
-    .lightbox-inner{
-      max-width: min(1100px, 95vw);
-      max-height: 85vh;
-      background: rgba(255,255,255,0.10);
-      border: 1px solid rgba(255,255,255,0.18);
-      border-radius: 20px;
-      overflow: hidden;
-      box-shadow: 0 30px 80px rgba(0,0,0,0.35);
-    }
-
-    .lightbox-inner img{
-      display: block;
-      width: auto;
-      height: auto;
-      max-width: 95vw;
-      max-height: 85vh;
-    }
-
-    .lightbox-close{
-      position: absolute;
-      top: 14px;
-      right: 14px;
-      padding: 10px 12px;
-      border-radius: 999px;
-      border: 1px solid rgba(255,255,255,0.22);
-      background: rgba(0,0,0,0.25);
-      color: rgba(255,255,255,0.92);
-      font-size: 13px;
-      cursor: pointer;
-    }
-
     /* Responsive */
-    @media (max-width: 900px){
-      .grid, .photo-grid, .list{
-        grid-template-columns: 1fr;
-      }
-      .hero{
-        padding: 68px 0 44px;
-      }
+    @media (max-width: 940px){
+      .hero-grid{ grid-template-columns: 1fr; }
+      .thumb{ grid-column: span 4; }
+      .card, .media-card, .article-card{ grid-column: span 12; }
+      .media-cover{ width: 84px; height:84px; }
+    }
+    @media (max-width: 560px){
+      .thumb{ grid-column: span 6; }
+      nav{ gap: 10px; }
+      .brand-name span{ display:none; }
+      .hero-card{ padding: 20px; }
     }
   </style>
 </head>
 
 <body>
-  <div class="bg-glow" aria-hidden="true"></div>
-
   <header>
     <div class="container header-inner">
       <a class="brand" href="#top" aria-label="Home">
-        <span class="logo">
-          <img src="/assets/logo.png" alt="Zino Asamaige logo">
+        <span class="logo"><img src="/assets/logo.png" alt="Zino Asamaige logo"></span>
+        <span class="brand-name">
+          <strong>Zino Asamaige</strong>
+          <span>Product & operations • fintech & growth</span>
         </span>
-        <span class="brand-name">Zino Asamaige</span>
       </a>
 
       <nav aria-label="Primary">
         <a href="#about">About</a>
         <a href="#work">Work</a>
         <a href="#photos">Photography</a>
-        <a href="#notes">Notes</a>
+        <a href="#into">Currently into</a>
+        <a href="/articles/" class="nav-cta">Articles ↗</a>
         <a href="#contact">Contact</a>
       </nav>
     </div>
   </header>
 
   <main id="top">
+    <!-- HERO -->
     <section class="hero">
-      <div class="container">
-        <h1>Zino Asamaige</h1>
-        <p class="subtitle">
-          Product & operations leader across fintech and growth. I build systems that scale—clean execution, clear metrics, and strong customer experience.
-        </p>
+      <div class="container hero-grid">
+        <div class="hero-card">
+          <h1>Zino Asamaige</h1>
+          <p class="subtitle">
+            Product & operations leader across fintech and growth. I build systems that scale—clean execution, clear metrics, and strong customer experience.
+          </p>
 
-        <div class="cta-row">
-          <a class="btn" href="mailto:hello@ererezino.com">Email ↗</a>
-          <a class="btn" href="https://www.linkedin.com/in/ererezino/" target="_blank" rel="noopener noreferrer">LinkedIn ↗</a>
-          <a class="btn" href="https://github.com/ererezino" target="_blank" rel="noopener noreferrer">GitHub ↗</a>
-          <a class="btn" href="#work">View work ↓</a>
+          <div class="links">
+            <a class="btn" href="mailto:hello@ererezino.com">Email ↗</a>
+            <a class="btn btn-ghost" href="https://www.linkedin.com/in/ererezino/" target="_blank" rel="noopener noreferrer">LinkedIn ↗</a>
+            <a class="btn btn-ghost" href="https://github.com/ererezino" target="_blank" rel="noopener noreferrer">GitHub ↗</a>
+            <a class="btn btn-ghost" href="/photos/">Photos ↗</a>
+          </div>
+
+          <div class="pill-row" aria-label="Skills">
+            <span class="pill">Product strategy</span>
+            <span class="pill">Ops & execution</span>
+            <span class="pill">Analytics</span>
+            <span class="pill">Stakeholder management</span>
+            <span class="pill">Experimentation</span>
+            <span class="pill">Process design</span>
+          </div>
+        </div>
+
+        <div class="side-stack">
+          <div class="mini">
+            <h3>Photography</h3>
+            <p>iPhone shots. Full gallery grouped by city/year.</p>
+            <a href="/photos/">View the gallery ↗</a>
+          </div>
+
+          <div class="mini">
+            <h3>Writing</h3>
+            <p>Notes and posts on things I’m learning + finding interesting.</p>
+            <a href="/articles/">Read articles ↗</a>
+          </div>
         </div>
       </div>
     </section>
 
+    <!-- ABOUT -->
     <section id="about" class="section">
       <div class="container">
         <div class="section-head">
@@ -474,181 +611,107 @@
               I like roles where the work is measurable and the outcomes are clear.
             </p>
           </div>
-          <span class="pill">Product • Ops • Growth</span>
-        </div>
-
-        <div class="tagrow" aria-label="Skills">
-          <span class="tag">Product strategy</span>
-          <span class="tag">Ops & execution</span>
-          <span class="tag">Analytics</span>
-          <span class="tag">Stakeholder management</span>
-          <span class="tag">Experimentation</span>
-          <span class="tag">Process design</span>
+          <span class="badge">Clean, simple, modern product</span>
         </div>
       </div>
     </section>
 
+    <!-- WORK -->
     <section id="work" class="section">
       <div class="container">
         <div class="section-head">
           <div>
             <h2 class="section-title">Selected work</h2>
-            <p class="section-lead">A few projects and areas I’ve led. Replace the placeholders with your real items when ready.</p>
+            <p class="section-lead">A few areas I’ve led. Replace these with your real items when ready.</p>
           </div>
-          <span class="pill">Clean cards • Subtle shadow</span>
+          <a class="btn btn-ghost" href="#contact">Work with me ↘</a>
         </div>
 
         <div class="grid">
           <article class="card">
-            <div class="card-title">Operations & growth systems</div>
-            <div class="card-meta">Playbooks • Metrics • Team workflows</div>
-            <p>Built operating rhythms and dashboards to improve response time, clarity, and ownership across teams.</p>
-            <div class="tagrow">
-              <span class="tag">Notion</span>
-              <span class="tag">Analytics</span>
-              <span class="tag">Process</span>
-            </div>
+            <h4>Operations & growth systems</h4>
+            <p>Playbooks • metrics • team workflows that improve response time, clarity, and ownership.</p>
           </article>
-
           <article class="card">
-            <div class="card-title">Product improvements</div>
-            <div class="card-meta">Onboarding • Activation • Retention</div>
-            <p>Led iteration cycles using customer feedback and data to reduce drop-offs and improve conversion.</p>
-            <div class="tagrow">
-              <span class="tag">A/B testing</span>
-              <span class="tag">UX</span>
-              <span class="tag">Funnels</span>
-            </div>
+            <h4>Product improvements</h4>
+            <p>Onboarding • activation • retention—driven by data + customer feedback loops.</p>
           </article>
-
           <article class="card">
-            <div class="card-title">Research & strategy</div>
-            <div class="card-meta">Market scans • Insights • Recommendations</div>
-            <p>Produced research memos on emerging trends and practical strategies for execution and compliance.</p>
-            <div class="tagrow">
-              <span class="tag">Synthesis</span>
-              <span class="tag">Writing</span>
-              <span class="tag">Strategy</span>
-            </div>
+            <h4>Research & strategy</h4>
+            <p>Market scans • insight memos • recommendations designed to be executed.</p>
           </article>
-
           <article class="card">
-            <div class="card-title">Portfolio site (this)</div>
-            <div class="card-meta">Cloudflare Pages • Simple static build</div>
-            <p>Minimal static site to keep things fast, clean, and easy to update.</p>
-            <div class="tagrow">
-              <span class="tag">HTML</span>
-              <span class="tag">CSS</span>
-              <span class="tag">Cloudflare</span>
-            </div>
+            <h4>Portfolio site (this)</h4>
+            <p>Fast static build on Cloudflare Pages—simple, clean, easy to maintain.</p>
           </article>
         </div>
       </div>
     </section>
 
+    <!-- PHOTOS PREVIEW -->
     <section id="photos" class="section">
       <div class="container">
         <div class="section-head">
           <div>
             <h2 class="section-title">Photography</h2>
-            <p class="section-lead">iPhone shots I like. I’ll keep adding to this—mostly street, light, and small moments.</p>
+            <p class="section-lead">Featured shots. Full gallery is organized by city/year.</p>
           </div>
-          <span class="pill">Shot on iPhone</span>
+          <a class="btn" href="/photos/">View all photos ↗</a>
         </div>
 
-        <!-- IMPORTANT: these will display in the correct ratio -->
-        <div class="photo-grid">
-          <figure class="photo">
-            <img src="/assets/photos/photo-1.jpg" alt="Photo 1" loading="lazy">
-          </figure>
-          <figure class="photo">
-            <img src="/assets/photos/photo-2.jpg" alt="Photo 2" loading="lazy">
-          </figure>
-          <figure class="photo">
-            <img src="/assets/photos/photo-3.jpg" alt="Photo 3" loading="lazy">
-          </figure>
-          <figure class="photo">
-            <img src="/assets/photos/photo-4.jpg" alt="Photo 4" loading="lazy">
-          </figure>
+        <!-- Replace these with your real filenames -->
+        <div class="photo-strip" aria-label="Featured photos">
+          <a class="thumb" href="/photos/"><img src="/assets/photos/photo-1.jpg" alt="Photo 1"></a>
+          <a class="thumb" href="/photos/"><img src="/assets/photos/photo-2.jpg" alt="Photo 2"></a>
+          <a class="thumb" href="/photos/"><img src="/assets/photos/photo-3.jpg" alt="Photo 3"></a>
+          <a class="thumb" href="/photos/"><img src="/assets/photos/photo-4.jpg" alt="Photo 4"></a>
         </div>
       </div>
     </section>
 
-    <section id="notes" class="section">
+    <!-- CURRENTLY INTO -->
+    <section id="into" class="section">
       <div class="container">
         <div class="section-head">
           <div>
             <h2 class="section-title">Currently into</h2>
-            <p class="section-lead">Music I’m playing, books I’ve read this year, and movies I’ve watched.</p>
+            <p class="section-lead">Music, books, and movies. Covers are just URLs—paste and go.</p>
           </div>
-          <span class="pill">Easy to update</span>
+          <span class="badge">Paste cover URLs • link out</span>
         </div>
 
-        <div class="list">
-          <div class="item" id="music">
-            <div class="item-top">
-              <div class="item-title">Music</div>
-              <div class="item-meta">Updated anytime</div>
-            </div>
-            <div class="item-note">
-              <div><strong>Artist — Track</strong> <span style="color:var(--muted)">• note</span></div>
-              <div style="margin-top:8px;"><strong>Artist — Track</strong> <span style="color:var(--muted)">• note</span></div>
-              <div style="margin-top:8px;"><strong>Artist — Track</strong> <span style="color:var(--muted)">• note</span></div>
-            </div>
-          </div>
+        <div id="mediaGrid" class="media-grid" aria-label="Currently into"></div>
 
-          <div class="item" id="books">
-            <div class="item-top">
-              <div class="item-title">Books (this year)</div>
-              <div class="item-meta">2026</div>
-            </div>
-            <div class="item-note">
-              <div><strong>Book Title</strong> — Author <span style="color:var(--muted)">• rating / quick take</span></div>
-              <div style="margin-top:8px;"><strong>Book Title</strong> — Author <span style="color:var(--muted)">• rating / quick take</span></div>
-              <div style="margin-top:8px;"><strong>Book Title</strong> — Author <span style="color:var(--muted)">• rating / quick take</span></div>
-            </div>
-          </div>
-
-          <div class="item" id="movies">
-            <div class="item-top">
-              <div class="item-title">Movies</div>
-              <div class="item-meta">Recently watched</div>
-            </div>
-            <div class="item-note">
-              <div><strong>Movie Title</strong> <span style="color:var(--muted)">• year • quick note</span></div>
-              <div style="margin-top:8px;"><strong>Movie Title</strong> <span style="color:var(--muted)">• year • quick note</span></div>
-              <div style="margin-top:8px;"><strong>Movie Title</strong> <span style="color:var(--muted)">• year • quick note</span></div>
-            </div>
-          </div>
-
-          <div class="item" id="misc">
-            <div class="item-top">
-              <div class="item-title">Links / finds</div>
-              <div class="item-meta">Optional</div>
-            </div>
-            <div class="item-note">
-              <div><strong>Interesting thing</strong> <span style="color:var(--muted)">• short why it’s interesting</span></div>
-              <div style="margin-top:8px;"><strong>Interesting thing</strong> <span style="color:var(--muted)">• short why it’s interesting</span></div>
-            </div>
-          </div>
-
-        </div>
+        <p style="margin:12px 0 0; color: var(--muted); font-size:13px;">
+          To update this: edit the <code>MEDIA</code> array near the bottom of this file.
+        </p>
       </div>
     </section>
 
+    <!-- ARTICLES PREVIEW -->
+    <section class="section">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <h2 class="section-title">Articles</h2>
+            <p class="section-lead">Posts about interesting things. Each post has a space for likes/comments.</p>
+          </div>
+          <a class="btn" href="/articles/">Browse articles ↗</a>
+        </div>
+
+        <div id="articlePreview" class="article-grid" aria-label="Article previews"></div>
+      </div>
+    </section>
+
+    <!-- CONTACT -->
     <section id="contact" class="section">
       <div class="container">
         <div class="section-head">
           <div>
             <h2 class="section-title">Contact</h2>
-            <p class="section-lead">Want to reach me? Email is best.</p>
+            <p class="section-lead">Email is best.</p>
           </div>
-          <span class="pill">hello@ererezino.com</span>
-        </div>
-
-        <div class="cta-row">
           <a class="btn" href="mailto:hello@ererezino.com">hello@ererezino.com ↗</a>
-          <a class="btn" href="#top">Back to top ↑</a>
         </div>
       </div>
     </section>
@@ -661,41 +724,114 @@
     </div>
   </footer>
 
-  <!-- Lightbox -->
-  <div class="lightbox" id="lightbox" aria-hidden="true">
-    <button class="lightbox-close" id="lightboxClose" aria-label="Close">Close ✕</button>
-    <div class="lightbox-inner">
-      <img id="lightboxImg" alt="">
-    </div>
-  </div>
-
   <script>
-    // Footer year
     document.getElementById('year').textContent = new Date().getFullYear();
 
-    // Simple photo lightbox (click any photo)
-    const lb = document.getElementById('lightbox');
-    const lbImg = document.getElementById('lightboxImg');
-    const lbClose = document.getElementById('lightboxClose');
+    // ====== CURRENTLY INTO (edit this list) ======
+    // cover: paste image URL (Spotify, Apple Music, IMDb, Goodreads, etc.)
+    // url: where you listen/watch/read
+    const MEDIA = [
+      {
+        type: "Music",
+        title: "Artist — Track",
+        subtitle: "Album (optional)",
+        note: "Quick note about why it hits.",
+        cover: "https://images.unsplash.com/photo-1511379938547-c1f69419868d?auto=format&fit=crop&w=600&q=80",
+        url: "https://open.spotify.com/"
+      },
+      {
+        type: "Music",
+        title: "Artist — Track",
+        subtitle: "Single",
+        note: "Another small note.",
+        cover: "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?auto=format&fit=crop&w=600&q=80",
+        url: "https://music.apple.com/"
+      },
+      {
+        type: "Book",
+        title: "Book Title",
+        subtitle: "Author",
+        note: "Rating + one-liner takeaway.",
+        cover: "https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?auto=format&fit=crop&w=600&q=80",
+        url: "https://www.goodreads.com/"
+      },
+      {
+        type: "Movie",
+        title: "Movie Title",
+        subtitle: "Year • Director (optional)",
+        note: "Why it was worth watching.",
+        cover: "https://images.unsplash.com/photo-1524985069026-dd778a71c7b4?auto=format&fit=crop&w=600&q=80",
+        url: "https://www.imdb.com/"
+      }
+    ];
 
-    document.querySelectorAll('.photo img').forEach(img => {
-      img.addEventListener('click', () => {
-        lbImg.src = img.src;
-        lbImg.alt = img.alt || 'Photo';
-        lb.classList.add('open');
-        lb.setAttribute('aria-hidden', 'false');
-      });
-    });
+    // Button label per type
+    const ctaLabel = (type) => {
+      if (type === "Music") return "Listen ↗";
+      if (type === "Book") return "Link ↗";
+      if (type === "Movie") return "Watch ↗";
+      return "Open ↗";
+    };
 
-    function closeLb(){
-      lb.classList.remove('open');
-      lb.setAttribute('aria-hidden', 'true');
-      lbImg.src = '';
-    }
+    const mediaGrid = document.getElementById('mediaGrid');
+    mediaGrid.innerHTML = MEDIA.map(item => `
+      <article class="media-card">
+        <div class="media-cover">
+          <img src="${item.cover}" alt="${item.title} cover" loading="lazy" />
+        </div>
+        <div class="media-body">
+          <div class="media-top">
+            <div style="min-width:0;">
+              <p class="media-title" title="${item.title}">${item.title}</p>
+              <p class="media-sub" title="${item.subtitle || ''}">${item.subtitle || ''}</p>
+            </div>
+            <span class="chip">${item.type}</span>
+          </div>
+          <p class="media-note">${item.note || ''}</p>
+          <div class="media-actions">
+            <a class="link-btn" href="${item.url}" target="_blank" rel="noopener noreferrer">${ctaLabel(item.type)}</a>
+          </div>
+        </div>
+      </article>
+    `).join('');
 
-    lbClose.addEventListener('click', closeLb);
-    lb.addEventListener('click', (e) => { if(e.target === lb) closeLb(); });
-    window.addEventListener('keydown', (e) => { if(e.key === 'Escape') closeLb(); });
+    // ====== ARTICLE PREVIEW (edit these) ======
+    const ARTICLES = [
+      {
+        title: "A thing I learned this week",
+        date: "2026-01-20",
+        readTime: "4 min",
+        excerpt: "Short teaser. What’s the idea? Why should someone care?",
+        cover: "https://images.unsplash.com/photo-1522542550221-31fd19575a2d?auto=format&fit=crop&w=1200&q=80",
+        href: "/articles/post-template.html"
+      },
+      {
+        title: "Notes on taste, products, and simplicity",
+        date: "2026-01-12",
+        readTime: "6 min",
+        excerpt: "Another teaser. Keep it clean. Keep it useful.",
+        cover: "https://images.unsplash.com/photo-1529333166437-7750a6dd5a70?auto=format&fit=crop&w=1200&q=80",
+        href: "/articles/post-template.html"
+      }
+    ];
+
+    const preview = document.getElementById('articlePreview');
+    preview.innerHTML = ARTICLES.map(a => `
+      <a class="article-card" href="${a.href}">
+        <div class="article-cover">
+          <img src="${a.cover}" alt="${a.title} cover" loading="lazy">
+        </div>
+        <div class="article-body">
+          <div class="article-meta">
+            <span>${a.date}</span>
+            <span>•</span>
+            <span>${a.readTime}</span>
+          </div>
+          <h3 class="article-title">${a.title}</h3>
+          <p class="article-excerpt">${a.excerpt}</p>
+        </div>
+      </a>
+    `).join('');
   </script>
 </body>
 </html>
