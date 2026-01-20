@@ -1,1 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Articles • Zino Asamaige</title>
+
+  <link rel="icon" type="image/png" href="/assets/logo.png">
+  <link rel="apple-touch-icon" href="/assets/logo.png">
+  <meta name="theme-color" content="#FAFAF8">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap"
+    rel="stylesheet"
+  />
+
+  <style>
+    :root{
+      --bg:#FAFAF8;
+      --text:#141414;
+      --muted:#6B6B6B;
+      --border:rgba(20,20,20,.10);
+      --shadow: 0 12px 34px rgba(20,20,20,.10);
+      --shadow-soft: 0 8px 22px rgba(20,20,20,.06);
+      --radius:18px;
+      --pad:24px;
+      --container:1100px;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family:'DM Sans', -apple-system, system-ui, sans-serif;
+      font-weight:300;
+      background:var(--bg);
+      color:var(--text);
+      line-height:1.65;
+      -webkit-font-smoothing:antialiased;
+    }
+    a{color:inherit;text-decoration:none}
+    .container{max-width:var(--container);margin:0 auto;padding:0 var(--pad)}
+    header{
+      position:sticky;top:0;z-index:20;
+      background: rgba(250,250,248,.78);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(20,20,20,.08);
+    }
+    .head{
+      display:flex;align-items:center;justify-content:space-between;gap:16px;
+      padding:16px 0;
+    }
+    .brand{display:flex;gap:12px;align-items:center;min-width:0}
+    .logo{
+      width:42px;height:42px;border-radius:50%;overflow:hidden;
+      background:#fff;border:1px solid rgba(20,20,20,.10);
+      box-shadow:0 6px 18px rgba(20,20,20,.06);flex:0 0 auto;
+    }
+    .brand strong{font-weight:500;letter-spacing:-0.01em}
+    .brand span{display:block;font-size:13px;color:var(--muted);line-height:1.15}
+    .btn{
+      display:inline-flex;align-items:center;gap:8px;
+      padding:10px 12px;border-radius:12px;
+      border:1px solid rgba(20,20,20,.12);
+      background:#fff;
+      box-shadow:0 10px 22px rgba(20,20,20,.06);
+      font-size:14px;color: rgba(20,20,20,.85);
+      transition:transform .15s ease, box-shadow .15s ease;
+      white-space:nowrap;
+    }
+    .btn:hover{transform:translateY(-1px);box-shadow:0 14px 28px rgba(20,20,20,.08)}
+    main{padding:28px 0 70px}
+    h1{
+      font-family:'Instrument Serif', Georgia, serif;
+      font-weight:400;
+      font-size:46px;
+      margin:0 0 10px;
+      letter-spacing:-0.01em;
+    }
+    .lead{margin:0 0 18px;color:var(--muted);max-width:78ch}
+    .controls{
+      display:flex;gap:10px;flex-wrap:wrap;
+      margin:18px 0 22px;
+      align-items:center;
+    }
+    .search{
+      flex: 1 1 320px;
+      display:flex;align-items:center;gap:10px;
+      padding:12px 14px;border-radius:14px;
+      border:1px solid rgba(20,20,20,.12);
+      background: rgba(255,255,255,.7);
+      box-shadow: var(--shadow-soft);
+    }
+    .search input{
+      width:100%;
+      border:none;outline:none;
+      background:transparent;
+      font-size:14px;
+      color:rgba(20,20,20,.9);
+      font-family:inherit;
+      font-weight:300;
+    }
+    .chipbar{display:flex;gap:8px;flex-wrap:wrap}
+    .chip{
+      font-size:12.5px;
+      color:rgba(20,20,20,.8);
+      border:1px solid rgba(20,20,20,.12);
+      background: rgba(255,255,255,.65);
+      padding:8px 10px;
+      border-radius:999px;
+      cursor:pointer;
+      transition: transform .12s ease, box-shadow .12s ease;
+      user-select:none;
+    }
+    .chip:hover{transform:translateY(-1px);box-shadow:0 10px 20px rgba(20,20,20,.06)}
+    .chip.active{
+      background:#fff;
+      border-color: rgba(20,20,20,.18);
+      box-shadow: 0 12px 26px rgba(20,20,20,.08);
+    }
+
+    .grid{
+      display:grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap:16px;
+      margin-top: 14px;
+    }
+    .card{
+      border:1px solid rgba(20,20,20,.10);
+      background: rgba(255,255,255,.70);
+      border-radius: var(--radius);
+      overflow:hidden;
+      box-shadow: var(--shadow-soft);
+      transition: transform .15s ease, box-shadow .15s ease, border-color .15s ease;
+    }
+    .card:hover{
+      transform: translateY(-2px);
+      border-color: rgba(20,20,20,.16);
+      box-shadow: var(--shadow);
+    }
+    .cover{
+      aspect-ratio: 16 / 9;
+      background: rgba(20,20,20,.06);
+      border-bottom: 1px solid rgba(20,20,20,.08);
+      overflow:hidden;
+    }
+    .cover img{
+      width:100%;
+      height:100%;
+      object-fit: cover; /* cover is fine for cover art */
+      display:block;
+    }
+    .card-body{padding:14px 14px 16px}
+    .kicker{
+      font-size:12px;color:var(--muted);
+      display:flex;gap:10px;flex-wrap:wrap;
+      margin-bottom:8px;
+    }
+    .title{font-weight:500;letter-spacing:-0.01em;margin:0 0 8px;line-height:1.25}
+    .excerpt{color:rgba(20,20,20,.75);font-size:14px;margin:0 0 12px}
+    .tagrow{display:flex;gap:8px;flex-wrap:wrap}
+    .tag{
+      font-size:12px;color:var(--muted);
+      border:1px solid rgba(20,20,20,.10);
+      background: rgba(255,255,255,.65);
+      padding:6px 10px;border-radius:999px;
+    }
+
+    .empty{
+      margin-top: 24px;
+      padding: 16px;
+      border:1px dashed rgba(20,20,20,.18);
+      border-radius: 16px;
+      color: var(--muted);
+      background: rgba(255,255,255,.45);
+      display:none;
+    }
+
+    footer{
+      padding: 28px 0 56px;
+      border-top: 1px solid rgba(20,20,20,.08);
+      color: var(--muted);
+      font-size: 13px;
+    }
+    .foot{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
+
+    @media (max-width: 980px){
+      .grid{grid-template-columns: repeat(2, minmax(0, 1fr));}
+    }
+    @media (max-width: 620px){
+      h1{font-size:40px}
+      .grid{grid-template-columns: 1fr;}
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <div class="container head">
+      <a class="brand" href="/" aria-label="Back home">
+        <span class="logo"><img src="/assets/logo.png" alt="Zino Asamaige logo"></span>
+        <div>
+          <strong>Articles</strong>
+          <span>Writing & notes</span>
+        </div>
+      </a>
+
+      <a class="btn" href="/">Home ↩</a>
+    </div>
+  </header>
+
+  <main class="container">
+    <h1>Articles</h1>
+    <p class="lead">
+      Things I find interesting — product, operations, systems, and whatever I’m thinking about.
+      (I write these manually in HTML for now.)
+    </p>
+
+    <div class="controls">
+      <div class="search" role="search">
+        <span style="color:var(--muted);font-size:14px;">Search</span>
+        <input id="search" type="search" placeholder="Try: product, systems, fintech…" autocomplete="off" />
+      </div>
+
+      <div class="chipbar" id="chips"></div>
+    </div>
+
+    <div class="grid" id="grid"></div>
+    <div class="empty" id="empty">No matches. Try a different keyword or tag.</div>
+  </main>
+
+  <footer>
+    <div class="container foot">
+      <div>© <span id="year"></span> Zino Asamaige</div>
+      <div>Static articles • Comments via embed</div>
+    </div>
+  </footer>
+
+  <script src="/articles/assets/articles.js"></script>
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // ARTICLES comes from /articles/assets/articles.js
+    const grid = document.getElementById('grid');
+    const search = document.getElementById('search');
+    const chipsEl = document.getElementById('chips');
+    const empty = document.getElementById('empty');
+
+    let activeTag = 'All';
+
+    const allTags = Array.from(
+      new Set(['All', ...ARTICLES.flatMap(a => a.tags || [])])
+    );
+
+    chipsEl.innerHTML = allTags.map(t => `
+      <div class="chip ${t === 'All' ? 'active' : ''}" data-tag="${t}">${t}</div>
+    `).join('');
+
+    function card(a){
+      const tags = (a.tags || []).slice(0, 3).map(t => `<span class="tag">${t}</span>`).join('');
+      return `
+        <a class="card" href="${a.url}">
+          <div class="cover">
+            <img src="${a.cover}" alt="">
+          </div>
+          <div class="card-body">
+            <div class="kicker">
+              <span>${a.date}</span>
+              <span>•</span>
+              <span>${a.readTime || '5 min read'}</span>
+            </div>
+            <h3 class="title">${a.title}</h3>
+            <p class="excerpt">${a.excerpt}</p>
+            <div class="tagrow">${tags}</div>
+          </div>
+        </a>
+      `;
+    }
+
+    function matches(a, q){
+      if(!q) return true;
+      const hay = `${a.title} ${a.excerpt} ${(a.tags||[]).join(' ')}`.toLowerCase();
+      return hay.includes(q.toLowerCase());
+    }
+
+    function render(){
+      const q = search.value.trim();
+      const filtered = ARTICLES.filter(a => {
+        const tagOk = (activeTag === 'All') || (a.tags || []).includes(activeTag);
+        return tagOk && matches(a, q);
+      });
+
+      grid.innerHTML = filtered.map(card).join('');
+      empty.style.display = filtered.length ? 'none' : 'block';
+    }
+
+    chipsEl.addEventListener('click', (e) => {
+      const chip = e.target.closest('.chip');
+      if(!chip) return;
+      activeTag = chip.dataset.tag;
+
+      document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+      chip.classList.add('active');
+      render();
+    });
+
+    search.addEventListener('input', render);
+    render();
+  </script>
+</body>
+</html>
 
