@@ -460,278 +460,201 @@
       color: #fff;
     }
 
-    /* Movement Section - Modern Glass Design */
-    .movement-hero {
-      background: var(--text);
-      border-radius: 16px;
-      padding: 48px;
-      margin-bottom: 24px;
-      position: relative;
-      overflow: hidden;
+    /* Movement Section - Editorial Design */
+    .movement-container {
       border: 1px solid var(--border);
     }
-    
-    .movement-hero::before {
-      content: '';
-      position: absolute;
-      top: -100px;
-      right: -100px;
-      width: 300px;
-      height: 300px;
-      background: radial-gradient(circle, rgba(255,255,255,0.08) 0%, transparent 70%);
-      animation: float 6s ease-in-out infinite;
+
+    .movement-hero {
+      display: grid;
+      grid-template-columns: 1.2fr 1fr;
+      border-bottom: 1px solid var(--border);
     }
-    
-    .movement-hero::after {
-      content: '';
-      position: absolute;
-      bottom: -80px;
-      left: -80px;
-      width: 250px;
-      height: 250px;
-      background: radial-gradient(circle, rgba(255,255,255,0.04) 0%, transparent 70%);
-      animation: float 6s ease-in-out infinite 3s;
+    @media (max-width: 900px) {
+      .movement-hero { grid-template-columns: 1fr; }
     }
-    
-    @keyframes float {
-      0%, 100% { transform: translate(0, 0); }
-      50% { transform: translate(20px, -20px); }
+
+    .movement-hero-left {
+      padding: 56px 48px;
+      border-right: 1px solid var(--border);
     }
-    
-    .movement-hero-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 32px;
-      position: relative;
-      z-index: 1;
+    @media (max-width: 900px) {
+      .movement-hero-left { 
+        border-right: none; 
+        border-bottom: 1px solid var(--border);
+        padding: 40px 24px;
+      }
     }
-    
-    .movement-hero-title {
-      color: var(--bg);
-      font-size: 13px;
+
+    .movement-year-label {
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      color: var(--text-tertiary);
+      margin-bottom: 16px;
+    }
+
+    .movement-big-number {
+      font-size: clamp(80px, 15vw, 140px);
       font-weight: 700;
+      letter-spacing: -0.06em;
+      line-height: 0.8;
+      margin-bottom: 8px;
+    }
+
+    .movement-big-unit {
+      font-size: 14px;
       text-transform: uppercase;
       letter-spacing: 0.1em;
-      display: flex;
-      align-items: center;
-      gap: 12px;
+      color: var(--text-tertiary);
     }
-    
-    .movement-icon {
-      width: 40px;
-      height: 40px;
-      background: rgba(255, 255, 255, 0.15);
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      border-radius: 10px;
+
+    .movement-hero-right {
       display: flex;
-      align-items: center;
+      flex-direction: column;
+    }
+
+    .movement-secondary-stat {
+      flex: 1;
+      padding: 32px 40px;
+      display: flex;
+      flex-direction: column;
       justify-content: center;
-      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--border);
     }
-    .movement-icon svg {
-      width: 22px;
-      height: 22px;
-      color: #fff;
+    .movement-secondary-stat:last-child {
+      border-bottom: none;
     }
-    
-    .movement-hero-badge {
-      font-size: 10px;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      padding: 8px 14px;
-      background: rgba(255, 255, 255, 0.1);
-      color: rgba(255, 255, 255, 0.8);
-      border: 1px solid rgba(255, 255, 255, 0.15);
-      border-radius: 100px;
-      backdrop-filter: blur(10px);
-    }
-    
-    .movement-stats {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 16px;
-      position: relative;
-      z-index: 1;
-    }
-    @media (max-width: 768px) {
-      .movement-stats { grid-template-columns: 1fr; gap: 12px; }
-      .movement-hero { padding: 32px 24px; }
+    @media (max-width: 900px) {
+      .movement-hero-right {
+        flex-direction: row;
+      }
+      .movement-secondary-stat {
+        border-bottom: none;
+        border-right: 1px solid var(--border);
+        padding: 24px 20px;
+      }
+      .movement-secondary-stat:last-child {
+        border-right: none;
+      }
     }
 
-    .movement-stat {
-      text-align: center;
-      padding: 24px 16px;
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      border-radius: 12px;
-      backdrop-filter: blur(10px);
-      transition: transform 0.3s ease, background 0.3s ease;
-    }
-    .movement-stat:hover {
-      transform: translateY(-4px);
-      background: rgba(255, 255, 255, 0.08);
-    }
-    
-    .movement-stat-icon {
-      width: 32px;
-      height: 32px;
-      margin: 0 auto 12px;
-      color: rgba(255, 255, 255, 0.6);
-    }
-
-    .movement-stat-value {
-      font-size: clamp(32px, 5vw, 44px);
+    .movement-secondary-value {
+      font-size: clamp(28px, 4vw, 36px);
       font-weight: 700;
-      letter-spacing: -0.04em;
+      letter-spacing: -0.03em;
       line-height: 1;
-      color: #fff;
     }
 
-    .movement-stat-label {
+    .movement-secondary-label {
       font-size: 10px;
       text-transform: uppercase;
-      letter-spacing: 0.12em;
-      color: rgba(255, 255, 255, 0.5);
+      letter-spacing: 0.1em;
+      color: var(--text-tertiary);
       margin-top: 8px;
     }
 
     /* Month Cards */
-    .months-grid {
+    .movement-months {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
-      gap: 16px;
     }
-    @media (max-width: 768px) {
-      .months-grid { grid-template-columns: 1fr; }
-    }
-
-    .month-card {
-      padding: 28px;
-      background: var(--bg-alt);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      transition: all 0.3s ease;
-      position: relative;
-      overflow: hidden;
-    }
-    .month-card:hover {
-      border-color: var(--text);
-      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
-      transform: translateY(-2px);
-    }
-    [data-theme="dark"] .month-card:hover {
-      box-shadow: 0 8px 32px rgba(255, 255, 255, 0.05);
-    }
-    
-    .month-card.current {
-      background: var(--text);
-      border: 1px solid var(--text);
-      color: var(--bg);
-    }
-    .month-card.current::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 3px;
-      background: rgba(255, 255, 255, 0.3);
-    }
-    
-    .month-card.current .month-stat-label,
-    .month-card.current .month-progress-label { 
-      color: rgba(255,255,255,0.5); 
-    }
-    .month-card.current .month-progress-track { 
-      background: rgba(255,255,255,0.15); 
-    }
-    .month-card.current .month-stat-item {
-      background: rgba(255, 255, 255, 0.08);
+    @media (max-width: 600px) {
+      .movement-months { grid-template-columns: 1fr; }
     }
 
-    .month-header {
+    .movement-month {
+      padding: 32px;
+      border-right: 1px solid var(--border);
+    }
+    .movement-month:last-child {
+      border-right: none;
+    }
+    @media (max-width: 600px) {
+      .movement-month {
+        border-right: none;
+        border-bottom: 1px solid var(--border);
+      }
+      .movement-month:last-child {
+        border-bottom: none;
+      }
+    }
+
+    .movement-month-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
       margin-bottom: 20px;
     }
 
-    .month-name {
-      font-size: 18px;
-      font-weight: 700;
-      letter-spacing: -0.02em;
-    }
-
-    .month-tag {
-      font-size: 9px;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      padding: 6px 12px;
-      background: var(--text);
-      color: var(--bg);
-      border-radius: 100px;
-    }
-    .month-card.current .month-tag {
-      background: rgba(255, 255, 255, 0.2);
-      color: #fff;
-    }
-
-    .month-stats-row {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 12px;
-      margin-bottom: 20px;
-    }
-    
-    .month-stat-item {
-      text-align: center;
-      padding: 12px 8px;
-      background: var(--accent-soft);
-      border-radius: 8px;
-    }
-
-    .month-stat-label {
-      font-size: 9px;
+    .movement-month-name {
+      font-size: 11px;
       text-transform: uppercase;
       letter-spacing: 0.1em;
       color: var(--text-tertiary);
+    }
+
+    .movement-month-badge {
+      font-size: 9px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      padding: 4px 10px;
+      border: 1px solid var(--border);
+      color: var(--text-secondary);
+    }
+    .movement-month-badge.now {
+      background: var(--text);
+      border-color: var(--text);
+      color: var(--bg);
+    }
+
+    .movement-month-steps {
+      font-size: clamp(32px, 5vw, 42px);
+      font-weight: 700;
+      letter-spacing: -0.04em;
+      line-height: 1;
       margin-bottom: 4px;
     }
 
-    .month-stat-val {
-      font-size: 18px;
+    .movement-month-goal {
+      font-size: 12px;
+      color: var(--text-tertiary);
+      margin-bottom: 20px;
+    }
+
+    .movement-month-bar {
+      height: 3px;
+      background: var(--border);
+      margin-bottom: 20px;
+      position: relative;
+    }
+
+    .movement-month-bar-fill {
+      position: absolute;
+      left: 0;
+      top: 0;
+      height: 100%;
+      background: var(--text);
+    }
+
+    .movement-month-details {
+      display: flex;
+      gap: 32px;
+    }
+
+    .movement-month-detail-value {
+      font-size: 15px;
       font-weight: 700;
       letter-spacing: -0.02em;
     }
 
-    .month-progress-label {
+    .movement-month-detail-label {
       font-size: 9px;
       text-transform: uppercase;
       letter-spacing: 0.08em;
       color: var(--text-tertiary);
-      margin-bottom: 8px;
-      display: flex;
-      justify-content: space-between;
-    }
-
-    .month-progress-track {
-      height: 6px;
-      background: var(--border);
-      border-radius: 3px;
-      overflow: hidden;
-    }
-
-    .month-progress-fill {
-      height: 100%;
-      background: var(--text);
-      border-radius: 3px;
-      transition: width 1s ease;
-    }
-    .month-card.current .month-progress-fill {
-      background: rgba(255, 255, 255, 0.5);
+      margin-top: 2px;
     }
 
     /* Currently Into */
@@ -1046,47 +969,26 @@
           </a>
         </div>
 
-        <div class="movement-hero">
-          <div class="movement-hero-header">
-            <div class="movement-hero-title">
-              <span class="movement-icon">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <circle cx="12" cy="5" r="3"/>
-                  <path d="M12 8v4l3 3M6 15l-2 5h3l2-4M18 15l2 5h-3l-2-4"/>
-                </svg>
-              </span>
-              2025 Year in Review
+        <div class="movement-container">
+          <div class="movement-hero">
+            <div class="movement-hero-left">
+              <div class="movement-year-label">2025 Total</div>
+              <div class="movement-big-number">2.6M</div>
+              <div class="movement-big-unit">Steps walked</div>
             </div>
-            <span class="movement-hero-badge">Completed</span>
-          </div>
-          <div class="movement-stats">
-            <div class="movement-stat">
-              <svg class="movement-stat-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                <path d="M4 16v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/>
-                <path d="M12 4v12M8 8l4-4 4 4"/>
-              </svg>
-              <div class="movement-stat-value">2.6M</div>
-              <div class="movement-stat-label">Total Steps</div>
-            </div>
-            <div class="movement-stat">
-              <svg class="movement-stat-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                <circle cx="12" cy="12" r="10"/>
-                <path d="M12 6v6l4 2"/>
-              </svg>
-              <div class="movement-stat-value">1,980</div>
-              <div class="movement-stat-label">Kilometers</div>
-            </div>
-            <div class="movement-stat">
-              <svg class="movement-stat-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
-              </svg>
-              <div class="movement-stat-value">7,072</div>
-              <div class="movement-stat-label">Avg Steps/Day</div>
+            <div class="movement-hero-right">
+              <div class="movement-secondary-stat">
+                <div class="movement-secondary-value">1,980</div>
+                <div class="movement-secondary-label">Kilometers</div>
+              </div>
+              <div class="movement-secondary-stat">
+                <div class="movement-secondary-value">7,072</div>
+                <div class="movement-secondary-label">Avg per day</div>
+              </div>
             </div>
           </div>
+          <div class="movement-months" id="monthsGrid"></div>
         </div>
-
-        <div class="months-grid" id="monthsGrid"></div>
       </div>
     </section>
 
@@ -1244,18 +1146,24 @@
       const pct = Math.min((m.steps / MONTHLY_GOAL) * 100, 100);
       const met = m.steps >= MONTHLY_GOAL;
       return `
-        <div class="month-card ${m.isCurrent ? 'current' : ''}">
-          <div class="month-header">
-            <div class="month-name">${m.month} ${m.year}</div>
-            ${m.isCurrent ? '<span class="month-tag">In Progress</span>' : (met ? '<span class="month-tag">Goal Met</span>' : '')}
+        <div class="movement-month">
+          <div class="movement-month-header">
+            <div class="movement-month-name">${m.month} ${m.year}</div>
+            <span class="movement-month-badge ${m.isCurrent ? 'now' : ''}">${m.isCurrent ? 'Now' : (met ? 'Complete' : '')}</span>
           </div>
-          <div class="month-stats-row">
-            <div class="month-stat-item"><div class="month-stat-label">Steps</div><div class="month-stat-val">${fmt(m.steps)}</div></div>
-            <div class="month-stat-item"><div class="month-stat-label">Distance</div><div class="month-stat-val">${m.km} km</div></div>
-            <div class="month-stat-item"><div class="month-stat-label">Avg/Day</div><div class="month-stat-val">${fmt(m.avgStepsPerDay)}</div></div>
+          <div class="movement-month-steps">${fmt(m.steps)}</div>
+          <div class="movement-month-goal">of 310,000 goal</div>
+          <div class="movement-month-bar"><div class="movement-month-bar-fill" style="width:${pct}%"></div></div>
+          <div class="movement-month-details">
+            <div>
+              <div class="movement-month-detail-value">${m.km} km</div>
+              <div class="movement-month-detail-label">Distance</div>
+            </div>
+            <div>
+              <div class="movement-month-detail-value">${fmt(m.avgStepsPerDay)}</div>
+              <div class="movement-month-detail-label">Daily avg</div>
+            </div>
           </div>
-          <div class="month-progress-label"><span>Monthly Goal (310k)</span><span>${Math.round(pct)}%</span></div>
-          <div class="month-progress-track"><div class="month-progress-fill" style="width:${pct}%"></div></div>
         </div>
       `;
     }).join('');
