@@ -174,7 +174,17 @@
 
     @media (max-width: 900px) {
       nav { display: none; }
+      .nav-row .theme-btn { display: none; }
       .mobile-menu-btn { display: flex; }
+    }
+
+    .mobile-header-controls {
+      display: none;
+      align-items: center;
+      gap: 8px;
+    }
+    @media (max-width: 900px) {
+      .mobile-header-controls { display: flex; }
     }
 
     /* Mobile Menu */
@@ -458,6 +468,7 @@
       margin-bottom: 24px;
       position: relative;
       overflow: hidden;
+      border: 1px solid var(--border);
     }
     
     .movement-hero::before {
@@ -467,7 +478,7 @@
       right: -100px;
       width: 300px;
       height: 300px;
-      background: radial-gradient(circle, var(--green-glow) 0%, transparent 70%);
+      background: radial-gradient(circle, rgba(255,255,255,0.08) 0%, transparent 70%);
       animation: float 6s ease-in-out infinite;
     }
     
@@ -478,7 +489,7 @@
       left: -80px;
       width: 250px;
       height: 250px;
-      background: radial-gradient(circle, rgba(255,255,255,0.05) 0%, transparent 70%);
+      background: radial-gradient(circle, rgba(255,255,255,0.04) 0%, transparent 70%);
       animation: float 6s ease-in-out infinite 3s;
     }
     
@@ -510,16 +521,18 @@
     .movement-icon {
       width: 40px;
       height: 40px;
-      background: var(--green);
+      background: rgba(255, 255, 255, 0.15);
+      border: 1px solid rgba(255, 255, 255, 0.2);
       border-radius: 10px;
       display: flex;
       align-items: center;
       justify-content: center;
+      backdrop-filter: blur(10px);
     }
     .movement-icon svg {
       width: 22px;
       height: 22px;
-      color: #000;
+      color: #fff;
     }
     
     .movement-hero-badge {
@@ -529,8 +542,8 @@
       letter-spacing: 0.08em;
       padding: 8px 14px;
       background: rgba(255, 255, 255, 0.1);
-      color: var(--green);
-      border: 1px solid rgba(0, 210, 106, 0.3);
+      color: rgba(255, 255, 255, 0.8);
+      border: 1px solid rgba(255, 255, 255, 0.15);
       border-radius: 100px;
       backdrop-filter: blur(10px);
     }
@@ -565,7 +578,7 @@
       width: 32px;
       height: 32px;
       margin: 0 auto 12px;
-      color: var(--green);
+      color: rgba(255, 255, 255, 0.6);
     }
 
     .movement-stat-value {
@@ -604,9 +617,12 @@
       overflow: hidden;
     }
     .month-card:hover {
-      border-color: var(--green);
-      box-shadow: 0 8px 32px rgba(0, 210, 106, 0.1);
+      border-color: var(--text);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
       transform: translateY(-2px);
+    }
+    [data-theme="dark"] .month-card:hover {
+      box-shadow: 0 8px 32px rgba(255, 255, 255, 0.05);
     }
     
     .month-card.current {
@@ -621,7 +637,7 @@
       left: 0;
       right: 0;
       height: 3px;
-      background: var(--green);
+      background: rgba(255, 255, 255, 0.3);
     }
     
     .month-card.current .month-stat-label,
@@ -654,9 +670,13 @@
       text-transform: uppercase;
       letter-spacing: 0.08em;
       padding: 6px 12px;
-      background: var(--green);
-      color: #000;
+      background: var(--text);
+      color: var(--bg);
       border-radius: 100px;
+    }
+    .month-card.current .month-tag {
+      background: rgba(255, 255, 255, 0.2);
+      color: #fff;
     }
 
     .month-stats-row {
@@ -706,9 +726,12 @@
 
     .month-progress-fill {
       height: 100%;
-      background: var(--green);
+      background: var(--text);
       border-radius: 3px;
       transition: width 1s ease;
+    }
+    .month-card.current .month-progress-fill {
+      background: rgba(255, 255, 255, 0.5);
     }
 
     /* Currently Into */
@@ -920,9 +943,15 @@
           <svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
         </button>
       </div>
-      <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Menu">
-        <span></span><span></span><span></span>
-      </button>
+      <div class="mobile-header-controls">
+        <button class="theme-btn" id="mobileHeaderThemeToggle" aria-label="Toggle theme">
+          <svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+          <svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+        </button>
+        <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Menu">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
     </div>
   </header>
 
@@ -1168,6 +1197,7 @@
     // Theme toggle buttons (desktop and mobile)
     document.getElementById('themeToggle').onclick = toggleTheme;
     document.getElementById('mobileThemeToggle').onclick = toggleTheme;
+    document.getElementById('mobileHeaderThemeToggle').onclick = toggleTheme;
 
     // Header scroll
     window.addEventListener('scroll', () => {
