@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Travels - Zino Asamaige</title>
+
+  <meta name="description" content="Places I've visited around the world.">
+  <link rel="icon" type="image/png" href="/assets/logo.png">
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet" />
+  
+  <!-- Leaflet CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+
+  <style>
+    :root {
+      --bg: #FFFFFF;
+      --bg-alt: #F7F7F7;
+      --text: #0A0A0A;
+      --text-secondary: #555555;
+      --text-tertiary: #888888;
+      --border: #E8E8E8;
+      --green: #00D26A;
+      --accent: #0A0A0A;
+      --container: 1200px;
+      --transition: 0.2s ease;
+    }
+
+    [data-theme="dark"] {
+      --bg: #0A0A0A;
+      --bg-alt: #111111;
+      --text: #FFFFFF;
+      --text-secondary: #AAAAAA;
+      --text-tertiary: #666666;
+      --border: #222222;
+      --accent: #FFFFFF;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Space Mono', monospace;
+      font-size: 14px;
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    .container {
+      max-width: var(--container);
+      margin: 0 auto;
+      padding: 0 40px;
+    }
+    @media (max-width: 768px) {
+      .container { padding: 0 20px; }
+    }
+
+    /* Header */
+    header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+      padding: 20px 0;
+      background: var(--bg);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .header-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      max-width: var(--container);
+      margin: 0 auto;
+      padding: 0 40px;
+    }
+    @media (max-width: 768px) {
+      .header-inner { padding: 0 20px; }
+    }
+
+    .logo {
+      font-size: 15px;
+      font-weight: 700;
+    }
+
+    .header-nav {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+    }
+    .header-nav a {
+      font-size: 12px;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .header-nav a:hover { color: var(--text); }
+
+    .theme-btn {
+      width: 32px;
+      height: 32px;
+      border: 1px solid var(--border);
+      background: transparent;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+    }
+    .theme-btn svg { width: 14px; height: 14px; color: var(--text-secondary); }
+    .theme-btn .sun { display: none; }
+    [data-theme="dark"] .theme-btn .sun { display: block; }
+    [data-theme="dark"] .theme-btn .moon { display: none; }
+
+    /* Page */
+    main {
+      padding-top: 80px;
+    }
+
+    .page-header {
+      padding: 48px 0;
+    }
+
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--text-tertiary);
+      margin-bottom: 32px;
+      transition: color var(--transition);
+    }
+    .back-link:hover { color: var(--text); }
+    .back-link svg { width: 14px; height: 14px; }
+
+    .page-title {
+      font-size: clamp(32px, 5vw, 48px);
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      margin-bottom: 16px;
+    }
+
+    .page-lead {
+      font-size: 15px;
+      color: var(--text-secondary);
+      max-width: 600px;
+      line-height: 1.8;
+    }
+
+    /* Stats */
+    .travel-stats {
+      display: flex;
+      gap: 48px;
+      margin-top: 32px;
+      padding-top: 32px;
+      border-top: 1px solid var(--border);
+    }
+    @media (max-width: 600px) {
+      .travel-stats { flex-direction: column; gap: 24px; }
+    }
+
+    .travel-stat-value {
+      font-size: 48px;
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      line-height: 1;
+    }
+
+    .travel-stat-label {
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--text-tertiary);
+      margin-top: 8px;
+    }
+
+    /* Map */
+    .map-section {
+      padding: 48px 0;
+    }
+
+    .map-container {
+      width: 100%;
+      height: 500px;
+      border: 1px solid var(--border);
+      background: var(--bg-alt);
+    }
+    @media (max-width: 768px) {
+      .map-container { height: 400px; }
+    }
+
+    /* Custom Leaflet styles */
+    .leaflet-container {
+      font-family: 'Space Mono', monospace;
+    }
+
+    .custom-marker {
+      background: var(--green);
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      border: 2px solid #fff;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+    }
+
+    .leaflet-popup-content-wrapper {
+      background: var(--bg);
+      color: var(--text);
+      border-radius: 0;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+    }
+
+    .leaflet-popup-content {
+      margin: 16px 20px;
+      font-family: 'Space Mono', monospace;
+    }
+
+    .leaflet-popup-tip {
+      background: var(--bg);
+    }
+
+    .popup-city {
+      font-size: 14px;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+
+    .popup-country {
+      font-size: 11px;
+      color: var(--text-tertiary);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    /* City list */
+    .cities-section {
+      padding: 48px 0;
+      border-top: 1px solid var(--border);
+    }
+
+    .section-title {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      color: var(--text-tertiary);
+      margin-bottom: 32px;
+    }
+
+    .cities-by-region {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 48px;
+    }
+    @media (max-width: 900px) {
+      .cities-by-region { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 600px) {
+      .cities-by-region { grid-template-columns: 1fr; }
+    }
+
+    .region-group h3 {
+      font-size: 14px;
+      font-weight: 700;
+      margin-bottom: 16px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .region-group ul {
+      list-style: none;
+    }
+
+    .region-group li {
+      font-size: 13px;
+      color: var(--text-secondary);
+      padding: 6px 0;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .region-group li span {
+      color: var(--text-tertiary);
+      font-size: 11px;
+    }
+
+    /* Footer */
+    footer {
+      padding: 32px 0;
+      border-top: 1px solid var(--border);
+    }
+
+    .footer-inner {
+      display: flex;
+      justify-content: space-between;
+      font-size: 11px;
+      color: var(--text-tertiary);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <div class="header-inner">
+      <a href="/" class="logo">Zino Asamaige</a>
+      <nav class="header-nav">
+        <a href="/about.html">About</a>
+        <a href="/photos.html">Photos</a>
+        <a href="/articles.html">Articles</a>
+        <button class="theme-btn" id="themeToggle">
+          <svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+          <svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <div class="container">
+      <div class="page-header">
+        <a href="/" class="back-link">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+          Back to home
+        </a>
+        <h1 class="page-title">Travels</h1>
+        <p class="page-lead">
+          Places I've visited around the world. Each pin represents a city that has taught me something new.
+        </p>
+        <div class="travel-stats">
+          <div>
+            <div class="travel-stat-value" id="countryCount">0</div>
+            <div class="travel-stat-label">Countries</div>
+          </div>
+          <div>
+            <div class="travel-stat-value" id="cityCount">0</div>
+            <div class="travel-stat-label">Cities</div>
+          </div>
+          <div>
+            <div class="travel-stat-value" id="continentCount">0</div>
+            <div class="travel-stat-label">Continents</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="map-section">
+      <div class="container">
+        <div id="map" class="map-container"></div>
+      </div>
+    </div>
+
+    <div class="container">
+      <section class="cities-section">
+        <h2 class="section-title">All Cities Visited</h2>
+        <div class="cities-by-region" id="citiesByRegion"></div>
+      </section>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container footer-inner">
+      <span>© 2026 Zino Asamaige</span>
+      <span>Lagos, Nigeria</span>
+    </div>
+  </footer>
+
+  <!-- Leaflet JS -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+  <script>
+    // Theme
+    const toggle = document.getElementById('themeToggle');
+    const saved = localStorage.getItem('theme');
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    const theme = saved || (prefersDark ? 'dark' : 'light');
+    document.documentElement.setAttribute('data-theme', theme);
+    toggle.onclick = () => {
+      const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+      document.documentElement.setAttribute('data-theme', isDark ? 'light' : 'dark');
+      localStorage.setItem('theme', isDark ? 'light' : 'dark');
+    };
+
+    // Cities data with coordinates
+    const CITIES = [
+      // Nigeria
+      { city: "Lagos", country: "Nigeria", region: "Africa", lat: 6.5244, lng: 3.3792 },
+      { city: "Ogun", country: "Nigeria", region: "Africa", lat: 6.9980, lng: 3.4737 },
+      { city: "Oyo", country: "Nigeria", region: "Africa", lat: 7.8500, lng: 3.9333 },
+      { city: "Edo", country: "Nigeria", region: "Africa", lat: 6.3350, lng: 5.6037 },
+      { city: "Delta", country: "Nigeria", region: "Africa", lat: 5.7040, lng: 5.9339 },
+      { city: "Rivers", country: "Nigeria", region: "Africa", lat: 4.8156, lng: 7.0498 },
+      { city: "Kaduna", country: "Nigeria", region: "Africa", lat: 10.5264, lng: 7.4388 },
+      { city: "Plateau", country: "Nigeria", region: "Africa", lat: 9.2182, lng: 9.5175 },
+      { city: "Abuja", country: "Nigeria", region: "Africa", lat: 9.0765, lng: 7.3986 },
+      { city: "Adamawa", country: "Nigeria", region: "Africa", lat: 9.3265, lng: 12.3984 },
+      { city: "Imo", country: "Nigeria", region: "Africa", lat: 5.4927, lng: 7.0261 },
+      { city: "Nassarawa", country: "Nigeria", region: "Africa", lat: 8.5380, lng: 8.3227 },
+      
+      // Rest of Africa
+      { city: "Accra", country: "Ghana", region: "Africa", lat: 5.6037, lng: -0.1870 },
+      { city: "Nairobi", country: "Kenya", region: "Africa", lat: -1.2921, lng: 36.8219 },
+      { city: "Dakar", country: "Senegal", region: "Africa", lat: 14.7167, lng: -17.4677 },
+      { city: "Mahé", country: "Seychelles", region: "Africa", lat: -4.6796, lng: 55.4920 },
+      { city: "Johannesburg", country: "South Africa", region: "Africa", lat: -26.2041, lng: 28.0473 },
+      { city: "Addis Ababa", country: "Ethiopia", region: "Africa", lat: 9.0320, lng: 38.7636 },
+      
+      // Middle East
+      { city: "Dubai", country: "UAE", region: "Middle East", lat: 25.2048, lng: 55.2708 },
+      { city: "Doha", country: "Qatar", region: "Middle East", lat: 25.2854, lng: 51.5310 },
+      
+      // Europe
+      { city: "Bologna", country: "Italy", region: "Europe", lat: 44.4949, lng: 11.3426 },
+      { city: "Florence", country: "Italy", region: "Europe", lat: 43.7696, lng: 11.2558 },
+      { city: "Rome", country: "Italy", region: "Europe", lat: 41.9028, lng: 12.4964 },
+      { city: "Milan", country: "Italy", region: "Europe", lat: 45.4642, lng: 9.1900 },
+      { city: "Naples", country: "Italy", region: "Europe", lat: 40.8518, lng: 14.2681 },
+      { city: "Chambéry", country: "France", region: "Europe", lat: 45.5646, lng: 5.9178 },
+      { city: "Annecy", country: "France", region: "Europe", lat: 45.8992, lng: 6.1294 },
+      { city: "Paris", country: "France", region: "Europe", lat: 48.8566, lng: 2.3522 },
+      { city: "La Défense", country: "France", region: "Europe", lat: 48.8918, lng: 2.2362 },
+      { city: "Frankfurt", country: "Germany", region: "Europe", lat: 50.1109, lng: 8.6821 },
+      { city: "Vienna", country: "Austria", region: "Europe", lat: 48.2082, lng: 16.3738 },
+      { city: "Budapest", country: "Hungary", region: "Europe", lat: 47.4979, lng: 19.0402 },
+      { city: "Tenerife", country: "Spain", region: "Europe", lat: 28.2916, lng: -16.6291 },
+      { city: "Madrid", country: "Spain", region: "Europe", lat: 40.4168, lng: -3.7038 },
+      { city: "Lisbon", country: "Portugal", region: "Europe", lat: 38.7223, lng: -9.1393 },
+      { city: "Tivat", country: "Montenegro", region: "Europe", lat: 42.4347, lng: 18.6958 },
+      { city: "Podgorica", country: "Montenegro", region: "Europe", lat: 42.4304, lng: 19.2594 },
+      
+      // Americas
+      { city: "New York", country: "USA", region: "Americas", lat: 40.7128, lng: -74.0060 },
+      { city: "San Francisco", country: "USA", region: "Americas", lat: 37.7749, lng: -122.4194 },
+      { city: "Austin", country: "USA", region: "Americas", lat: 30.2672, lng: -97.7431 },
+      { city: "Durham", country: "USA", region: "Americas", lat: 35.9940, lng: -78.8986 },
+    ];
+
+    // Calculate stats
+    const countries = [...new Set(CITIES.map(c => c.country))];
+    const regions = [...new Set(CITIES.map(c => c.region))];
+    document.getElementById('countryCount').textContent = countries.length;
+    document.getElementById('cityCount').textContent = CITIES.length;
+    document.getElementById('continentCount').textContent = regions.length;
+
+    // Initialize map
+    const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+    const map = L.map('map', {
+      scrollWheelZoom: false
+    }).setView([20, 10], 2);
+
+    // Use a clean map style
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/{style}/{z}/{x}/{y}{r}.png', {
+      attribution: '©OpenStreetMap, ©CartoDB',
+      style: isDark ? 'dark_all' : 'light_all',
+      maxZoom: 19
+    }).addTo(map);
+
+    // Custom marker icon
+    const markerIcon = L.divIcon({
+      className: 'custom-marker',
+      iconSize: [12, 12],
+      iconAnchor: [6, 6],
+      popupAnchor: [0, -8]
+    });
+
+    // Add markers
+    CITIES.forEach(place => {
+      const marker = L.marker([place.lat, place.lng], { icon: markerIcon }).addTo(map);
+      marker.bindPopup(`
+        <div class="popup-city">${place.city}</div>
+        <div class="popup-country">${place.country}</div>
+      `);
+    });
+
+    // Render cities by region
+    const citiesByRegion = {};
+    CITIES.forEach(c => {
+      if (!citiesByRegion[c.region]) citiesByRegion[c.region] = [];
+      citiesByRegion[c.region].push(c);
+    });
+
+    document.getElementById('citiesByRegion').innerHTML = Object.entries(citiesByRegion).map(([region, cities]) => `
+      <div class="region-group">
+        <h3>${region}</h3>
+        <ul>
+          ${cities.map(c => `<li>${c.city} <span>${c.country}</span></li>`).join('')}
+        </ul>
+      </div>
+    `).join('');
+  </script>
+</body>
+</html>

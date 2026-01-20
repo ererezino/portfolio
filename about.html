@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>About - Zino Asamaige</title>
+
+  <meta name="description" content="A bit about Zino Asamaige - photographer, builder, traveler.">
+  <link rel="icon" type="image/png" href="/assets/logo.png">
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --bg: #FFFFFF;
+      --bg-alt: #F7F7F7;
+      --text: #0A0A0A;
+      --text-secondary: #555555;
+      --text-tertiary: #888888;
+      --border: #E8E8E8;
+      --green: #00D26A;
+      --container: 900px;
+      --transition: 0.2s ease;
+    }
+
+    [data-theme="dark"] {
+      --bg: #0A0A0A;
+      --bg-alt: #111111;
+      --text: #FFFFFF;
+      --text-secondary: #AAAAAA;
+      --text-tertiary: #666666;
+      --border: #222222;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Space Mono', monospace;
+      font-size: 14px;
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a { color: inherit; text-decoration: none; }
+    img { display: block; max-width: 100%; }
+
+    .container {
+      max-width: var(--container);
+      margin: 0 auto;
+      padding: 0 40px;
+    }
+    @media (max-width: 768px) {
+      .container { padding: 0 20px; }
+    }
+
+    /* Header */
+    header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      padding: 20px 0;
+      background: var(--bg);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .header-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      max-width: var(--container);
+      margin: 0 auto;
+      padding: 0 40px;
+    }
+    @media (max-width: 768px) {
+      .header-inner { padding: 0 20px; }
+    }
+
+    .logo {
+      font-size: 15px;
+      font-weight: 700;
+    }
+
+    .header-nav {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+    }
+    .header-nav a {
+      font-size: 12px;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .header-nav a:hover { color: var(--text); }
+
+    .theme-btn {
+      width: 32px;
+      height: 32px;
+      border: 1px solid var(--border);
+      background: transparent;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+    }
+    .theme-btn svg { width: 14px; height: 14px; color: var(--text-secondary); }
+    .theme-btn .sun { display: none; }
+    [data-theme="dark"] .theme-btn .sun { display: block; }
+    [data-theme="dark"] .theme-btn .moon { display: none; }
+
+    /* Page */
+    main {
+      padding-top: 100px;
+    }
+
+    .page-header {
+      padding: 60px 0 48px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--text-tertiary);
+      margin-bottom: 32px;
+      transition: color var(--transition);
+    }
+    .back-link:hover { color: var(--text); }
+    .back-link svg { width: 14px; height: 14px; }
+
+    .page-title {
+      font-size: clamp(32px, 5vw, 48px);
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      margin-bottom: 16px;
+    }
+
+    .page-lead {
+      font-size: 15px;
+      color: var(--text-secondary);
+      max-width: 600px;
+      line-height: 1.8;
+    }
+
+    /* About Grid */
+    .about-section {
+      padding: 64px 0;
+    }
+
+    .about-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+    }
+    @media (max-width: 700px) {
+      .about-grid { grid-template-columns: 1fr; }
+    }
+
+    .about-card {
+      padding: 40px 32px;
+      background: var(--bg);
+      transition: background var(--transition);
+    }
+    .about-card:hover { background: var(--bg-alt); }
+
+    .about-card-icon {
+      width: 40px;
+      height: 40px;
+      margin-bottom: 20px;
+      color: var(--text-tertiary);
+      transition: color var(--transition);
+    }
+    .about-card:hover .about-card-icon { color: var(--text); }
+
+    .about-card h3 {
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 12px;
+      letter-spacing: -0.01em;
+    }
+
+    .about-card p {
+      font-size: 13px;
+      color: var(--text-secondary);
+      line-height: 1.7;
+    }
+
+    /* Closing note */
+    .closing-note {
+      padding: 64px 0;
+      border-top: 1px solid var(--border);
+    }
+
+    .closing-text {
+      font-size: 18px;
+      line-height: 1.8;
+      color: var(--text-secondary);
+      max-width: 600px;
+    }
+    .closing-text em {
+      color: var(--text);
+      font-style: italic;
+    }
+
+    /* Footer */
+    footer {
+      padding: 32px 0;
+      border-top: 1px solid var(--border);
+    }
+
+    .footer-inner {
+      display: flex;
+      justify-content: space-between;
+      font-size: 11px;
+      color: var(--text-tertiary);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <div class="header-inner">
+      <a href="/" class="logo">Zino Asamaige</a>
+      <nav class="header-nav">
+        <a href="/photos.html">Photos</a>
+        <a href="/articles.html">Articles</a>
+        <a href="/travels.html">Travels</a>
+        <button class="theme-btn" id="themeToggle">
+          <svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+          <svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <div class="container">
+      <div class="page-header">
+        <a href="/" class="back-link">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+          Back to home
+        </a>
+        <h1 class="page-title">A bit about me</h1>
+        <p class="page-lead">
+          I'm Zino Asamaige, a builder, photographer, and traveler based in Lagos, Nigeria. 
+          I spend my days working on Accrue and my evenings walking through the city with a camera.
+        </p>
+      </div>
+
+      <section class="about-section">
+        <div class="about-grid">
+          <div class="about-card">
+            <svg class="about-card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/>
+              <circle cx="12" cy="13" r="4"/>
+            </svg>
+            <h3>Photography</h3>
+            <p>Hobbyist photographer with a focus on travel and street photography. I document places, people, and the small moments in between. Mostly shooting on iPhone these days.</p>
+          </div>
+
+          <div class="about-card">
+            <svg class="about-card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path d="M22 10v6M2 10l10-5 10 5-10 5z"/>
+              <path d="M6 12v5c3 3 9 3 12 0v-5"/>
+            </svg>
+            <h3>University of Bologna</h3>
+            <p>MBA from the oldest university in the world, founded in 1088. An incredible experience living in Italy and learning alongside people from around the globe.</p>
+          </div>
+
+          <div class="about-card">
+            <svg class="about-card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <circle cx="12" cy="12" r="10"/>
+              <path d="M12 8v4l3 3"/>
+            </svg>
+            <h3>Racket Sports</h3>
+            <p>Played tennis on and off for two years before discovering padel. Six months in and completely hooked. Always looking for a game if you're in Lagos.</p>
+          </div>
+
+          <div class="about-card">
+            <svg class="about-card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path d="M2 12h2a8 8 0 0 1 16 0h2"/>
+              <path d="M12 2a10 10 0 0 0-10 10"/>
+              <path d="M12 2a10 10 0 0 1 10 10"/>
+              <circle cx="12" cy="12" r="2"/>
+            </svg>
+            <h3>Swimming</h3>
+            <p>I love being in the water but I've been temporarily banned from the pool until I finish my swimming lessons. It's on the list. Soon.</p>
+          </div>
+
+          <div class="about-card">
+            <svg class="about-card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path d="M12 22c-4-3-8-6-8-11a8 8 0 1 1 16 0c0 5-4 8-8 11z"/>
+              <circle cx="12" cy="11" r="2"/>
+            </svg>
+            <h3>Walking</h3>
+            <p>Long walks through cities are my meditation. There's something about moving through a place on foot that makes you see it completely differently. Also great for cardiovascular health.</p>
+          </div>
+
+          <div class="about-card">
+            <svg class="about-card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <rect x="2" y="6" width="20" height="12" rx="2"/>
+              <path d="M6 12h4M14 10v4"/>
+              <circle cx="17" cy="12" r="1"/>
+            </svg>
+            <h3>FIFA</h3>
+            <p>I'm a great FIFA player. Not "pretty good" great. Actually great. Been playing for years and I'm always happy to prove it. Challenge welcome anytime.</p>
+          </div>
+
+          <div class="about-card">
+            <svg class="about-card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+              <path d="M2 17l10 5 10-5"/>
+              <path d="M2 12l10 5 10-5"/>
+            </svg>
+            <h3>Travel</h3>
+            <p>Love exploring new places and cultures. Every trip teaches you something about the world and yourself. Building a map of everywhere I've been.</p>
+          </div>
+
+          <div class="about-card">
+            <svg class="about-card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+            </svg>
+            <h3>My People</h3>
+            <p>I love my girlfriend, my family, and my friends deeply. They're the reason for everything. The people in your life make everything worthwhile.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="closing-note">
+        <p class="closing-text">
+          I've failed at so many things but have no regrets. <em>Every attempt has taught something.</em> 
+          Life is about trying things, learning from them, and trying again.
+        </p>
+      </section>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container footer-inner">
+      <span>© 2026 Zino Asamaige</span>
+      <span>Lagos, Nigeria</span>
+    </div>
+  </footer>
+
+  <script>
+    const toggle = document.getElementById('themeToggle');
+    const saved = localStorage.getItem('theme');
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    document.documentElement.setAttribute('data-theme', saved || (prefersDark ? 'dark' : 'light'));
+    toggle.onclick = () => {
+      const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+      document.documentElement.setAttribute('data-theme', isDark ? 'light' : 'dark');
+      localStorage.setItem('theme', isDark ? 'light' : 'dark');
+    };
+  </script>
+</body>
+</html>
