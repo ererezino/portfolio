@@ -5,9 +5,18 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Articles - Zino Asamaige</title>
 
-  <meta name="description" content="Articles and notes by Zino Asamaige.">
+  <meta name="description" content="Thoughts on building, creating, and living. By Zino Asamaige.">
+  <meta name="author" content="Zino Asamaige">
+  <meta property="og:title" content="Articles - Zino Asamaige">
+  <meta property="og:description" content="Thoughts on building, creating, and living.">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="/assets/og-image.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+
   <link rel="icon" type="image/png" href="/assets/logo.png">
-  
+  <link rel="apple-touch-icon" href="/assets/logo.png">
+  <meta name="theme-color" content="#FFFFFF">
+
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet" />
@@ -20,6 +29,8 @@
       --text-secondary: #555555;
       --text-tertiary: #888888;
       --border: #E8E8E8;
+      --accent: #0A0A0A;
+      --accent-soft: rgba(10, 10, 10, 0.06);
       --container: 800px;
       --transition: 0.2s ease;
     }
@@ -31,11 +42,13 @@
       --text-secondary: #AAAAAA;
       --text-tertiary: #666666;
       --border: #222222;
+      --accent: #FFFFFF;
+      --accent-soft: rgba(255, 255, 255, 0.08);
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: smooth; }
-    
+
     body {
       background: var(--bg);
       color: var(--text);
@@ -43,19 +56,22 @@
       font-size: 14px;
       line-height: 1.7;
       -webkit-font-smoothing: antialiased;
+      transition: background var(--transition), color var(--transition);
     }
 
     a { color: inherit; text-decoration: none; }
+    img { display: block; max-width: 100%; }
 
-    .container {
-      max-width: var(--container);
-      margin: 0 auto;
-      padding: 0 40px;
+    .container { 
+      max-width: var(--container); 
+      margin: 0 auto; 
+      padding: 0 40px; 
     }
     @media (max-width: 768px) {
       .container { padding: 0 20px; }
     }
 
+    /* Header */
     header {
       position: fixed;
       top: 0;
@@ -65,6 +81,7 @@
       padding: 20px 0;
       background: var(--bg);
       border-bottom: 1px solid var(--border);
+      transition: background var(--transition);
     }
 
     .header-inner {
@@ -79,20 +96,46 @@
       .header-inner { padding: 0 20px; }
     }
 
-    .logo { font-size: 15px; font-weight: 700; }
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 15px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+
+    .logo-img {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 1px solid var(--border);
+    }
 
     .header-nav {
       display: flex;
       align-items: center;
-      gap: 24px;
+      gap: 20px;
     }
-    .header-nav a {
+
+    .back-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
       font-size: 12px;
-      color: var(--text-secondary);
       text-transform: uppercase;
       letter-spacing: 0.05em;
+      color: var(--text-secondary);
+      padding: 8px 14px;
+      border: 1px solid var(--border);
+      transition: all var(--transition);
     }
-    .header-nav a:hover { color: var(--text); }
+    .back-btn:hover {
+      color: var(--text);
+      border-color: var(--text-secondary);
+    }
+    .back-btn svg { width: 14px; height: 14px; }
 
     .theme-btn {
       width: 32px;
@@ -103,64 +146,80 @@
       align-items: center;
       justify-content: center;
       cursor: pointer;
+      transition: border-color var(--transition);
     }
+    .theme-btn:hover { border-color: var(--text-secondary); }
     .theme-btn svg { width: 14px; height: 14px; color: var(--text-secondary); }
     .theme-btn .sun { display: none; }
     [data-theme="dark"] .theme-btn .sun { display: block; }
     [data-theme="dark"] .theme-btn .moon { display: none; }
 
+    /* Page */
     main { padding-top: 100px; }
 
     .page-header {
-      padding: 60px 0 48px;
+      padding: 48px 0;
       border-bottom: 1px solid var(--border);
     }
-
-    .back-link {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      font-size: 11px;
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-      color: var(--text-tertiary);
-      margin-bottom: 32px;
-      transition: color var(--transition);
-    }
-    .back-link:hover { color: var(--text); }
-    .back-link svg { width: 14px; height: 14px; }
 
     .page-title {
       font-size: clamp(32px, 5vw, 48px);
       font-weight: 700;
       letter-spacing: -0.03em;
-      margin-bottom: 16px;
+      margin-bottom: 12px;
     }
 
     .page-lead {
-      font-size: 15px;
+      font-size: 14px;
       color: var(--text-secondary);
-      max-width: 500px;
-      line-height: 1.8;
+      line-height: 1.7;
     }
 
-    .articles-section { padding: 48px 0; }
+    /* Articles List */
+    .articles-section {
+      padding: 48px 0;
+    }
 
-    .article-item {
-      display: block;
+    .articles-list {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .article-card {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 20px;
       padding: 32px 0;
       border-bottom: 1px solid var(--border);
       transition: opacity var(--transition);
     }
-    .article-item:hover { opacity: 0.7; }
-    .article-item:first-child { padding-top: 0; }
+    .article-card:first-child { padding-top: 0; }
+    .article-card:hover { opacity: 0.8; }
 
-    .article-date {
+    .article-card.has-thumbnail {
+      grid-template-columns: 1fr 160px;
+      align-items: start;
+    }
+    @media (max-width: 600px) {
+      .article-card.has-thumbnail {
+        grid-template-columns: 1fr;
+      }
+      .article-thumbnail { order: -1; }
+    }
+
+    .article-content {
+      min-width: 0;
+    }
+
+    .article-meta {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 12px;
       font-size: 11px;
       text-transform: uppercase;
       letter-spacing: 0.1em;
       color: var(--text-tertiary);
-      margin-bottom: 8px;
     }
 
     .article-title {
@@ -168,40 +227,115 @@
       font-weight: 700;
       letter-spacing: -0.02em;
       margin-bottom: 12px;
+      line-height: 1.3;
     }
 
     .article-excerpt {
-      font-size: 14px;
       color: var(--text-secondary);
+      font-size: 14px;
       line-height: 1.7;
+      margin-bottom: 16px;
     }
 
+    .article-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .tag {
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      padding: 6px 10px;
+      background: var(--accent-soft);
+      color: var(--text-secondary);
+      border: 1px solid var(--border);
+    }
+
+    .article-thumbnail {
+      width: 160px;
+      height: 120px;
+      overflow: hidden;
+      flex-shrink: 0;
+      border: 1px solid var(--border);
+    }
+    .article-thumbnail img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.4s ease;
+    }
+    .article-card:hover .article-thumbnail img {
+      transform: scale(1.05);
+    }
+
+    .article-author {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: 20px;
+      padding-top: 20px;
+      border-top: 1px solid var(--border);
+    }
+
+    .author-avatar {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      overflow: hidden;
+      border: 1px solid var(--border);
+    }
+    .author-avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .author-name {
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .external-badge {
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-tertiary);
+      margin-left: auto;
+    }
+
+    /* Empty State */
     .empty-state {
-      padding: 80px 0;
       text-align: center;
+      padding: 80px 20px;
     }
 
-    .empty-icon {
+    .empty-state-icon {
       width: 48px;
       height: 48px;
       margin: 0 auto 24px;
       color: var(--text-tertiary);
     }
 
-    .empty-title {
+    .empty-state-title {
       font-size: 18px;
       font-weight: 700;
       margin-bottom: 8px;
     }
 
-    .empty-text {
+    .empty-state-text {
       font-size: 14px;
       color: var(--text-tertiary);
     }
 
+    /* Footer */
     footer {
       padding: 32px 0;
       border-top: 1px solid var(--border);
+      margin-top: 48px;
     }
 
     .footer-inner {
@@ -218,12 +352,16 @@
 <body>
   <header>
     <div class="header-inner">
-      <a href="/" class="logo">Zino Asamaige</a>
+      <a href="/" class="logo">
+        <img src="/assets/logo.png" alt="" class="logo-img">
+        Zino Asamaige
+      </a>
       <nav class="header-nav">
-        <a href="/about.html">About</a>
-        <a href="/photos.html">Photos</a>
-        <a href="/travels.html">Travels</a>
-        <button class="theme-btn" id="themeToggle">
+        <a href="/" class="back-btn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+          Home
+        </a>
+        <button class="theme-btn" id="themeToggle" aria-label="Toggle theme">
           <svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
           <svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
         </button>
@@ -234,71 +372,122 @@
   <main>
     <div class="container">
       <div class="page-header">
-        <a href="/" class="back-link">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
-          Back to home
-        </a>
         <h1 class="page-title">Articles</h1>
-        <p class="page-lead">Thoughts, notes, and longer-form writing on things I find interesting.</p>
+        <p class="page-lead">Thoughts on building, creating, and living.</p>
       </div>
 
-      <section class="articles-section" id="articlesList">
-        <!-- Articles will be rendered here -->
+      <section class="articles-section">
+        <div class="articles-list" id="articlesList"></div>
       </section>
     </div>
   </main>
 
   <footer>
     <div class="container footer-inner">
-      <span>© 2026 Zino Asamaige</span>
+      <span>© <span id="year"></span> Zino Asamaige</span>
       <span>Lagos, Nigeria</span>
     </div>
   </footer>
 
+  <!-- External articles data -->
+  <script src="/articles/assets/articles.js"></script>
+  
   <script>
     // Theme
-    const toggle = document.getElementById('themeToggle');
-    const saved = localStorage.getItem('theme');
+    const themeToggle = document.getElementById('themeToggle');
     const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-    document.documentElement.setAttribute('data-theme', saved || (prefersDark ? 'dark' : 'light'));
-    toggle.onclick = () => {
-      const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
-      document.documentElement.setAttribute('data-theme', isDark ? 'light' : 'dark');
-      localStorage.setItem('theme', isDark ? 'light' : 'dark');
-    };
+    const savedTheme = localStorage.getItem('theme');
 
-    // Articles data - add your articles here
-    const ARTICLES = [
-      // Example:
-      // { title: "Article Title", date: "January 2026", excerpt: "Brief description...", url: "/articles/article-slug.html" }
-    ];
-
-    // Render
-    const container = document.getElementById('articlesList');
-    
-    if (ARTICLES.length === 0) {
-      container.innerHTML = `
-        <div class="empty-state">
-          <svg class="empty-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
-            <polyline points="14 2 14 8 20 8"/>
-            <line x1="16" y1="13" x2="8" y2="13"/>
-            <line x1="16" y1="17" x2="8" y2="17"/>
-            <polyline points="10 9 9 9 8 9"/>
-          </svg>
-          <h2 class="empty-title">Coming soon</h2>
-          <p class="empty-text">I'm working on some articles. Check back later.</p>
-        </div>
-      `;
-    } else {
-      container.innerHTML = ARTICLES.map(a => `
-        <a href="${a.url}" class="article-item">
-          <div class="article-date">${a.date}</div>
-          <h2 class="article-title">${a.title}</h2>
-          <p class="article-excerpt">${a.excerpt}</p>
-        </a>
-      `).join('');
+    function setTheme(dark) {
+      document.documentElement.setAttribute('data-theme', dark ? 'dark' : 'light');
+      localStorage.setItem('theme', dark ? 'dark' : 'light');
     }
+
+    if (savedTheme) {
+      setTheme(savedTheme === 'dark');
+    } else {
+      setTheme(prefersDark);
+    }
+
+    themeToggle.addEventListener('click', () => {
+      const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+      setTheme(!isDark);
+    });
+
+    // Utilities
+    const esc = s => String(s || '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+
+    function formatDate(dateStr) {
+      const date = new Date(dateStr);
+      return date.toLocaleDateString('en-US', { 
+        year: 'numeric', 
+        month: 'short', 
+        day: 'numeric' 
+      }).toUpperCase();
+    }
+
+    // Render Articles
+    function renderArticles() {
+      const list = document.getElementById('articlesList');
+      
+      // Check if ARTICLES is defined (from external articles.js)
+      if (typeof ARTICLES === 'undefined' || !ARTICLES || ARTICLES.length === 0) {
+        list.innerHTML = `
+          <div class="empty-state">
+            <svg class="empty-state-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+              <polyline points="14 2 14 8 20 8"/>
+              <line x1="16" y1="13" x2="8" y2="13"/>
+              <line x1="16" y1="17" x2="8" y2="17"/>
+              <polyline points="10 9 9 9 8 9"/>
+            </svg>
+            <h3 class="empty-state-title">Coming soon</h3>
+            <p class="empty-state-text">I'm working on some articles. Check back later.</p>
+          </div>
+        `;
+        return;
+      }
+
+      // Sort by date (newest first)
+      const sorted = [...ARTICLES].sort((a, b) => new Date(b.date) - new Date(a.date));
+
+      list.innerHTML = sorted.map(article => {
+        // Use external URL if available, otherwise internal slug
+        const articleUrl = article.externalUrl || `/articles/${esc(article.slug)}/`;
+        const isExternal = !!article.externalUrl;
+        return `
+        <a href="${articleUrl}" ${isExternal ? 'target="_blank" rel="noopener"' : ''} class="article-card ${article.thumbnail ? 'has-thumbnail' : ''}">`
+          <div class="article-content">
+            <div class="article-meta">
+              <span>${formatDate(article.date)}</span>
+              ${article.readTime ? `<span>${esc(article.readTime)}</span>` : ''}
+            </div>
+            <h2 class="article-title">${esc(article.title)}</h2>
+            <p class="article-excerpt">${esc(article.excerpt)}</p>
+            ${article.tags && article.tags.length ? `
+              <div class="article-tags">
+                ${article.tags.map(tag => `<span class="tag">${esc(tag)}</span>`).join('')}
+              </div>
+            ` : ''}
+            <div class="article-author">
+              <span class="author-avatar"><img src="/assets/logo.png" alt=""></span>
+              <span class="author-name">${esc(article.author)}</span>
+              ${isExternal ? '<span class="external-badge">Medium ↗</span>' : ''}
+            </div>
+          </div>
+          ${article.thumbnail ? `
+            <div class="article-thumbnail">
+              <img src="${esc(article.thumbnail)}" alt="" loading="lazy">
+            </div>
+          ` : ''}
+        </a>
+      `;
+      }).join('');
+    }
+
+    // Init
+    document.getElementById('year').textContent = new Date().getFullYear();
+    renderArticles();
   </script>
 </body>
 </html>
