@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -38,6 +39,10 @@
       --glass-border: rgba(255, 255, 255, 0.3);
       --container: 1100px;
       --transition: 0.2s ease;
+
+      /* Violet accent (light mode) */
+      --violet: #6D28D9;
+      --violet-soft: rgba(109, 40, 217, 0.10);
     }
 
     [data-theme="dark"] {
@@ -52,12 +57,16 @@
       --green-glow: rgba(0, 210, 106, 0.5);
       --glass-bg: rgba(20, 20, 20, 0.8);
       --glass-border: rgba(255, 255, 255, 0.1);
+
+      /* Violet accent (dark mode) */
+      --violet: #A78BFA;
+      --violet-soft: rgba(167, 139, 250, 0.12);
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    
+
     html { scroll-behavior: smooth; }
-    
+
     body {
       background: var(--bg);
       color: var(--text);
@@ -270,7 +279,7 @@
       color: var(--text-tertiary);
       margin-bottom: 32px;
     }
-    
+
     /* Glowing location dot */
     .location-dot {
       position: relative;
@@ -320,6 +329,14 @@
       transition: border-color var(--transition);
     }
     .hero-text a:hover { border-color: var(--text); }
+
+    /* Violet accent helpers */
+    .accent-violet {
+      color: var(--violet);
+    }
+    .accent-bold {
+      font-weight: 700;
+    }
 
     .hero-ctas {
       display: flex;
@@ -426,7 +443,7 @@
       scroll-behavior: smooth;
     }
     .photos-carousel::-webkit-scrollbar { display: none; }
-    
+
     @media (max-width: 768px) {
       .photos-carousel {
         margin: 0 -20px;
@@ -472,11 +489,11 @@
     .photo-item:hover {
       transform: translateY(-4px);
     }
-    
+
     @media (max-width: 768px) {
       .photo-item { width: 200px; }
     }
-    
+
     .photo-item img {
       width: 100%;
       aspect-ratio: 3/4;
@@ -522,8 +539,8 @@
       border-right: 1px solid var(--border);
     }
     @media (max-width: 900px) {
-      .movement-hero-left { 
-        border-right: none; 
+      .movement-hero-left {
+        border-right: none;
         border-bottom: 1px solid var(--border);
         padding: 40px 24px;
       }
@@ -856,12 +873,12 @@
     .into-cover.book { width: 40px; height: 56px; }
     .into-cover img { width: 100%; height: 100%; object-fit: cover; }
 
-    .into-text { 
-      flex: 1; 
-      min-width: 0; 
-      display: flex; 
-      flex-direction: column; 
-      justify-content: center; 
+    .into-text {
+      flex: 1;
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
     }
     .into-title {
       font-size: 13px;
@@ -1095,11 +1112,11 @@
             <span class="location-dot"></span>
             Based in Lagos, Nigeria
           </div>
-          <h1>Doing the best I can, daily.</h1>
+          <h1>Doing the best I can, <span class="accent-violet">daily</span>.</h1>
           <p class="hero-text">
-            Building <a href="https://useaccrue.com/" target="_blank">Accrue</a> with 
-            <a href="https://clintonmbah.com/" target="_blank">Clinton</a> & 
-            <a href="https://medium.com/@adesuwaomoruyi" target="_blank">Adesuwa</a>. 
+            Building <a class="accent-violet accent-bold" href="https://useaccrue.com/" target="_blank">Accrue</a> with
+            <a class="accent-violet accent-bold" href="https://clintonmbah.com/" target="_blank">Clinton</a> &
+            <a class="accent-violet accent-bold" href="https://medium.com/@adesuwaomoruyi" target="_blank">Adesuwa</a>.
             When I'm not working, I'm probably walking somewhere with my camera, playing FIFA, or trying to get back in the pool.
           </p>
           <div class="hero-ctas">
@@ -1384,3 +1401,4 @@
   </script>
 </body>
 </html>
+```
