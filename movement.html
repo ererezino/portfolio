@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Movement - Zino Asamaige</title>
+
+  <meta name="description" content="Tracking my walks and runs. Staying active, one month at a time.">
+  <link rel="icon" type="image/png" href="/assets/logo.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,wght@0,400;0,500;1,400&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --bg: #FAFAF8;
+      --bg-card: #FFFFFF;
+      --text: #1A1A1A;
+      --text-secondary: #5C5C5C;
+      --text-tertiary: #8A8A8A;
+      --accent: #1A7F7F;
+      --accent-soft: rgba(26, 127, 127, 0.10);
+      --accent-hover: #156B6B;
+      --green: #4CAF50;
+      --green-soft: rgba(76, 175, 80, 0.12);
+      --border: rgba(26, 26, 26, 0.08);
+      --border-hover: rgba(26, 26, 26, 0.16);
+      --shadow: 0 1px 3px rgba(0,0,0,0.05), 0 4px 12px rgba(0,0,0,0.04);
+      --shadow-hover: 0 4px 12px rgba(0,0,0,0.08), 0 12px 32px rgba(0,0,0,0.06);
+      --radius: 16px;
+      --radius-sm: 10px;
+      --container: 820px;
+      --pad: 24px;
+      --transition: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    [data-theme="dark"] {
+      --bg: #0A0A0A;
+      --bg-card: #141414;
+      --text: #FAFAFA;
+      --text-secondary: #A8A8A8;
+      --text-tertiary: #6A6A6A;
+      --accent: #3AABAB;
+      --accent-soft: rgba(58, 171, 171, 0.12);
+      --accent-hover: #4CBFBF;
+      --green: #66BB6A;
+      --green-soft: rgba(102, 187, 106, 0.15);
+      --border: rgba(255, 255, 255, 0.08);
+      --border-hover: rgba(255, 255, 255, 0.16);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Outfit', -apple-system, sans-serif;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+    a { color: inherit; text-decoration: none; }
+    .container { max-width: var(--container); margin: 0 auto; padding: 0 var(--pad); }
+
+    /* Header */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(250, 250, 248, 0.82);
+      border-bottom: 1px solid var(--border);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+    }
+    [data-theme="dark"] header { background: rgba(10, 10, 10, 0.78); }
+
+    .head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px var(--pad);
+      max-width: var(--container);
+      margin: 0 auto;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .logo {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      overflow: hidden;
+      border: 1px solid var(--border);
+    }
+    .logo img { width: 100%; height: 100%; object-fit: cover; }
+    .brandtext strong { font-weight: 500; font-size: 15px; }
+
+    .theme-toggle {
+      width: 38px;
+      height: 38px;
+      border: 1px solid var(--border);
+      background: var(--bg-card);
+      border-radius: var(--radius-sm);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+    }
+    .theme-toggle svg { width: 18px; height: 18px; color: var(--text-secondary); }
+    .theme-toggle .sun { display: none; }
+    .theme-toggle .moon { display: block; }
+    [data-theme="dark"] .theme-toggle .sun { display: block; }
+    [data-theme="dark"] .theme-toggle .moon { display: none; }
+
+    /* Page */
+    .page-header {
+      padding: 48px 0 32px;
+    }
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 14px;
+      color: var(--text-tertiary);
+      margin-bottom: 16px;
+      transition: color var(--transition);
+    }
+    .back-link:hover { color: var(--accent); }
+
+    .page-title {
+      font-family: 'Newsreader', Georgia, serif;
+      font-weight: 400;
+      font-size: clamp(32px, 5vw, 44px);
+      margin-bottom: 12px;
+    }
+    .page-lead {
+      font-size: 17px;
+      color: var(--text-secondary);
+    }
+
+    /* Year Hero */
+    .activity-hero {
+      background: linear-gradient(135deg, var(--accent-soft) 0%, var(--bg-card) 50%, var(--green-soft) 100%);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 28px;
+      margin-bottom: 32px;
+    }
+    .activity-hero-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .activity-hero-title {
+      font-family: 'Newsreader', Georgia, serif;
+      font-size: 22px;
+    }
+    .activity-hero-badge {
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      padding: 5px 12px;
+      background: var(--accent);
+      color: #fff;
+      border-radius: 999px;
+    }
+    .year-stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+    @media (max-width: 480px) { .year-stats { grid-template-columns: 1fr; } }
+
+    .year-stat {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 20px;
+      text-align: center;
+    }
+    .year-stat-value {
+      font-family: 'Newsreader', Georgia, serif;
+      font-size: 32px;
+      color: var(--accent);
+      line-height: 1;
+      margin-bottom: 4px;
+    }
+    .year-stat-label {
+      font-size: 12px;
+      color: var(--text-tertiary);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    /* Chart */
+    .chart-section {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      margin-bottom: 32px;
+    }
+    .chart-title {
+      font-family: 'Newsreader', Georgia, serif;
+      font-size: 20px;
+      margin-bottom: 20px;
+    }
+    .chart-container {
+      display: flex;
+      align-items: flex-end;
+      gap: 8px;
+      height: 200px;
+      padding-bottom: 30px;
+      position: relative;
+    }
+    .chart-bar-wrapper {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      height: 100%;
+      position: relative;
+    }
+    .chart-bar {
+      width: 100%;
+      max-width: 60px;
+      background: linear-gradient(180deg, var(--accent) 0%, var(--accent-hover) 100%);
+      border-radius: 6px 6px 0 0;
+      position: absolute;
+      bottom: 30px;
+      transition: height 0.6s ease;
+    }
+    .chart-bar.goal-met {
+      background: linear-gradient(180deg, var(--green) 0%, #45a049 100%);
+    }
+    .chart-bar.current {
+      background: linear-gradient(180deg, var(--accent) 0%, var(--accent-hover) 100%);
+      box-shadow: 0 0 0 2px var(--accent-soft);
+    }
+    .chart-label {
+      position: absolute;
+      bottom: 0;
+      font-size: 11px;
+      color: var(--text-tertiary);
+      text-align: center;
+      white-space: nowrap;
+    }
+    .chart-value {
+      position: absolute;
+      top: -24px;
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--text-secondary);
+    }
+    .chart-goal-line {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: calc(30px + 100%);
+      border-top: 2px dashed var(--text-tertiary);
+      opacity: 0.4;
+    }
+    .chart-goal-label {
+      position: absolute;
+      right: 0;
+      top: -20px;
+      font-size: 10px;
+      color: var(--text-tertiary);
+    }
+
+    /* Monthly Cards */
+    .section-title {
+      font-family: 'Newsreader', Georgia, serif;
+      font-size: 24px;
+      margin-bottom: 20px;
+    }
+    .monthly-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-bottom: 48px;
+    }
+    .month-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      transition: border-color var(--transition), box-shadow var(--transition);
+    }
+    .month-card:hover {
+      border-color: var(--border-hover);
+      box-shadow: var(--shadow);
+    }
+    .month-card.current {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px var(--accent-soft);
+    }
+    .month-card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 20px;
+      border-bottom: 1px solid var(--border);
+      background: var(--bg);
+    }
+    .month-card-title {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .month-icon {
+      width: 36px;
+      height: 36px;
+      background: var(--accent-soft);
+      border-radius: var(--radius-sm);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+    }
+    .month-card.current .month-icon { background: var(--accent); }
+    .month-card.current .month-icon span { filter: brightness(10); }
+    .month-name { font-weight: 600; font-size: 15px; }
+    .month-year { font-size: 13px; color: var(--text-tertiary); }
+
+    .month-tag {
+      font-size: 10px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      padding: 4px 10px;
+      border-radius: 999px;
+      color: #fff;
+    }
+    .month-tag.current { background: var(--green); }
+    .month-tag.goal-met { background: var(--green); }
+
+    .month-card-body { padding: 16px 20px; }
+    .month-stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+    @media (max-width: 480px) { .month-stats { grid-template-columns: 1fr; gap: 8px; } }
+
+    .month-stat {
+      text-align: center;
+      padding: 12px;
+      background: var(--bg);
+      border-radius: var(--radius-sm);
+    }
+    .month-stat-value {
+      font-family: 'Newsreader', Georgia, serif;
+      font-size: 22px;
+      color: var(--accent);
+      line-height: 1.1;
+    }
+    .month-stat-label {
+      font-size: 11px;
+      color: var(--text-tertiary);
+      text-transform: uppercase;
+      margin-top: 2px;
+    }
+
+    .month-progress { padding-top: 12px; border-top: 1px solid var(--border); }
+    .progress-header {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 8px;
+    }
+    .progress-label { font-size: 12px; color: var(--text-tertiary); }
+    .progress-value { font-size: 12px; font-weight: 600; color: var(--accent); }
+    .progress-bar {
+      height: 8px;
+      background: var(--bg);
+      border-radius: 4px;
+      overflow: hidden;
+    }
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--accent) 0%, var(--accent-hover) 100%);
+      border-radius: 4px;
+      transition: width 1s ease;
+    }
+    .progress-fill.complete {
+      background: linear-gradient(90deg, var(--green) 0%, #66BB6A 100%);
+    }
+
+    /* Footer */
+    footer {
+      padding: 24px 0;
+      border-top: 1px solid var(--border);
+      margin-top: 32px;
+    }
+    .foot {
+      display: flex;
+      justify-content: space-between;
+      font-size: 13px;
+      color: var(--text-tertiary);
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <div class="head">
+      <a class="brand" href="/">
+        <span class="logo"><img src="/assets/logo.png" alt=""></span>
+        <div class="brandtext"><strong>Zino Asamaige</strong></div>
+      </a>
+      <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+        <svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+        </svg>
+        <svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
+        </svg>
+      </button>
+    </div>
+  </header>
+
+  <main>
+    <div class="container">
+      <div class="page-header">
+        <a href="/" class="back-link">← Back to home</a>
+        <h1 class="page-title">Movement</h1>
+        <p class="page-lead">Tracking my walks and runs. Goal: 310,000 steps per month (~237km), which is about 10,000 steps per day.</p>
+      </div>
+
+      <div class="activity-hero" id="yearHero"></div>
+
+      <div class="chart-section">
+        <h2 class="chart-title">Monthly Comparison</h2>
+        <div class="chart-container" id="chartContainer"></div>
+      </div>
+
+      <h2 class="section-title">All Months</h2>
+      <div class="monthly-grid" id="monthlyGrid"></div>
+
+      <footer>
+        <div class="foot">
+          <span>© <span id="year"></span> Zino Asamaige</span>
+          <span>Lagos, Nigeria</span>
+        </div>
+      </footer>
+    </div>
+  </main>
+
+  <script>
+    // ========= DATA =========
+    const YEAR_2025 = {
+      totalSteps: 2600000,
+      avgStepsPerDay: 7072,
+      totalKm: 1980
+    };
+
+    const MONTHLY_GOAL_STEPS = 310000;
+
+    // All months (newest first)
+    const MONTHLY_ACTIVITY = [
+      { month: "January", year: 2026, isCurrent: true, steps: 198000, km: 140, avgStepsPerDay: 9914 },
+      { month: "December", year: 2025, isCurrent: false, steps: 401117, km: 307, avgStepsPerDay: 12939 }
+      // Add more months here as needed
+    ];
+
+    // ========= UTILITIES =========
+    function formatNumber(num) {
+      if (num >= 1000000) return (num / 1000000).toFixed(1) + 'M';
+      return num.toLocaleString();
+    }
+
+    // ========= THEME =========
+    const themeToggle = document.getElementById('themeToggle');
+    const savedTheme = localStorage.getItem('theme');
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+    function setTheme(dark) {
+      document.documentElement.setAttribute('data-theme', dark ? 'dark' : 'light');
+      localStorage.setItem('theme', dark ? 'dark' : 'light');
+    }
+
+    if (savedTheme) setTheme(savedTheme === 'dark');
+    else setTheme(prefersDark);
+
+    themeToggle.addEventListener('click', () => {
+      const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+      setTheme(!isDark);
+    });
+
+    // ========= RENDER =========
+    function renderYearHero() {
+      document.getElementById('yearHero').innerHTML = `
+        <div class="activity-hero-header">
+          <h3 class="activity-hero-title">🏃 2025 Year in Review</h3>
+          <span class="activity-hero-badge">Completed</span>
+        </div>
+        <div class="year-stats">
+          <div class="year-stat">
+            <div class="year-stat-value">${formatNumber(YEAR_2025.totalSteps)}</div>
+            <div class="year-stat-label">Steps</div>
+          </div>
+          <div class="year-stat">
+            <div class="year-stat-value">${formatNumber(YEAR_2025.totalKm)}</div>
+            <div class="year-stat-label">Kilometers</div>
+          </div>
+          <div class="year-stat">
+            <div class="year-stat-value">${formatNumber(YEAR_2025.avgStepsPerDay)}</div>
+            <div class="year-stat-label">Avg/Day</div>
+          </div>
+        </div>
+      `;
+    }
+
+    function renderChart() {
+      const container = document.getElementById('chartContainer');
+      const months = [...MONTHLY_ACTIVITY].reverse(); // oldest first for chart
+      const maxSteps = Math.max(...months.map(m => m.steps), MONTHLY_GOAL_STEPS);
+      
+      container.innerHTML = months.map(m => {
+        const heightPercent = (m.steps / maxSteps) * 100;
+        const isGoalMet = m.steps >= MONTHLY_GOAL_STEPS;
+        const label = m.month.slice(0, 3) + " '" + String(m.year).slice(2);
+        return `
+          <div class="chart-bar-wrapper">
+            <span class="chart-value">${formatNumber(m.steps)}</span>
+            <div class="chart-bar ${isGoalMet ? 'goal-met' : ''} ${m.isCurrent ? 'current' : ''}" style="height: ${heightPercent}%"></div>
+            <span class="chart-label">${label}</span>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function renderMonthlyActivity() {
+      const container = document.getElementById('monthlyGrid');
+      
+      container.innerHTML = MONTHLY_ACTIVITY.map(month => {
+        const progress = Math.min((month.steps / MONTHLY_GOAL_STEPS) * 100, 100);
+        const isComplete = month.steps >= MONTHLY_GOAL_STEPS;
+        const percentOfGoal = ((month.steps / MONTHLY_GOAL_STEPS) * 100).toFixed(0);
+        
+        let tagHTML = '';
+        if (month.isCurrent) {
+          tagHTML = '<span class="month-tag current">In Progress</span>';
+        } else if (isComplete) {
+          tagHTML = '<span class="month-tag goal-met">Goal Met!</span>';
+        }
+
+        return `
+          <div class="month-card ${month.isCurrent ? 'current' : ''}">
+            <div class="month-card-header">
+              <div class="month-card-title">
+                <div class="month-icon"><span>${month.isCurrent ? '🔥' : (isComplete ? '✅' : '📅')}</span></div>
+                <div>
+                  <div class="month-name">${month.month}</div>
+                  <div class="month-year">${month.year}</div>
+                </div>
+              </div>
+              ${tagHTML}
+            </div>
+            <div class="month-card-body">
+              <div class="month-stats">
+                <div class="month-stat">
+                  <div class="month-stat-value">${formatNumber(month.steps)}</div>
+                  <div class="month-stat-label">steps</div>
+                </div>
+                <div class="month-stat">
+                  <div class="month-stat-value">${month.km}</div>
+                  <div class="month-stat-label">km</div>
+                </div>
+                <div class="month-stat">
+                  <div class="month-stat-value">${formatNumber(month.avgStepsPerDay)}</div>
+                  <div class="month-stat-label">avg/day</div>
+                </div>
+              </div>
+              <div class="month-progress">
+                <div class="progress-header">
+                  <span class="progress-label">${isComplete ? '🎉 Goal surpassed!' : 'Monthly goal (310k steps)'}</span>
+                  <span class="progress-value">${percentOfGoal}%</span>
+                </div>
+                <div class="progress-bar">
+                  <div class="progress-fill ${isComplete ? 'complete' : ''}" style="width: ${progress}%"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    // ========= INIT =========
+    document.getElementById('year').textContent = new Date().getFullYear();
+    renderYearHero();
+    renderChart();
+    renderMonthlyActivity();
+  </script>
+</body>
+</html>
