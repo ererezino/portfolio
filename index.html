@@ -5,1477 +5,916 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Zino Asamaige</title>
 
-  <!-- SEO & Social -->
   <meta name="description" content="Building things, taking photos, trying to get better at swimming. Based in Lagos.">
-  <meta name="author" content="Zino Asamaige">
-  <meta property="og:title" content="Zino Asamaige">
-  <meta property="og:description" content="Building things, taking photos, trying to get better at swimming. Based in Lagos.">
-  <meta property="og:type" content="website">
-  <meta property="og:url" content="https://ererezino.com">
-  <meta property="og:image" content="/assets/og-image.jpg">
-  <meta name="twitter:card" content="summary_large_image">
-
   <link rel="icon" type="image/png" href="/assets/logo.png">
-  <link rel="apple-touch-icon" href="/assets/logo.png">
-  <meta name="theme-color" content="#FAFAF8">
-
+  
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,wght@0,400;0,500;1,400&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet" />
 
   <style>
     :root {
-      --bg: #FAFAF8;
-      --bg-elevated: #FFFFFF;
-      --bg-card: #FFFFFF;
-      --text: #1A1A1A;
-      --text-secondary: #5C5C5C;
-      --text-tertiary: #8A8A8A;
-      --accent: #1A7F7F;
-      --accent-soft: rgba(26, 127, 127, 0.10);
-      --accent-medium: rgba(26, 127, 127, 0.18);
-      --accent-hover: #156B6B;
-      --accent-secondary: #D4915D;
-      --accent-secondary-soft: rgba(212, 145, 93, 0.12);
-      --green: #4CAF50;
-      --green-soft: rgba(76, 175, 80, 0.12);
-      --border: rgba(26, 26, 26, 0.08);
-      --border-hover: rgba(26, 26, 26, 0.16);
-      --shadow-sm: 0 1px 2px rgba(0,0,0,0.04);
-      --shadow: 0 1px 3px rgba(0,0,0,0.05), 0 4px 12px rgba(0,0,0,0.04);
-      --shadow-hover: 0 4px 12px rgba(0,0,0,0.08), 0 12px 32px rgba(0,0,0,0.06);
-      --shadow-glow: 0 0 0 3px var(--accent-soft);
-      --radius: 16px;
-      --radius-sm: 10px;
-      --radius-xs: 6px;
-      --container: 820px;
-      --container-wide: 1120px;
-      --pad: 24px;
-      --transition: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-      --transition-slow: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-      --bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
+      --bg: #FFFFFF;
+      --bg-alt: #F5F5F5;
+      --text: #0A0A0A;
+      --text-secondary: #666666;
+      --text-tertiary: #999999;
+      --accent: #0A0A0A;
+      --accent-soft: rgba(10, 10, 10, 0.05);
+      --border: #E5E5E5;
+      --green: #00D26A;
+      --green-soft: rgba(0, 210, 106, 0.1);
+      --yellow: #FFD60A;
+      --container: 1200px;
+      --transition: 0.2s ease;
     }
 
     [data-theme="dark"] {
       --bg: #0A0A0A;
-      --bg-elevated: #141414;
-      --bg-card: #141414;
-      --text: #FAFAFA;
-      --text-secondary: #A8A8A8;
-      --text-tertiary: #6A6A6A;
-      --accent: #3AABAB;
-      --accent-soft: rgba(58, 171, 171, 0.12);
-      --accent-medium: rgba(58, 171, 171, 0.20);
-      --accent-hover: #4CBFBF;
-      --accent-secondary: #E8A870;
-      --accent-secondary-soft: rgba(232, 168, 112, 0.15);
-      --green: #66BB6A;
-      --green-soft: rgba(102, 187, 106, 0.15);
-      --border: rgba(255, 255, 255, 0.08);
-      --border-hover: rgba(255, 255, 255, 0.16);
-      --shadow-sm: 0 1px 2px rgba(0,0,0,0.2);
-      --shadow: 0 1px 3px rgba(0,0,0,0.3), 0 4px 12px rgba(0,0,0,0.2);
-      --shadow-hover: 0 4px 12px rgba(0,0,0,0.4), 0 12px 32px rgba(0,0,0,0.3);
+      --bg-alt: #151515;
+      --text: #FFFFFF;
+      --text-secondary: #A0A0A0;
+      --text-tertiary: #666666;
+      --accent: #FFFFFF;
+      --accent-soft: rgba(255, 255, 255, 0.05);
+      --border: #252525;
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
+    
     html { scroll-behavior: smooth; }
-
+    
     body {
       background: var(--bg);
       color: var(--text);
-      font-family: 'Outfit', -apple-system, system-ui, sans-serif;
-      font-weight: 400;
-      line-height: 1.6;
+      font-family: 'Space Mono', monospace;
+      font-size: 14px;
+      line-height: 1.7;
       -webkit-font-smoothing: antialiased;
-      transition: background var(--transition-slow), color var(--transition);
-      overflow-x: hidden;
+      transition: background var(--transition), color var(--transition);
     }
 
     a { color: inherit; text-decoration: none; }
     img { display: block; max-width: 100%; }
 
-    .container { max-width: var(--container); margin: 0 auto; padding: 0 var(--pad); }
-    .container-wide { max-width: var(--container-wide); margin: 0 auto; padding: 0 var(--pad); }
-
-    /* ===== Animations ===== */
-    @keyframes fadeInUp {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
+    .container {
+      max-width: var(--container);
+      margin: 0 auto;
+      padding: 0 48px;
+    }
+    @media (max-width: 768px) {
+      .container { padding: 0 20px; }
     }
 
-    @keyframes fadeIn {
-      from { opacity: 0; }
-      to { opacity: 1; }
-    }
-
-    @keyframes scaleIn {
-      from { opacity: 0; transform: scale(0.95); }
-      to { opacity: 1; transform: scale(1); }
-    }
-
-    @keyframes slideInRight {
-      from { opacity: 0; transform: translateX(-10px); }
-      to { opacity: 1; transform: translateX(0); }
-    }
-
-    @keyframes pulse {
-      0%, 100% { transform: scale(1); }
-      50% { transform: scale(1.05); }
-    }
-
-    @keyframes progressFill {
-      from { width: 0; }
-    }
-
-    .animate-on-scroll {
-      opacity: 0;
-      transform: translateY(20px);
-      transition: opacity 0.6s ease, transform 0.6s ease;
-    }
-
-    .animate-on-scroll.visible {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    /* ===== Header with proper glass effect ===== */
+    /* Header */
     header {
-      position: sticky;
+      position: fixed;
       top: 0;
+      left: 0;
+      right: 0;
       z-index: 100;
-      background: rgba(250, 250, 248, 0.82);
+      padding: 20px 0;
+      transition: background var(--transition), border var(--transition);
+    }
+    header.scrolled {
+      background: var(--bg);
       border-bottom: 1px solid var(--border);
-      backdrop-filter: blur(14px);
-      -webkit-backdrop-filter: blur(14px);
-      transition: background var(--transition-slow), border-color var(--transition);
     }
 
-    [data-theme="dark"] header {
-      background: rgba(10, 10, 10, 0.78);
-    }
-
-    .head {
+    .header-inner {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 16px;
-      padding: 14px 0;
-      max-width: var(--container-wide);
-      margin: 0 auto;
-      padding-left: var(--pad);
-      padding-right: var(--pad);
-    }
-
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      transition: opacity var(--transition), transform var(--transition);
-    }
-    .brand:hover { 
-      opacity: 0.8;
-      transform: translateX(2px);
     }
 
     .logo {
-      width: 38px;
-      height: 38px;
-      border-radius: 50%;
-      overflow: hidden;
-      border: 1px solid var(--border);
-      background: var(--bg-card);
-      transition: transform var(--transition), box-shadow var(--transition);
-    }
-    .brand:hover .logo {
-      transform: scale(1.05);
-      box-shadow: var(--shadow-glow);
-    }
-    .logo img { width: 100%; height: 100%; object-fit: cover; }
-
-    .brandtext strong {
-      font-weight: 500;
-      font-size: 15px;
-      letter-spacing: -0.01em;
+      font-size: 16px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
     }
 
-    .nav-row {
+    nav {
       display: flex;
       align-items: center;
+      gap: 32px;
+    }
+    nav a {
+      font-size: 13px;
+      color: var(--text-secondary);
+      transition: color var(--transition);
+    }
+    nav a:hover { color: var(--text); }
+
+    .nav-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 20px;
+      background: var(--text);
+      color: var(--bg);
+      border-radius: 4px;
+      font-size: 13px;
+      font-weight: 400;
+      transition: opacity var(--transition);
+    }
+    .nav-cta:hover { opacity: 0.8; }
+    .nav-cta svg { width: 12px; height: 12px; }
+
+    .theme-btn {
+      width: 32px;
+      height: 32px;
+      border: 1px solid var(--border);
+      background: transparent;
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+    }
+    .theme-btn svg { width: 14px; height: 14px; color: var(--text-secondary); }
+    .theme-btn .sun { display: none; }
+    [data-theme="dark"] .theme-btn .sun { display: block; }
+    [data-theme="dark"] .theme-btn .moon { display: none; }
+
+    .mobile-menu-btn {
+      display: none;
+      width: 32px;
+      height: 32px;
+      border: 1px solid var(--border);
+      background: transparent;
+      border-radius: 4px;
+      cursor: pointer;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
       gap: 4px;
     }
-
-    nav.desktop {
-      display: flex;
-      align-items: center;
-      gap: 2px;
-    }
-    nav.desktop a {
-      font-size: 14px;
-      color: var(--text-secondary);
-      padding: 8px 12px;
-      border-radius: var(--radius-sm);
-      transition: color var(--transition), background var(--transition), transform var(--transition);
-      position: relative;
-    }
-    nav.desktop a:hover {
-      color: var(--text);
-      background: var(--accent-soft);
-      transform: translateY(-1px);
-    }
-    nav.desktop a:active {
-      transform: translateY(0);
-    }
-
-    .theme-toggle {
-      width: 38px;
-      height: 38px;
-      border: 1px solid var(--border);
-      background: var(--bg-card);
-      border-radius: var(--radius-sm);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      transition: border-color var(--transition), background var(--transition), transform var(--transition), box-shadow var(--transition);
-      margin-left: 8px;
-    }
-    .theme-toggle:hover { 
-      border-color: var(--border-hover);
-      transform: translateY(-1px);
-      box-shadow: var(--shadow);
-    }
-    .theme-toggle:active {
-      transform: translateY(0) scale(0.95);
-    }
-    .theme-toggle svg { 
-      width: 18px; 
-      height: 18px; 
-      color: var(--text-secondary);
-      transition: transform 0.3s var(--bounce), color var(--transition);
-    }
-    .theme-toggle:hover svg {
-      color: var(--accent);
-      transform: rotate(15deg);
-    }
-    .theme-toggle .sun { display: none; }
-    .theme-toggle .moon { display: block; }
-    [data-theme="dark"] .theme-toggle .sun { display: block; }
-    [data-theme="dark"] .theme-toggle .moon { display: none; }
-
-    .burger {
-      display: none;
-      width: 38px;
-      height: 38px;
-      border: 1px solid var(--border);
-      background: var(--bg-card);
-      border-radius: var(--radius-sm);
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      transition: border-color var(--transition), transform var(--transition);
-    }
-    .burger:hover {
-      border-color: var(--border-hover);
-      transform: scale(1.02);
-    }
-    .burger svg { width: 20px; height: 20px; color: var(--text-secondary); }
-
-    /* Mobile panel - positioned relative to header */
-    .mobile-panel {
-      display: none;
-      position: absolute;
-      top: 100%;
-      left: var(--pad);
-      right: var(--pad);
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 8px;
-      box-shadow: var(--shadow-hover);
-      z-index: 99;
-      animation: scaleIn 0.2s ease;
-    }
-    .mobile-panel.open { display: block; }
-    .mobile-panel a {
-      display: block;
-      padding: 12px 14px;
-      border-radius: var(--radius-sm);
-      font-size: 15px;
-      color: var(--text-secondary);
-      transition: background var(--transition), color var(--transition), transform var(--transition);
-    }
-    .mobile-panel a:hover {
-      background: var(--accent-soft);
-      color: var(--text);
-      transform: translateX(4px);
+    .mobile-menu-btn span {
+      width: 14px;
+      height: 1px;
+      background: var(--text);
     }
 
     @media (max-width: 768px) {
-      nav.desktop { display: none; }
-      .burger { display: inline-flex; }
+      nav { display: none; }
+      .mobile-menu-btn { display: flex; }
     }
 
-    /* ===== Hero ===== */
-    main { padding-top: 20px; }
+    /* Mobile Menu */
+    .mobile-menu {
+      position: fixed;
+      inset: 0;
+      background: var(--bg);
+      z-index: 200;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity var(--transition), visibility var(--transition);
+    }
+    .mobile-menu.open { opacity: 1; visibility: visible; }
+    .mobile-menu-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 48px;
+    }
+    .mobile-menu-close {
+      width: 32px;
+      height: 32px;
+      border: 1px solid var(--border);
+      background: transparent;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 18px;
+      color: var(--text);
+    }
+    .mobile-menu nav {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+    .mobile-menu nav a {
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--text);
+    }
 
+    /* Hero */
     .hero {
-      padding: 48px 0 40px;
-      animation: fadeInUp 0.6s ease;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      padding: 120px 0 80px;
+    }
+
+    .hero-content {
+      max-width: 800px;
     }
 
     .hero-eyebrow {
       display: inline-flex;
       align-items: center;
       gap: 8px;
-      font-size: 13px;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
       color: var(--text-tertiary);
-      margin-bottom: 16px;
-      animation: slideInRight 0.5s ease 0.1s both;
+      margin-bottom: 32px;
     }
     .hero-eyebrow .dot {
-      width: 8px;
-      height: 8px;
-      background: var(--accent);
+      width: 6px;
+      height: 6px;
+      background: var(--green);
       border-radius: 50%;
-      animation: pulse 2s ease infinite;
     }
 
-    h1 {
-      font-family: 'Newsreader', Georgia, serif;
-      font-weight: 400;
-      font-size: clamp(36px, 6vw, 56px);
-      line-height: 1.15;
-      letter-spacing: -0.02em;
-      margin-bottom: 20px;
-      animation: fadeInUp 0.6s ease 0.15s both;
-    }
-    h1 em {
-      font-style: italic;
-      color: var(--accent);
-      transition: color var(--transition);
+    .hero h1 {
+      font-size: clamp(32px, 6vw, 64px);
+      font-weight: 700;
+      line-height: 1.1;
+      letter-spacing: -0.03em;
+      margin-bottom: 32px;
     }
 
-    .intro {
-      font-size: 17px;
-      line-height: 1.75;
+    .hero-text {
+      font-size: 15px;
+      line-height: 1.8;
       color: var(--text-secondary);
-      margin-bottom: 28px;
-      animation: fadeInUp 0.6s ease 0.25s both;
+      max-width: 560px;
+      margin-bottom: 40px;
     }
-    .intro a {
-      color: var(--accent);
-      text-decoration: underline;
-      text-decoration-color: var(--accent-soft);
-      text-underline-offset: 3px;
-      transition: text-decoration-color var(--transition), color var(--transition);
+    .hero-text a {
+      color: var(--text);
+      border-bottom: 1px solid var(--border);
+      transition: border-color var(--transition);
     }
-    .intro a:hover {
-      text-decoration-color: var(--accent);
-    }
+    .hero-text a:hover { border-color: var(--text); }
 
-    .cta-row {
+    .hero-ctas {
       display: flex;
+      gap: 12px;
       flex-wrap: wrap;
-      gap: 10px;
-      animation: fadeInUp 0.6s ease 0.35s both;
     }
 
-    /* ===== Enhanced Buttons ===== */
     .btn {
       display: inline-flex;
       align-items: center;
       gap: 8px;
-      padding: 12px 20px;
-      border-radius: 999px;
-      font-size: 14px;
-      font-weight: 500;
+      padding: 12px 24px;
+      border-radius: 4px;
+      font-size: 13px;
+      font-family: 'Space Mono', monospace;
       border: 1px solid var(--border);
-      background: var(--bg-card);
+      background: transparent;
       color: var(--text);
-      transition: all var(--transition);
       cursor: pointer;
-      position: relative;
-      overflow: hidden;
-    }
-    .btn::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: var(--accent-soft);
-      opacity: 0;
-      transition: opacity var(--transition);
+      transition: all var(--transition);
     }
     .btn:hover {
-      border-color: var(--border-hover);
-      box-shadow: var(--shadow);
-      transform: translateY(-2px);
+      background: var(--accent-soft);
+      border-color: var(--text-secondary);
     }
-    .btn:hover::before {
-      opacity: 1;
+    .btn svg { width: 14px; height: 14px; }
+
+    .btn-primary {
+      background: var(--text);
+      border-color: var(--text);
+      color: var(--bg);
     }
-    .btn:active {
-      transform: translateY(0);
-    }
-    .btn svg {
-      width: 16px;
-      height: 16px;
-      flex-shrink: 0;
-    }
-    .btn.primary {
-      background: var(--accent);
-      border-color: var(--accent);
-      color: #fff;
-    }
-    .btn.primary::before {
-      background: rgba(255,255,255,0.1);
-    }
-    .btn.primary:hover {
-      background: var(--accent-hover);
-      border-color: var(--accent-hover);
-      box-shadow: 0 4px 16px rgba(26, 127, 127, 0.3);
+    .btn-primary:hover {
+      opacity: 0.8;
+      background: var(--text);
     }
 
-    .btn.linkedin {
+    .btn-linkedin {
       background: #0A66C2;
       border-color: #0A66C2;
       color: #fff;
     }
-    .btn.linkedin::before {
-      background: rgba(255,255,255,0.1);
-    }
-    .btn.linkedin:hover {
-      background: #004182;
-      border-color: #004182;
-      box-shadow: 0 4px 16px rgba(10, 102, 194, 0.35);
-    }
+    .btn-linkedin:hover { opacity: 0.8; background: #0A66C2; }
 
-    .btn.secondary {
-      background: var(--accent-secondary);
-      border-color: var(--accent-secondary);
-      color: #fff;
-    }
-    .btn.secondary::before {
-      background: rgba(255,255,255,0.1);
-    }
-    .btn.secondary:hover {
-      background: #C07D4A;
-      border-color: #C07D4A;
-      box-shadow: 0 4px 16px rgba(212, 145, 93, 0.35);
-    }
-
-    /* ===== Sections ===== */
-    .section {
-      padding: 56px 0;
+    /* Sections */
+    section {
+      padding: 100px 0;
       border-top: 1px solid var(--border);
     }
 
     .section-header {
-      margin-bottom: 28px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      margin-bottom: 48px;
+      flex-wrap: wrap;
+      gap: 24px;
+    }
+
+    .section-label {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      color: var(--text-tertiary);
+      margin-bottom: 12px;
     }
 
     .section-title {
-      font-family: 'Newsreader', Georgia, serif;
-      font-weight: 400;
-      font-size: 28px;
-      letter-spacing: -0.01em;
-      margin-bottom: 8px;
+      font-size: clamp(24px, 4vw, 36px);
+      font-weight: 700;
+      letter-spacing: -0.02em;
     }
 
-    .section-lead {
+    .section-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
       color: var(--text-secondary);
-      font-size: 15px;
-      line-height: 1.6;
+      transition: color var(--transition);
     }
+    .section-link:hover { color: var(--text); }
+    .section-link svg { width: 14px; height: 14px; }
 
-    /* ===== About ===== */
+    /* About Grid */
     .about-grid {
       display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 12px;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+    }
+    @media (max-width: 1024px) {
+      .about-grid { grid-template-columns: repeat(2, 1fr); }
     }
     @media (max-width: 600px) {
       .about-grid { grid-template-columns: 1fr; }
     }
 
     .about-card {
-      padding: 20px;
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      transition: border-color var(--transition), box-shadow var(--transition), transform var(--transition);
-      cursor: default;
+      padding: 32px;
+      background: var(--bg);
+      transition: background var(--transition);
     }
-    .about-card:hover {
-      border-color: var(--border-hover);
-      box-shadow: var(--shadow);
-      transform: translateY(-2px);
-    }
+    .about-card:hover { background: var(--bg-alt); }
 
     .about-card-icon {
       font-size: 24px;
-      margin-bottom: 12px;
-      transition: transform 0.3s var(--bounce);
-    }
-    .about-card:hover .about-card-icon {
-      transform: scale(1.15) rotate(-5deg);
+      margin-bottom: 16px;
     }
 
     .about-card h3 {
-      font-size: 15px;
-      font-weight: 500;
-      margin-bottom: 6px;
+      font-size: 14px;
+      font-weight: 700;
+      margin-bottom: 8px;
     }
 
     .about-card p {
-      font-size: 14px;
+      font-size: 12px;
       color: var(--text-secondary);
       line-height: 1.6;
     }
 
-    /* ===== Photography with Lightbox ===== */
-    .photo-row {
-      display: flex;
-      gap: 12px;
-      overflow-x: auto;
-      padding-bottom: 12px;
-      margin: 0 calc(-1 * var(--pad));
-      padding-left: var(--pad);
-      padding-right: var(--pad);
-      scrollbar-width: none;
-      scroll-snap-type: x mandatory;
+    /* Photos */
+    .photos-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
     }
-    .photo-row::-webkit-scrollbar { display: none; }
+    @media (max-width: 900px) {
+      .photos-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 500px) {
+      .photos-grid { grid-template-columns: 1fr; }
+    }
 
-    .photo-thumb {
-      flex: 0 0 auto;
-      width: 180px;
-      height: 240px;
-      border-radius: var(--radius);
-      overflow: hidden;
-      border: 1px solid var(--border);
-      position: relative;
-      transition: transform var(--transition), border-color var(--transition), box-shadow var(--transition);
-      scroll-snap-align: start;
+    .photo-item {
       cursor: pointer;
+      position: relative;
+      overflow: hidden;
     }
-    .photo-thumb:hover {
-      transform: translateY(-4px) scale(1.02);
-      border-color: var(--border-hover);
-      box-shadow: var(--shadow-hover);
-    }
-    .photo-thumb img {
+    .photo-item img {
       width: 100%;
-      height: 100%;
+      aspect-ratio: 3/4;
       object-fit: cover;
-      transition: transform var(--transition-slow);
+      transition: transform 0.4s ease;
     }
-    .photo-thumb:hover img {
-      transform: scale(1.08);
-    }
-    .photo-thumb-caption {
+    .photo-item:hover img { transform: scale(1.05); }
+
+    .photo-item-overlay {
       position: absolute;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      padding: 10px 12px;
-      background: linear-gradient(to top, rgba(0,0,0,0.7) 0%, transparent 100%);
-      font-size: 12px;
-      color: #fff;
+      inset: 0;
+      background: linear-gradient(to top, rgba(0,0,0,0.6) 0%, transparent 50%);
+      display: flex;
+      align-items: flex-end;
+      padding: 16px;
       opacity: 0;
-      transform: translateY(4px);
-      transition: opacity var(--transition), transform var(--transition);
+      transition: opacity var(--transition);
     }
-    .photo-thumb:hover .photo-thumb-caption { 
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    .section-footer {
-      margin-top: 20px;
+    .photo-item:hover .photo-item-overlay { opacity: 1; }
+    .photo-item-caption {
+      font-size: 11px;
+      color: #fff;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
     }
 
-    /* ===== Lightbox ===== */
+    /* Movement */
+    .movement-stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+      margin-bottom: 48px;
+    }
+    @media (max-width: 768px) {
+      .movement-stats { grid-template-columns: 1fr; }
+    }
+
+    .movement-stat {
+      padding: 40px;
+      background: var(--bg);
+      text-align: center;
+    }
+
+    .movement-stat-value {
+      font-size: clamp(36px, 6vw, 56px);
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      line-height: 1;
+    }
+
+    .movement-stat-label {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--text-tertiary);
+      margin-top: 12px;
+    }
+
+    .movement-months {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+    }
+    @media (max-width: 768px) {
+      .movement-months { grid-template-columns: 1fr; }
+    }
+
+    .month-card {
+      padding: 32px;
+      border: 1px solid var(--border);
+      background: var(--bg);
+      position: relative;
+    }
+    .month-card.current {
+      background: var(--text);
+      color: var(--bg);
+      border-color: var(--text);
+    }
+    .month-card.current .month-stat-label { color: rgba(255,255,255,0.5); }
+    .month-card.current .month-progress-bar { background: rgba(255,255,255,0.2); }
+
+    .month-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 24px;
+    }
+
+    .month-name {
+      font-size: 18px;
+      font-weight: 700;
+    }
+
+    .month-tag {
+      font-size: 9px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      padding: 6px 10px;
+      background: var(--green);
+      color: #000;
+      border-radius: 2px;
+    }
+
+    .month-stats-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .month-stat-label {
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-tertiary);
+      margin-bottom: 4px;
+    }
+
+    .month-stat-val {
+      font-size: 20px;
+      font-weight: 700;
+    }
+
+    .month-progress-header {
+      font-size: 10px;
+      color: var(--text-tertiary);
+      margin-bottom: 8px;
+      display: flex;
+      justify-content: space-between;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .month-card.current .month-progress-header { color: rgba(255,255,255,0.5); }
+
+    .month-progress-bar {
+      height: 3px;
+      background: var(--border);
+      overflow: hidden;
+    }
+
+    .month-progress-fill {
+      height: 100%;
+      background: var(--green);
+    }
+
+    /* Currently Into */
+    .into-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+    }
+    @media (max-width: 900px) {
+      .into-grid { grid-template-columns: 1fr; }
+    }
+
+    .into-card {
+      background: var(--bg);
+    }
+
+    .into-card-header {
+      padding: 20px 24px;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--text-tertiary);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .into-item {
+      display: flex;
+      gap: 16px;
+      padding: 16px 24px;
+      border-bottom: 1px solid var(--border);
+      transition: background var(--transition);
+    }
+    .into-item:last-child { border-bottom: none; }
+    .into-item:hover { background: var(--bg-alt); }
+
+    .into-cover {
+      width: 48px;
+      height: 48px;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+    .into-cover.book { width: 40px; height: 56px; }
+    .into-cover img { width: 100%; height: 100%; object-fit: cover; }
+
+    .into-text { flex: 1; min-width: 0; display: flex; flex-direction: column; justify-content: center; }
+    .into-title {
+      font-size: 13px;
+      font-weight: 700;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .into-meta {
+      font-size: 11px;
+      color: var(--text-tertiary);
+      margin-top: 2px;
+    }
+
+    /* Contact */
+    .contact-section {
+      text-align: center;
+      padding: 120px 0;
+    }
+
+    .contact-title {
+      font-size: clamp(28px, 5vw, 48px);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin-bottom: 16px;
+    }
+
+    .contact-text {
+      font-size: 14px;
+      color: var(--text-secondary);
+      margin-bottom: 40px;
+    }
+
+    .contact-ctas {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    /* Footer */
+    footer {
+      padding: 32px 0;
+      border-top: 1px solid var(--border);
+    }
+
+    .footer-inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .footer-left {
+      font-size: 11px;
+      color: var(--text-tertiary);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .footer-status {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 11px;
+      color: var(--text-tertiary);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .footer-status .dot {
+      width: 6px;
+      height: 6px;
+      background: var(--green);
+      border-radius: 50%;
+    }
+
+    /* Lightbox */
     .lightbox {
       position: fixed;
       inset: 0;
-      background: rgba(0, 0, 0, 0.92);
+      background: rgba(0, 0, 0, 0.95);
       z-index: 1000;
       display: flex;
       align-items: center;
       justify-content: center;
       opacity: 0;
       visibility: hidden;
-      transition: opacity 0.3s ease, visibility 0.3s ease;
-      backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px);
+      transition: all 0.3s ease;
     }
-    .lightbox.active {
-      opacity: 1;
-      visibility: visible;
-    }
-    .lightbox-content {
-      position: relative;
+    .lightbox.active { opacity: 1; visibility: visible; }
+    .lightbox img {
       max-width: 90vw;
       max-height: 90vh;
-      animation: scaleIn 0.3s ease;
-    }
-    .lightbox-content img {
-      max-width: 90vw;
-      max-height: 85vh;
       object-fit: contain;
-      border-radius: var(--radius-sm);
-      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
-    }
-    .lightbox-caption {
-      text-align: center;
-      color: #fff;
-      font-size: 14px;
-      margin-top: 16px;
-      opacity: 0.8;
     }
     .lightbox-close {
       position: absolute;
-      top: -48px;
-      right: 0;
+      top: 20px;
+      right: 20px;
       width: 40px;
       height: 40px;
-      background: rgba(255, 255, 255, 0.1);
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      border-radius: 50%;
+      border: 1px solid rgba(255,255,255,0.2);
+      background: transparent;
+      color: #fff;
+      font-size: 20px;
+      cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
-      cursor: pointer;
-      color: #fff;
-      font-size: 24px;
-      transition: background var(--transition), transform var(--transition);
     }
-    .lightbox-close:hover {
-      background: rgba(255, 255, 255, 0.2);
-      transform: scale(1.1);
+    .lightbox-caption {
+      position: absolute;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      color: rgba(255,255,255,0.6);
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
     }
     .lightbox-nav {
       position: absolute;
       top: 50%;
       transform: translateY(-50%);
-      width: 48px;
-      height: 48px;
-      background: rgba(255, 255, 255, 0.1);
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      width: 40px;
+      height: 40px;
+      border: 1px solid rgba(255,255,255,0.2);
+      background: transparent;
+      color: #fff;
+      font-size: 18px;
       cursor: pointer;
-      color: #fff;
-      font-size: 20px;
-      transition: background var(--transition), transform var(--transition);
     }
-    .lightbox-nav:hover {
-      background: rgba(255, 255, 255, 0.2);
-      transform: translateY(-50%) scale(1.1);
-    }
-    .lightbox-prev { left: -70px; }
-    .lightbox-next { right: -70px; }
-    @media (max-width: 768px) {
-      .lightbox-prev { left: 10px; }
-      .lightbox-next { right: 10px; }
-    }
-
-    /* ===== Activity / Movement ===== */
-    .activity-hero {
-      background: linear-gradient(135deg, var(--accent-soft) 0%, var(--bg-card) 50%, var(--green-soft) 100%);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 28px;
-      margin-bottom: 24px;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .activity-hero::before {
-      content: '';
-      position: absolute;
-      top: -50%;
-      right: -20%;
-      width: 300px;
-      height: 300px;
-      background: radial-gradient(circle, var(--accent-soft) 0%, transparent 70%);
-      pointer-events: none;
-    }
-
-    .activity-hero-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 20px;
-      position: relative;
-      flex-wrap: wrap;
-      gap: 12px;
-    }
-
-    .activity-hero-title {
-      font-family: 'Newsreader', Georgia, serif;
-      font-size: 22px;
-      font-weight: 400;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .activity-hero-badge {
-      font-family: 'Outfit', sans-serif;
-      font-size: 11px;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
-      padding: 5px 12px;
-      background: var(--accent);
-      color: #fff;
-      border-radius: 999px;
-    }
-
-    .year-stats {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 16px;
-      position: relative;
-    }
-    @media (max-width: 480px) {
-      .year-stats { grid-template-columns: 1fr; }
-    }
-
-    .year-stat {
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-sm);
-      padding: 20px;
-      text-align: center;
-      transition: transform var(--transition), box-shadow var(--transition);
-    }
-    .year-stat:hover {
-      transform: translateY(-2px);
-      box-shadow: var(--shadow);
-    }
-
-    .year-stat-value {
-      font-family: 'Newsreader', Georgia, serif;
-      font-size: 32px;
-      font-weight: 400;
-      letter-spacing: -0.03em;
-      color: var(--accent);
-      line-height: 1;
-      margin-bottom: 4px;
-    }
-
-    .year-stat-label {
-      font-size: 12px;
-      color: var(--text-tertiary);
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-    }
-
-    /* Monthly Cards */
-    .monthly-grid {
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-    }
-
-    .month-card {
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      overflow: hidden;
-      transition: border-color var(--transition), box-shadow var(--transition), transform var(--transition);
-    }
-    .month-card:hover {
-      border-color: var(--border-hover);
-      box-shadow: var(--shadow);
-      transform: translateX(4px);
-    }
-    @media (max-width: 480px) {
-      .month-card:hover { transform: none; }
-    }
-
-    .month-card.current {
-      border-color: var(--accent);
-      box-shadow: 0 0 0 3px var(--accent-soft);
-    }
-
-    .month-card-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 16px 20px;
-      border-bottom: 1px solid var(--border);
-      background: var(--bg);
-    }
-
-    .month-card-title {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .month-icon {
-      width: 36px;
-      height: 36px;
-      background: var(--accent-soft);
-      border-radius: var(--radius-sm);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 16px;
-      transition: transform 0.3s var(--bounce);
-    }
-    .month-card:hover .month-icon {
-      transform: scale(1.1);
-    }
-    .month-card.current .month-icon {
-      background: var(--accent);
-    }
-    .month-card.current .month-icon span {
-      filter: brightness(10);
-    }
-
-    .month-name {
-      font-weight: 600;
-      font-size: 15px;
-    }
-
-    .month-year {
-      font-size: 13px;
-      color: var(--text-tertiary);
-    }
-
-    .month-current-tag {
-      font-size: 10px;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
-      padding: 4px 10px;
-      background: var(--green);
-      color: #fff;
-      border-radius: 999px;
-      animation: pulse 2s ease infinite;
-    }
-
-    .month-goal-met {
-      font-size: 10px;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
-      padding: 4px 10px;
-      background: var(--green);
-      color: #fff;
-      border-radius: 999px;
-    }
-
-    .month-card-body {
-      padding: 16px 20px;
-    }
-
-    .month-stats {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 12px;
-      margin-bottom: 16px;
-    }
-    @media (max-width: 480px) {
-      .month-stats { grid-template-columns: 1fr; gap: 8px; }
-    }
-
-    .month-stat {
-      text-align: center;
-      padding: 12px;
-      background: var(--bg);
-      border-radius: var(--radius-sm);
-      transition: background var(--transition);
-    }
-    .month-card:hover .month-stat {
-      background: var(--accent-soft);
-    }
-
-    .month-stat-value {
-      font-family: 'Newsreader', Georgia, serif;
-      font-size: 22px;
-      font-weight: 400;
-      letter-spacing: -0.02em;
-      color: var(--accent);
-      line-height: 1.1;
-    }
-
-    .month-stat-label {
-      font-size: 11px;
-      color: var(--text-tertiary);
-      text-transform: uppercase;
-      letter-spacing: 0.04em;
-      margin-top: 2px;
-    }
-
-    /* Progress Bar */
-    .month-progress {
-      padding-top: 12px;
-      border-top: 1px solid var(--border);
-    }
-
-    .progress-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 8px;
-    }
-
-    .progress-label {
-      font-size: 12px;
-      color: var(--text-tertiary);
-    }
-
-    .progress-value {
-      font-size: 12px;
-      font-weight: 600;
-      color: var(--accent);
-    }
-
-    .progress-bar {
-      height: 8px;
-      background: var(--bg);
-      border-radius: 4px;
-      overflow: hidden;
-      position: relative;
-    }
-
-    .progress-fill {
-      height: 100%;
-      background: linear-gradient(90deg, var(--accent) 0%, var(--accent-hover) 100%);
-      border-radius: 4px;
-      transition: width 1s cubic-bezier(0.4, 0, 0.2, 1);
-      position: relative;
-    }
-    .progress-fill::after {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.3) 50%, transparent 100%);
-      animation: shimmer 2s infinite;
-    }
-
-    @keyframes shimmer {
-      0% { transform: translateX(-100%); }
-      100% { transform: translateX(100%); }
-    }
-
-    .progress-complete {
-      background: linear-gradient(90deg, var(--green) 0%, #66BB6A 100%);
-    }
-
-    /* ===== Currently Into ===== */
-    .into-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 12px;
-    }
-    @media (max-width: 768px) {
-      .into-grid { grid-template-columns: 1fr; }
-    }
-
-    .into-card {
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      overflow: hidden;
-      transition: border-color var(--transition), box-shadow var(--transition), transform var(--transition);
-    }
-    .into-card:hover {
-      border-color: var(--border-hover);
-      box-shadow: var(--shadow);
-      transform: translateY(-2px);
-    }
-
-    .into-card-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 14px 16px;
-      border-bottom: 1px solid var(--border);
-      background: var(--bg);
-    }
-    .into-card-header h3 {
-      font-size: 14px;
-      font-weight: 500;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .into-list {
-      padding: 8px;
-    }
-
-    .into-item {
-      display: flex;
-      gap: 12px;
-      align-items: center;
-      padding: 10px;
-      border-radius: var(--radius-sm);
-      transition: background var(--transition), transform var(--transition);
-    }
-    .into-item:hover { 
-      background: var(--accent-soft);
-      transform: translateX(4px);
-    }
-
-    .into-cover {
-      width: 48px;
-      height: 48px;
-      border-radius: 8px;
-      overflow: hidden;
-      border: 1px solid var(--border);
-      flex-shrink: 0;
-      background: var(--bg);
-      transition: transform var(--transition), box-shadow var(--transition);
-    }
-    .into-item:hover .into-cover {
-      transform: scale(1.05);
-      box-shadow: var(--shadow-sm);
-    }
-    .into-cover.book { border-radius: 4px; height: 64px; }
-    .into-cover img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-
-    .into-text {
-      flex: 1;
-      min-width: 0;
-    }
-    .into-title {
-      font-size: 14px;
-      font-weight: 500;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-    .into-meta {
-      font-size: 12px;
-      color: var(--text-tertiary);
-      margin-top: 2px;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-
-    .into-arrow {
-      color: var(--text-tertiary);
-      font-size: 14px;
-      transition: transform var(--transition), color var(--transition);
-      flex-shrink: 0;
-    }
-    .into-item:hover .into-arrow { 
-      transform: translateX(4px);
-      color: var(--accent);
-    }
-
-    /* ===== Press / Mentions ===== */
-    .press-list {
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-    }
-
-    .press-item {
-      display: flex;
-      gap: 16px;
-      align-items: flex-start;
-      padding: 18px;
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      transition: border-color var(--transition), box-shadow var(--transition), transform var(--transition);
-    }
-    .press-item:hover {
-      border-color: var(--border-hover);
-      box-shadow: var(--shadow);
-      transform: translateY(-2px);
-    }
-    @media (max-width: 480px) {
-      .press-item:hover { transform: none; }
-    }
-
-    .press-logo {
-      width: 48px;
-      height: 48px;
-      border-radius: var(--radius-sm);
-      background: var(--bg);
-      border: 1px solid var(--border);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-      font-size: 20px;
-      transition: transform 0.3s var(--bounce);
-    }
-    .press-item:hover .press-logo {
-      transform: scale(1.1) rotate(-5deg);
-    }
-
-    .press-text {
-      flex: 1;
-      min-width: 0;
-    }
-    .press-text h4 {
-      font-size: 15px;
-      font-weight: 500;
-      margin-bottom: 4px;
-    }
-    .press-text p {
-      font-size: 14px;
-      color: var(--text-secondary);
-      line-height: 1.5;
-    }
-    .press-text span {
-      display: block;
-      font-size: 12px;
-      color: var(--text-tertiary);
-      margin-top: 6px;
-    }
-
-    /* ===== Contact ===== */
-    .contact-box {
-      padding: 36px;
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      text-align: center;
-      transition: border-color var(--transition), box-shadow var(--transition);
-    }
-    .contact-box:hover {
-      border-color: var(--border-hover);
-      box-shadow: var(--shadow);
-    }
-
-    .contact-box p {
-      color: var(--text-secondary);
-      margin-bottom: 20px;
-    }
-
-    /* ===== Footer ===== */
-    footer {
-      padding: 24px 0;
-      border-top: 1px solid var(--border);
-      margin-top: 56px;
-    }
-
-    .foot {
-      display: flex;
-      justify-content: space-between;
-      gap: 16px;
-      font-size: 13px;
-      color: var(--text-tertiary);
-    }
-
-    /* ===== Utilities ===== */
-    .link-arrow {
-      color: var(--accent);
-      font-size: 14px;
-      display: inline-flex;
-      align-items: center;
-      gap: 4px;
-      transition: gap var(--transition), color var(--transition);
-    }
-    .link-arrow:hover { 
-      gap: 8px;
-    }
-
-    /* ===== Scroll Progress ===== */
-    .scroll-progress {
-      position: fixed;
-      top: 0;
-      left: 0;
-      height: 3px;
-      background: linear-gradient(90deg, var(--accent) 0%, var(--accent-secondary) 100%);
-      z-index: 1000;
-      transition: width 0.1s linear;
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-      html { scroll-behavior: auto !important; }
-      *, *::before, *::after { 
-        animation: none !important; 
-        transition: none !important; 
-      }
-    }
+    .lightbox-prev { left: 20px; }
+    .lightbox-next { right: 20px; }
   </style>
 </head>
 
 <body>
-  <!-- Scroll Progress Bar -->
-  <div class="scroll-progress" id="scrollProgress"></div>
-
-  <!-- Lightbox -->
-  <div class="lightbox" id="lightbox">
-    <div class="lightbox-content">
-      <button class="lightbox-close" aria-label="Close">&times;</button>
-      <button class="lightbox-nav lightbox-prev" aria-label="Previous">&#8249;</button>
-      <button class="lightbox-nav lightbox-next" aria-label="Next">&#8250;</button>
-      <img src="" alt="" id="lightboxImg">
-      <div class="lightbox-caption" id="lightboxCaption"></div>
-    </div>
-  </div>
-
-  <header>
-    <div class="head">
-      <a class="brand" href="#top" aria-label="Home">
-        <span class="logo"><img src="/assets/logo.png" alt=""></span>
-        <div class="brandtext">
-          <strong>Zino Asamaige</strong>
-        </div>
-      </a>
-
-      <div class="nav-row">
-        <nav class="desktop" aria-label="Primary">
-          <a href="#about">About</a>
-          <a href="#photos">Photos</a>
-          <a href="/articles.html">Articles</a>
-          <a href="#into">Currently into</a>
-          <a href="#contact">Contact</a>
-        </nav>
-
-        <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
-          <svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
-          </svg>
-          <svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
-          </svg>
+  <header id="header">
+    <div class="container header-inner">
+      <a href="#" class="logo">Zino Asamaige</a>
+      <nav>
+        <a href="#about">About</a>
+        <a href="#photos">Photos</a>
+        <a href="#movement">Movement</a>
+        <a href="#into">Currently</a>
+        <button class="theme-btn" id="themeToggle" aria-label="Toggle theme">
+          <svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+          <svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
         </button>
-
-        <button class="burger" id="burger" aria-label="Open menu" aria-expanded="false">
-          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-            <path d="M4 7h16M4 12h16M4 17h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-          </svg>
-        </button>
-      </div>
-    </div>
-
-    <div class="mobile-panel" id="mobilePanel">
-      <a href="#about">About</a>
-      <a href="#photos">Photos</a>
-      <a href="/articles.html">Articles</a>
-      <a href="#into">Currently into</a>
-      <a href="#contact">Contact</a>
+        <a href="mailto:hello@ererezino.com" class="nav-cta">
+          Get in touch
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg>
+        </a>
+      </nav>
+      <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
     </div>
   </header>
 
-  <main id="top">
-    <div class="container">
-      <section class="hero">
-        <span class="hero-eyebrow"><span class="dot"></span> Based in Lagos, Nigeria</span>
-        <h1>Doing the best I can, <em>daily</em></h1>
-        <p class="intro">
-          I'm building <a href="https://useaccrue.com/" target="_blank" rel="noopener">Accrue</a> with my co-founders, 
-          <a href="https://clintonmbah.com/" target="_blank" rel="noopener">Clinton</a> & 
-          <a href="https://medium.com/@adesuwaomoruyi" target="_blank" rel="noopener">Adesuwa</a>. 
-          When I'm not working, I'm probably walking somewhere with my camera, playing FIFA, or trying to convince someone to let me back in the pool.
-        </p>
-        <div class="cta-row">
-          <a class="btn primary" href="mailto:hello@ererezino.com">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
-              <polyline points="22,6 12,13 2,6"/>
-            </svg>
-            Say hello
+  <div class="mobile-menu" id="mobileMenu">
+    <div class="mobile-menu-header">
+      <span class="logo">Zino</span>
+      <button class="mobile-menu-close" id="mobileMenuClose">&times;</button>
+    </div>
+    <nav>
+      <a href="#about">About</a>
+      <a href="#photos">Photos</a>
+      <a href="#movement">Movement</a>
+      <a href="#into">Currently</a>
+      <a href="mailto:hello@ererezino.com">Contact</a>
+    </nav>
+  </div>
+
+  <div class="lightbox" id="lightbox">
+    <button class="lightbox-close">&times;</button>
+    <button class="lightbox-nav lightbox-prev">&#8249;</button>
+    <button class="lightbox-nav lightbox-next">&#8250;</button>
+    <img src="" alt="" id="lightboxImg">
+    <div class="lightbox-caption" id="lightboxCaption"></div>
+  </div>
+
+  <main>
+    <section class="hero">
+      <div class="container">
+        <div class="hero-content">
+          <div class="hero-eyebrow">
+            <span class="dot"></span>
+            Based in Lagos, Nigeria
+          </div>
+          <h1>Doing the best I can, daily.</h1>
+          <p class="hero-text">
+            Building <a href="https://useaccrue.com/" target="_blank">Accrue</a> with 
+            <a href="https://clintonmbah.com/" target="_blank">Clinton</a> & 
+            <a href="https://medium.com/@adesuwaomoruyi" target="_blank">Adesuwa</a>. 
+            When I'm not working, I'm probably walking somewhere with my camera, playing FIFA, or trying to get back in the pool.
+          </p>
+          <div class="hero-ctas">
+            <a href="mailto:hello@ererezino.com" class="btn btn-primary">
+              Say hello
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg>
+            </a>
+            <a href="https://www.linkedin.com/in/ererezino/" target="_blank" class="btn btn-linkedin">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+              LinkedIn
+            </a>
+            <a href="#photos" class="btn">
+              See photos
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="about">
+      <div class="container">
+        <div class="section-header">
+          <div>
+            <div class="section-label">About</div>
+            <h2 class="section-title">A bit about me</h2>
+          </div>
+        </div>
+        <div class="about-grid" id="aboutGrid"></div>
+      </div>
+    </section>
+
+    <section id="photos">
+      <div class="container">
+        <div class="section-header">
+          <div>
+            <div class="section-label">Photography</div>
+            <h2 class="section-title">Through the lens</h2>
+          </div>
+          <a href="/photos/" class="section-link">
+            View all
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
           </a>
-          <a class="btn linkedin" href="https://www.linkedin.com/in/ererezino/" target="_blank" rel="noopener">
-            <svg viewBox="0 0 24 24" fill="currentColor">
-              <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
-            </svg>
-            LinkedIn
+        </div>
+        <div class="photos-grid" id="photoGrid"></div>
+      </div>
+    </section>
+
+    <section id="movement">
+      <div class="container">
+        <div class="section-header">
+          <div>
+            <div class="section-label">Movement</div>
+            <h2 class="section-title">Staying active</h2>
+          </div>
+          <a href="/movement.html" class="section-link">
+            See all months
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
           </a>
-          <a class="btn secondary" href="#photos">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
-              <circle cx="8.5" cy="8.5" r="1.5"/>
-              <polyline points="21 15 16 10 5 21"/>
-            </svg>
-            See photos
-          </a>
         </div>
-      </section>
 
-      <section id="about" class="section animate-on-scroll">
+        <div class="movement-stats">
+          <div class="movement-stat">
+            <div class="movement-stat-value">2.6M</div>
+            <div class="movement-stat-label">Steps in 2025</div>
+          </div>
+          <div class="movement-stat">
+            <div class="movement-stat-value">1,980</div>
+            <div class="movement-stat-label">Kilometers</div>
+          </div>
+          <div class="movement-stat">
+            <div class="movement-stat-value">7,072</div>
+            <div class="movement-stat-label">Avg Steps/Day</div>
+          </div>
+        </div>
+
+        <div class="movement-months" id="monthlyGrid"></div>
+      </div>
+    </section>
+
+    <section id="into">
+      <div class="container">
         <div class="section-header">
-          <h2 class="section-title">A bit about me</h2>
-          <p class="section-lead">The interesting parts, anyway.</p>
-        </div>
-
-        <div class="about-grid">
-          <div class="about-card">
-            <div class="about-card-icon">📸</div>
-            <h3>Photography</h3>
-            <p>Hobbyist photographer. Mostly travel and street photography. I document places, people, and the small moments in between.</p>
-          </div>
-
-          <div class="about-card">
-            <div class="about-card-icon">🎓</div>
-            <h3>University of Bologna</h3>
-            <p>MBA from the oldest university in the world (founded 1088). Yes, I bring this up at parties (I don't).</p>
-          </div>
-
-          <div class="about-card">
-            <div class="about-card-icon">🎾</div>
-            <h3>Racket sports</h3>
-            <p>Played tennis on and off for two years, then discovered padel and played for six months. Always looking for a game.</p>
-          </div>
-
-          <div class="about-card">
-            <div class="about-card-icon">🏊</div>
-            <h3>Swimming (banned)</h3>
-            <p>I love to swim but I've been banned until I finish my swim classes. Haven't had time to take them yet. Soon.</p>
-          </div>
-
-          <div class="about-card">
-            <div class="about-card-icon">🚶</div>
-            <h3>Walking & running</h3>
-            <p>I love long walks and running. There's something about moving through a city on foot that makes you see it differently. It's also great for my cardiovascular health.</p>
-          </div>
-
-          <div class="about-card">
-            <div class="about-card-icon">🎮</div>
-            <h3>FIFA champion</h3>
-            <p>I'm a great FIFA player. Not "pretty good" great. Actually great. Happy to prove it anytime.</p>
-          </div>
-
-          <div class="about-card">
-            <div class="about-card-icon">✈️</div>
-            <h3>Travel</h3>
-            <p>Love exploring new places. Every trip teaches you something about the world and yourself.</p>
-          </div>
-
-          <div class="about-card">
-            <div class="about-card-icon">❤️</div>
-            <h3>My people</h3>
-            <p>I love my girlfriend, my family, and my friends so much. They make everything worthwhile.</p>
+          <div>
+            <div class="section-label">Currently</div>
+            <h2 class="section-title">What I'm into</h2>
           </div>
         </div>
-
-        <p style="margin-top: 24px; color: var(--text-secondary); font-size: 15px;">
-          I've failed at so many things but have no regrets. Every attempt has taught something.
-        </p>
-      </section>
-
-      <section id="photos" class="section animate-on-scroll">
-        <div class="section-header">
-          <h2 class="section-title">Photography</h2>
-          <p class="section-lead">Exploring place, memory, and belonging. Mostly on iPhone.</p>
-        </div>
-
-        <div class="photo-row" id="photoRow"></div>
-
-        <div class="section-footer">
-          <a href="/photos/" class="link-arrow">View all photos <span>→</span></a>
-        </div>
-      </section>
-
-      <section id="activity" class="section animate-on-scroll">
-        <div class="section-header">
-          <h2 class="section-title">Movement</h2>
-          <p class="section-lead">Tracking my walks and runs. Goal: 310,000 steps per month (~237km).</p>
-        </div>
-
-        <!-- Year Hero -->
-        <div class="activity-hero" id="yearHero"></div>
-
-        <!-- Monthly Cards (current + last month only) -->
-        <div class="monthly-grid" id="monthlyGrid"></div>
-
-        <div class="section-footer">
-          <a href="/movement.html" class="link-arrow">See all months <span>→</span></a>
-        </div>
-      </section>
-
-      <section id="into" class="section animate-on-scroll">
-        <div class="section-header">
-          <h2 class="section-title">Currently into</h2>
-          <p class="section-lead">What I'm reading, listening to, and watching.</p>
-        </div>
-
         <div class="into-grid">
           <div class="into-card">
-            <div class="into-card-header">
-              <h3>🎵 Music</h3>
-            </div>
-            <div class="into-list" id="musicList"></div>
+            <div class="into-card-header">Music</div>
+            <div id="musicList"></div>
           </div>
-
           <div class="into-card">
-            <div class="into-card-header">
-              <h3>📚 Books</h3>
-            </div>
-            <div class="into-list" id="bookList"></div>
+            <div class="into-card-header">Reading</div>
+            <div id="bookList"></div>
           </div>
-
           <div class="into-card">
-            <div class="into-card-header">
-              <h3>🎬 TV</h3>
-            </div>
-            <div class="into-list" id="TVList"></div>
+            <div class="into-card-header">Watching</div>
+            <div id="tvList"></div>
           </div>
         </div>
-      </section>
+      </div>
+    </section>
 
-      <section id="press" class="section animate-on-scroll">
-        <div class="section-header">
-          <h2 class="section-title">Press & mentions</h2>
-          <p class="section-lead">Articles and publications I've been featured in.</p>
+    <section class="contact-section" id="contact">
+      <div class="container">
+        <h2 class="contact-title">Let's connect</h2>
+        <p class="contact-text">Email is best. I try to respond within a day or two.</p>
+        <div class="contact-ctas">
+          <a href="mailto:hello@ererezino.com" class="btn btn-primary">
+            hello@ererezino.com
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg>
+          </a>
+          <a href="https://twitter.com/ererezino" target="_blank" class="btn">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+            Twitter
+          </a>
         </div>
-
-        <div class="press-list" id="pressList"></div>
-      </section>
-
-      <section id="contact" class="section animate-on-scroll">
-        <div class="section-header">
-          <h2 class="section-title">Get in touch</h2>
-        </div>
-
-        <div class="contact-box">
-          <p>Email is best. I try to respond within a day or two.</p>
-          <div class="cta-row" style="justify-content: center;">
-            <a class="btn primary" href="mailto:hello@ererezino.com">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
-                <polyline points="22,6 12,13 2,6"/>
-              </svg>
-              hello@ererezino.com
-            </a>
-            <a class="btn" href="https://twitter.com/ererezino" target="_blank" rel="noopener">
-              <svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16">
-                <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
-              </svg>
-              Twitter
-            </a>
-          </div>
-        </div>
-      </section>
-
-      <footer>
-        <div class="foot">
-          <span>© <span id="year"></span> Zino Asamaige</span>
-          <span>Lagos, Nigeria</span>
-        </div>
-      </footer>
-    </div>
+      </div>
+    </section>
   </main>
 
-  <script>
-    // ========= DATA - EDIT THESE =========
+  <footer>
+    <div class="container footer-inner">
+      <div class="footer-left">© 2026 Zino Asamaige. All rights reserved.</div>
+      <div class="footer-status">
+        <span class="dot"></span>
+        Lagos, Nigeria
+      </div>
+    </div>
+  </footer>
 
+  <script>
     const PHOTOS = [
       { src: "/assets/photos/photo-1.jpg", caption: "Frankfurt, 2025" },
       { src: "/assets/photos/photo-2.jpg", caption: "Frankfurt, 2025" },
@@ -1483,387 +922,131 @@
       { src: "/assets/photos/photo-4.jpg", caption: "Frankfurt, 2025" }
     ];
 
+    const ABOUT = [
+      { icon: "📸", title: "Photography", desc: "Hobbyist photographer. Mostly travel and street photography." },
+      { icon: "🎓", title: "Bologna MBA", desc: "Oldest university in the world. Founded 1088." },
+      { icon: "🎾", title: "Racket sports", desc: "Tennis, then padel. Always looking for a game." },
+      { icon: "🏊", title: "Swimming", desc: "Banned until I finish my swim classes. Soon." },
+      { icon: "🚶", title: "Walking", desc: "Long walks through cities. Seeing things differently." },
+      { icon: "🎮", title: "FIFA", desc: "Actually great. Happy to prove it anytime." },
+      { icon: "✈️", title: "Travel", desc: "Every trip teaches something new." },
+      { icon: "❤️", title: "My people", desc: "Family and friends make everything worthwhile." }
+    ];
+
     const MUSIC = [
-      {
-        title: "Remember",
-        artist: "Asake",
-        url: "https://music.youtube.com/watch?v=MhvVRw5XTVY&si=5eIqWjm3zoT3y-JY",
-        cover: "https://upload.wikimedia.org/wikipedia/en/9/97/Asake_-_Work_of_Art.png"
-      },
-      {
-        title: "Gratitude",
-        artist: "Anendlessocean",
-        url: "https://music.youtube.com/watch?v=49mF49MR_Es&si=aLJuhOLUOcO588NR",
-        cover: "https://i.scdn.co/image/ab67616d0000b27331b046b5e8493d36db0f11da"
-      },
-      {
-        title: "E Ti Tobi",
-        artist: "EmmaOMG",
-        url: "https://music.youtube.com/watch?v=ccg6uBQfViI&si=lC9zGxGmtUtpDshT",
-        cover: "https://lh3.googleusercontent.com/LbQgNpK2UZz73LWbUFvvZ38O09ZzUQm0fkIISmrutPQVmEJ2yttEAmBKbqn-5UvE40fC6AHuSNEInvE0=w544-h544-l90-rj"
-       }   
+      { title: "Remember", artist: "Asake", url: "#", cover: "https://upload.wikimedia.org/wikipedia/en/9/97/Asake_-_Work_of_Art.png" },
+      { title: "Gratitude", artist: "Anendlessocean", url: "#", cover: "https://i.scdn.co/image/ab67616d0000b27331b046b5e8493d36db0f11da" },
+      { title: "E Ti Tobi", artist: "EmmaOMG", url: "#", cover: "https://lh3.googleusercontent.com/LbQgNpK2UZz73LWbUFvvZ38O09ZzUQm0fkIISmrutPQVmEJ2yttEAmBKbqn-5UvE40fC6AHuSNEInvE0=w544-h544-l90-rj" }
     ];
 
     const BOOKS = [
-      {
-        title: "Harry Potter and the Sorcerer's Stone",
-        author: "J.K. Rowling",
-        url: "https://www.goodreads.com/book/show/42844155-harry-potter-and-the-sorcerer-s-stone?from_search=true&from_srp=true&qid=YK0JWtnxTz&rank=1",
-        cover: "https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1598823299i/42844155.jpg"
-      }
+      { title: "Harry Potter", author: "J.K. Rowling", url: "#", cover: "https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1598823299i/42844155.jpg" }
     ];
 
     const TV = [
-      {
-        title: "Elsbeth",
-        year: "2024",
-        url: "https://www.imdb.com/title/tt26591110/",
-        cover: "https://m.media-amazon.com/images/M/MV5BOTcwYzc0M2QtM2NiYy00MWU1LWEwYmYtZGYzYWM4MTZjZmU1XkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg"
-      }
+      { title: "Elsbeth", year: "2024", url: "#", cover: "https://m.media-amazon.com/images/M/MV5BOTcwYzc0M2QtM2NiYy00MWU1LWEwYmYtZGYzYWM4MTZjZmU1XkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg" }
     ];
 
-    // ========= ACTIVITY DATA - Real figures =========
-    
-    // 2025 Year totals
-    const YEAR_2025 = {
-      totalSteps: 2600000,
-      avgStepsPerDay: 7072,
-      totalKm: 1980
-    };
-
-    // Monthly goal: 310,000 steps (~237km) = 10k steps/day
-    const MONTHLY_GOAL_STEPS = 310000;
-    const MONTHLY_GOAL_KM = 237;
-
-    // Monthly logs (newest first)
-    // Only showing current + previous month on homepage
-    const MONTHLY_ACTIVITY = [
-      {
-        month: "January",
-        year: 2026,
-        isCurrent: true,
-        steps: 198000,
-        km: 140,
-        avgStepsPerDay: 9914,
-        daysElapsed: 20 // Update this as the month progresses
-      },
-      {
-        month: "December",
-        year: 2025,
-        isCurrent: false,
-        steps: 401117,
-        km: 307,
-        avgStepsPerDay: 12939
-      }
+    const MONTHLY_GOAL = 310000;
+    const MONTHS = [
+      { month: "January", year: 2026, isCurrent: true, steps: 198000, km: 140, avgStepsPerDay: 9914 },
+      { month: "December", year: 2025, isCurrent: false, steps: 401117, km: 307, avgStepsPerDay: 12939 }
     ];
 
-    // Press - empty for now
-    const PRESS = [];
-
-    // ========= UTILITIES =========
-
-    const esc = s => String(s || '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-
-    function formatNumber(num) {
-      if (num >= 1000000) {
-        return (num / 1000000).toFixed(1) + 'M';
-      }
-      return num.toLocaleString();
-    }
-
-    // ========= THEME TOGGLE =========
-
-    const themeToggle = document.getElementById('themeToggle');
+    // Theme
+    const toggle = document.getElementById('themeToggle');
+    const saved = localStorage.getItem('theme');
     const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-    const savedTheme = localStorage.getItem('theme');
-
-    function setTheme(dark) {
-      document.documentElement.setAttribute('data-theme', dark ? 'dark' : 'light');
-      localStorage.setItem('theme', dark ? 'dark' : 'light');
-    }
-
-    if (savedTheme) {
-      setTheme(savedTheme === 'dark');
-    } else {
-      setTheme(prefersDark);
-    }
-
-    themeToggle.addEventListener('click', () => {
+    document.documentElement.setAttribute('data-theme', saved || (prefersDark ? 'dark' : 'light'));
+    toggle.onclick = () => {
       const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
-      setTheme(!isDark);
-    });
-
-    // ========= MOBILE MENU =========
-
-    const burger = document.getElementById('burger');
-    const panel = document.getElementById('mobilePanel');
-
-    burger.addEventListener('click', () => {
-      const open = !panel.classList.contains('open');
-      panel.classList.toggle('open', open);
-      burger.setAttribute('aria-expanded', open);
-    });
-
-    panel.addEventListener('click', e => {
-      if (e.target.tagName === 'A') {
-        panel.classList.remove('open');
-        burger.setAttribute('aria-expanded', 'false');
-      }
-    });
-
-    document.addEventListener('click', e => {
-      if (!panel.contains(e.target) && !burger.contains(e.target)) {
-        panel.classList.remove('open');
-        burger.setAttribute('aria-expanded', 'false');
-      }
-    });
-
-    // ========= SCROLL PROGRESS (with NaN guard) =========
-
-    const scrollProgress = document.getElementById('scrollProgress');
-    
-    window.addEventListener('scroll', () => {
-      const scrollTop = window.scrollY;
-      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
-      const progress = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
-      scrollProgress.style.width = progress + '%';
-    });
-
-    // ========= SCROLL ANIMATIONS =========
-
-    const observerOptions = {
-      root: null,
-      rootMargin: '0px',
-      threshold: 0.1
+      document.documentElement.setAttribute('data-theme', isDark ? 'light' : 'dark');
+      localStorage.setItem('theme', isDark ? 'light' : 'dark');
     };
 
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('visible');
-        }
-      });
-    }, observerOptions);
-
-    document.querySelectorAll('.animate-on-scroll').forEach(el => {
-      observer.observe(el);
+    // Header
+    window.addEventListener('scroll', () => {
+      document.getElementById('header').classList.toggle('scrolled', window.scrollY > 50);
     });
 
-    // ========= LIGHTBOX =========
+    // Mobile menu
+    const mm = document.getElementById('mobileMenu');
+    document.getElementById('mobileMenuBtn').onclick = () => mm.classList.add('open');
+    document.getElementById('mobileMenuClose').onclick = () => mm.classList.remove('open');
+    mm.querySelectorAll('a').forEach(a => a.onclick = () => mm.classList.remove('open'));
 
-    const lightbox = document.getElementById('lightbox');
-    const lightboxImg = document.getElementById('lightboxImg');
-    const lightboxCaption = document.getElementById('lightboxCaption');
-    let currentPhotoIndex = 0;
+    // Lightbox
+    const lb = document.getElementById('lightbox');
+    const lbImg = document.getElementById('lightboxImg');
+    const lbCap = document.getElementById('lightboxCaption');
+    let idx = 0;
+    function openLb(i) { idx = i; lbImg.src = PHOTOS[i].src; lbCap.textContent = PHOTOS[i].caption; lb.classList.add('active'); document.body.style.overflow = 'hidden'; }
+    function closeLb() { lb.classList.remove('active'); document.body.style.overflow = ''; }
+    function navLb(d) { idx = (idx + d + PHOTOS.length) % PHOTOS.length; lbImg.src = PHOTOS[idx].src; lbCap.textContent = PHOTOS[idx].caption; }
+    lb.querySelector('.lightbox-close').onclick = closeLb;
+    lb.querySelector('.lightbox-prev').onclick = () => navLb(-1);
+    lb.querySelector('.lightbox-next').onclick = () => navLb(1);
+    lb.onclick = e => { if (e.target === lb) closeLb(); };
+    document.onkeydown = e => { if (!lb.classList.contains('active')) return; if (e.key === 'Escape') closeLb(); if (e.key === 'ArrowLeft') navLb(-1); if (e.key === 'ArrowRight') navLb(1); };
 
-    function openLightbox(index) {
-      currentPhotoIndex = index;
-      lightboxImg.src = PHOTOS[index].src;
-      lightboxCaption.textContent = PHOTOS[index].caption;
-      lightbox.classList.add('active');
-      document.body.style.overflow = 'hidden';
-    }
+    // Render
+    const fmt = n => n >= 1e6 ? (n/1e6).toFixed(1)+'M' : n.toLocaleString();
 
-    function closeLightbox() {
-      lightbox.classList.remove('active');
-      document.body.style.overflow = '';
-    }
+    document.getElementById('aboutGrid').innerHTML = ABOUT.map(a => `
+      <div class="about-card">
+        <div class="about-card-icon">${a.icon}</div>
+        <h3>${a.title}</h3>
+        <p>${a.desc}</p>
+      </div>
+    `).join('');
 
-    function navigateLightbox(direction) {
-      currentPhotoIndex = (currentPhotoIndex + direction + PHOTOS.length) % PHOTOS.length;
-      lightboxImg.src = PHOTOS[currentPhotoIndex].src;
-      lightboxCaption.textContent = PHOTOS[currentPhotoIndex].caption;
-    }
+    document.getElementById('photoGrid').innerHTML = PHOTOS.map((p, i) => `
+      <div class="photo-item" onclick="openLb(${i})">
+        <img src="${p.src}" alt="${p.caption}" loading="lazy">
+        <div class="photo-item-overlay"><span class="photo-item-caption">${p.caption}</span></div>
+      </div>
+    `).join('');
 
-    lightbox.querySelector('.lightbox-close').addEventListener('click', closeLightbox);
-    lightbox.querySelector('.lightbox-prev').addEventListener('click', () => navigateLightbox(-1));
-    lightbox.querySelector('.lightbox-next').addEventListener('click', () => navigateLightbox(1));
-    lightbox.addEventListener('click', (e) => {
-      if (e.target === lightbox) closeLightbox();
-    });
-
-    document.addEventListener('keydown', (e) => {
-      if (!lightbox.classList.contains('active')) return;
-      if (e.key === 'Escape') closeLightbox();
-      if (e.key === 'ArrowLeft') navigateLightbox(-1);
-      if (e.key === 'ArrowRight') navigateLightbox(1);
-    });
-
-    // ========= RENDER PHOTOS =========
-
-    function renderPhotos() {
-      const row = document.getElementById('photoRow');
-      row.innerHTML = PHOTOS.map((p, i) => `
-        <div class="photo-thumb" onclick="openLightbox(${i})">
-          <img src="${esc(p.src)}" alt="${esc(p.caption)}" loading="lazy" decoding="async">
-          <span class="photo-thumb-caption">${esc(p.caption)}</span>
-        </div>
-      `).join('');
-    }
-
-    // ========= RENDER CURRENTLY INTO =========
-
-    function renderMusic() {
-      const el = document.getElementById('musicList');
-      el.innerHTML = MUSIC.map(m => `
-        <a class="into-item" href="${esc(m.url)}" target="_blank" rel="noopener">
-          <span class="into-cover"><img src="${esc(m.cover)}" alt="" loading="lazy" decoding="async"></span>
-          <span class="into-text">
-            <p class="into-title">${esc(m.title)}</p>
-            <p class="into-meta">${esc(m.artist)}</p>
-          </span>
-          <span class="into-arrow">→</span>
-        </a>
-      `).join('');
-    }
-
-    function renderBooks() {
-      const el = document.getElementById('bookList');
-      el.innerHTML = BOOKS.map(b => `
-        <a class="into-item" href="${esc(b.url)}" target="_blank" rel="noopener">
-          <span class="into-cover book"><img src="${esc(b.cover)}" alt="" loading="lazy" decoding="async"></span>
-          <span class="into-text">
-            <p class="into-title">${esc(b.title)}</p>
-            <p class="into-meta">${esc(b.author)}</p>
-          </span>
-          <span class="into-arrow">→</span>
-        </a>
-      `).join('');
-    }
-
-    function renderTV() {
-      const el = document.getElementById('TVList');
-      el.innerHTML = TV.map(m => `
-        <a class="into-item" href="${esc(m.url)}" target="_blank" rel="noopener">
-          <span class="into-cover"><img src="${esc(m.cover)}" alt="" loading="lazy" decoding="async"></span>
-          <span class="into-text">
-            <p class="into-title">${esc(m.title)}</p>
-            <p class="into-meta">${esc(m.year)}</p>
-          </span>
-          <span class="into-arrow">→</span>
-        </a>
-      `).join('');
-    }
-
-    // ========= RENDER ACTIVITY =========
-
-    function renderYearHero() {
-      const container = document.getElementById('yearHero');
-      
-      container.innerHTML = `
-        <div class="activity-hero-header">
-          <h3 class="activity-hero-title">🏃 2025 Year in Review</h3>
-          <span class="activity-hero-badge">Completed</span>
-        </div>
-        
-        <div class="year-stats">
-          <div class="year-stat">
-            <div class="year-stat-value">${formatNumber(YEAR_2025.totalSteps)}</div>
-            <div class="year-stat-label">Steps</div>
+    document.getElementById('monthlyGrid').innerHTML = MONTHS.slice(0, 2).map(m => {
+      const pct = Math.min((m.steps / MONTHLY_GOAL) * 100, 100);
+      const met = m.steps >= MONTHLY_GOAL;
+      return `
+        <div class="month-card ${m.isCurrent ? 'current' : ''}">
+          <div class="month-header">
+            <div class="month-name">${m.month} ${m.year}</div>
+            ${m.isCurrent ? '<span class="month-tag">In Progress</span>' : (met ? '<span class="month-tag">Goal Met</span>' : '')}
           </div>
-          <div class="year-stat">
-            <div class="year-stat-value">${formatNumber(YEAR_2025.totalKm)}</div>
-            <div class="year-stat-label">Kilometers</div>
+          <div class="month-stats-row">
+            <div><div class="month-stat-label">Steps</div><div class="month-stat-val">${fmt(m.steps)}</div></div>
+            <div><div class="month-stat-label">Distance</div><div class="month-stat-val">${m.km} km</div></div>
+            <div><div class="month-stat-label">Avg/Day</div><div class="month-stat-val">${fmt(m.avgStepsPerDay)}</div></div>
           </div>
-          <div class="year-stat">
-            <div class="year-stat-value">${formatNumber(YEAR_2025.avgStepsPerDay)}</div>
-            <div class="year-stat-label">Avg/Day</div>
-          </div>
+          <div class="month-progress-header"><span>Monthly goal</span><span>${Math.round(pct)}%</span></div>
+          <div class="month-progress-bar"><div class="month-progress-fill" style="width:${pct}%"></div></div>
         </div>
       `;
-    }
+    }).join('');
 
-    function renderMonthlyActivity() {
-      const container = document.getElementById('monthlyGrid');
-      
-      // Only show first 2 months (current + previous) on homepage
-      const displayMonths = MONTHLY_ACTIVITY.slice(0, 2);
-      
-      container.innerHTML = displayMonths.map(month => {
-        // Calculate progress based on steps against monthly goal
-        const progress = Math.min((month.steps / MONTHLY_GOAL_STEPS) * 100, 100);
-        const isComplete = month.steps >= MONTHLY_GOAL_STEPS;
-        const percentOfGoal = ((month.steps / MONTHLY_GOAL_STEPS) * 100).toFixed(0);
-        
-        return `
-          <div class="month-card ${month.isCurrent ? 'current' : ''}">
-            <div class="month-card-header">
-              <div class="month-card-title">
-                <div class="month-icon"><span>${month.isCurrent ? '🔥' : (isComplete ? '✅' : '📅')}</span></div>
-                <div>
-                  <div class="month-name">${esc(month.month)}</div>
-                  <div class="month-year">${month.year}</div>
-                </div>
-              </div>
-              ${month.isCurrent ? '<span class="month-current-tag">In Progress</span>' : ''}
-              ${!month.isCurrent && isComplete ? '<span class="month-goal-met">Goal Met!</span>' : ''}
-            </div>
-            
-            <div class="month-card-body">
-              <div class="month-stats">
-                <div class="month-stat">
-                  <div class="month-stat-value">${formatNumber(month.steps)}</div>
-                  <div class="month-stat-label">steps</div>
-                </div>
-                <div class="month-stat">
-                  <div class="month-stat-value">${month.km}</div>
-                  <div class="month-stat-label">km</div>
-                </div>
-                <div class="month-stat">
-                  <div class="month-stat-value">${formatNumber(month.avgStepsPerDay)}</div>
-                  <div class="month-stat-label">avg/day</div>
-                </div>
-              </div>
-              
-              <div class="month-progress">
-                <div class="progress-header">
-                  <span class="progress-label">${isComplete ? '🎉 Goal surpassed!' : 'Monthly goal (310k steps)'}</span>
-                  <span class="progress-value">${percentOfGoal}%</span>
-                </div>
-                <div class="progress-bar">
-                  <div class="progress-fill ${isComplete ? 'progress-complete' : ''}" style="width: ${progress}%"></div>
-                </div>
-              </div>
-            </div>
-          </div>
-        `;
-      }).join('');
-    }
+    document.getElementById('musicList').innerHTML = MUSIC.map(m => `
+      <a href="${m.url}" target="_blank" class="into-item">
+        <div class="into-cover"><img src="${m.cover}" alt="" loading="lazy"></div>
+        <div class="into-text"><div class="into-title">${m.title}</div><div class="into-meta">${m.artist}</div></div>
+      </a>
+    `).join('');
 
-    // ========= RENDER PRESS =========
+    document.getElementById('bookList').innerHTML = BOOKS.map(b => `
+      <a href="${b.url}" target="_blank" class="into-item">
+        <div class="into-cover book"><img src="${b.cover}" alt="" loading="lazy"></div>
+        <div class="into-text"><div class="into-title">${b.title}</div><div class="into-meta">${b.author}</div></div>
+      </a>
+    `).join('');
 
-    function renderPress() {
-      const section = document.getElementById('press');
-      const el = document.getElementById('pressList');
-      
-      // Hide entire section if no press items
-      if (!PRESS.length) {
-        section.style.display = 'none';
-        return;
-      }
-      
-      el.innerHTML = PRESS.map(p => `
-        <a class="press-item" href="${esc(p.url)}" target="_blank" rel="noopener">
-          <div class="press-logo">${p.logo}</div>
-          <div class="press-text">
-            <h4>${esc(p.title)}</h4>
-            <p>${esc(p.description)}</p>
-            <span>${esc(p.publication)} · ${esc(p.date)}</span>
-          </div>
-        </a>
-      `).join('');
-    }
-
-    // ========= INIT =========
-
-    document.getElementById('year').textContent = new Date().getFullYear();
-    renderPhotos();
-    renderMusic();
-    renderBooks();
-    renderTV();
-    renderYearHero();
-    renderMonthlyActivity();
-    renderPress();
+    document.getElementById('tvList').innerHTML = TV.map(t => `
+      <a href="${t.url}" target="_blank" class="into-item">
+        <div class="into-cover"><img src="${t.cover}" alt="" loading="lazy"></div>
+        <div class="into-text"><div class="into-title">${t.title}</div><div class="into-meta">${t.year}</div></div>
+      </a>
+    `).join('');
   </script>
 </body>
 </html>
