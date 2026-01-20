@@ -32,34 +32,46 @@
       --text-secondary: #5C5C5C;
       --text-tertiary: #8A8A8A;
       --accent: #E07A5F;
-      --accent-soft: rgba(224, 122, 95, 0.12);
+      --accent-soft: rgba(224, 122, 95, 0.10);
+      --accent-medium: rgba(224, 122, 95, 0.18);
       --accent-hover: #D4694F;
+      --green: #4CAF50;
+      --green-soft: rgba(76, 175, 80, 0.12);
       --border: rgba(26, 26, 26, 0.08);
-      --border-hover: rgba(26, 26, 26, 0.15);
-      --shadow: 0 1px 3px rgba(0,0,0,0.04), 0 4px 12px rgba(0,0,0,0.03);
-      --shadow-hover: 0 2px 8px rgba(0,0,0,0.06), 0 8px 24px rgba(0,0,0,0.06);
+      --border-hover: rgba(26, 26, 26, 0.16);
+      --shadow-sm: 0 1px 2px rgba(0,0,0,0.04);
+      --shadow: 0 1px 3px rgba(0,0,0,0.05), 0 4px 12px rgba(0,0,0,0.04);
+      --shadow-hover: 0 4px 12px rgba(0,0,0,0.08), 0 12px 32px rgba(0,0,0,0.06);
+      --shadow-glow: 0 0 0 3px var(--accent-soft);
       --radius: 16px;
       --radius-sm: 10px;
+      --radius-xs: 6px;
       --container: 720px;
       --container-wide: 1000px;
       --pad: 24px;
-      --transition: 0.2s ease;
+      --transition: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      --transition-slow: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      --bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
     }
 
     [data-theme="dark"] {
-      --bg: #0F0F0F;
-      --bg-elevated: #1A1A1A;
-      --bg-card: #1A1A1A;
+      --bg: #0A0A0A;
+      --bg-elevated: #141414;
+      --bg-card: #141414;
       --text: #FAFAFA;
-      --text-secondary: #A0A0A0;
-      --text-tertiary: #666666;
+      --text-secondary: #A8A8A8;
+      --text-tertiary: #6A6A6A;
       --accent: #E8A090;
-      --accent-soft: rgba(232, 160, 144, 0.12);
+      --accent-soft: rgba(232, 160, 144, 0.10);
+      --accent-medium: rgba(232, 160, 144, 0.18);
       --accent-hover: #F0B0A0;
+      --green: #66BB6A;
+      --green-soft: rgba(102, 187, 106, 0.15);
       --border: rgba(255, 255, 255, 0.08);
-      --border-hover: rgba(255, 255, 255, 0.15);
-      --shadow: 0 1px 3px rgba(0,0,0,0.2), 0 4px 12px rgba(0,0,0,0.15);
-      --shadow-hover: 0 2px 8px rgba(0,0,0,0.25), 0 8px 24px rgba(0,0,0,0.2);
+      --border-hover: rgba(255, 255, 255, 0.16);
+      --shadow-sm: 0 1px 2px rgba(0,0,0,0.2);
+      --shadow: 0 1px 3px rgba(0,0,0,0.3), 0 4px 12px rgba(0,0,0,0.2);
+      --shadow-hover: 0 4px 12px rgba(0,0,0,0.4), 0 12px 32px rgba(0,0,0,0.3);
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -72,7 +84,8 @@
       font-weight: 400;
       line-height: 1.65;
       -webkit-font-smoothing: antialiased;
-      transition: background var(--transition), color var(--transition);
+      transition: background var(--transition-slow), color var(--transition);
+      overflow-x: hidden;
     }
 
     a { color: inherit; text-decoration: none; }
@@ -81,6 +94,47 @@
     .container { max-width: var(--container); margin: 0 auto; padding: 0 var(--pad); }
     .container-wide { max-width: var(--container-wide); margin: 0 auto; padding: 0 var(--pad); }
 
+    /* ===== Animations ===== */
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    @keyframes scaleIn {
+      from { opacity: 0; transform: scale(0.95); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    @keyframes slideInRight {
+      from { opacity: 0; transform: translateX(-10px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+    }
+
+    @keyframes progressFill {
+      from { width: 0; }
+    }
+
+    .animate-on-scroll {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+
+    .animate-on-scroll.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
     /* ===== Header ===== */
     header {
       position: sticky;
@@ -88,7 +142,9 @@
       z-index: 100;
       background: var(--bg);
       border-bottom: 1px solid var(--border);
-      transition: background var(--transition);
+      transition: background var(--transition-slow), border-color var(--transition);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
     }
 
     .head {
@@ -96,7 +152,7 @@
       align-items: center;
       justify-content: space-between;
       gap: 16px;
-      padding: 16px 0;
+      padding: 14px 0;
       max-width: var(--container-wide);
       margin: 0 auto;
       padding-left: var(--pad);
@@ -107,17 +163,25 @@
       display: flex;
       align-items: center;
       gap: 12px;
-      transition: opacity var(--transition);
+      transition: opacity var(--transition), transform var(--transition);
     }
-    .brand:hover { opacity: 0.7; }
+    .brand:hover { 
+      opacity: 0.8;
+      transform: translateX(2px);
+    }
 
     .logo {
-      width: 40px;
-      height: 40px;
+      width: 38px;
+      height: 38px;
       border-radius: 50%;
       overflow: hidden;
       border: 1px solid var(--border);
       background: var(--bg-card);
+      transition: transform var(--transition), box-shadow var(--transition);
+    }
+    .brand:hover .logo {
+      transform: scale(1.05);
+      box-shadow: var(--shadow-glow);
     }
     .logo img { width: 100%; height: 100%; object-fit: cover; }
 
@@ -143,16 +207,21 @@
       color: var(--text-secondary);
       padding: 8px 12px;
       border-radius: var(--radius-sm);
-      transition: color var(--transition), background var(--transition);
+      transition: color var(--transition), background var(--transition), transform var(--transition);
+      position: relative;
     }
     nav.desktop a:hover {
       color: var(--text);
       background: var(--accent-soft);
+      transform: translateY(-1px);
+    }
+    nav.desktop a:active {
+      transform: translateY(0);
     }
 
     .theme-toggle {
-      width: 40px;
-      height: 40px;
+      width: 38px;
+      height: 38px;
       border: 1px solid var(--border);
       background: var(--bg-card);
       border-radius: var(--radius-sm);
@@ -160,11 +229,27 @@
       align-items: center;
       justify-content: center;
       cursor: pointer;
-      transition: border-color var(--transition), background var(--transition);
+      transition: border-color var(--transition), background var(--transition), transform var(--transition), box-shadow var(--transition);
       margin-left: 8px;
     }
-    .theme-toggle:hover { border-color: var(--border-hover); }
-    .theme-toggle svg { width: 18px; height: 18px; color: var(--text-secondary); }
+    .theme-toggle:hover { 
+      border-color: var(--border-hover);
+      transform: translateY(-1px);
+      box-shadow: var(--shadow);
+    }
+    .theme-toggle:active {
+      transform: translateY(0) scale(0.95);
+    }
+    .theme-toggle svg { 
+      width: 18px; 
+      height: 18px; 
+      color: var(--text-secondary);
+      transition: transform 0.3s var(--bounce), color var(--transition);
+    }
+    .theme-toggle:hover svg {
+      color: var(--accent);
+      transform: rotate(15deg);
+    }
     .theme-toggle .sun { display: none; }
     .theme-toggle .moon { display: block; }
     [data-theme="dark"] .theme-toggle .sun { display: block; }
@@ -172,21 +257,26 @@
 
     .burger {
       display: none;
-      width: 40px;
-      height: 40px;
+      width: 38px;
+      height: 38px;
       border: 1px solid var(--border);
       background: var(--bg-card);
       border-radius: var(--radius-sm);
       align-items: center;
       justify-content: center;
       cursor: pointer;
+      transition: border-color var(--transition), transform var(--transition);
+    }
+    .burger:hover {
+      border-color: var(--border-hover);
+      transform: scale(1.02);
     }
     .burger svg { width: 20px; height: 20px; color: var(--text-secondary); }
 
     .mobile-panel {
       display: none;
       position: fixed;
-      top: 73px;
+      top: 68px;
       left: var(--pad);
       right: var(--pad);
       background: var(--bg-card);
@@ -195,6 +285,7 @@
       padding: 8px;
       box-shadow: var(--shadow-hover);
       z-index: 99;
+      animation: scaleIn 0.2s ease;
     }
     .mobile-panel.open { display: block; }
     .mobile-panel a {
@@ -203,11 +294,12 @@
       border-radius: var(--radius-sm);
       font-size: 15px;
       color: var(--text-secondary);
-      transition: background var(--transition), color var(--transition);
+      transition: background var(--transition), color var(--transition), transform var(--transition);
     }
     .mobile-panel a:hover {
       background: var(--accent-soft);
       color: var(--text);
+      transform: translateX(4px);
     }
 
     @media (max-width: 768px) {
@@ -220,21 +312,24 @@
 
     .hero {
       padding: 48px 0 40px;
+      animation: fadeInUp 0.6s ease;
     }
 
     .hero-eyebrow {
       display: inline-flex;
       align-items: center;
-      gap: 6px;
+      gap: 8px;
       font-size: 13px;
       color: var(--text-tertiary);
       margin-bottom: 16px;
+      animation: slideInRight 0.5s ease 0.1s both;
     }
     .hero-eyebrow .dot {
-      width: 6px;
-      height: 6px;
+      width: 8px;
+      height: 8px;
       background: var(--accent);
       border-radius: 50%;
+      animation: pulse 2s ease infinite;
     }
 
     h1 {
@@ -244,10 +339,12 @@
       line-height: 1.15;
       letter-spacing: -0.02em;
       margin-bottom: 20px;
+      animation: fadeInUp 0.6s ease 0.15s both;
     }
     h1 em {
       font-style: italic;
       color: var(--accent);
+      transition: color var(--transition);
     }
 
     .intro {
@@ -255,13 +352,14 @@
       line-height: 1.7;
       color: var(--text-secondary);
       margin-bottom: 28px;
+      animation: fadeInUp 0.6s ease 0.25s both;
     }
     .intro a {
       color: var(--accent);
       text-decoration: underline;
       text-decoration-color: var(--accent-soft);
       text-underline-offset: 3px;
-      transition: text-decoration-color var(--transition);
+      transition: text-decoration-color var(--transition), color var(--transition);
     }
     .intro a:hover {
       text-decoration-color: var(--accent);
@@ -271,13 +369,14 @@
       display: flex;
       flex-wrap: wrap;
       gap: 10px;
+      animation: fadeInUp 0.6s ease 0.35s both;
     }
 
     .btn {
       display: inline-flex;
       align-items: center;
       gap: 6px;
-      padding: 10px 16px;
+      padding: 10px 18px;
       border-radius: 999px;
       font-size: 14px;
       font-weight: 500;
@@ -286,30 +385,50 @@
       color: var(--text);
       transition: all var(--transition);
       cursor: pointer;
+      position: relative;
+      overflow: hidden;
+    }
+    .btn::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: var(--accent-soft);
+      opacity: 0;
+      transition: opacity var(--transition);
     }
     .btn:hover {
       border-color: var(--border-hover);
       box-shadow: var(--shadow);
-      transform: translateY(-1px);
+      transform: translateY(-2px);
+    }
+    .btn:hover::before {
+      opacity: 1;
+    }
+    .btn:active {
+      transform: translateY(0);
     }
     .btn.primary {
       background: var(--accent);
       border-color: var(--accent);
       color: #fff;
     }
+    .btn.primary::before {
+      background: rgba(255,255,255,0.1);
+    }
     .btn.primary:hover {
       background: var(--accent-hover);
       border-color: var(--accent-hover);
+      box-shadow: 0 4px 16px rgba(224, 122, 95, 0.3);
     }
 
     /* ===== Sections ===== */
     .section {
-      padding: 48px 0;
+      padding: 56px 0;
       border-top: 1px solid var(--border);
     }
 
     .section-header {
-      margin-bottom: 24px;
+      margin-bottom: 28px;
     }
 
     .section-title {
@@ -340,16 +459,22 @@
       background: var(--bg-card);
       border: 1px solid var(--border);
       border-radius: var(--radius);
-      transition: border-color var(--transition), box-shadow var(--transition);
+      transition: border-color var(--transition), box-shadow var(--transition), transform var(--transition);
+      cursor: default;
     }
     .about-card:hover {
       border-color: var(--border-hover);
       box-shadow: var(--shadow);
+      transform: translateY(-2px);
     }
 
     .about-card-icon {
       font-size: 24px;
       margin-bottom: 12px;
+      transition: transform 0.3s var(--bounce);
+    }
+    .about-card:hover .about-card-icon {
+      transform: scale(1.15) rotate(-5deg);
     }
 
     .about-card h3 {
@@ -369,11 +494,12 @@
       display: flex;
       gap: 12px;
       overflow-x: auto;
-      padding-bottom: 8px;
+      padding-bottom: 12px;
       margin: 0 calc(-1 * var(--pad));
       padding-left: var(--pad);
       padding-right: var(--pad);
       scrollbar-width: none;
+      scroll-snap-type: x mandatory;
     }
     .photo-row::-webkit-scrollbar { display: none; }
 
@@ -385,86 +511,174 @@
       overflow: hidden;
       border: 1px solid var(--border);
       position: relative;
-      transition: transform var(--transition), border-color var(--transition);
+      transition: transform var(--transition), border-color var(--transition), box-shadow var(--transition);
+      scroll-snap-align: start;
     }
     .photo-thumb:hover {
-      transform: translateY(-2px);
+      transform: translateY(-4px) scale(1.02);
       border-color: var(--border-hover);
+      box-shadow: var(--shadow-hover);
     }
     .photo-thumb img {
       width: 100%;
       height: 100%;
       object-fit: cover;
+      transition: transform var(--transition-slow);
+    }
+    .photo-thumb:hover img {
+      transform: scale(1.08);
     }
     .photo-thumb-caption {
       position: absolute;
       bottom: 0;
       left: 0;
       right: 0;
-      padding: 8px 10px;
-      background: linear-gradient(to top, rgba(0,0,0,0.6) 0%, transparent 100%);
+      padding: 10px 12px;
+      background: linear-gradient(to top, rgba(0,0,0,0.7) 0%, transparent 100%);
       font-size: 12px;
       color: #fff;
       opacity: 0;
-      transition: opacity var(--transition);
+      transform: translateY(4px);
+      transition: opacity var(--transition), transform var(--transition);
     }
-    .photo-thumb:hover .photo-thumb-caption { opacity: 1; }
+    .photo-thumb:hover .photo-thumb-caption { 
+      opacity: 1;
+      transform: translateY(0);
+    }
 
     .section-footer {
       margin-top: 20px;
     }
 
-    /* ===== Activity / Workouts ===== */
-    .activity-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 12px;
-    }
-    @media (max-width: 640px) {
-      .activity-grid { grid-template-columns: 1fr; }
-    }
-
-    .activity-card {
-      padding: 20px;
-      background: var(--bg-card);
+    /* ===== Activity / Movement ===== */
+    .activity-hero {
+      background: linear-gradient(135deg, var(--accent-soft) 0%, var(--bg-card) 50%, var(--green-soft) 100%);
       border: 1px solid var(--border);
       border-radius: var(--radius);
-      text-align: center;
+      padding: 28px;
+      margin-bottom: 24px;
+      position: relative;
+      overflow: hidden;
     }
 
-    .activity-value {
-      font-family: 'Newsreader', Georgia, serif;
-      font-size: 32px;
-      letter-spacing: -0.02em;
-      color: var(--accent);
-      margin-bottom: 4px;
+    .activity-hero::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      right: -20%;
+      width: 300px;
+      height: 300px;
+      background: radial-gradient(circle, var(--accent-soft) 0%, transparent 70%);
+      pointer-events: none;
     }
 
-    .activity-label {
-      font-size: 13px;
-      color: var(--text-tertiary);
-    }
-
-    .activity-log {
-      margin-top: 16px;
-    }
-
-    .activity-entry {
+    .activity-hero-header {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 12px 0;
-      border-bottom: 1px solid var(--border);
+      margin-bottom: 20px;
+      position: relative;
     }
-    .activity-entry:last-child { border-bottom: none; }
 
-    .activity-entry-left {
+    .activity-hero-title {
+      font-family: 'Newsreader', Georgia, serif;
+      font-size: 22px;
+      font-weight: 400;
       display: flex;
       align-items: center;
+      gap: 10px;
+    }
+
+    .activity-hero-badge {
+      font-family: 'Outfit', sans-serif;
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      padding: 5px 12px;
+      background: var(--accent);
+      color: #fff;
+      border-radius: 999px;
+    }
+
+    .year-stats {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+      position: relative;
+    }
+
+    .year-stat {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 20px;
+      text-align: center;
+      transition: transform var(--transition), box-shadow var(--transition);
+    }
+    .year-stat:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow);
+    }
+
+    .year-stat-value {
+      font-family: 'Newsreader', Georgia, serif;
+      font-size: 36px;
+      font-weight: 400;
+      letter-spacing: -0.03em;
+      color: var(--accent);
+      line-height: 1;
+      margin-bottom: 4px;
+    }
+
+    .year-stat-label {
+      font-size: 12px;
+      color: var(--text-tertiary);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    /* Monthly Cards */
+    .monthly-grid {
+      display: flex;
+      flex-direction: column;
       gap: 12px;
     }
 
-    .activity-entry-icon {
+    .month-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      transition: border-color var(--transition), box-shadow var(--transition), transform var(--transition);
+    }
+    .month-card:hover {
+      border-color: var(--border-hover);
+      box-shadow: var(--shadow);
+      transform: translateX(4px);
+    }
+
+    .month-card.current {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px var(--accent-soft);
+    }
+
+    .month-card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 20px;
+      border-bottom: 1px solid var(--border);
+      background: var(--bg);
+    }
+
+    .month-card-title {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .month-icon {
       width: 36px;
       height: 36px;
       background: var(--accent-soft);
@@ -473,28 +687,139 @@
       align-items: center;
       justify-content: center;
       font-size: 16px;
+      transition: transform 0.3s var(--bounce);
+    }
+    .month-card:hover .month-icon {
+      transform: scale(1.1);
+    }
+    .month-card.current .month-icon {
+      background: var(--accent);
+    }
+    .month-card.current .month-icon span {
+      filter: brightness(10);
     }
 
-    .activity-entry-text h4 {
-      font-size: 14px;
-      font-weight: 500;
+    .month-name {
+      font-weight: 600;
+      font-size: 15px;
     }
-    .activity-entry-text span {
+
+    .month-year {
       font-size: 13px;
       color: var(--text-tertiary);
     }
 
-    .activity-entry-stat {
-      text-align: right;
+    .month-current-tag {
+      font-size: 10px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      padding: 4px 10px;
+      background: var(--green);
+      color: #fff;
+      border-radius: 999px;
+      animation: pulse 2s ease infinite;
     }
-    .activity-entry-stat strong {
-      display: block;
-      font-size: 15px;
-      font-weight: 500;
+
+    .month-card-body {
+      padding: 16px 20px;
     }
-    .activity-entry-stat span {
+
+    .month-stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+    @media (max-width: 480px) {
+      .month-stats { grid-template-columns: 1fr; gap: 8px; }
+    }
+
+    .month-stat {
+      text-align: center;
+      padding: 12px;
+      background: var(--bg);
+      border-radius: var(--radius-sm);
+      transition: background var(--transition);
+    }
+    .month-card:hover .month-stat {
+      background: var(--accent-soft);
+    }
+
+    .month-stat-value {
+      font-family: 'Newsreader', Georgia, serif;
+      font-size: 22px;
+      font-weight: 400;
+      letter-spacing: -0.02em;
+      color: var(--accent);
+      line-height: 1.1;
+    }
+
+    .month-stat-label {
+      font-size: 11px;
+      color: var(--text-tertiary);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      margin-top: 2px;
+    }
+
+    /* Progress Bar */
+    .month-progress {
+      padding-top: 12px;
+      border-top: 1px solid var(--border);
+    }
+
+    .progress-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+
+    .progress-label {
       font-size: 12px;
       color: var(--text-tertiary);
+    }
+
+    .progress-value {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--accent);
+    }
+
+    .progress-bar {
+      height: 8px;
+      background: var(--bg);
+      border-radius: 4px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--accent) 0%, var(--accent-hover) 100%);
+      border-radius: 4px;
+      transition: width 1s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+    }
+    .progress-fill::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.3) 50%, transparent 100%);
+      animation: shimmer 2s infinite;
+    }
+
+    @keyframes shimmer {
+      0% { transform: translateX(-100%); }
+      100% { transform: translateX(100%); }
+    }
+
+    .progress-complete {
+      background: linear-gradient(90deg, var(--green) 0%, #66BB6A 100%);
     }
 
     /* ===== Currently Into ===== */
@@ -512,14 +837,20 @@
       border: 1px solid var(--border);
       border-radius: var(--radius);
       overflow: hidden;
+      transition: border-color var(--transition), box-shadow var(--transition);
+    }
+    .into-card:hover {
+      border-color: var(--border-hover);
+      box-shadow: var(--shadow);
     }
 
     .into-card-header {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 16px;
+      padding: 14px 16px;
       border-bottom: 1px solid var(--border);
+      background: var(--bg);
     }
     .into-card-header h3 {
       font-size: 14px;
@@ -539,9 +870,12 @@
       align-items: center;
       padding: 10px;
       border-radius: var(--radius-sm);
-      transition: background var(--transition);
+      transition: background var(--transition), transform var(--transition);
     }
-    .into-item:hover { background: var(--accent-soft); }
+    .into-item:hover { 
+      background: var(--accent-soft);
+      transform: translateX(4px);
+    }
 
     .into-cover {
       width: 48px;
@@ -551,6 +885,11 @@
       border: 1px solid var(--border);
       flex-shrink: 0;
       background: var(--bg);
+      transition: transform var(--transition), box-shadow var(--transition);
+    }
+    .into-item:hover .into-cover {
+      transform: scale(1.05);
+      box-shadow: var(--shadow-sm);
     }
     .into-cover.book { border-radius: 4px; height: 64px; }
     .into-cover img {
@@ -582,10 +921,13 @@
     .into-arrow {
       color: var(--text-tertiary);
       font-size: 14px;
-      transition: transform var(--transition);
+      transition: transform var(--transition), color var(--transition);
       flex-shrink: 0;
     }
-    .into-item:hover .into-arrow { transform: translateX(2px); }
+    .into-item:hover .into-arrow { 
+      transform: translateX(4px);
+      color: var(--accent);
+    }
 
     /* ===== Press / Mentions ===== */
     .press-list {
@@ -598,15 +940,16 @@
       display: flex;
       gap: 16px;
       align-items: flex-start;
-      padding: 16px;
+      padding: 18px;
       background: var(--bg-card);
       border: 1px solid var(--border);
       border-radius: var(--radius);
-      transition: border-color var(--transition), box-shadow var(--transition);
+      transition: border-color var(--transition), box-shadow var(--transition), transform var(--transition);
     }
     .press-item:hover {
       border-color: var(--border-hover);
       box-shadow: var(--shadow);
+      transform: translateY(-2px);
     }
 
     .press-logo {
@@ -620,6 +963,10 @@
       justify-content: center;
       flex-shrink: 0;
       font-size: 20px;
+      transition: transform 0.3s var(--bounce);
+    }
+    .press-item:hover .press-logo {
+      transform: scale(1.1) rotate(-5deg);
     }
 
     .press-text {
@@ -645,11 +992,16 @@
 
     /* ===== Contact ===== */
     .contact-box {
-      padding: 32px;
+      padding: 36px;
       background: var(--bg-card);
       border: 1px solid var(--border);
       border-radius: var(--radius);
       text-align: center;
+      transition: border-color var(--transition), box-shadow var(--transition);
+    }
+    .contact-box:hover {
+      border-color: var(--border-hover);
+      box-shadow: var(--shadow);
     }
 
     .contact-box p {
@@ -661,7 +1013,7 @@
     footer {
       padding: 24px 0;
       border-top: 1px solid var(--border);
-      margin-top: 48px;
+      margin-top: 56px;
     }
 
     .foot {
@@ -679,18 +1031,37 @@
       display: inline-flex;
       align-items: center;
       gap: 4px;
-      transition: gap var(--transition);
+      transition: gap var(--transition), color var(--transition);
     }
-    .link-arrow:hover { gap: 8px; }
+    .link-arrow:hover { 
+      gap: 8px;
+    }
+
+    /* ===== Scroll Progress ===== */
+    .scroll-progress {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--accent) 0%, var(--accent-hover) 100%);
+      z-index: 1000;
+      transition: width 0.1s linear;
+    }
 
     @media (prefers-reduced-motion: reduce) {
       html { scroll-behavior: auto !important; }
-      *, *::before, *::after { animation: none !important; transition: none !important; }
+      *, *::before, *::after { 
+        animation: none !important; 
+        transition: none !important; 
+      }
     }
   </style>
 </head>
 
 <body>
+  <!-- Scroll Progress Bar -->
+  <div class="scroll-progress" id="scrollProgress"></div>
+
   <header>
     <div class="head">
       <a class="brand" href="#top" aria-label="Home">
@@ -753,7 +1124,7 @@
         </div>
       </section>
 
-      <section id="about" class="section">
+      <section id="about" class="section animate-on-scroll">
         <div class="section-header">
           <h2 class="section-title">A bit about me</h2>
           <p class="section-lead">The interesting parts, anyway.</p>
@@ -814,7 +1185,7 @@
         </p>
       </section>
 
-      <section id="photos" class="section">
+      <section id="photos" class="section animate-on-scroll">
         <div class="section-header">
           <h2 class="section-title">Photography</h2>
           <p class="section-lead">Exploring place, memory, and belonging. Mostly on iPhone.</p>
@@ -827,31 +1198,20 @@
         </div>
       </section>
 
-      <section id="activity" class="section">
+      <section id="activity" class="section animate-on-scroll">
         <div class="section-header">
-          <h2 class="section-title">Activity</h2>
-          <p class="section-lead">Mostly walks. Sometimes runs. Always moving.</p>
+          <h2 class="section-title">Movement</h2>
+          <p class="section-lead">Tracking my walks and runs. Staying active, one month at a time.</p>
         </div>
 
-        <div class="activity-grid">
-          <div class="activity-card">
-            <div class="activity-value" id="totalKm">0</div>
-            <div class="activity-label">km this month</div>
-          </div>
-          <div class="activity-card">
-            <div class="activity-value" id="totalSteps">0</div>
-            <div class="activity-label">steps this month</div>
-          </div>
-          <div class="activity-card">
-            <div class="activity-value" id="totalWorkouts">0</div>
-            <div class="activity-label">workouts logged</div>
-          </div>
-        </div>
+        <!-- Year Hero -->
+        <div class="activity-hero" id="yearHero"></div>
 
-        <div class="activity-log" id="activityLog"></div>
+        <!-- Monthly Cards -->
+        <div class="monthly-grid" id="monthlyGrid"></div>
       </section>
 
-      <section id="into" class="section">
+      <section id="into" class="section animate-on-scroll">
         <div class="section-header">
           <h2 class="section-title">Currently into</h2>
           <p class="section-lead">What I'm reading, listening to, and watching.</p>
@@ -881,7 +1241,7 @@
         </div>
       </section>
 
-      <section id="press" class="section">
+      <section id="press" class="section animate-on-scroll">
         <div class="section-header">
           <h2 class="section-title">Press & mentions</h2>
           <p class="section-lead">Articles and publications I've been featured in.</p>
@@ -890,7 +1250,7 @@
         <div class="press-list" id="pressList"></div>
       </section>
 
-      <section id="contact" class="section">
+      <section id="contact" class="section animate-on-scroll">
         <div class="section-header">
           <h2 class="section-title">Get in touch</h2>
         </div>
@@ -962,10 +1322,37 @@
       }
     ];
 
-    const ACTIVITY = [
-      { type: "walk", title: "Morning walk", location: "Victoria Island", date: "Jan 18", km: 5.2, steps: 6800 },
-      { type: "walk", title: "Evening stroll", location: "Lekki", date: "Jan 16", km: 3.1, steps: 4100 },
-      { type: "run", title: "Run", location: "Ikoyi", date: "Jan 14", km: 4.0, steps: 5200 }
+    // ========= ACTIVITY DATA - EDIT THIS =========
+    
+    // 2025 Year totals
+    const YEAR_2025 = {
+      totalKm: 245.8,
+      totalSteps: 321500
+    };
+
+    // Monthly logs (newest first)
+    // isCurrent: true marks the active month
+    // goal: optional monthly km goal
+    const MONTHLY_ACTIVITY = [
+      {
+        month: "January",
+        year: 2026,
+        isCurrent: true,
+        km: 28.4,
+        steps: 37200,
+        workouts: 12,
+        goal: 50
+      },
+      {
+        month: "December",
+        year: 2025,
+        isCurrent: false,
+        km: 42.1,
+        steps: 55000,
+        workouts: 18,
+        goal: 50
+      }
+      // Add more months here as you go...
     ];
 
     const PRESS = [
@@ -982,6 +1369,10 @@
     // ========= UTILITIES =========
 
     const esc = s => String(s || '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+
+    function formatNumber(num) {
+      return num.toLocaleString();
+    }
 
     // ========= THEME TOGGLE =========
 
@@ -1023,6 +1414,45 @@
       }
     });
 
+    // Close panel when clicking outside
+    document.addEventListener('click', e => {
+      if (!panel.contains(e.target) && !burger.contains(e.target)) {
+        panel.classList.remove('open');
+        burger.setAttribute('aria-expanded', 'false');
+      }
+    });
+
+    // ========= SCROLL PROGRESS =========
+
+    const scrollProgress = document.getElementById('scrollProgress');
+    
+    window.addEventListener('scroll', () => {
+      const scrollTop = window.scrollY;
+      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      const progress = (scrollTop / docHeight) * 100;
+      scrollProgress.style.width = progress + '%';
+    });
+
+    // ========= SCROLL ANIMATIONS =========
+
+    const observerOptions = {
+      root: null,
+      rootMargin: '0px',
+      threshold: 0.1
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, observerOptions);
+
+    document.querySelectorAll('.animate-on-scroll').forEach(el => {
+      observer.observe(el);
+    });
+
     // ========= RENDER PHOTOS =========
 
     function renderPhotos() {
@@ -1046,7 +1476,7 @@
             <p class="into-title">${esc(m.title)}</p>
             <p class="into-meta">${esc(m.artist)}</p>
           </span>
-          <span class="into-arrow">↗</span>
+          <span class="into-arrow">→</span>
         </a>
       `).join('');
     }
@@ -1060,7 +1490,7 @@
             <p class="into-title">${esc(b.title)}</p>
             <p class="into-meta">${esc(b.author)}</p>
           </span>
-          <span class="into-arrow">↗</span>
+          <span class="into-arrow">→</span>
         </a>
       `).join('');
     }
@@ -1074,37 +1504,86 @@
             <p class="into-title">${esc(m.title)}</p>
             <p class="into-meta">${esc(m.year)}</p>
           </span>
-          <span class="into-arrow">↗</span>
+          <span class="into-arrow">→</span>
         </a>
       `).join('');
     }
 
     // ========= RENDER ACTIVITY =========
 
-    function renderActivity() {
-      const totalKm = ACTIVITY.reduce((sum, a) => sum + (a.km || 0), 0);
-      const totalSteps = ACTIVITY.reduce((sum, a) => sum + (a.steps || 0), 0);
+    function renderYearHero() {
+      const container = document.getElementById('yearHero');
       
-      document.getElementById('totalKm').textContent = totalKm.toFixed(1);
-      document.getElementById('totalSteps').textContent = totalSteps.toLocaleString();
-      document.getElementById('totalWorkouts').textContent = ACTIVITY.length;
-
-      const log = document.getElementById('activityLog');
-      log.innerHTML = ACTIVITY.slice(0, 5).map(a => `
-        <div class="activity-entry">
-          <div class="activity-entry-left">
-            <div class="activity-entry-icon">${a.type === 'run' ? '🏃' : '🚶'}</div>
-            <div class="activity-entry-text">
-              <h4>${esc(a.title)}</h4>
-              <span>${esc(a.location)} · ${esc(a.date)}</span>
-            </div>
+      container.innerHTML = `
+        <div class="activity-hero-header">
+          <h3 class="activity-hero-title">🏃 2025 Year in Review</h3>
+          <span class="activity-hero-badge">Completed</span>
+        </div>
+        
+        <div class="year-stats">
+          <div class="year-stat">
+            <div class="year-stat-value">${YEAR_2025.totalKm.toFixed(1)}</div>
+            <div class="year-stat-label">Kilometers</div>
           </div>
-          <div class="activity-entry-stat">
-            <strong>${a.km} km</strong>
-            <span>${a.steps.toLocaleString()} steps</span>
+          <div class="year-stat">
+            <div class="year-stat-value">${formatNumber(YEAR_2025.totalSteps)}</div>
+            <div class="year-stat-label">Steps</div>
           </div>
         </div>
-      `).join('');
+      `;
+    }
+
+    function renderMonthlyActivity() {
+      const container = document.getElementById('monthlyGrid');
+      
+      container.innerHTML = MONTHLY_ACTIVITY.map(month => {
+        const progress = month.goal ? Math.min((month.km / month.goal) * 100, 100) : 0;
+        const isComplete = progress >= 100;
+        
+        return `
+          <div class="month-card ${month.isCurrent ? 'current' : ''}">
+            <div class="month-card-header">
+              <div class="month-card-title">
+                <div class="month-icon"><span>${month.isCurrent ? '🔥' : '📅'}</span></div>
+                <div>
+                  <div class="month-name">${esc(month.month)}</div>
+                  <div class="month-year">${month.year}</div>
+                </div>
+              </div>
+              ${month.isCurrent ? '<span class="month-current-tag">In Progress</span>' : ''}
+            </div>
+            
+            <div class="month-card-body">
+              <div class="month-stats">
+                <div class="month-stat">
+                  <div class="month-stat-value">${month.km.toFixed(1)}</div>
+                  <div class="month-stat-label">km</div>
+                </div>
+                <div class="month-stat">
+                  <div class="month-stat-value">${formatNumber(month.steps)}</div>
+                  <div class="month-stat-label">steps</div>
+                </div>
+                <div class="month-stat">
+                  <div class="month-stat-value">${month.workouts}</div>
+                  <div class="month-stat-label">workouts</div>
+                </div>
+              </div>
+              
+              ${month.goal ? `
+                <div class="month-progress">
+                  <div class="progress-header">
+                    <span class="progress-label">${isComplete ? '🎉 Goal reached!' : 'Monthly goal'}</span>
+                    <span class="progress-value">${month.km.toFixed(1)} / ${month.goal} km</span>
+                  </div>
+                  <div class="progress-bar">
+                    <div class="progress-fill ${isComplete ? 'progress-complete' : ''}" style="width: ${progress}%"></div>
+                  </div>
+                </div>
+              ` : ''}
+            </div>
+          </div>
+        `;
+      }).join('');
     }
 
     // ========= RENDER PRESS =========
@@ -1134,7 +1613,8 @@
     renderMusic();
     renderBooks();
     renderTV();
-    renderActivity();
+    renderYearHero();
+    renderMonthlyActivity();
     renderPress();
   </script>
 </body>
