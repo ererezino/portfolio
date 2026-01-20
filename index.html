@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Zino Asamaige</title>
 
-  <!-- SEO & Social -->
   <meta name="description" content="Building things, taking photos, trying to get better at swimming. Based in Lagos.">
   <meta name="author" content="Zino Asamaige">
   <meta property="og:title" content="Zino Asamaige">
@@ -35,6 +34,8 @@
       --border: #E8E8E8;
       --green: #00D26A;
       --green-glow: rgba(0, 210, 106, 0.4);
+      --glass-bg: rgba(255, 255, 255, 0.7);
+      --glass-border: rgba(255, 255, 255, 0.3);
       --container: 1100px;
       --transition: 0.2s ease;
     }
@@ -49,6 +50,8 @@
       --accent-soft: rgba(255, 255, 255, 0.05);
       --border: #222222;
       --green-glow: rgba(0, 210, 106, 0.5);
+      --glass-bg: rgba(20, 20, 20, 0.8);
+      --glass-border: rgba(255, 255, 255, 0.1);
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -112,6 +115,12 @@
       font-size: 15px;
       font-weight: 700;
       letter-spacing: -0.02em;
+    }
+
+    .nav-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
     }
 
     nav {
@@ -202,6 +211,11 @@
       justify-content: space-between;
       align-items: center;
       margin-bottom: 48px;
+    }
+    .mobile-menu-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
     }
     .mobile-menu-close {
       width: 32px;
@@ -387,24 +401,44 @@
     .section-link:hover { color: var(--text); }
     .section-link svg { width: 14px; height: 14px; }
 
-    /* Photos Grid */
-    .photos-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 2px;
+    /* Photos Carousel */
+    .photos-carousel {
+      display: flex;
+      gap: 12px;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      -webkit-overflow-scrolling: touch;
+      padding-bottom: 16px;
+      margin: 0 -40px;
+      padding-left: 40px;
+      padding-right: 40px;
+      scrollbar-width: none;
     }
-    @media (max-width: 900px) {
-      .photos-grid { grid-template-columns: repeat(2, 1fr); }
-    }
-    @media (max-width: 500px) {
-      .photos-grid { grid-template-columns: 1fr; }
+    .photos-carousel::-webkit-scrollbar { display: none; }
+    
+    @media (max-width: 768px) {
+      .photos-carousel {
+        margin: 0 -20px;
+        padding-left: 20px;
+        padding-right: 20px;
+        gap: 10px;
+      }
     }
 
     .photo-item {
+      flex: 0 0 auto;
+      width: 260px;
       position: relative;
       cursor: pointer;
       overflow: hidden;
+      scroll-snap-align: start;
+      border-radius: 8px;
     }
+    
+    @media (max-width: 768px) {
+      .photo-item { width: 180px; }
+    }
+    
     .photo-item img {
       width: 100%;
       aspect-ratio: 3/4;
@@ -431,9 +465,9 @@
       color: #fff;
     }
 
-    /* Movement Section - Enhanced */
+    /* Movement Section - Modern Glass Design */
     .movement-hero {
-      background: linear-gradient(135deg, #0A0A0A 0%, #1a1a2e 50%, #16213e 100%);
+      background: var(--text);
       border-radius: 16px;
       padding: 48px;
       margin-bottom: 24px;
@@ -444,28 +478,28 @@
     .movement-hero::before {
       content: '';
       position: absolute;
-      top: -50%;
-      right: -20%;
-      width: 400px;
-      height: 400px;
-      background: radial-gradient(circle, rgba(0, 210, 106, 0.15) 0%, transparent 70%);
-      animation: pulse-glow 4s ease-in-out infinite;
+      top: -100px;
+      right: -100px;
+      width: 300px;
+      height: 300px;
+      background: radial-gradient(circle, var(--green-glow) 0%, transparent 70%);
+      animation: float 6s ease-in-out infinite;
     }
     
     .movement-hero::after {
       content: '';
       position: absolute;
-      bottom: -30%;
-      left: -10%;
-      width: 300px;
-      height: 300px;
-      background: radial-gradient(circle, rgba(99, 102, 241, 0.1) 0%, transparent 70%);
-      animation: pulse-glow 4s ease-in-out infinite 2s;
+      bottom: -80px;
+      left: -80px;
+      width: 250px;
+      height: 250px;
+      background: radial-gradient(circle, rgba(255,255,255,0.05) 0%, transparent 70%);
+      animation: float 6s ease-in-out infinite 3s;
     }
     
-    @keyframes pulse-glow {
-      0%, 100% { transform: scale(1); opacity: 0.5; }
-      50% { transform: scale(1.1); opacity: 1; }
+    @keyframes float {
+      0%, 100% { transform: translate(0, 0); }
+      50% { transform: translate(20px, -20px); }
     }
     
     .movement-hero-header {
@@ -478,8 +512,8 @@
     }
     
     .movement-hero-title {
-      color: #fff;
-      font-size: 14px;
+      color: var(--bg);
+      font-size: 13px;
       font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 0.1em;
@@ -488,21 +522,19 @@
       gap: 12px;
     }
     
-    .movement-hero-title .icon {
+    .movement-icon {
       width: 40px;
       height: 40px;
-      background: linear-gradient(135deg, #00D26A 0%, #00A854 100%);
+      background: var(--green);
       border-radius: 10px;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 20px;
-      animation: bounce-subtle 2s ease-in-out infinite;
     }
-    
-    @keyframes bounce-subtle {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-4px); }
+    .movement-icon svg {
+      width: 22px;
+      height: 22px;
+      color: #000;
     }
     
     .movement-hero-badge {
@@ -512,26 +544,27 @@
       letter-spacing: 0.08em;
       padding: 8px 14px;
       background: rgba(255, 255, 255, 0.1);
-      color: #00D26A;
+      color: var(--green);
       border: 1px solid rgba(0, 210, 106, 0.3);
       border-radius: 100px;
+      backdrop-filter: blur(10px);
     }
     
     .movement-stats {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 24px;
+      gap: 16px;
       position: relative;
       z-index: 1;
     }
     @media (max-width: 768px) {
-      .movement-stats { grid-template-columns: 1fr; gap: 16px; }
+      .movement-stats { grid-template-columns: 1fr; gap: 12px; }
       .movement-hero { padding: 32px 24px; }
     }
 
     .movement-stat {
       text-align: center;
-      padding: 24px;
+      padding: 24px 16px;
       background: rgba(255, 255, 255, 0.05);
       border: 1px solid rgba(255, 255, 255, 0.1);
       border-radius: 12px;
@@ -542,17 +575,20 @@
       transform: translateY(-4px);
       background: rgba(255, 255, 255, 0.08);
     }
+    
+    .movement-stat-icon {
+      width: 32px;
+      height: 32px;
+      margin: 0 auto 12px;
+      color: var(--green);
+    }
 
     .movement-stat-value {
-      font-size: clamp(36px, 5vw, 48px);
+      font-size: clamp(32px, 5vw, 44px);
       font-weight: 700;
       letter-spacing: -0.04em;
       line-height: 1;
       color: #fff;
-      background: linear-gradient(135deg, #fff 0%, #00D26A 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
     }
 
     .movement-stat-label {
@@ -560,16 +596,10 @@
       text-transform: uppercase;
       letter-spacing: 0.12em;
       color: rgba(255, 255, 255, 0.5);
-      margin-top: 12px;
-    }
-    
-    .movement-stat-icon {
-      font-size: 24px;
-      margin-bottom: 12px;
-      display: block;
+      margin-top: 8px;
     }
 
-    /* Month Cards - Enhanced */
+    /* Month Cards */
     .months-grid {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
@@ -581,7 +611,7 @@
 
     .month-card {
       padding: 28px;
-      background: var(--bg);
+      background: var(--bg-alt);
       border: 1px solid var(--border);
       border-radius: 12px;
       transition: all 0.3s ease;
@@ -595,9 +625,9 @@
     }
     
     .month-card.current {
-      background: linear-gradient(135deg, #0A0A0A 0%, #1a1a1a 100%);
-      border: 1px solid rgba(0, 210, 106, 0.3);
-      color: #fff;
+      background: var(--text);
+      border: 1px solid var(--text);
+      color: var(--bg);
     }
     .month-card.current::before {
       content: '';
@@ -606,14 +636,7 @@
       left: 0;
       right: 0;
       height: 3px;
-      background: linear-gradient(90deg, #00D26A 0%, #00A854 50%, #00D26A 100%);
-      background-size: 200% 100%;
-      animation: gradient-flow 2s linear infinite;
-    }
-    
-    @keyframes gradient-flow {
-      0% { background-position: 0% 0%; }
-      100% { background-position: 200% 0%; }
+      background: var(--green);
     }
     
     .month-card.current .month-stat-label,
@@ -622,6 +645,9 @@
     }
     .month-card.current .month-progress-track { 
       background: rgba(255,255,255,0.15); 
+    }
+    .month-card.current .month-stat-item {
+      background: rgba(255, 255, 255, 0.08);
     }
 
     .month-header {
@@ -643,20 +669,9 @@
       text-transform: uppercase;
       letter-spacing: 0.08em;
       padding: 6px 12px;
-      background: linear-gradient(135deg, #00D26A 0%, #00A854 100%);
+      background: var(--green);
       color: #000;
       border-radius: 100px;
-      animation: pulse-tag 2s ease-in-out infinite;
-    }
-    
-    @keyframes pulse-tag {
-      0%, 100% { box-shadow: 0 0 0 0 rgba(0, 210, 106, 0.4); }
-      50% { box-shadow: 0 0 0 8px rgba(0, 210, 106, 0); }
-    }
-    
-    .month-tag.complete {
-      animation: none;
-      background: linear-gradient(135deg, #00D26A 0%, #00A854 100%);
     }
 
     .month-stats-row {
@@ -671,9 +686,6 @@
       padding: 12px 8px;
       background: var(--accent-soft);
       border-radius: 8px;
-    }
-    .month-card.current .month-stat-item {
-      background: rgba(255, 255, 255, 0.08);
     }
 
     .month-stat-label {
@@ -709,26 +721,9 @@
 
     .month-progress-fill {
       height: 100%;
-      background: linear-gradient(90deg, #00D26A 0%, #00E676 100%);
+      background: var(--green);
       border-radius: 3px;
-      position: relative;
       transition: width 1s ease;
-    }
-    
-    .month-progress-fill::after {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.3) 50%, transparent 100%);
-      animation: shimmer 2s infinite;
-    }
-    
-    @keyframes shimmer {
-      0% { transform: translateX(-100%); }
-      100% { transform: translateX(100%); }
     }
 
     /* Currently Into */
@@ -926,21 +921,23 @@
   <header id="header">
     <div class="container header-inner">
       <a href="/" class="logo">Zino Asamaige</a>
-      <nav>
-        <a href="/about.html">About</a>
-        <a href="/photos.html">Photos</a>
-        <a href="/articles.html">Articles</a>
-        <a href="/movement.html">Movement</a>
-        <a href="/travels.html">Travels</a>
+      <div class="nav-row">
+        <nav>
+          <a href="/about.html">About</a>
+          <a href="/photos.html">Photos</a>
+          <a href="/articles.html">Articles</a>
+          <a href="/movement.html">Movement</a>
+          <a href="/travels.html">Travels</a>
+        </nav>
         <button class="theme-btn" id="themeToggle" aria-label="Toggle theme">
           <svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
           <svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
         </button>
-        <a href="mailto:hello@ererezino.com" class="nav-cta">
+        <a href="/contact.html" class="nav-cta">
           Contact
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg>
         </a>
-      </nav>
+      </div>
       <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Menu">
         <span></span><span></span><span></span>
       </button>
@@ -950,7 +947,13 @@
   <div class="mobile-menu" id="mobileMenu">
     <div class="mobile-menu-header">
       <span class="logo">Zino</span>
-      <button class="mobile-menu-close" id="mobileMenuClose">&times;</button>
+      <div class="mobile-menu-actions">
+        <button class="theme-btn" id="mobileThemeToggle" aria-label="Toggle theme">
+          <svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+          <svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+        </button>
+        <button class="mobile-menu-close" id="mobileMenuClose">&times;</button>
+      </div>
     </div>
     <nav>
       <a href="/about.html">About</a>
@@ -958,7 +961,7 @@
       <a href="/articles.html">Articles</a>
       <a href="/movement.html">Movement</a>
       <a href="/travels.html">Travels</a>
-      <a href="mailto:hello@ererezino.com">Contact</a>
+      <a href="/contact.html">Contact</a>
     </nav>
   </div>
 
@@ -986,7 +989,7 @@
             When I'm not working, I'm probably walking somewhere with my camera, playing FIFA, or trying to get back in the pool.
           </p>
           <div class="hero-ctas">
-            <a href="mailto:hello@ererezino.com" class="btn btn-primary">
+            <a href="/contact.html" class="btn btn-primary">
               Say hello
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg>
             </a>
@@ -1015,7 +1018,7 @@
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
           </a>
         </div>
-        <div class="photos-grid" id="photoGrid"></div>
+        <div class="photos-carousel" id="photoCarousel"></div>
       </div>
     </section>
 
@@ -1035,24 +1038,37 @@
         <div class="movement-hero">
           <div class="movement-hero-header">
             <div class="movement-hero-title">
-              <span class="icon">🏃</span>
+              <span class="movement-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="12" cy="5" r="3"/>
+                  <path d="M12 8v4l3 3M6 15l-2 5h3l2-4M18 15l2 5h-3l-2-4"/>
+                </svg>
+              </span>
               2025 Year in Review
             </div>
             <span class="movement-hero-badge">Completed</span>
           </div>
           <div class="movement-stats">
             <div class="movement-stat">
-              <span class="movement-stat-icon">👟</span>
+              <svg class="movement-stat-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <path d="M4 16v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/>
+                <path d="M12 4v12M8 8l4-4 4 4"/>
+              </svg>
               <div class="movement-stat-value">2.6M</div>
               <div class="movement-stat-label">Total Steps</div>
             </div>
             <div class="movement-stat">
-              <span class="movement-stat-icon">📍</span>
+              <svg class="movement-stat-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <circle cx="12" cy="12" r="10"/>
+                <path d="M12 6v6l4 2"/>
+              </svg>
               <div class="movement-stat-value">1,980</div>
               <div class="movement-stat-label">Kilometers</div>
             </div>
             <div class="movement-stat">
-              <span class="movement-stat-icon">⚡</span>
+              <svg class="movement-stat-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
+              </svg>
               <div class="movement-stat-value">7,072</div>
               <div class="movement-stat-label">Avg Steps/Day</div>
             </div>
@@ -1091,15 +1107,21 @@
     <section class="contact-section" id="contact">
       <div class="container">
         <h2 class="contact-title">Let's connect</h2>
-        <p class="contact-text">Email is best. I try to respond within a day or two.</p>
+        <p class="contact-text">Have a question or just want to say hello? I'd love to hear from you.</p>
         <div class="contact-ctas">
-          <a href="mailto:hello@ererezino.com" class="btn btn-primary">
-            hello@ererezino.com
+          <a href="/contact.html" class="btn btn-primary">
+            Send a message
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg>
           </a>
-          <a href="https://twitter.com/ererezino" target="_blank" class="btn">
-            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+          <a href="https://x.com/ererezino" target="_blank" class="btn">
+            <!-- Twitter Bird Logo -->
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M23.643 4.937c-.835.37-1.732.62-2.675.733.962-.576 1.7-1.49 2.048-2.578-.9.534-1.897.922-2.958 1.13-.85-.904-2.06-1.47-3.4-1.47-2.572 0-4.658 2.086-4.658 4.66 0 .364.042.718.12 1.06-3.873-.195-7.304-2.05-9.602-4.868-.4.69-.63 1.49-.63 2.342 0 1.616.823 3.043 2.072 3.878-.764-.025-1.482-.234-2.11-.583v.06c0 2.257 1.605 4.14 3.737 4.568-.392.106-.803.162-1.227.162-.3 0-.593-.028-.877-.082.593 1.85 2.313 3.198 4.352 3.234-1.595 1.25-3.604 1.995-5.786 1.995-.376 0-.747-.022-1.112-.065 2.062 1.323 4.51 2.093 7.14 2.093 8.57 0 13.255-7.098 13.255-13.254 0-.2-.005-.402-.014-.602.91-.658 1.7-1.477 2.323-2.41z"/></svg>
             Twitter
+          </a>
+          <a href="https://medium.com/@ererezino" target="_blank" class="btn">
+            <!-- Medium Logo -->
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M13.54 12a6.8 6.8 0 01-6.77 6.82A6.8 6.8 0 010 12a6.8 6.8 0 016.77-6.82A6.8 6.8 0 0113.54 12zM20.96 12c0 3.54-1.51 6.42-3.38 6.42-1.87 0-3.39-2.88-3.39-6.42s1.52-6.42 3.39-6.42 3.38 2.88 3.38 6.42M24 12c0 3.17-.53 5.75-1.19 5.75-.66 0-1.19-2.58-1.19-5.75s.53-5.75 1.19-5.75C23.47 6.25 24 8.83 24 12z"/></svg>
+            Medium
           </a>
         </div>
       </div>
@@ -1145,16 +1167,25 @@
       { month: "December", year: 2025, isCurrent: false, steps: 401117, km: 307, avgStepsPerDay: 12939 }
     ];
 
-    // Theme
-    const toggle = document.getElementById('themeToggle');
+    // Theme Toggle Function
+    function setTheme(dark) {
+      document.documentElement.setAttribute('data-theme', dark ? 'dark' : 'light');
+      localStorage.setItem('theme', dark ? 'dark' : 'light');
+    }
+
+    function toggleTheme() {
+      const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+      setTheme(!isDark);
+    }
+
+    // Initialize theme
     const saved = localStorage.getItem('theme');
     const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-    document.documentElement.setAttribute('data-theme', saved || (prefersDark ? 'dark' : 'light'));
-    toggle.onclick = () => {
-      const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
-      document.documentElement.setAttribute('data-theme', isDark ? 'light' : 'dark');
-      localStorage.setItem('theme', isDark ? 'light' : 'dark');
-    };
+    setTheme(saved ? saved === 'dark' : prefersDark);
+
+    // Theme toggle buttons (desktop and mobile)
+    document.getElementById('themeToggle').onclick = toggleTheme;
+    document.getElementById('mobileThemeToggle').onclick = toggleTheme;
 
     // Header scroll
     window.addEventListener('scroll', () => {
@@ -1188,13 +1219,15 @@
     // Render
     const fmt = n => n >= 1e6 ? (n/1e6).toFixed(1)+'M' : n.toLocaleString();
 
-    document.getElementById('photoGrid').innerHTML = PHOTOS.map((p, i) => `
+    // Photos carousel
+    document.getElementById('photoCarousel').innerHTML = PHOTOS.map((p, i) => `
       <div class="photo-item" onclick="openLb(${i})">
         <img src="${p.src}" alt="${p.caption}" loading="lazy">
         <div class="photo-overlay"><span class="photo-caption">${p.caption}</span></div>
       </div>
     `).join('');
 
+    // Months
     document.getElementById('monthsGrid').innerHTML = MONTHS.slice(0, 2).map(m => {
       const pct = Math.min((m.steps / MONTHLY_GOAL) * 100, 100);
       const met = m.steps >= MONTHLY_GOAL;
@@ -1202,7 +1235,7 @@
         <div class="month-card ${m.isCurrent ? 'current' : ''}">
           <div class="month-header">
             <div class="month-name">${m.month} ${m.year}</div>
-            ${m.isCurrent ? '<span class="month-tag">In Progress</span>' : (met ? '<span class="month-tag complete">Goal Met ✓</span>' : '')}
+            ${m.isCurrent ? '<span class="month-tag">In Progress</span>' : (met ? '<span class="month-tag">Goal Met</span>' : '')}
           </div>
           <div class="month-stats-row">
             <div class="month-stat-item"><div class="month-stat-label">Steps</div><div class="month-stat-val">${fmt(m.steps)}</div></div>
@@ -1215,6 +1248,7 @@
       `;
     }).join('');
 
+    // Music, Books, TV
     document.getElementById('musicList').innerHTML = MUSIC.map(m => `
       <a href="${m.url}" target="_blank" class="into-item">
         <div class="into-cover"><img src="${m.cover}" alt="" loading="lazy"></div>
