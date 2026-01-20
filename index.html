@@ -16,7 +16,10 @@
 
   <link rel="icon" type="image/png" href="/assets/logo.png">
   <link rel="apple-touch-icon" href="/assets/logo.png">
-  <meta name="theme-color" content="#FFFFFF">
+
+  <!-- Better theme-color handling for mobile browser UI -->
+  <meta name="theme-color" content="#FFFFFF" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#0A0A0A" media="(prefers-color-scheme: dark)">
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -34,14 +37,16 @@
       --border: #E8E8E8;
       --green: #00D26A;
       --green-glow: rgba(0, 210, 106, 0.4);
-      --glass-bg: rgba(255, 255, 255, 0.7);
-      --glass-border: rgba(255, 255, 255, 0.3);
+      --glass-bg: rgba(255, 255, 255, 0.75);
+      --glass-border: rgba(255, 255, 255, 0.35);
+
       --container: 1100px;
       --transition: 0.2s ease;
+      --radius: 12px;
 
       /* Violet accent (light mode) */
       --violet: #6D28D9;
-      --violet-soft: rgba(109, 40, 217, 0.10);
+      --violet-soft: rgba(109, 40, 217, 0.12);
     }
 
     [data-theme="dark"] {
@@ -51,43 +56,38 @@
       --text-secondary: #AAAAAA;
       --text-tertiary: #666666;
       --accent: #FFFFFF;
-      --accent-soft: rgba(255, 255, 255, 0.05);
+      --accent-soft: rgba(255, 255, 255, 0.06);
       --border: #222222;
       --green-glow: rgba(0, 210, 106, 0.5);
-      --glass-bg: rgba(20, 20, 20, 0.8);
-      --glass-border: rgba(255, 255, 255, 0.1);
+      --glass-bg: rgba(20, 20, 20, 0.75);
+      --glass-border: rgba(255, 255, 255, 0.10);
 
       /* Violet accent (dark mode) */
       --violet: #A78BFA;
-      --violet-soft: rgba(167, 139, 250, 0.12);
+      --violet-soft: rgba(167, 139, 250, 0.14);
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
-
     html { scroll-behavior: smooth; }
 
     body {
       background: var(--bg);
       color: var(--text);
       font-family: 'Space Mono', monospace;
-      font-size: 15px;
+      font-size: 14px;
       line-height: 1.7;
       -webkit-font-smoothing: antialiased;
       transition: background var(--transition), color var(--transition);
-    }
-    @media (max-width: 768px) {
-      body { font-size: 14px; }
     }
 
     a { color: inherit; text-decoration: none; }
     img { display: block; max-width: 100%; }
 
-    /* Accessible focus */
-    a:focus-visible,
-    button:focus-visible {
+    /* Accessible focus = world-class feel */
+    :focus-visible {
       outline: 2px solid var(--violet);
       outline-offset: 3px;
-      border-radius: 4px;
+      border-radius: 10px;
     }
 
     .container {
@@ -117,11 +117,13 @@
       right: 0;
       z-index: 100;
       padding: 20px 0;
-      transition: background var(--transition), border var(--transition);
+      transition: background var(--transition), border var(--transition), backdrop-filter var(--transition);
     }
     header.scrolled {
-      background: var(--bg);
+      background: var(--glass-bg);
       border-bottom: 1px solid var(--border);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
     }
 
     .header-inner {
@@ -171,14 +173,18 @@
       width: 32px;
       height: 32px;
       border: 1px solid var(--border);
+      border-radius: 10px;
       background: transparent;
       display: flex;
       align-items: center;
       justify-content: center;
       cursor: pointer;
-      transition: border-color var(--transition);
+      transition: border-color var(--transition), background var(--transition);
     }
-    .theme-btn:hover { border-color: var(--text-secondary); }
+    .theme-btn:hover {
+      border-color: var(--text-secondary);
+      background: var(--accent-soft);
+    }
     .theme-btn svg { width: 14px; height: 14px; color: var(--text-secondary); }
     .theme-btn .sun { display: none; }
     [data-theme="dark"] .theme-btn .sun { display: block; }
@@ -189,13 +195,16 @@
       width: 32px;
       height: 32px;
       border: 1px solid var(--border);
+      border-radius: 10px;
       background: transparent;
       cursor: pointer;
       flex-direction: column;
       align-items: center;
       justify-content: center;
       gap: 4px;
+      transition: background var(--transition);
     }
+    .mobile-menu-btn:hover { background: var(--accent-soft); }
     .mobile-menu-btn span {
       width: 14px;
       height: 1px;
@@ -246,6 +255,7 @@
       width: 32px;
       height: 32px;
       border: 1px solid var(--border);
+      border-radius: 10px;
       background: transparent;
       cursor: pointer;
       font-size: 18px;
@@ -253,7 +263,10 @@
       display: flex;
       align-items: center;
       justify-content: center;
+      transition: background var(--transition);
     }
+    .mobile-menu-close:hover { background: var(--accent-soft); }
+
     .mobile-menu nav {
       display: flex;
       flex-direction: column;
@@ -269,15 +282,13 @@
 
     /* Hero */
     .hero {
-      min-height: 100svh;
+      min-height: 100vh;
       display: flex;
       align-items: center;
       padding: 120px 0 80px;
     }
 
-    .hero-content {
-      max-width: 720px;
-    }
+    .hero-content { max-width: 720px; }
 
     .hero-eyebrow {
       display: inline-flex;
@@ -328,34 +339,26 @@
 
     .hero-text {
       font-size: 15px;
-      line-height: 1.8;
+      line-height: 1.85;
       color: var(--text-secondary);
-      max-width: 540px;
+      max-width: 560px;
       margin-bottom: 40px;
+    }
+
+    /* Premium link styling */
+    .hero-text a {
+      color: var(--text);
+      border-bottom: 1px solid var(--border);
+      transition: border-color var(--transition), color var(--transition);
+    }
+    .hero-text a:hover {
+      border-color: var(--violet);
+      color: var(--violet);
     }
 
     /* Violet accent helpers */
     .accent-violet { color: var(--violet); }
     .accent-bold { font-weight: 700; }
-
-    /* Make violet links feel designed (not just recolored) */
-    .hero-text a {
-      color: inherit;
-      border-bottom: 1px solid var(--border);
-      transition: border-color var(--transition), background var(--transition);
-    }
-    .hero-text a:hover { border-bottom-color: var(--text); }
-
-    .hero-text a.accent-violet {
-      border-bottom-color: rgba(109, 40, 217, 0.35);
-    }
-    [data-theme="dark"] .hero-text a.accent-violet {
-      border-bottom-color: rgba(167, 139, 250, 0.45);
-    }
-    .hero-text a.accent-violet:hover {
-      background: var(--violet-soft);
-      border-bottom-color: var(--violet);
-    }
 
     .hero-ctas {
       display: flex;
@@ -373,6 +376,7 @@
       text-transform: uppercase;
       letter-spacing: 0.05em;
       border: 1px solid var(--border);
+      border-radius: var(--radius);
       background: transparent;
       color: var(--text);
       cursor: pointer;
@@ -381,7 +385,9 @@
     .btn:hover {
       background: var(--accent-soft);
       border-color: var(--text-secondary);
+      transform: translateY(-1px);
     }
+    .btn:active { transform: translateY(0); }
     .btn svg { width: 14px; height: 14px; }
 
     .btn-primary {
@@ -390,7 +396,7 @@
       color: var(--bg);
     }
     .btn-primary:hover {
-      opacity: 0.85;
+      opacity: 0.9;
       background: var(--text);
     }
 
@@ -399,7 +405,7 @@
       border-color: #0A66C2;
       color: #fff;
     }
-    .btn-linkedin:hover { opacity: 0.85; background: #0A66C2; }
+    .btn-linkedin:hover { opacity: 0.9; background: #0A66C2; }
 
     /* Sections */
     section {
@@ -444,9 +450,7 @@
     .section-link svg { width: 14px; height: 14px; }
 
     /* Photos Carousel */
-    .photos-wrapper {
-      position: relative;
-    }
+    .photos-wrapper { position: relative; }
 
     .photos-carousel {
       display: flex;
@@ -504,6 +508,7 @@
       overflow: hidden;
       scroll-snap-align: start;
       transition: transform 0.3s ease;
+      border-radius: var(--radius);
     }
     .photo-item:hover { transform: translateY(-4px); }
 
@@ -537,8 +542,12 @@
       color: #fff;
     }
 
-    /* Movement Section - World Class Editorial Design */
-    .movement-container { border: 1px solid var(--border); }
+    /* Movement Section */
+    .movement-container {
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
 
     .movement-hero {
       display: grid;
@@ -599,7 +608,6 @@
       border-bottom: 1px solid var(--border);
     }
     .movement-secondary-stat:last-child { border-bottom: none; }
-
     @media (max-width: 900px) {
       .movement-hero-right { flex-direction: row; }
       .movement-secondary-stat {
@@ -635,7 +643,6 @@
       transition: background 0.3s ease;
     }
     .movement-month:last-child { border-right: none; }
-
     @media (max-width: 600px) {
       .movement-month {
         border-right: none;
@@ -649,9 +656,7 @@
     .movement-month.completed .movement-month-name,
     .movement-month.completed .movement-month-steps,
     .movement-month.completed .movement-month-goal,
-    .movement-month.completed .movement-month-detail-value {
-      color: var(--text-secondary);
-    }
+    .movement-month.completed .movement-month-detail-value { color: var(--text-secondary); }
 
     .movement-month-header {
       display: flex;
@@ -674,6 +679,7 @@
       padding: 6px 14px;
       border: 1px solid var(--border);
       color: var(--text-secondary);
+      border-radius: 999px;
     }
     .movement-month-badge.now {
       background: var(--text);
@@ -692,10 +698,8 @@
       background: linear-gradient(90deg, transparent, rgba(255,255,255,0.25), transparent);
       animation: badge-shine 2s ease-in-out infinite;
     }
-    @keyframes badge-shine {
-      0% { left: -100%; }
-      100% { left: 100%; }
-    }
+    @keyframes badge-shine { 0% { left: -100%; } 100% { left: 100%; } }
+
     .movement-month.completed .movement-month-badge {
       color: var(--text-tertiary);
       border-color: var(--text-tertiary);
@@ -726,13 +730,14 @@
     }
     .movement-month.completed .movement-month-pct { color: var(--text-tertiary); }
 
+    /* Progress bar */
     .movement-month-bar {
       height: 6px;
       background: var(--border);
       margin-bottom: 24px;
       position: relative;
       overflow: visible;
-      border-radius: 3px;
+      border-radius: 999px;
     }
 
     .movement-month-bar-fill {
@@ -741,7 +746,7 @@
       top: 0;
       height: 100%;
       background: var(--text);
-      border-radius: 3px;
+      border-radius: 999px;
       transition: width 1s ease;
     }
 
@@ -753,25 +758,16 @@
     [data-theme="dark"] .movement-month.current .movement-month-bar-fill {
       box-shadow: 0 0 16px rgba(255, 255, 255, 0.25);
     }
-    @keyframes bar-glow {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0.7; }
-    }
+    @keyframes bar-glow { 0%, 100% { opacity: 1; } 50% { opacity: 0.7; } }
 
     .movement-month.current .movement-month-bar-fill::after {
       content: '';
       position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
+      inset: 0;
       background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.4) 50%, transparent 100%);
       animation: shimmer-slide 1.5s ease-in-out infinite;
     }
-    @keyframes shimmer-slide {
-      0% { transform: translateX(-100%); }
-      100% { transform: translateX(200%); }
-    }
+    @keyframes shimmer-slide { 0% { transform: translateX(-100%); } 100% { transform: translateX(200%); } }
 
     .movement-month.current .movement-month-bar::after {
       content: '';
@@ -821,6 +817,8 @@
       grid-template-columns: repeat(3, 1fr);
       gap: 2px;
       background: var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
     }
     @media (max-width: 900px) { .into-grid { grid-template-columns: 1fr; } }
 
@@ -850,6 +848,7 @@
       height: 48px;
       overflow: hidden;
       flex-shrink: 0;
+      border-radius: 10px;
     }
     .into-cover.book { width: 40px; height: 56px; }
     .into-cover img { width: 100%; height: 100%; object-fit: cover; }
@@ -916,10 +915,7 @@
     }
 
     /* Footer */
-    footer {
-      padding: 32px 0;
-      border-top: 1px solid var(--border);
-    }
+    footer { padding: 32px 0; border-top: 1px solid var(--border); }
 
     .footer-inner {
       display: flex;
@@ -961,11 +957,7 @@
       transition: all 0.3s ease;
     }
     .lightbox.active { opacity: 1; visibility: visible; }
-    .lightbox img {
-      max-width: 90vw;
-      max-height: 90vh;
-      object-fit: contain;
-    }
+    .lightbox img { max-width: 90vw; max-height: 90vh; object-fit: contain; }
     .lightbox-close {
       position: absolute;
       top: 20px;
@@ -980,6 +972,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
+      border-radius: 10px;
     }
     .lightbox-caption {
       position: absolute;
@@ -1002,6 +995,7 @@
       color: #fff;
       font-size: 18px;
       cursor: pointer;
+      border-radius: 10px;
     }
     .lightbox-prev { left: 20px; }
     .lightbox-next { right: 20px; }
@@ -1017,12 +1011,12 @@
 
   <header id="header">
     <div class="container header-inner">
-      <a href="/" class="logo">
-        <img src="/assets/logo.png" alt="" class="logo-img">
+      <a href="/" class="logo" aria-label="Home">
+        <img src="/assets/logo.png" alt="Zino Asamaige" class="logo-img">
         Zino Asamaige
       </a>
       <div class="nav-row">
-        <nav>
+        <nav aria-label="Primary navigation">
           <a href="/about.html">About</a>
           <a href="/photos.html">Photos</a>
           <a href="/articles.html">Articles</a>
@@ -1030,38 +1024,38 @@
           <a href="/travels.html">Travels</a>
           <a href="/contact.html">Contact</a>
         </nav>
-        <button class="theme-btn" id="themeToggle" aria-label="Toggle theme">
-          <svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
-          <svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+        <button class="theme-btn" id="themeToggle" aria-label="Toggle theme" type="button">
+          <svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+          <svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
         </button>
       </div>
       <div class="mobile-header-controls">
-        <button class="theme-btn" id="mobileHeaderThemeToggle" aria-label="Toggle theme">
-          <svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
-          <svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+        <button class="theme-btn" id="mobileHeaderThemeToggle" aria-label="Toggle theme" type="button">
+          <svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+          <svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
         </button>
-        <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Menu">
+        <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Menu" type="button">
           <span></span><span></span><span></span>
         </button>
       </div>
     </div>
   </header>
 
-  <div class="mobile-menu" id="mobileMenu">
+  <div class="mobile-menu" id="mobileMenu" aria-hidden="true">
     <div class="mobile-menu-header">
       <span class="logo">
-        <img src="/assets/logo.png" alt="" class="logo-img">
+        <img src="/assets/logo.png" alt="Zino Asamaige" class="logo-img">
         Zino
       </span>
       <div class="mobile-menu-actions">
-        <button class="theme-btn" id="mobileThemeToggle" aria-label="Toggle theme">
-          <svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
-          <svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+        <button class="theme-btn" id="mobileThemeToggle" aria-label="Toggle theme" type="button">
+          <svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+          <svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
         </button>
-        <button class="mobile-menu-close" id="mobileMenuClose">&times;</button>
+        <button class="mobile-menu-close" id="mobileMenuClose" aria-label="Close menu" type="button">&times;</button>
       </div>
     </div>
-    <nav>
+    <nav aria-label="Mobile navigation">
       <a href="/about.html">About</a>
       <a href="/photos.html">Photos</a>
       <a href="/articles.html">Articles</a>
@@ -1071,10 +1065,10 @@
     </nav>
   </div>
 
-  <div class="lightbox" id="lightbox">
-    <button class="lightbox-close">&times;</button>
-    <button class="lightbox-nav lightbox-prev">&#8249;</button>
-    <button class="lightbox-nav lightbox-next">&#8250;</button>
+  <div class="lightbox" id="lightbox" aria-hidden="true">
+    <button class="lightbox-close" aria-label="Close lightbox" type="button">&times;</button>
+    <button class="lightbox-nav lightbox-prev" aria-label="Previous photo" type="button">&#8249;</button>
+    <button class="lightbox-nav lightbox-next" aria-label="Next photo" type="button">&#8250;</button>
     <img src="" alt="" id="lightboxImg">
     <div class="lightbox-caption" id="lightboxCaption"></div>
   </div>
@@ -1084,28 +1078,36 @@
       <div class="container">
         <div class="hero-content">
           <div class="hero-eyebrow">
-            <span class="location-dot"></span>
+            <span class="location-dot" aria-hidden="true"></span>
             Based in Lagos, Nigeria
           </div>
+
           <h1>Doing the best I can, <span class="accent-violet">daily</span>.</h1>
+
           <p class="hero-text">
-            Building <a class="accent-violet accent-bold" href="https://useaccrue.com/" target="_blank" rel="noopener noreferrer">Accrue</a> with
-            <a class="accent-violet accent-bold" href="https://clintonmbah.com/" target="_blank" rel="noopener noreferrer">Clinton</a> &
+            Building
+            <a class="accent-violet accent-bold" href="https://useaccrue.com/" target="_blank" rel="noopener noreferrer">Accrue</a>
+            with
+            <a class="accent-violet accent-bold" href="https://clintonmbah.com/" target="_blank" rel="noopener noreferrer">Clinton</a>
+            &
             <a class="accent-violet accent-bold" href="https://medium.com/@adesuwaomoruyi" target="_blank" rel="noopener noreferrer">Adesuwa</a>.
             When I'm not working, I'm probably walking somewhere with my camera, playing FIFA, or trying to get back in the pool.
           </p>
+
           <div class="hero-ctas">
             <a href="/contact.html" class="btn btn-primary">
               Say hello
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg>
             </a>
+
             <a href="https://www.linkedin.com/in/ererezino/" target="_blank" rel="noopener noreferrer" class="btn btn-linkedin">
-              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+              <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
               LinkedIn
             </a>
+
             <a href="/about.html" class="btn">
               About me
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
             </a>
           </div>
         </div>
@@ -1121,14 +1123,14 @@
           </div>
           <a href="/photos.html" class="section-link">
             View all
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
           </a>
         </div>
         <div class="photos-wrapper">
           <div class="photos-carousel" id="photoCarousel"></div>
           <div class="photos-scroll-hint">
             <span>Scroll for more</span>
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
           </div>
         </div>
       </div>
@@ -1143,7 +1145,7 @@
           </div>
           <a href="/movement.html" class="section-link">
             See all months
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
           </a>
         </div>
 
@@ -1204,14 +1206,14 @@
           <div class="contact-ctas">
             <a href="/contact.html" class="btn btn-primary">
               Send a message
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg>
             </a>
             <a href="https://x.com/ererezino" target="_blank" rel="noopener noreferrer" class="btn">
-              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M23.643 4.937c-.835.37-1.732.62-2.675.733.962-.576 1.7-1.49 2.048-2.578-.9.534-1.897.922-2.958 1.13-.85-.904-2.06-1.47-3.4-1.47-2.572 0-4.658 2.086-4.658 4.66 0 .364.042.718.12 1.06-3.873-.195-7.304-2.05-9.602-4.868-.4.69-.63 1.49-.63 2.342 0 1.616.823 3.043 2.072 3.878-.764-.025-1.482-.234-2.11-.583v.06c0 2.257 1.605 4.14 3.737 4.568-.392.106-.803.162-1.227.162-.3 0-.593-.028-.877-.082.593 1.85 2.313 3.198 4.352 3.234-1.595 1.25-3.604 1.995-5.786 1.995-.376 0-.747-.022-1.112-.065 2.062 1.323 4.51 2.093 7.14 2.093 8.57 0 13.255-7.098 13.255-13.254 0-.2-.005-.402-.014-.602.91-.658 1.7-1.477 2.323-2.41z"/></svg>
+              <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M23.643 4.937c-.835.37-1.732.62-2.675.733.962-.576 1.7-1.49 2.048-2.578-.9.534-1.897.922-2.958 1.13-.85-.904-2.06-1.47-3.4-1.47-2.572 0-4.658 2.086-4.658 4.66 0 .364.042.718.12 1.06-3.873-.195-7.304-2.05-9.602-4.868-.4.69-.63 1.49-.63 2.342 0 1.616.823 3.043 2.072 3.878-.764-.025-1.482-.234-2.11-.583v.06c0 2.257 1.605 4.14 3.737 4.568-.392.106-.803.162-1.227.162-.3 0-.593-.028-.877-.082.593 1.85 2.313 3.198 4.352 3.234-1.595 1.25-3.604 1.995-5.786 1.995-.376 0-.747-.022-1.112-.065 2.062 1.323 4.51 2.093 7.14 2.093 8.57 0 13.255-7.098 13.255-13.254 0-.2-.005-.402-.014-.602.91-.658 1.7-1.477 2.323-2.41z"/></svg>
               Twitter
             </a>
             <a href="https://medium.com/@ererezino" target="_blank" rel="noopener noreferrer" class="btn">
-              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M13.54 12a6.8 6.8 0 01-6.77 6.82A6.8 6.8 0 010 12a6.8 6.8 0 016.77-6.82A6.8 6.8 0 0113.54 12zM20.96 12c0 3.54-1.51 6.42-3.38 6.42-1.87 0-3.39-2.88-3.39-6.42s1.52-6.42 3.39-6.42 3.38 2.88 3.38 6.42M24 12c0 3.17-.53 5.75-1.19 5.75-.66 0-1.19-2.58-1.19-5.75s.53-5.75 1.19-5.75C23.47 6.25 24 8.83 24 12z"/></svg>
+              <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M13.54 12a6.8 6.8 0 01-6.77 6.82A6.8 6.8 0 010 12a6.8 6.8 0 016.77-6.82A6.8 6.8 0 0113.54 12zM20.96 12c0 3.54-1.51 6.42-3.38 6.42-1.87 0-3.39-2.88-3.39-6.42s1.52-6.42 3.39-6.42 3.38 2.88 3.38 6.42M24 12c0 3.17-.53 5.75-1.19 5.75-.66 0-1.19-2.58-1.19-5.75s.53-5.75 1.19-5.75C23.47 6.25 24 8.83 24 12z"/></svg>
               Medium
             </a>
           </div>
@@ -1224,7 +1226,7 @@
     <div class="container footer-inner">
       <div class="footer-left">© 2026 Zino Asamaige</div>
       <div class="footer-status">
-        <span class="location-dot"></span>
+        <span class="location-dot" aria-hidden="true"></span>
         Lagos, Nigeria
       </div>
     </div>
@@ -1259,10 +1261,22 @@
       { month: "December", year: 2025, isCurrent: false, steps: 401117, km: 307, avgStepsPerDay: 12939 }
     ];
 
-    // Theme Toggle Function
+    // Theme helpers
+    function setThemeColorMeta(dark) {
+      // Optional: set a single theme-color dynamically for browsers that use only one
+      let meta = document.querySelector('meta[name="theme-color"]:not([media])');
+      if (!meta) {
+        meta = document.createElement('meta');
+        meta.name = 'theme-color';
+        document.head.appendChild(meta);
+      }
+      meta.content = dark ? '#0A0A0A' : '#FFFFFF';
+    }
+
     function setTheme(dark) {
       document.documentElement.setAttribute('data-theme', dark ? 'dark' : 'light');
       localStorage.setItem('theme', dark ? 'dark' : 'light');
+      setThemeColorMeta(dark);
     }
 
     function toggleTheme() {
@@ -1291,9 +1305,20 @@
 
     // Mobile menu
     const mm = document.getElementById('mobileMenu');
-    document.getElementById('mobileMenuBtn').onclick = () => mm.classList.add('open');
-    document.getElementById('mobileMenuClose').onclick = () => mm.classList.remove('open');
-    mm.querySelectorAll('a').forEach(a => a.onclick = () => mm.classList.remove('open'));
+    const openMenu = () => {
+      mm.classList.add('open');
+      mm.setAttribute('aria-hidden', 'false');
+      document.body.style.overflow = 'hidden';
+    };
+    const closeMenu = () => {
+      mm.classList.remove('open');
+      mm.setAttribute('aria-hidden', 'true');
+      document.body.style.overflow = '';
+    };
+
+    document.getElementById('mobileMenuBtn').onclick = openMenu;
+    document.getElementById('mobileMenuClose').onclick = closeMenu;
+    mm.querySelectorAll('a').forEach(a => a.onclick = closeMenu);
 
     // Lightbox
     const lb = document.getElementById('lightbox');
@@ -1304,20 +1329,21 @@
     function openLb(i) {
       idx = i;
       lbImg.src = PHOTOS[i].src;
+      lbImg.alt = PHOTOS[i].caption;
       lbCap.textContent = PHOTOS[i].caption;
       lb.classList.add('active');
+      lb.setAttribute('aria-hidden', 'false');
       document.body.style.overflow = 'hidden';
     }
-    window.openLb = openLb;
-
     function closeLb() {
       lb.classList.remove('active');
+      lb.setAttribute('aria-hidden', 'true');
       document.body.style.overflow = '';
     }
-
     function navLb(d) {
       idx = (idx + d + PHOTOS.length) % PHOTOS.length;
       lbImg.src = PHOTOS[idx].src;
+      lbImg.alt = PHOTOS[idx].caption;
       lbCap.textContent = PHOTOS[idx].caption;
     }
 
@@ -1325,7 +1351,6 @@
     lb.querySelector('.lightbox-prev').onclick = () => navLb(-1);
     lb.querySelector('.lightbox-next').onclick = () => navLb(1);
     lb.onclick = e => { if (e.target === lb) closeLb(); };
-
     document.onkeydown = e => {
       if (!lb.classList.contains('active')) return;
       if (e.key === 'Escape') closeLb();
@@ -1333,13 +1358,13 @@
       if (e.key === 'ArrowRight') navLb(1);
     };
 
-    // Render
+    // Render helpers
     const fmt = n => n >= 1e6 ? (n / 1e6).toFixed(1) + 'M' : n.toLocaleString();
 
     // Photos carousel
     document.getElementById('photoCarousel').innerHTML = PHOTOS.map((p, i) => `
-      <div class="photo-item" onclick="openLb(${i})">
-        <img src="${p.src}" alt="${p.caption}" loading="lazy">
+      <div class="photo-item" role="button" tabindex="0" onclick="openLb(${i})" onkeydown="if(event.key==='Enter') openLb(${i})">
+        <img src="${p.src}" alt="${p.caption}" loading="lazy" decoding="async">
         <div class="photo-overlay"><span class="photo-caption">${p.caption}</span></div>
       </div>
     `).join('');
@@ -1379,21 +1404,21 @@
     // Music, Books, TV
     document.getElementById('musicList').innerHTML = MUSIC.map(m => `
       <a href="${m.url}" target="_blank" rel="noopener noreferrer" class="into-item">
-        <div class="into-cover"><img src="${m.cover}" alt="" loading="lazy"></div>
+        <div class="into-cover"><img src="${m.cover}" alt="${m.title} cover" loading="lazy" decoding="async"></div>
         <div class="into-text"><div class="into-title">${m.title}</div><div class="into-meta">${m.artist}</div></div>
       </a>
     `).join('');
 
     document.getElementById('bookList').innerHTML = BOOKS.map(b => `
       <a href="${b.url}" target="_blank" rel="noopener noreferrer" class="into-item">
-        <div class="into-cover book"><img src="${b.cover}" alt="" loading="lazy"></div>
+        <div class="into-cover book"><img src="${b.cover}" alt="${b.title} cover" loading="lazy" decoding="async"></div>
         <div class="into-text"><div class="into-title">${b.title}</div><div class="into-meta">${b.author}</div></div>
       </a>
     `).join('');
 
     document.getElementById('tvList').innerHTML = TV.map(t => `
       <a href="${t.url}" target="_blank" rel="noopener noreferrer" class="into-item">
-        <div class="into-cover"><img src="${t.cover}" alt="" loading="lazy"></div>
+        <div class="into-cover"><img src="${t.cover}" alt="${t.title} poster" loading="lazy" decoding="async"></div>
         <div class="into-text"><div class="into-title">${t.title}</div><div class="into-meta">${t.year}</div></div>
       </a>
     `).join('');
