@@ -1,1 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>My First Post • Zino Asamaige</title>
+
+  <link rel="icon" type="image/png" href="/assets/logo.png">
+  <meta name="theme-color" content="#FAFAF8">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap"
+    rel="stylesheet"
+  />
+
+  <style>
+    :root{
+      --bg:#FAFAF8; --text:#141414; --muted:#6B6B6B; --border:rgba(20,20,20,.10);
+      --shadow-soft:0 8px 22px rgba(20,20,20,.06); --radius:18px; --pad:24px; --container:900px;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0; font-family:'DM Sans', -apple-system, system-ui, sans-serif; font-weight:300;
+      background:var(--bg); color:var(--text); line-height:1.75; -webkit-font-smoothing:antialiased;
+    }
+    a{color:inherit;text-decoration:none}
+    .container{max-width:var(--container);margin:0 auto;padding:0 var(--pad)}
+    header{
+      position:sticky;top:0;z-index:20;
+      background: rgba(250,250,248,.78); backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(20,20,20,.08);
+    }
+    .head{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:16px 0}
+    .btn{
+      display:inline-flex;align-items:center;gap:8px;padding:10px 12px;border-radius:12px;
+      border:1px solid rgba(20,20,20,.12); background:#fff; box-shadow:var(--shadow-soft);
+      font-size:14px;color: rgba(20,20,20,.85);
+    }
+    main{padding:34px 0 70px}
+    h1{
+      font-family:'Instrument Serif', Georgia, serif;
+      font-weight:400;font-size:46px;line-height:1.08;margin:0 0 10px;letter-spacing:-0.01em;
+    }
+    .meta{color:var(--muted);font-size:14px;margin-bottom:22px}
+    article{
+      border:1px solid rgba(20,20,20,.10);
+      background: rgba(255,255,255,.70);
+      border-radius: var(--radius);
+      padding: 22px 20px;
+      box-shadow: var(--shadow-soft);
+    }
+    article p{margin: 0 0 14px;}
+    hr{border:none;border-top:1px solid rgba(20,20,20,.10);margin:18px 0}
+    .comments{
+      margin-top: 18px;
+      border:1px solid rgba(20,20,20,.10);
+      background: rgba(255,255,255,.60);
+      border-radius: var(--radius);
+      padding: 16px;
+      box-shadow: var(--shadow-soft);
+    }
+    .comments h2{
+      margin: 0 0 8px;
+      font-weight: 500;
+      font-size: 16px;
+      letter-spacing: 0.01em;
+    }
+    .comments p{margin:0 0 12px;color:var(--muted);font-size:14px}
+  </style>
+</head>
+
+<body>
+  <header>
+    <div class="container head">
+      <a class="btn" href="/articles/">← Articles</a>
+      <a class="btn" href="/">Home ↩</a>
+    </div>
+  </header>
+
+  <main class="container">
+    <h1>My First Post</h1>
+    <div class="meta">Jan 2026 • 4 min read</div>
+
+    <article>
+      <p>
+        Write your article here. Keep it simple: paragraphs, headings, and links.
+      </p>
+
+      <p>
+        You can paste images using normal HTML:
+        <code>&lt;img src="..." /&gt;</code>
+      </p>
+
+      <hr>
+
+      <p>
+        Ending note / call to action.
+      </p>
+    </article>
+
+    <div class="comments">
+      <h2>Comments</h2>
+      <p>
+        This uses Giscus (GitHub Discussions). It supports comments and reactions (likes).
+      </p>
+
+      <!-- GISCUS: Replace the data-repo and data-repo-id etc. -->
+      <script src="https://giscus.app/client.js"
+        data-repo="YOUR_GITHUB_USERNAME/YOUR_REPO"
+        data-repo-id="YOUR_REPO_ID"
+        data-category="General"
+        data-category-id="YOUR_CATEGORY_ID"
+        data-mapping="pathname"
+        data-strict="0"
+        data-reactions-enabled="1"
+        data-emit-metadata="0"
+        data-input-position="top"
+        data-theme="light"
+        data-lang="en"
+        crossorigin="anonymous"
+        async>
+      </script>
+    </div>
+  </main>
+</body>
+</html>
 
