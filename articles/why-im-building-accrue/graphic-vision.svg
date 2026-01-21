@@ -1,0 +1,92 @@
+<svg viewBox="0 0 800 380" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bgGrad5" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0A0A0A"/>
+      <stop offset="100%" style="stop-color:#1a1a2e"/>
+    </linearGradient>
+    <linearGradient id="wedgeGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#00D4AA"/>
+      <stop offset="100%" style="stop-color:#00A8CC"/>
+    </linearGradient>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="800" height="380" fill="url(#bgGrad5)"/>
+  
+  <!-- Title -->
+  <text x="400" y="35" font-family="'Space Mono', monospace" font-size="12" fill="rgba(255,255,255,0.5)" text-anchor="middle" letter-spacing="0.2em">THE LONG GAME</text>
+  <text x="400" y="65" font-family="Georgia, serif" font-size="24" fill="white" text-anchor="middle" font-weight="700">Payments → Everything</text>
+  
+  <!-- Wedge visualization -->
+  <g transform="translate(100, 100)">
+    <!-- Base layer: Payments -->
+    <polygon points="0,200 300,180 300,220" fill="url(#wedgeGrad)"/>
+    <text x="120" y="205" font-family="Georgia, serif" font-size="14" fill="#0A0A0A" font-weight="700">PAYMENTS</text>
+    <text x="20" y="240" font-family="'Space Mono', monospace" font-size="10" fill="rgba(255,255,255,0.5)">The wedge</text>
+    
+    <!-- Expanding layers -->
+    <!-- Credit -->
+    <g transform="translate(300, 0)">
+      <rect x="0" y="120" width="150" height="50" fill="rgba(255,215,0,0.15)" rx="4" stroke="rgba(255,215,0,0.4)" stroke-width="1"/>
+      <text x="75" y="140" font-family="Georgia, serif" font-size="12" fill="#FFD700" text-anchor="middle" font-weight="700">CREDIT</text>
+      <text x="75" y="158" font-family="'Space Mono', monospace" font-size="9" fill="rgba(255,255,255,0.5)" text-anchor="middle">Data-driven lending</text>
+    </g>
+    
+    <!-- Insurance -->
+    <g transform="translate(300, 0)">
+      <rect x="0" y="175" width="150" height="50" fill="rgba(167,139,250,0.15)" rx="4" stroke="rgba(167,139,250,0.4)" stroke-width="1"/>
+      <text x="75" y="195" font-family="Georgia, serif" font-size="12" fill="#A78BFA" text-anchor="middle" font-weight="700">INSURANCE</text>
+      <text x="75" y="213" font-family="'Space Mono', monospace" font-size="9" fill="rgba(255,255,255,0.5)" text-anchor="middle">Micro-insurance embedded</text>
+    </g>
+    
+    <!-- Investments -->
+    <g transform="translate(300, 0)">
+      <rect x="0" y="230" width="150" height="50" fill="rgba(78,205,196,0.15)" rx="4" stroke="rgba(78,205,196,0.4)" stroke-width="1"/>
+      <text x="75" y="250" font-family="Georgia, serif" font-size="12" fill="#4ECDC4" text-anchor="middle" font-weight="700">INVESTMENTS</text>
+      <text x="75" y="268" font-family="'Space Mono', monospace" font-size="9" fill="rgba(255,255,255,0.5)" text-anchor="middle">Global & local access</text>
+    </g>
+    
+    <!-- Connecting lines -->
+    <line x1="300" y1="200" x2="300" y2="145" stroke="rgba(255,255,255,0.2)" stroke-width="1" stroke-dasharray="4,4"/>
+    <line x1="300" y1="200" x2="300" y2="200" stroke="rgba(255,255,255,0.2)" stroke-width="1" stroke-dasharray="4,4"/>
+    <line x1="300" y1="200" x2="300" y2="255" stroke="rgba(255,255,255,0.2)" stroke-width="1" stroke-dasharray="4,4"/>
+  </g>
+  
+  <!-- Right side: The flywheel -->
+  <g transform="translate(550, 140)">
+    <text x="100" y="0" font-family="'Space Mono', monospace" font-size="10" fill="rgba(255,255,255,0.5)" text-anchor="middle" letter-spacing="0.1em">THE FLYWHEEL</text>
+    
+    <!-- Circular arrow -->
+    <circle cx="100" cy="90" r="60" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="2"/>
+    
+    <!-- Flywheel segments -->
+    <g font-family="'Space Mono', monospace" font-size="9" fill="rgba(255,255,255,0.7)">
+      <text x="100" y="35" text-anchor="middle">Transactions</text>
+      <text x="175" y="95" text-anchor="start">Trust</text>
+      <text x="100" y="165" text-anchor="middle">Data</text>
+      <text x="25" y="95" text-anchor="end">Services</text>
+    </g>
+    
+    <!-- Arrows on circle -->
+    <g stroke="#00D4AA" stroke-width="2" fill="none">
+      <path d="M130,35 A60,60 0 0,1 160,70">
+        <animate attributeName="stroke-dasharray" from="0,100" to="50,50" dur="1s" repeatCount="indefinite"/>
+      </path>
+      <path d="M160,110 A60,60 0 0,1 130,145">
+        <animate attributeName="stroke-dasharray" from="0,100" to="50,50" dur="1s" repeatCount="indefinite"/>
+      </path>
+      <path d="M70,145 A60,60 0 0,1 40,110">
+        <animate attributeName="stroke-dasharray" from="0,100" to="50,50" dur="1s" repeatCount="indefinite"/>
+      </path>
+      <path d="M40,70 A60,60 0 0,1 70,35">
+        <animate attributeName="stroke-dasharray" from="0,100" to="50,50" dur="1s" repeatCount="indefinite"/>
+      </path>
+    </g>
+  </g>
+  
+  <!-- Bottom stat -->
+  <g transform="translate(0, 330)">
+    <rect x="200" y="0" width="400" height="40" fill="rgba(0,212,170,0.1)" rx="20"/>
+    <text x="400" y="25" font-family="Georgia, serif" font-size="14" fill="white" text-anchor="middle">60% unbanked · Nearly 100% have mobile phones</text>
+  </g>
+</svg>

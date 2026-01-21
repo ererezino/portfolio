@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Why I'm Building Accrue - Zino Asamaige</title>
+
+  <meta name="description" content="Africa moves a lot of money. The problem is how. Here's why we're building the rails for Africa's digital economy.">
+  <meta name="author" content="Zino Asamaige">
+  <meta property="og:title" content="Why I'm Building Accrue">
+  <meta property="og:description" content="Africa moves a lot of money. The problem is how. Here's why we're building the rails for Africa's digital economy.">
+  <meta property="og:type" content="article">
+  <meta property="og:image" content="/articles/why-im-building-accrue/thumbnail.svg">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <link rel="icon" type="image/png" href="/assets/logo.png">
+  <link rel="apple-touch-icon" href="/assets/logo.png">
+  <meta name="theme-color" content="#0A0A0A">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400;1,6..72,500&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --bg: #FFFFFF;
+      --bg-alt: #F7F7F7;
+      --text: #0A0A0A;
+      --text-secondary: #555555;
+      --text-tertiary: #888888;
+      --border: #E8E8E8;
+      --accent: #00D4AA;
+      --accent-soft: rgba(0, 212, 170, 0.1);
+      --container: 720px;
+      --container-wide: 900px;
+      --transition: 0.2s ease;
+    }
+
+    [data-theme="dark"] {
+      --bg: #0A0A0A;
+      --bg-alt: #111111;
+      --text: #FFFFFF;
+      --text-secondary: #AAAAAA;
+      --text-tertiary: #666666;
+      --border: #222222;
+      --accent: #00D4AA;
+      --accent-soft: rgba(0, 212, 170, 0.15);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Newsreader', Georgia, serif;
+      font-size: 18px;
+      line-height: 1.8;
+      -webkit-font-smoothing: antialiased;
+      transition: background var(--transition), color var(--transition);
+    }
+
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    img { display: block; max-width: 100%; }
+
+    .container { 
+      max-width: var(--container); 
+      margin: 0 auto; 
+      padding: 0 24px; 
+    }
+    .container-wide {
+      max-width: var(--container-wide);
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    /* Header */
+    header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      padding: 16px 0;
+      background: var(--bg);
+      border-bottom: 1px solid var(--border);
+      transition: background var(--transition);
+    }
+
+    .header-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      max-width: var(--container-wide);
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-family: 'Space Mono', monospace;
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: var(--text);
+      text-decoration: none;
+    }
+    .logo:hover { text-decoration: none; }
+
+    .logo-img {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 1px solid var(--border);
+    }
+
+    .header-nav {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .back-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-family: 'Space Mono', monospace;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-secondary);
+      padding: 8px 12px;
+      border: 1px solid var(--border);
+      transition: all var(--transition);
+      text-decoration: none;
+    }
+    .back-btn:hover {
+      color: var(--text);
+      border-color: var(--text-secondary);
+      text-decoration: none;
+    }
+    .back-btn svg { width: 12px; height: 12px; }
+
+    .theme-btn {
+      width: 32px;
+      height: 32px;
+      border: 1px solid var(--border);
+      background: transparent;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: border-color var(--transition);
+    }
+    .theme-btn:hover { border-color: var(--text-secondary); }
+    .theme-btn svg { width: 14px; height: 14px; color: var(--text-secondary); }
+    .theme-btn .sun { display: none; }
+    [data-theme="dark"] .theme-btn .sun { display: block; }
+    [data-theme="dark"] .theme-btn .moon { display: none; }
+
+    /* Article Header */
+    main { padding-top: 80px; }
+
+    .article-header {
+      padding: 60px 0 40px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .article-meta {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 20px;
+      font-family: 'Space Mono', monospace;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--text-tertiary);
+    }
+
+    .article-title {
+      font-size: clamp(32px, 6vw, 48px);
+      font-weight: 600;
+      letter-spacing: -0.03em;
+      line-height: 1.15;
+      margin-bottom: 20px;
+    }
+
+    .article-subtitle {
+      font-size: 20px;
+      color: var(--text-secondary);
+      font-weight: 400;
+      line-height: 1.5;
+    }
+
+    .article-author {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-top: 32px;
+      padding-top: 24px;
+      border-top: 1px solid var(--border);
+    }
+
+    .author-avatar {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      overflow: hidden;
+      border: 2px solid var(--border);
+    }
+    .author-avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .author-info {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .author-name {
+      font-family: 'Space Mono', monospace;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+    }
+
+    .author-title {
+      font-family: 'Space Mono', monospace;
+      font-size: 11px;
+      color: var(--text-tertiary);
+    }
+
+    /* Article Content */
+    .article-content {
+      padding: 48px 0;
+    }
+
+    .article-content p {
+      margin-bottom: 1.6em;
+    }
+
+    .article-content p:first-child::first-letter {
+      float: left;
+      font-size: 3.5em;
+      line-height: 0.8;
+      padding-right: 12px;
+      padding-top: 6px;
+      font-weight: 600;
+      color: var(--accent);
+    }
+
+    .article-content strong {
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .article-content h2 {
+      font-size: 28px;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      margin-top: 56px;
+      margin-bottom: 24px;
+      padding-top: 32px;
+      border-top: 1px solid var(--border);
+    }
+
+    .article-content h3 {
+      font-size: 22px;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+      margin-top: 40px;
+      margin-bottom: 16px;
+    }
+
+    .article-content hr {
+      border: none;
+      height: 1px;
+      background: var(--border);
+      margin: 48px 0;
+    }
+
+    /* Graphics */
+    .article-graphic {
+      margin: 48px 0;
+      border-radius: 8px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      background: #0A0A0A;
+    }
+
+    .article-graphic img,
+    .article-graphic svg {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    .graphic-caption {
+      font-family: 'Space Mono', monospace;
+      font-size: 11px;
+      color: var(--text-tertiary);
+      text-align: center;
+      padding: 12px;
+      background: var(--bg-alt);
+      border-top: 1px solid var(--border);
+    }
+
+    /* Wide graphics */
+    .article-graphic-wide {
+      margin: 48px -90px;
+      max-width: calc(100% + 180px);
+    }
+    @media (max-width: 900px) {
+      .article-graphic-wide {
+        margin: 48px -24px;
+        max-width: calc(100% + 48px);
+        border-radius: 0;
+      }
+    }
+
+    /* Pullquote */
+    .pullquote {
+      margin: 48px 0;
+      padding: 32px 0;
+      border-top: 2px solid var(--accent);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .pullquote p {
+      font-size: 24px;
+      font-weight: 500;
+      font-style: italic;
+      line-height: 1.5;
+      color: var(--text);
+      margin-bottom: 0 !important;
+    }
+
+    .pullquote p::first-letter {
+      float: none !important;
+      font-size: inherit !important;
+      padding: 0 !important;
+    }
+
+    /* Tags */
+    .article-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 48px;
+      padding-top: 32px;
+      border-top: 1px solid var(--border);
+    }
+
+    .tag {
+      font-family: 'Space Mono', monospace;
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      padding: 8px 12px;
+      background: var(--accent-soft);
+      color: var(--accent);
+      border: 1px solid var(--accent);
+      border-radius: 2px;
+    }
+
+    /* Footer */
+    footer {
+      padding: 32px 0;
+      border-top: 1px solid var(--border);
+      margin-top: 48px;
+    }
+
+    .footer-inner {
+      display: flex;
+      justify-content: space-between;
+      font-family: 'Space Mono', monospace;
+      font-size: 11px;
+      color: var(--text-tertiary);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    /* Mobile */
+    @media (max-width: 600px) {
+      .article-title { font-size: 28px; }
+      .article-subtitle { font-size: 17px; }
+      .article-content { font-size: 17px; }
+      .article-content h2 { font-size: 24px; }
+      .pullquote p { font-size: 20px; }
+    }
+  </style>
+</head>
+
+<body data-theme="dark">
+  <header>
+    <div class="header-inner">
+      <a href="/" class="logo">
+        <img src="/assets/logo.png" alt="" class="logo-img">
+        Zino Asamaige
+      </a>
+      <nav class="header-nav">
+        <a href="/articles.html" class="back-btn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+          Articles
+        </a>
+        <button class="theme-btn" id="themeToggle" aria-label="Toggle theme">
+          <svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+          <svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <article>
+      <div class="container">
+        <header class="article-header">
+          <div class="article-meta">
+            <span>January 2026</span>
+            <span>·</span>
+            <span>6 min read</span>
+          </div>
+          <h1 class="article-title">Why I'm Building Accrue</h1>
+          <p class="article-subtitle">Africa moves a lot of money. The problem is how. Here's why we're building the rails for Africa's digital economy.</p>
+          
+          <div class="article-author">
+            <div class="author-avatar">
+              <img src="/assets/logo.png" alt="Zino Asamaige">
+            </div>
+            <div class="author-info">
+              <span class="author-name">Zino Asamaige</span>
+              <span class="author-title">Co-founder & COO, Accrue</span>
+            </div>
+          </div>
+        </header>
+
+        <div class="article-content">
+          <p>Africa moves a lot of money. The problem is how.</p>
+
+          <p>Cross-border payments on the continent hit $329 billion in 2025. Remittances alone account for nearly $100 billion a year, making up over 5% of GDP. But here's the thing: 75% of that money moves through informal channels. Cash in envelopes. Bus drivers carrying bundles across borders. Family networks.</p>
+
+          <p>Why? Because formal transfers cost 8% on average, the highest rate in the world. Add currency conversion losses, and you're looking at $5 billion a year vanishing into the friction of moving money.</p>
+        </div>
+      </div>
+
+      <!-- Wide graphic: The Problem -->
+      <div class="container-wide">
+        <figure class="article-graphic article-graphic-wide">
+          <img src="graphic-problem.svg" alt="Africa's cross-border payments: $329 billion annually, 75% informal">
+          <figcaption class="graphic-caption">The scale of Africa's cross-border payment challenge</figcaption>
+        </figure>
+      </div>
+
+      <div class="container">
+        <div class="article-content">
+          <p>This isn't a minor inconvenience. It's a structural barrier. Businesses can't scale regionally. Families lose income to intermediaries. Entire economies get cut off from the global market.</p>
+
+          <p>And it's about to get worse.</p>
+
+          <p>Inflation is eroding trust in local currencies. Regional trade agreements like AfCFTA will increase cross-border commerce, straining rails that are already broken. The next billion internet users will come from Africa, and they'll expect to move money the way they move information: instantly, from their phones, across any border.</p>
+
+          <p>The continent's financial infrastructure wasn't built for this. But the future is arriving anyway.</p>
+
+          <hr>
+
+          <h2>The Solution</h2>
+
+          <p>At Accrue, we're building what should exist: African money that's borderless, stable, and instant. As easy to move between Yaoundé and Kampala as between New York and San Francisco.</p>
+
+          <p>We have two products.</p>
+
+          <p><strong>Accrue</strong> is a mobile app. Anyone in Africa can save in USD stablecoins, send and receive payments instantly, and participate in the global economy. For millions facing volatile local currencies, stablecoins aren't speculation. They're the safest store of value available.</p>
+
+          <p><strong>Cashramp</strong> is infrastructure. Think M-Pesa on stablecoin rails. It's an agent network spread across 11 African countries. A user in Ghana hands local currency to an agent and gets stablecoins at the market rate. When that money needs to reach Nigeria, an agent there converts it to naira and deposits it into the recipient's bank account. The user never touches crypto. They just see money move, fast and cheap. For businesses, Cashramp is a payment API that handles stablecoin settlement without the complexity of custody or exchange management.</p>
+        </div>
+      </div>
+
+      <!-- Wide graphic: How Cashramp Works -->
+      <div class="container-wide">
+        <figure class="article-graphic article-graphic-wide">
+          <img src="graphic-cashramp.svg" alt="How Cashramp works: M-Pesa on stablecoin rails">
+          <figcaption class="graphic-caption">How Cashramp moves money across borders in minutes</figcaption>
+        </figure>
+      </div>
+
+      <div class="container">
+        <div class="article-content">
+          <p>Both products are live today, processing transactions across over 11 countries. This isn't a pitch deck. It's a business.</p>
+
+          <hr>
+
+          <h2>Traction</h2>
+
+          <p>Here's what four years of work looks like.</p>
+
+          <p>We've scaled to over 11 African markets. We process millions in monthly transaction volume. Our payment success rate is 98%, compared to industry averages that often struggle below 80%. Revenue has grown over 15% quarter over quarter, mostly from organic demand.</p>
+
+          <p>We've done this with a small, market-embedded team operating at roughly 10% of the overhead of legacy remittance companies. Western Union took decades to achieve continental coverage. We did it in four years.</p>
+        </div>
+      </div>
+
+      <!-- Wide graphic: Traction -->
+      <div class="container-wide">
+        <figure class="article-graphic article-graphic-wide">
+          <img src="graphic-traction.svg" alt="Four years of building: 11+ markets, 98% success rate, 15%+ QoQ growth">
+          <figcaption class="graphic-caption">Four years of building</figcaption>
+        </figure>
+      </div>
+
+      <div class="container">
+        <div class="article-content">
+          <p>The growth isn't hype-driven. It's utility-driven. People use Accrue because it solves real problems:</p>
+
+          <p>A trader in Ghana can pay a supplier in Kenya in seconds, not days. A Nigerian freelancer can receive USD from a European client without losing a big chunk to intermediaries. A family can save for the future in stable USD, safe from local currency collapse.</p>
+
+          <hr>
+
+          <h2>Why Now</h2>
+
+          <p>There have been other attempts to fix African payments. Timing is why this one will work.</p>
+
+          <p>Three forces are converging.</p>
+
+          <p>First, demographics. Africa is the world's youngest continent, with a median age under 20. This generation grew up on smartphones. They expect financial services that work like their favorite apps.</p>
+
+          <p>Second, technology adoption. Smartphone penetration is soaring. Over 80% of Africans will own a mobile device by 2030. M-Pesa proved you can leapfrog traditional banking. But those systems remain siloed within countries. Stablecoin rails break those borders.</p>
+
+          <p>Third, regulatory momentum. Nigeria, Ghana, and Kenya have launched regulatory sandboxes for fintech. South Africa already licenses crypto businesses. Pan-African trade frameworks are pushing for interoperability. Five years ago, governments saw crypto as a threat. Now they're building frameworks for it.</p>
+        </div>
+      </div>
+
+      <!-- Wide graphic: Why Now -->
+      <div class="container-wide">
+        <figure class="article-graphic article-graphic-wide">
+          <img src="graphic-timing.svg" alt="Three forces converging: Demographics, Technology, Regulation">
+          <figcaption class="graphic-caption">Three forces converging at once</figcaption>
+        </figure>
+      </div>
+
+      <div class="container">
+        <div class="article-content">
+          <p>Combine these with the quiet rise of stablecoins as the most trusted USD savings instrument in inflation-prone economies, and you get a once-in-a-generation opportunity: build the rails for Africa's digital economy before anyone else does.</p>
+
+          <hr>
+
+          <h2>The Long Game</h2>
+
+          <p>Payments are our wedge. The long game is infrastructure for everything.</p>
+
+          <p>Once you control the trusted, fast, stable flow of money, you can layer on other services. Credit: instant, data-driven lending to customers and businesses who have never had a credit score. Insurance: micro-insurance products embedded directly into everyday transactions. Investments: seamless access to global and local investment opportunities.</p>
+
+          <p>Every transaction we process generates trust and data. Those are the two things you need to build the next generation of financial services.</p>
+        </div>
+      </div>
+
+      <!-- Wide graphic: Vision -->
+      <div class="container-wide">
+        <figure class="article-graphic article-graphic-wide">
+          <img src="graphic-vision.svg" alt="Payments as the wedge to credit, insurance, and investments">
+          <figcaption class="graphic-caption">Payments are the wedge. Everything else follows.</figcaption>
+        </figure>
+      </div>
+
+      <div class="container">
+        <div class="article-content">
+          <p>In a continent where 60% of people are unbanked but almost everyone has a mobile phone, the leapfrog to a fully digital, borderless financial system isn't just possible. It's inevitable.</p>
+
+          <p>We intend to be the company that makes it happen.</p>
+
+          <hr>
+
+          <p>The future of African finance won't be built by slow-moving banks or outdated remittance giants. It will be built by small, fast teams who understand the ground truth and can move at the speed of technology.</p>
+
+          <p>Accrue and Cashramp are already there. Live, scaling, trusted. Every week we see more merchants, more freelancers, more families shifting to our rails. The network effect is in motion: the more people use us, the more valuable the platform becomes, and the harder it will be for anyone to catch up.</p>
+
+          <div class="pullquote">
+            <p>This is not a distant vision. It's happening now.</p>
+          </div>
+
+          <p>The problem is massive and unavoidable. The solution is inevitable and already in market. The timing is perfect. The upside is continental and beyond.</p>
+
+          <p>That's why building Accrue is the most important work of my life.</p>
+
+          <div class="article-tags">
+            <span class="tag">Fintech</span>
+            <span class="tag">Africa</span>
+            <span class="tag">Startups</span>
+            <span class="tag">Stablecoins</span>
+            <span class="tag">Payments</span>
+          </div>
+        </div>
+      </div>
+    </article>
+  </main>
+
+  <footer>
+    <div class="container footer-inner">
+      <span>© <span id="year"></span> Zino Asamaige</span>
+      <span>Lagos, Nigeria</span>
+    </div>
+  </footer>
+
+  <script>
+    // Theme
+    const themeToggle = document.getElementById('themeToggle');
+    const savedTheme = localStorage.getItem('theme');
+    
+    if (savedTheme) {
+      document.documentElement.setAttribute('data-theme', savedTheme);
+      document.body.setAttribute('data-theme', savedTheme);
+    }
+
+    themeToggle.addEventListener('click', () => {
+      const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+      const newTheme = isDark ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', newTheme);
+      document.body.setAttribute('data-theme', newTheme);
+      localStorage.setItem('theme', newTheme);
+    });
+
+    // Year
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>

@@ -1,0 +1,68 @@
+<svg viewBox="0 0 800 400" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bgGrad1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0A0A0A"/>
+      <stop offset="100%" style="stop-color:#1a1a2e"/>
+    </linearGradient>
+    <linearGradient id="formalGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#00D4AA"/>
+      <stop offset="100%" style="stop-color:#00A8CC"/>
+    </linearGradient>
+    <linearGradient id="informalGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#FF6B6B"/>
+      <stop offset="100%" style="stop-color:#C44D4D"/>
+    </linearGradient>
+    <pattern id="dots" width="8" height="8" patternUnits="userSpaceOnUse">
+      <circle cx="4" cy="4" r="0.8" fill="rgba(255,255,255,0.08)"/>
+    </pattern>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="800" height="400" fill="url(#bgGrad1)"/>
+  <rect width="800" height="400" fill="url(#dots)"/>
+  
+  <!-- Title -->
+  <text x="400" y="50" font-family="'Space Mono', monospace" font-size="12" fill="rgba(255,255,255,0.5)" text-anchor="middle" letter-spacing="0.2em">AFRICA'S CROSS-BORDER PAYMENTS</text>
+  
+  <!-- Big number -->
+  <text x="400" y="110" font-family="Georgia, serif" font-size="56" fill="white" text-anchor="middle" font-weight="700">$329 Billion</text>
+  <text x="400" y="140" font-family="'Space Mono', monospace" font-size="14" fill="rgba(255,255,255,0.6)" text-anchor="middle">annual cross-border payment volume (2025)</text>
+  
+  <!-- Split visualization -->
+  <g transform="translate(100, 180)">
+    <!-- Formal (25%) -->
+    <rect x="0" y="0" width="150" height="160" fill="url(#formalGrad)" rx="4"/>
+    <text x="75" y="70" font-family="Georgia, serif" font-size="36" fill="white" text-anchor="middle" font-weight="700">25%</text>
+    <text x="75" y="100" font-family="'Space Mono', monospace" font-size="11" fill="rgba(255,255,255,0.8)" text-anchor="middle">FORMAL</text>
+    <text x="75" y="120" font-family="'Space Mono', monospace" font-size="10" fill="rgba(255,255,255,0.6)" text-anchor="middle">Banks, MTOs</text>
+    <text x="75" y="145" font-family="'Space Mono', monospace" font-size="10" fill="rgba(255,255,255,0.5)" text-anchor="middle">8% avg fees</text>
+  </g>
+  
+  <g transform="translate(270, 180)">
+    <!-- Informal (75%) -->
+    <rect x="0" y="0" width="430" height="160" fill="url(#informalGrad)" rx="4"/>
+    <text x="215" y="70" font-family="Georgia, serif" font-size="36" fill="white" text-anchor="middle" font-weight="700">75%</text>
+    <text x="215" y="100" font-family="'Space Mono', monospace" font-size="11" fill="rgba(255,255,255,0.8)" text-anchor="middle">INFORMAL</text>
+    
+    <!-- Icons representing informal methods -->
+    <g transform="translate(80, 115)" fill="rgba(255,255,255,0.7)">
+      <text font-family="'Space Mono', monospace" font-size="9" text-anchor="middle">Cash in</text>
+      <text y="12" font-family="'Space Mono', monospace" font-size="9" text-anchor="middle">envelopes</text>
+    </g>
+    <g transform="translate(180, 115)" fill="rgba(255,255,255,0.7)">
+      <text font-family="'Space Mono', monospace" font-size="9" text-anchor="middle">Bus</text>
+      <text y="12" font-family="'Space Mono', monospace" font-size="9" text-anchor="middle">drivers</text>
+    </g>
+    <g transform="translate(280, 115)" fill="rgba(255,255,255,0.7)">
+      <text font-family="'Space Mono', monospace" font-size="9" text-anchor="middle">Family</text>
+      <text y="12" font-family="'Space Mono', monospace" font-size="9" text-anchor="middle">networks</text>
+    </g>
+    <g transform="translate(370, 115)" fill="rgba(255,255,255,0.7)">
+      <text font-family="'Space Mono', monospace" font-size="9" text-anchor="middle">Informal</text>
+      <text y="12" font-family="'Space Mono', monospace" font-size="9" text-anchor="middle">agents</text>
+    </g>
+  </g>
+  
+  <!-- Bottom stat -->
+  <text x="400" y="375" font-family="'Space Mono', monospace" font-size="12" fill="#FF6B6B" text-anchor="middle">$5 billion/year lost to currency conversion friction alone</text>
+</svg>
