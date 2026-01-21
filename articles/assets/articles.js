@@ -3,9 +3,20 @@
 
 const ARTICLES = [
   {
+    title: "Why I'm Building Accrue",
+    slug: "why-im-building-accrue",
+    date: "2026-01-20",
+    excerpt: "Africa moves a lot of money. The problem is how. Cross-border payments hit $329 billion in 2025, but 75% moves through informal channels.",
+    author: "Zino Asamaige",
+    readTime: "6 min read",
+    tags: ["Fintech", "Africa", "Startups"],
+    thumbnail: "/articles/why-im-building-accrue/thumbnail.svg",
+    featured: true
+  },
+  {
     title: "Lived It, Loved It: Farewell Helicarrier",
     slug: "farewell-helicarrier",
-    date: "2022-10-01", // October 2022 based on context
+    date: "2022-10-01",
     excerpt: "Today's my last day at Helicarrier. I joined in 2018, and I'm incredibly proud of how much growth has happened since then. I'm leaving to continue growing Accrue.",
     author: "Zino Asamaige",
     readTime: "3 min read",
@@ -25,7 +36,7 @@ const ARTICLES = [
     externalUrl: "https://medium.com/buycoins/its-the-12th-e62f34e82c07"
   },
   {
-    title: "Trading USDT Peer-to-Peer — Now Available on BuyCoins!",
+    title: "Trading USDT Peer-to-Peer - Now Available on BuyCoins!",
     slug: "usdt-p2p",
     date: "2020-11-17",
     excerpt: "We're introducing support for USDT on our peer-to-peer exchange and wallet. You can buy or sell USDT at your preferred price.",
