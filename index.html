@@ -36,7 +36,7 @@
       --green-glow: rgba(0, 210, 106, 0.4);
       --glass-bg: rgba(255, 255, 255, 0.7);
       --glass-border: rgba(255, 255, 255, 0.3);
-      --container: 1100px;
+      --container: 1200px;
       --transition: 0.2s ease;
 
       /* Violet accent (light mode) */
@@ -117,6 +117,12 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
+      max-width: var(--container);
+      margin: 0 auto;
+      padding: 0 40px;
+    }
+    @media (max-width: 768px) {
+      .header-inner { padding: 0 20px; }
     }
 
     .logo {
@@ -713,7 +719,7 @@
     }
     .movement-month.completed .movement-month-pct { color: var(--text-tertiary); }
 
-    /* ===== Progress Bar (FIXED: shimmer stays inside; still moves across full track) ===== */
+    /* Progress Bar */
     .movement-month-bar-wrap {
       position: relative;
       margin-bottom: 24px;
@@ -723,11 +729,10 @@
       height: 6px;
       background: var(--border);
       position: relative;
-      overflow: hidden;  /* ✅ clips shimmer so it never spills */
+      overflow: hidden;
       border-radius: 3px;
     }
 
-    /* Animated beam lives on the TRACK (behind fill) */
     .movement-month.current .movement-month-bar::before {
       content: '';
       position: absolute;
@@ -752,10 +757,9 @@
       background: var(--text);
       border-radius: 3px;
       transition: width 1s ease;
-      z-index: 2; /* ✅ above shimmer */
+      z-index: 2;
     }
 
-    /* Subtle glow on fill (safe; no spill) */
     .movement-month.current .movement-month-bar-fill {
       box-shadow: 0 0 12px rgba(0,0,0,0.28);
       animation: bar-glow 2s ease-in-out infinite;
@@ -768,7 +772,6 @@
       50% { opacity: 0.78; }
     }
 
-    /* Completed bar styling - muted */
     .movement-month.completed .movement-month-bar-fill {
       background: var(--text-tertiary);
       opacity: 0.5;
@@ -777,7 +780,6 @@
     }
     .movement-month.completed .movement-month-bar::before { display: none; }
 
-    /* Dot on the wrapper (not clipped), so it can glow without affecting the bar */
     .movement-month.current .movement-month-bar-wrap::after {
       content: '';
       position: absolute;
@@ -1019,7 +1021,7 @@
   <div class="scroll-progress" id="scrollProgress"></div>
 
   <header id="header">
-    <div class="container header-inner">
+    <div class="header-inner">
       <a href="/" class="logo">
         <img src="/assets/logo.png" alt="" class="logo-img">
         Zino Asamaige
@@ -1345,7 +1347,7 @@
       </div>
     `).join('');
 
-    // Months (UPDATED MARKUP: bar wrap for safe dot + clipped shimmer)
+    // Months
     document.getElementById('monthsGrid').innerHTML = MONTHS.slice(0, 2).map(m => {
       const pct = (m.steps / MONTHLY_GOAL) * 100;
       const displayPct = Math.round(pct);
