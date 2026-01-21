@@ -1,207 +1,605 @@
-<!DOCTYPE html>
-<html lang="en" data-theme="light">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Zino Asamaige</title>
-  <meta name="description" content="Building fintech, shooting street, staying moving. Based in Lagos." />
-  <meta property="og:title" content="Zino Asamaige" />
-  <meta property="og:description" content="Building fintech, shooting street, staying moving. Based in Lagos." />
-  <meta property="og:type" content="website" />
-  <link rel="icon" type="image/png" href="/assets/logo.png" />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="styles.css" />
-</head>
-<body>
-  <div class="cursor" id="cursor"></div>
-  <div class="cursor-label" id="cursorLabel"></div>
-  <a class="skip-link" href="#main">Skip to content</a>
+// Content Data
+const PHOTOS = [
+  { src: "/assets/photos/photo-1.jpg", caption: "Lagos, 2025", alt: "Street scene in Lagos", tags: ["Lagos", "Street"] },
+  { src: "/assets/photos/photo-2.jpg", caption: "Frankfurt, 2025", alt: "Frankfurt street", tags: ["Frankfurt", "Street"] },
+  { src: "/assets/photos/photo-3.jpg", caption: "Frankfurt, 2025", alt: "Architecture in Frankfurt", tags: ["Frankfurt", "Architecture"] },
+  { src: "/assets/photos/photo-4.jpg", caption: "Accra, 2025", alt: "Accra market", tags: ["Accra", "Market"] },
+  { src: "/assets/photos/photo-5.jpg", caption: "Lagos, 2025", alt: "Lagos street", tags: ["Lagos", "Street"] },
+  { src: "/assets/photos/photo-6.jpg", caption: "Durham, 2024", alt: "Durham scene", tags: ["Durham", "Street"] }
+];
 
-  <header id="header">
-    <div class="header-inner">
-      <a href="/" class="logo" data-magnetic>
-        <img src="/assets/logo.png" alt="" class="logo-img" width="36" height="36" />
-        Zino Asamaige
+const ARTICLES = [
+  { title: "A quick note on consistency", date: "Jan 2026", topic: "Work / life", url: "/articles.html" },
+  { title: "What I'm learning from walking", date: "Dec 2025", topic: "Movement", url: "/articles.html" }
+];
+
+const TRAVELS = [
+  { title: "Frankfurt", meta: "2025 · architecture and late trains", url: "/travels.html" },
+  { title: "Durham", meta: "2024 · running routes and quiet mornings", url: "/travels.html" },
+  { title: "Accra", meta: "2025 · food, pace, and sunlight", url: "/travels.html" }
+];
+
+const MUSIC = [
+  { title: "Remember", artist: "Asake", url: "https://music.youtube.com/watch?v=Vxyq7pWyd4w", cover: "https://upload.wikimedia.org/wikipedia/en/9/97/Asake_-_Work_of_Art.png" },
+  { title: "Gratitude", artist: "Anendlessocean", url: "https://open.spotify.com/track/6rS2RInFcdK1Bhy6P1TOHe", cover: "https://i.scdn.co/image/ab67616d0000b27331b046b5e8493d36db0f11da" },
+  { title: "E Ti Tobi", artist: "EmmaOMG", url: "https://music.youtube.com/watch?v=Fic7mA2jQOQ", cover: "https://yt3.googleusercontent.com/SmrutPQVmEJ2yttEAmBKbqn-5UvE40fC6AHuSNEInvE0=w544-h544-l90-rj" }
+];
+
+const BOOKS = [
+  { title: "Harry Potter and the Sorcerer's Stone", author: "J.K. Rowling", url: "https://www.goodreads.com/book/show/42844155-harry-potter-and-the-sorcerer-s-stone", cover: "https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1598823299i/42844155.jpg" }
+];
+
+const TV = [
+  { title: "Elsbeth", year: "2024", url: "https://www.imdb.com/title/tt26591110/", cover: "https://m.media-amazon.com/images/M/MV5BYWQ0ZDUyZjUtOTAwMi00YjU4LWEzMDctM2Q4N2Q4Y2M2NjgwXkEyXkFqcGdeQXVyMTU2NzQ3OTI1._V1_.jpg" }
+];
+
+// Utilities
+const fmt = n => n.toLocaleString('en-US');
+
+function prefersReducedMotion() {
+  return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+}
+
+// Magnetic hover
+function makeMagnetic(el) {
+  const strength = 0.25;
+  const inner = el.querySelector('.btn-inner') || el;
+
+  function onMove(e) {
+    const rect = el.getBoundingClientRect();
+    const x = (e.clientX - rect.left - rect.width / 2) * strength;
+    const y = (e.clientY - rect.top - rect.height / 2) * strength;
+    inner.style.transform = `translate(${x}px, ${y}px)`;
+  }
+  function onLeave() { inner.style.transform = ''; }
+
+  el.addEventListener('mousemove', onMove);
+  el.addEventListener('mouseleave', onLeave);
+}
+
+// Cursor
+const cursor = document.getElementById('cursor');
+function initCursor() {
+  if (!cursor) return;
+  if (prefersReducedMotion()) { cursor.style.display = 'none'; return; }
+
+  document.addEventListener('mousemove', e => {
+    cursor.style.transform = `translate(${e.clientX}px, ${e.clientY}px)`;
+  });
+
+  document.querySelectorAll('a, button, [data-magnetic], .photo-item, .article-card, .travel-card, .into-card').forEach(el => {
+    el.addEventListener('mouseenter', () => cursor.classList.add('hover'));
+    el.addEventListener('mouseleave', () => cursor.classList.remove('hover'));
+  });
+}
+
+function bindCursorHovers() {
+  if (!cursor) return;
+  document.querySelectorAll('a, button, [data-magnetic]').forEach(el => {
+    el.addEventListener('mouseenter', () => cursor.classList.add('hover'));
+    el.addEventListener('mouseleave', () => cursor.classList.remove('hover'));
+  });
+}
+
+// Theme
+function initTheme() {
+  const toggle = document.getElementById('themeToggle');
+  if (!toggle) return;
+
+  const stored = localStorage.getItem('theme');
+  if (stored) document.documentElement.setAttribute('data-theme', stored);
+
+  toggle.addEventListener('click', () => {
+    const curr = document.documentElement.getAttribute('data-theme') || 'light';
+    const next = curr === 'light' ? 'dark' : 'light';
+    document.documentElement.setAttribute('data-theme', next);
+    localStorage.setItem('theme', next);
+  });
+}
+
+// Mobile menu
+const mobileMenu = document.getElementById('mobileMenu');
+function initMobileMenu() {
+  const openBtn = document.getElementById('mobileMenuOpen');
+  const closeBtn = document.getElementById('mobileMenuClose');
+  if (!openBtn || !closeBtn || !mobileMenu) return;
+
+  const closeMenu = () => {
+    mobileMenu.classList.remove('open');
+    mobileMenu.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+  };
+
+  openBtn.addEventListener('click', () => {
+    mobileMenu.classList.add('open');
+    mobileMenu.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+  });
+
+  closeBtn.addEventListener('click', closeMenu);
+  mobileMenu.addEventListener('click', e => {
+    if (e.target === mobileMenu) closeMenu();
+  });
+
+  mobileMenu.querySelectorAll('a').forEach(a => a.addEventListener('click', closeMenu));
+  document.addEventListener('keydown', e => { if (e.key === 'Escape' && mobileMenu?.classList.contains('open')) closeMenu(); });
+}
+
+// Lightbox
+const lightbox = document.getElementById('lightbox');
+const lightboxImg = document.getElementById('lightboxImg');
+const lightboxCaption = document.getElementById('lightboxCaption');
+const lightboxMeta = document.getElementById('lightboxMeta');
+let currentPhotoIndex = 0, lastFocusedEl = null;
+
+function parseCaption(caption = "") {
+  // Expected: "City, 2025" (fallbacks gracefully)
+  const parts = caption.split(',').map(s => s.trim()).filter(Boolean);
+  return {
+    location: parts[0] || "",
+    year: parts[1] || ""
+  };
+}
+
+let quietTimer = null;
+function setQuietTimer() {
+  clearTimeout(quietTimer);
+  // Don’t hide UI on touch devices
+  if (window.matchMedia('(pointer: coarse)').matches) return;
+  quietTimer = setTimeout(() => lightbox?.classList.add('quiet'), 1800);
+}
+function wakeLightboxUI() {
+  lightbox?.classList.remove('quiet');
+  setQuietTimer();
+}
+
+function preloadAround(index) {
+  const prev = (index - 1 + PHOTOS.length) % PHOTOS.length;
+  const next = (index + 1) % PHOTOS.length;
+  [prev, next].forEach(i => {
+    const img = new Image();
+    img.src = PHOTOS[i].src;
+  });
+}
+
+function updateLightbox(index) {
+  const photo = PHOTOS[index];
+  const { location, year } = parseCaption(photo.caption);
+
+  lightboxImg.src = photo.src;
+  lightboxImg.alt = photo.alt;
+  lightboxCaption.textContent = photo.caption;
+
+  if (lightboxMeta) {
+    const n = index + 1;
+    const total = PHOTOS.length;
+    const bits = [
+      `${n} / ${total}`,
+      location || null,
+      year || null
+    ].filter(Boolean);
+    lightboxMeta.textContent = bits.join(" · ");
+  }
+
+  preloadAround(index);
+  wakeLightboxUI();
+}
+
+function openLightbox(index, opener) {
+  currentPhotoIndex = index;
+  lastFocusedEl = opener || document.activeElement;
+
+  lightbox.classList.add('active');
+  lightbox.setAttribute('aria-hidden', 'false');
+  document.body.style.overflow = 'hidden';
+  document.body.classList.add('modal-open');
+
+  updateLightbox(index);
+
+  // Focus management
+  const closeBtn = lightbox?.querySelector('.lightbox-close');
+  closeBtn?.focus?.();
+}
+
+function closeLightbox() {
+  lightbox.classList.remove('active', 'quiet');
+  lightbox.setAttribute('aria-hidden', 'true');
+  document.body.style.overflow = '';
+  document.body.classList.remove('modal-open');
+  clearTimeout(quietTimer);
+  lastFocusedEl?.focus();
+}
+
+function navigateLightbox(dir) {
+  currentPhotoIndex = (currentPhotoIndex + dir + PHOTOS.length) % PHOTOS.length;
+  updateLightbox(currentPhotoIndex);
+}
+
+// Focus trap (simple)
+function trapFocus(e) {
+  if (!lightbox?.classList.contains('active')) return;
+  if (e.key !== 'Tab') return;
+
+  const focusables = lightbox.querySelectorAll('button,[href],input,select,textarea,[tabindex]:not([tabindex="-1"])');
+  const list = Array.from(focusables).filter(el => !el.hasAttribute('disabled') && el.offsetParent !== null);
+  if (!list.length) return;
+
+  const first = list[0];
+  const last = list[list.length - 1];
+
+  if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+  else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+}
+
+lightbox?.querySelector('.lightbox-close')?.addEventListener('click', closeLightbox);
+lightbox?.querySelector('.lightbox-prev')?.addEventListener('click', () => navigateLightbox(-1));
+lightbox?.querySelector('.lightbox-next')?.addEventListener('click', () => navigateLightbox(1));
+
+lightbox?.addEventListener('mousemove', wakeLightboxUI);
+lightbox?.addEventListener('mousedown', wakeLightboxUI);
+lightbox?.addEventListener('touchstart', wakeLightboxUI, { passive: true });
+
+lightbox?.addEventListener('click', e => { if (e.target === lightbox) closeLightbox(); });
+
+document.addEventListener('keydown', e => {
+  if (!lightbox?.classList.contains('active')) return;
+  if (e.key === 'Escape') closeLightbox();
+  if (e.key === 'ArrowLeft') navigateLightbox(-1);
+  if (e.key === 'ArrowRight') navigateLightbox(1);
+  trapFocus(e);
+});
+
+// Animated counter
+function animateCounter(el, target, duration = 2000) {
+  const start = performance.now();
+  (function update(now) {
+    const progress = Math.min((now - start) / duration, 1);
+    const eased = 1 - Math.pow(1 - progress, 4);
+    el.textContent = fmt(Math.floor(target * eased));
+    if (progress < 1) requestAnimationFrame(update);
+  })(start);
+}
+
+// Swipeable hero gallery
+class SwipeableGallery {
+  constructor(root, photos) {
+    this.root = root;
+    this.photos = photos;
+    this.index = 0;
+    this.startX = 0;
+    this.deltaX = 0;
+    this.isDragging = false;
+    this.render();
+    this.bind();
+  }
+
+  render() {
+    const track = document.createElement('div');
+    track.className = 'photo-gallery-track';
+
+    this.photos.forEach((photo, i) => {
+      const card = document.createElement('button');
+      card.type = 'button';
+      card.className = 'photo-card';
+      card.setAttribute('data-index', i);
+      card.innerHTML = `
+        <img src="${photo.src}" alt="${photo.alt}" draggable="false" />
+        <div class="photo-card-caption">
+          <span>${photo.caption}</span>
+          <div class="photo-card-indicator">
+            ${this.photos.map((_, j) => `<span ${j === i ? 'class="active"' : ''}></span>`).join('')}
+          </div>
+        </div>
+      `;
+      track.appendChild(card);
+    });
+
+    this.root.appendChild(track);
+    this.track = track;
+    this.update();
+  }
+
+  update() {
+    const cards = this.root.querySelectorAll('.photo-card');
+    cards.forEach((card, i) => {
+      card.style.transform = `translateX(${(i - this.index) * 100}%)`;
+      card.style.opacity = i === this.index ? '1' : '0';
+      card.style.pointerEvents = i === this.index ? 'auto' : 'none';
+    });
+  }
+
+  next() {
+    this.index = (this.index + 1) % this.photos.length;
+    this.update();
+  }
+
+  prev() {
+    this.index = (this.index - 1 + this.photos.length) % this.photos.length;
+    this.update();
+  }
+
+  bind() {
+    // click opens lightbox for that photo index (match in PHOTOS by src)
+    this.root.addEventListener('click', e => {
+      const btn = e.target.closest('.photo-card');
+      if (!btn) return;
+      const i = parseInt(btn.dataset.index, 10);
+      const src = this.photos[i]?.src;
+      const match = PHOTOS.findIndex(p => p.src === src);
+      if (match >= 0) openLightbox(match, btn);
+    });
+
+    this.root.addEventListener('touchstart', e => this.onDragStart(e.touches[0].clientX), { passive: true });
+    this.root.addEventListener('touchmove', e => this.onDragMove(e.touches[0].clientX), { passive: true });
+    this.root.addEventListener('touchend', () => this.onDragEnd());
+    this.root.addEventListener('mousedown', e => this.onDragStart(e.clientX));
+    window.addEventListener('mousemove', e => this.onDragMove(e.clientX));
+    window.addEventListener('mouseup', () => this.onDragEnd());
+  }
+
+  onDragStart(x) {
+    this.isDragging = true;
+    this.startX = x;
+  }
+
+  onDragMove(x) {
+    if (!this.isDragging) return;
+    this.deltaX = x - this.startX;
+  }
+
+  onDragEnd() {
+    if (!this.isDragging) return;
+    this.isDragging = false;
+    if (this.deltaX > 50) this.prev();
+    else if (this.deltaX < -50) this.next();
+    this.deltaX = 0;
+  }
+}
+
+// Photo collections (homepage + photos page)
+let activePhotoFilter = 'All';
+let filteredPhotoIndices = PHOTOS.map((_, i) => i);
+
+function normalizeTag(tag) {
+  return String(tag || '').trim().toLowerCase();
+}
+
+function getAllPhotoTags() {
+  const set = new Set(['All']);
+  PHOTOS.forEach(p => {
+    const fromCaption = (p.caption || '').split(',')[0]?.trim();
+    if (fromCaption) set.add(fromCaption);
+    (p.tags || []).forEach(t => set.add(t));
+  });
+  return Array.from(set);
+}
+
+function getFilteredPhotoIndices(tag) {
+  const key = normalizeTag(tag);
+  if (!key || key === 'all') return PHOTOS.map((_, i) => i);
+
+  return PHOTOS
+    .map((p, i) => ({ p, i }))
+    .filter(({ p }) => {
+      const location = normalizeTag((p.caption || '').split(',')[0]);
+      const tags = (p.tags || []).map(normalizeTag);
+      return location === key || tags.includes(key);
+    })
+    .map(({ i }) => i);
+}
+
+function renderPhotoGrid(photoGridEl, indices) {
+  photoGridEl.innerHTML = indices.map(i => {
+    const p = PHOTOS[i];
+    const { location, year } = parseCaption(p.caption);
+    return `
+      <button type="button" class="photo-item" data-photo-index="${i}">
+        <img src="${p.src}" alt="${p.alt}" loading="lazy" />
+        <span class="photo-item-caption">${location}${year ? ` · ${year}` : ''}</span>
+      </button>
+    `;
+  }).join('');
+
+  photoGridEl.querySelectorAll('.photo-item').forEach(el => {
+    el.addEventListener('click', () => openLightbox(parseInt(el.dataset.photoIndex, 10), el));
+  });
+}
+
+function renderPhotoChips(chipsEl, tags) {
+  chipsEl.innerHTML = tags.map(tag => {
+    const pressed = normalizeTag(tag) === normalizeTag(activePhotoFilter);
+    return `<button type="button" class="chip" data-tag="${tag}" aria-pressed="${pressed}">${tag}</button>`;
+  }).join('');
+
+  chipsEl.querySelectorAll('.chip').forEach(btn => {
+    btn.addEventListener('click', () => applyPhotoFilter(btn.dataset.tag));
+  });
+}
+
+function applyPhotoFilter(tag) {
+  activePhotoFilter = tag || 'All';
+  filteredPhotoIndices = getFilteredPhotoIndices(activePhotoFilter);
+
+  const photoGridEl = document.getElementById('photoGrid');
+  if (photoGridEl) renderPhotoGrid(photoGridEl, filteredPhotoIndices);
+
+  const chipsEl = document.getElementById('photoChips');
+  if (chipsEl) {
+    chipsEl.querySelectorAll('.chip').forEach(btn => {
+      btn.setAttribute('aria-pressed', String(normalizeTag(btn.dataset.tag) === normalizeTag(activePhotoFilter)));
+    });
+  }
+}
+
+// Render content
+function renderContent() {
+  // Hero photo gallery
+  const heroStack = document.getElementById('heroPhotoStack');
+  if (heroStack) {
+    new SwipeableGallery(heroStack, PHOTOS.slice(0, 4));
+  }
+
+  // Photo grid (+ collections + random)
+  const photoGrid = document.getElementById('photoGrid');
+  if (photoGrid) {
+    // Chips (optional)
+    const chipsEl = document.getElementById('photoChips');
+    if (chipsEl) {
+      const tags = getAllPhotoTags();
+      renderPhotoChips(chipsEl, tags);
+    }
+
+    // Initial render
+    applyPhotoFilter(activePhotoFilter);
+
+    // Random button (optional)
+    const randomBtn = document.getElementById('randomPhotoBtn');
+    if (randomBtn) {
+      randomBtn.addEventListener('click', () => {
+        if (!filteredPhotoIndices.length) return;
+        const pick = filteredPhotoIndices[Math.floor(Math.random() * filteredPhotoIndices.length)];
+        openLightbox(pick, randomBtn);
+      });
+    }
+  }
+
+  // Articles
+  const articleGrid = document.getElementById('articleGrid');
+  if (articleGrid) {
+    articleGrid.innerHTML = ARTICLES.map(a => `
+      <a class="article-card" href="${a.url}">
+        <div>
+          <div class="article-card-title">${a.title}</div>
+          <div class="article-card-meta">
+            <span>${a.date}</span>
+            <span>·</span>
+            <span>${a.topic}</span>
+          </div>
+        </div>
+        <div class="article-card-arrow">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M5 12h14M12 5l7 7-7 7"/>
+          </svg>
+        </div>
       </a>
-      <nav class="header-nav" aria-label="Primary navigation">
-        <a href="/about.html" class="nav-link">About</a>
-        <a href="/photos.html" class="nav-link">Photos</a>
-        <a href="/articles.html" class="nav-link">Articles</a>
-        <a href="/movement.html" class="nav-link">Movement</a>
-        <a href="/travels.html" class="nav-link">Travels</a>
-        <a href="/contact.html" class="nav-link">Contact</a>
-        <button class="theme-btn" id="themeToggle" aria-label="Toggle theme" data-magnetic>
-          <svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
-          <svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
-        </button>
-      </nav>
-      <div class="mobile-controls">
-        <button class="theme-btn" id="mobileThemeToggle" aria-label="Toggle theme">
-          <svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
-          <svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
-        </button>
-        <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Open menu"><span></span><span></span><span></span></button>
-      </div>
-    </div>
-  </header>
+    `).join('');
+  }
 
-  <div class="mobile-menu" id="mobileMenu" aria-hidden="true">
-    <div class="mobile-menu-header">
-      <span class="logo"><img src="/assets/logo.png" alt="" class="logo-img" width="36" height="36" />Zino</span>
-      <button class="mobile-menu-close" id="mobileMenuClose" aria-label="Close menu">&times;</button>
-    </div>
-    <nav><a href="/about.html">About</a><a href="/photos.html">Photos</a><a href="/articles.html">Articles</a><a href="/movement.html">Movement</a><a href="/travels.html">Travels</a><a href="/contact.html">Contact</a></nav>
-  </div>
-
-  <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-hidden="true">
-    <div class="lightbox-panel">
-      <button class="lightbox-close" type="button" aria-label="Close">&times;</button>
-      <button class="lightbox-nav lightbox-prev" type="button" aria-label="Previous">&#8249;</button>
-      <button class="lightbox-nav lightbox-next" type="button" aria-label="Next">&#8250;</button>
-      <img src="" alt="" id="lightboxImg" />
-      <div class="lightbox-caption" id="lightboxCaption"></div>
-    </div>
-  </div>
-
-  <main id="main">
-    <section class="hero">
-      <div class="container">
-        <div class="hero-grid">
-          <div class="hero-content">
-            <div class="hero-location"><span class="location-dot"></span>Lagos, Nigeria</div>
-            <h1 class="hero-title">
-              <span class="line"><span class="line-inner">Building fintech,</span></span>
-              <span class="line"><span class="line-inner">shooting street,</span></span>
-              <span class="line"><span class="line-inner"><em>staying moving.</em></span></span>
-            </h1>
-            <p class="hero-text">
-              I'm building <a href="https://useaccrue.com/" target="_blank" rel="noopener noreferrer">Accrue</a> with
-              <a href="https://clintonmbah.com/" target="_blank" rel="noopener noreferrer">Clinton</a> and
-              <a href="https://medium.com/@adesuwaomoruyi" target="_blank" rel="noopener noreferrer">Adesuwa</a>.
-              Outside work, I'm usually walking with a camera, playing FIFA, or trying to get back in the pool.
-            </p>
-            <div class="hero-ctas">
-              <a href="/contact.html" class="btn btn-primary" data-magnetic><span class="btn-inner">Say hello<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg></span></a>
-              <a href="/about.html" class="btn" data-magnetic><span class="btn-inner">About me<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span></a>
-            </div>
-          </div>
-          <div class="hero-visual">
-            <div class="photo-gallery" id="heroPhotoStack"></div>
-          </div>
+  // Travels
+  const travelGrid = document.getElementById('travelGrid');
+  if (travelGrid) {
+    travelGrid.innerHTML = TRAVELS.map(t => `
+      <a class="travel-card" href="${t.url}">
+        <div>
+          <div class="travel-card-title">${t.title}</div>
+          <div class="travel-card-meta">${t.meta}</div>
         </div>
-      </div>
-    </section>
-
-    <section id="photos" class="section-soft">
-      <div class="container">
-        <div class="section-content">
-          <div class="section-header">
-            <div>
-              <div class="section-label">Photography <span class="photo-source"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>Shot on iPhone</span></div>
-              <h2 class="section-title">Through my lens</h2>
-            </div>
-            <a href="/photos.html" class="section-link">View all<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
-          </div>
-          <div class="photos-grid" id="photoGrid"></div>
+        <div class="travel-card-arrow">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M5 12h14M12 5l7 7-7 7"/>
+          </svg>
         </div>
-      </div>
-    </section>
+      </a>
+    `).join('');
+  }
 
-    <section id="writing">
-      <div class="container">
-        <div class="section-content">
-          <div class="section-header">
-            <div>
-              <div class="section-label">Writing</div>
-              <h2 class="section-title">A few notes</h2>
-              <p class="section-subtitle">Short things I'm thinking about. Sometimes practical, sometimes just me trying to make sense of stuff.</p>
-            </div>
-            <a href="/articles.html" class="section-link">View all<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
-          </div>
-          <div class="writing-grid" id="articleGrid"></div>
+  // Into grid
+  const intoGrid = document.getElementById('intoGrid');
+  if (intoGrid) {
+    const items = [
+      ...MUSIC.map(m => ({ title: m.title, meta: m.artist, url: m.url, cover: m.cover })),
+      ...BOOKS.map(b => ({ title: b.title, meta: b.author, url: b.url, cover: b.cover })),
+      ...TV.map(t => ({ title: t.title, meta: t.year, url: t.url, cover: t.cover }))
+    ];
+
+    intoGrid.innerHTML = items.map(i => `
+      <a class="into-card" href="${i.url}" target="_blank" rel="noopener">
+        <img class="into-cover" src="${i.cover}" alt="" loading="lazy" />
+        <div>
+          <div class="into-title">${i.title}</div>
+          <div class="into-meta">${i.meta}</div>
         </div>
-      </div>
-    </section>
+      </a>
+    `).join('');
+  }
+}
 
-    <section id="movement" class="section-soft">
-      <div class="container">
-        <div class="section-content">
-          <div class="movement-header">
-            <div>
-              <div class="section-label">Movement</div>
-              <h2 class="section-title">Staying active</h2>
-            </div>
-            <div class="movement-stats">
-              <div class="movement-stat"><span class="movement-stat-value" id="totalSteps" data-target="599117">0</span><span class="movement-stat-label">Steps</span></div>
-              <div class="movement-stat"><span class="movement-stat-value" id="totalKm" data-target="447">0</span><span class="movement-stat-label">Km</span></div>
-              <div class="movement-stat"><span class="movement-stat-value" id="dailyAvg" data-target="11427">0</span><span class="movement-stat-label">Daily avg</span></div>
-            </div>
-          </div>
-          <div class="month-cards" id="monthCards"></div>
-        </div>
-      </div>
-    </section>
+function initHeaderAnimations() {
+  document.querySelector('.header-nav')?.classList.add('animate-in');
+}
 
-    <section id="travels">
-      <div class="container">
-        <div class="section-content">
-          <div class="section-header">
-            <div>
-              <div class="section-label">Travels</div>
-              <h2 class="section-title">Places I've been</h2>
-              <p class="section-subtitle">A small map-in-my-head. Photos, tiny stories, and what I remember most.</p>
-            </div>
-            <a href="/travels.html" class="section-link">View all<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
-          </div>
-          <div class="travels-grid" id="travelGrid"></div>
-        </div>
-      </div>
-    </section>
+function initHeroAnimations() {
+  document.querySelector('.hero-location')?.classList.add('animate-in');
+  document.querySelector('.hero-title')?.classList.add('animate-in');
+  document.querySelector('.hero-text')?.classList.add('animate-in');
+  document.querySelector('.hero-ctas')?.classList.add('animate-in');
+  document.querySelector('.hero-visual')?.classList.add('animate-in');
+}
 
-    <section id="into" class="section-soft">
-      <div class="container">
-        <div class="section-content">
-          <div class="section-header">
-            <div>
-              <div class="section-label">Currently</div>
-              <h2 class="section-title">What I'm into</h2>
-              <p class="section-subtitle">A few things on repeat lately. I update this whenever I remember.</p>
-            </div>
-          </div>
-          <div class="into-grid">
-            <div class="into-card"><div class="into-card-header">Music</div><div id="musicList"></div></div>
-            <div class="into-card"><div class="into-card-header">Reading</div><div id="bookList"></div></div>
-            <div class="into-card"><div class="into-card-header">Watching</div><div id="tvList"></div></div>
-          </div>
-        </div>
-      </div>
-    </section>
+function initSectionReveal() {
+  const sections = document.querySelectorAll('section');
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) entry.target.classList.add('in-view');
+    });
+  }, { threshold: 0.15 });
 
-    <section class="contact-section" id="contact">
-      <div class="container">
-        <div class="contact-inner">
-          <div class="contact-label">Get in touch</div>
-          <h2 class="contact-title">Have something interesting? Let's talk.</h2>
-          <p class="contact-text">Whether you're building something cool, want to chat product, or just like street photography.</p>
-          <div class="contact-ctas">
-            <a href="/contact.html" class="btn btn-primary" data-magnetic><span class="btn-inner">Send a message<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg></span></a>
-            <a href="https://x.com/ererezino" target="_blank" rel="noopener noreferrer" class="btn" data-magnetic><span class="btn-inner">X</span></a>
-            <a href="https://www.linkedin.com/in/ererezino/" target="_blank" rel="noopener noreferrer" class="btn" data-magnetic><span class="btn-inner">LinkedIn</span></a>
-          </div>
-        </div>
-      </div>
-    </section>
-  </main>
+  sections.forEach(s => obs.observe(s));
+}
 
-  <footer>
-    <div class="container footer-inner">
-      <div class="footer-left">© 2026 Zino Asamaige</div>
-      <div class="footer-status"><span class="location-dot"></span>Lagos, Nigeria</div>
-    </div>
-  </footer>
+function initMovement() {
+  const stepsEl = document.getElementById('stepsCounter');
+  const runsEl = document.getElementById('runsCounter');
+  const swimsEl = document.getElementById('swimsCounter');
+  if (!stepsEl || !runsEl || !swimsEl) return;
 
-  <script src="script.js"></script>
-</body>
-</html>
+  // sample values; change to your real ones
+  const steps = 401117;
+  const runs = 26;
+  const swims = 12;
+
+  animateCounter(stepsEl, steps);
+  animateCounter(runsEl, runs, 1400);
+  animateCounter(swimsEl, swims, 1400);
+
+  const stepsBar = document.getElementById('stepsBar');
+  const runsBar = document.getElementById('runsBar');
+  const swimsBar = document.getElementById('swimsBar');
+
+  // keep your existing ratios; adjust as you like
+  if (stepsBar) stepsBar.style.width = '82%';
+  if (runsBar) runsBar.style.width = '55%';
+  if (swimsBar) swimsBar.style.width = '48%';
+
+  // beam
+  const beam = document.getElementById('beamProgress');
+  if (beam && !prefersReducedMotion()) {
+    beam.style.width = '92%';
+    // subtle oscillation between points
+    let dir = 1;
+    let pct = 10;
+    setInterval(() => {
+      pct += dir * 1.2;
+      if (pct >= 92) dir = -1;
+      if (pct <= 10) dir = 1;
+      beam.style.width = `${pct}%`;
+    }, 55);
+  }
+}
+
+function initMagnetics() {
+  document.querySelectorAll('[data-magnetic]').forEach(makeMagnetic);
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  initTheme();
+  initCursor();
+  initMobileMenu();
+  initMagnetics();
+  renderContent();
+  initSectionReveal();
+  initHeaderAnimations();
+  initHeroAnimations();
+  initMovement();
+  bindCursorHovers();
+});
