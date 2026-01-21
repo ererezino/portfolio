@@ -273,6 +273,124 @@
     .stat-value { font-family: 'Instrument Serif', serif; font-size: clamp(56px, 10vw, 84px); font-weight: 400; letter-spacing: -0.03em; line-height: 1; margin-bottom: 16px; }
     .stat-label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.2em; color: var(--text-tertiary); }
 
+    /* Year Summary Bar */
+    .year-summary {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 24px 32px; margin-bottom: 24px;
+      background: var(--bg-alt); border: 1px solid var(--border);
+    }
+    @media (max-width: 768px) {
+      .year-summary { flex-direction: column; gap: 20px; text-align: center; }
+    }
+    .year-badge {
+      font-size: 11px; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 0.15em; color: var(--green);
+      display: flex; align-items: center; gap: 10px;
+    }
+    .year-badge::before {
+      content: ''; width: 8px; height: 8px; background: var(--green);
+      border-radius: 50%;
+    }
+    .year-summary-stats { display: flex; gap: 40px; }
+    @media (max-width: 768px) { .year-summary-stats { gap: 24px; } }
+    .year-stat { text-align: center; }
+    .year-stat-value {
+      font-family: 'Instrument Serif', serif; font-size: 28px;
+      font-weight: 400; letter-spacing: -0.02em;
+    }
+    .year-stat-label {
+      font-size: 9px; text-transform: uppercase;
+      letter-spacing: 0.15em; color: var(--text-tertiary); margin-left: 8px;
+    }
+
+    /* Month Cards */
+    .month-cards { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; }
+    @media (max-width: 768px) { .month-cards { grid-template-columns: 1fr; } }
+    
+    .month-card {
+      border: 1px solid var(--border); padding: 40px;
+      transition: all var(--transition); position: relative; overflow: hidden;
+    }
+    .month-card:hover { border-color: var(--text-secondary); }
+    .month-card.current { border-color: var(--text); }
+    .month-card.completed { background: var(--bg-alt); }
+    
+    .month-card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; }
+    .month-name { font-family: 'Instrument Serif', serif; font-size: 28px; font-weight: 400; }
+    
+    .month-badge {
+      font-size: 9px; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 0.1em; padding: 8px 16px; border: 1px solid var(--border);
+      color: var(--text-secondary);
+    }
+    .month-badge.now {
+      background: var(--text); border-color: var(--text); color: var(--bg);
+      position: relative; overflow: hidden;
+    }
+    .month-badge.now::after {
+      content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+      animation: shimmer 2s infinite;
+    }
+    @keyframes shimmer { 100% { left: 100%; } }
+    .month-badge.complete { background: var(--green); border-color: var(--green); color: #fff; }
+    
+    .month-steps {
+      font-family: 'Instrument Serif', serif;
+      font-size: clamp(48px, 8vw, 64px); font-weight: 400;
+      letter-spacing: -0.03em; line-height: 1; margin-bottom: 8px;
+    }
+    .month-card.completed .month-steps { color: var(--text-secondary); }
+    
+    .month-goal { font-size: 13px; color: var(--text-tertiary); margin-bottom: 24px; }
+    .month-pct { font-weight: 700; color: var(--text); font-size: 15px; }
+    .month-card.completed .month-pct { color: var(--text-secondary); }
+    
+    /* Progress Bar */
+    .progress-wrapper { position: relative; margin-bottom: 32px; }
+    .progress-track {
+      height: 8px; background: var(--border); border-radius: 4px;
+      overflow: hidden; position: relative;
+    }
+    .progress-fill {
+      height: 100%; background: var(--text); border-radius: 4px;
+      position: relative; transition: width 1.5s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .month-card.current .progress-fill {
+      background: linear-gradient(90deg, var(--text) 0%, var(--violet) 100%);
+    }
+    .month-card.current .progress-track::after {
+      content: ''; position: absolute; inset: 0;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+      animation: progress-shimmer 2s ease-in-out infinite;
+    }
+    @keyframes progress-shimmer {
+      0% { transform: translateX(-100%); }
+      100% { transform: translateX(100%); }
+    }
+    .month-card.completed .progress-fill { background: var(--text-tertiary); opacity: 0.5; }
+    
+    /* Progress indicator dot */
+    .progress-dot {
+      position: absolute; top: 50%; right: 0; transform: translate(50%, -50%);
+      width: 16px; height: 16px; background: var(--text); border-radius: 50%;
+      border: 3px solid var(--bg); box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+      opacity: 0; transition: opacity 0.5s ease 1.2s;
+    }
+    .month-card.current .progress-dot { opacity: 1; animation: pulse-dot 2s ease-in-out infinite; }
+    @keyframes pulse-dot {
+      0%, 100% { transform: translate(50%, -50%) scale(1); box-shadow: 0 2px 8px rgba(0,0,0,0.2); }
+      50% { transform: translate(50%, -50%) scale(1.15); box-shadow: 0 4px 16px rgba(0,0,0,0.3); }
+    }
+    
+    .month-details { display: flex; gap: 48px; }
+    .month-detail-value { font-size: 20px; font-weight: 700; letter-spacing: -0.02em; }
+    .month-card.completed .month-detail-value { color: var(--text-secondary); }
+    .month-detail-label {
+      font-size: 10px; text-transform: uppercase;
+      letter-spacing: 0.12em; color: var(--text-tertiary); margin-top: 6px;
+    }
+
     /* Currently Into */
     .into-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; background: var(--border); }
     @media (max-width: 900px) { .into-grid { grid-template-columns: 1fr; } }
@@ -388,7 +506,7 @@
               <span class="line"><span class="line-inner">best I can,</span></span>
               <span class="line"><span class="line-inner"><em>daily.</em></span></span>
             </h1>
-            <p class="hero-text">Building <a href="https://useaccrue.com/" target="_blank">Accrue</a> with Clinton & Adesuwa. When I'm not working, I'm probably walking somewhere with my camera, playing FIFA, or trying to get back in the pool.</p>
+            <p class="hero-text">Building <a href="https://useaccrue.com/" target="_blank">Accrue</a> with <a href="https://clintonmbah.com/" target="_blank">Clinton</a> & <a href="https://medium.com/@adesuwaomoruyi" target="_blank">Adesuwa</a>. When I'm not working, I'm probably walking somewhere with my camera, playing FIFA, or trying to get back in the pool.</p>
             <div class="hero-ctas">
               <a href="/contact.html" class="btn btn-primary">Say hello <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg></a>
               <a href="/about.html" class="btn">About me <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
@@ -419,14 +537,24 @@
     <section id="movement">
       <div class="container">
         <div class="section-header">
-          <div><div class="section-label">Movement</div><h2 class="section-title">Staying active in 2025</h2></div>
-          <a href="/movement.html" class="section-link">See details <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+          <div><div class="section-label">Movement</div><h2 class="section-title">Staying active</h2></div>
+          <a href="/movement.html" class="section-link">See all months <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
         </div>
-        <div class="movement-stats">
-          <div class="stat-card"><div class="stat-value">2.6M</div><div class="stat-label">Steps walked</div></div>
-          <div class="stat-card"><div class="stat-value">1,980</div><div class="stat-label">Kilometers</div></div>
-          <div class="stat-card"><div class="stat-value">7,072</div><div class="stat-label">Daily average</div></div>
+        
+        <!-- Year Summary -->
+        <div class="year-summary">
+          <div class="year-summary-header">
+            <span class="year-badge">2025 Total</span>
+          </div>
+          <div class="year-summary-stats">
+            <div class="year-stat"><span class="year-stat-value">2.6M</span><span class="year-stat-label">Steps</span></div>
+            <div class="year-stat"><span class="year-stat-value">1,980</span><span class="year-stat-label">Kilometers</span></div>
+            <div class="year-stat"><span class="year-stat-value">7,072</span><span class="year-stat-label">Daily Avg</span></div>
+          </div>
         </div>
+
+        <!-- Month Cards -->
+        <div class="month-cards" id="monthCards"></div>
       </div>
     </section>
 
@@ -479,6 +607,14 @@
     const BOOKS = [{ title: "Harry Potter and the Sorcerer's Stone", author: "J.K. Rowling", url: "https://www.goodreads.com/book/show/42844155", cover: "https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1598823299i/42844155.jpg" }];
     const TV = [{ title: "Elsbeth", year: "2024", url: "https://www.imdb.com/title/tt26591110/", cover: "https://m.media-amazon.com/images/M/MV5BOTcwYzc0M2QtM2NiYy00MWU1LWEwYmYtZGYzYWM4MTZjZmU1XkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg" }];
 
+    // Movement data
+    const MONTHLY_GOAL = 310000;
+    const MONTHS = [
+      { month: "January", year: 2026, isCurrent: true, steps: 198000, km: 140, avgStepsPerDay: 9914 },
+      { month: "December", year: 2025, isCurrent: false, steps: 401117, km: 307, avgStepsPerDay: 12939 }
+    ];
+    const fmt = n => n >= 1e6 ? (n/1e6).toFixed(1)+'M' : n.toLocaleString();
+
     function setTheme(dark) {
       document.documentElement.setAttribute('data-theme', dark ? 'dark' : 'light');
       localStorage.setItem('theme', dark ? 'dark' : 'light');
@@ -519,6 +655,51 @@
     document.getElementById('musicList').innerHTML = MUSIC.map(m => '<a href="'+m.url+'" target="_blank" rel="noopener" class="into-item"><div class="into-cover"><img src="'+m.cover+'" alt="" loading="lazy"></div><div class="into-text"><div class="into-title">'+m.title+'</div><div class="into-meta">'+m.artist+'</div></div></a>').join('');
     document.getElementById('bookList').innerHTML = BOOKS.map(b => '<a href="'+b.url+'" target="_blank" rel="noopener" class="into-item"><div class="into-cover book"><img src="'+b.cover+'" alt="" loading="lazy"></div><div class="into-text"><div class="into-title">'+b.title+'</div><div class="into-meta">'+b.author+'</div></div></a>').join('');
     document.getElementById('tvList').innerHTML = TV.map(t => '<a href="'+t.url+'" target="_blank" rel="noopener" class="into-item"><div class="into-cover"><img src="'+t.cover+'" alt="" loading="lazy"></div><div class="into-text"><div class="into-title">'+t.title+'</div><div class="into-meta">'+t.year+'</div></div></a>').join('');
+
+    // Render month cards with animated progress bars
+    document.getElementById('monthCards').innerHTML = MONTHS.map(m => {
+      const pct = (m.steps / MONTHLY_GOAL) * 100;
+      const displayPct = Math.round(pct);
+      const barWidth = Math.min(pct, 100);
+      const met = m.steps >= MONTHLY_GOAL;
+      const stateClass = m.isCurrent ? 'current' : (met ? 'completed' : '');
+      const badgeClass = m.isCurrent ? 'now' : (met ? 'complete' : '');
+      const badgeText = m.isCurrent ? 'In Progress' : (met ? 'Complete' : '');
+      
+      return '<div class="month-card '+stateClass+'">' +
+        '<div class="month-card-header">' +
+          '<div class="month-name">'+m.month+' '+m.year+'</div>' +
+          '<span class="month-badge '+badgeClass+'">'+badgeText+'</span>' +
+        '</div>' +
+        '<div class="month-steps">'+fmt(m.steps)+'</div>' +
+        '<div class="month-goal"><span class="month-pct">'+displayPct+'%</span> of 310k goal</div>' +
+        '<div class="progress-wrapper">' +
+          '<div class="progress-track"><div class="progress-fill" data-width="'+barWidth+'"></div></div>' +
+          (m.isCurrent ? '<div class="progress-dot"></div>' : '') +
+        '</div>' +
+        '<div class="month-details">' +
+          '<div><div class="month-detail-value">'+m.km+' km</div><div class="month-detail-label">Distance</div></div>' +
+          '<div><div class="month-detail-value">'+fmt(m.avgStepsPerDay)+'</div><div class="month-detail-label">Daily Avg</div></div>' +
+        '</div>' +
+      '</div>';
+    }).join('');
+
+    // Animate progress bars when they come into view
+    const progressObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const fills = entry.target.querySelectorAll('.progress-fill');
+          fills.forEach(fill => {
+            const width = fill.getAttribute('data-width');
+            setTimeout(() => { fill.style.width = width + '%'; }, 200);
+          });
+          progressObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.3 });
+    
+    const monthCardsEl = document.getElementById('monthCards');
+    if (monthCardsEl) progressObserver.observe(monthCardsEl);
 
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => { if (entry.isIntersecting) { entry.target.style.opacity = '1'; entry.target.style.transform = 'translateY(0)'; } });
