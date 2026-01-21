@@ -15,35 +15,48 @@
 
   <link rel="icon" type="image/png" href="/assets/logo.png">
   <link rel="apple-touch-icon" href="/assets/logo.png">
-  <meta name="theme-color" content="#FFFFFF">
+  <meta name="theme-color" content="#FAFAF8">
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,wght@0,400;0,500;1,400&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet" />
 
   <style>
     :root {
-      --bg: #FFFFFF;
-      --bg-alt: #F7F7F7;
-      --text: #0A0A0A;
-      --text-secondary: #555555;
-      --text-tertiary: #888888;
-      --border: #E8E8E8;
-      --accent: #0A0A0A;
-      --accent-soft: rgba(10, 10, 10, 0.06);
-      --container: 800px;
+      --bg: #FAFAF8;
+      --bg-elevated: #FFFFFF;
+      --bg-card: #FFFFFF;
+      --text: #1A1A1A;
+      --text-secondary: #5C5C5C;
+      --text-tertiary: #8A8A8A;
+      --accent: #E07A5F;
+      --accent-soft: rgba(224, 122, 95, 0.12);
+      --accent-hover: #D4694F;
+      --border: rgba(26, 26, 26, 0.08);
+      --border-hover: rgba(26, 26, 26, 0.15);
+      --shadow: 0 1px 3px rgba(0,0,0,0.04), 0 4px 12px rgba(0,0,0,0.03);
+      --shadow-hover: 0 2px 8px rgba(0,0,0,0.06), 0 8px 24px rgba(0,0,0,0.06);
+      --radius: 16px;
+      --radius-sm: 10px;
+      --container: 720px;
+      --pad: 24px;
       --transition: 0.2s ease;
     }
 
     [data-theme="dark"] {
-      --bg: #0A0A0A;
-      --bg-alt: #111111;
-      --text: #FFFFFF;
-      --text-secondary: #AAAAAA;
+      --bg: #0F0F0F;
+      --bg-elevated: #1A1A1A;
+      --bg-card: #1A1A1A;
+      --text: #FAFAFA;
+      --text-secondary: #A0A0A0;
       --text-tertiary: #666666;
-      --border: #222222;
-      --accent: #FFFFFF;
-      --accent-soft: rgba(255, 255, 255, 0.08);
+      --accent: #E8A090;
+      --accent-soft: rgba(232, 160, 144, 0.12);
+      --accent-hover: #F0B0A0;
+      --border: rgba(255, 255, 255, 0.08);
+      --border-hover: rgba(255, 255, 255, 0.15);
+      --shadow: 0 1px 3px rgba(0,0,0,0.2), 0 4px 12px rgba(0,0,0,0.15);
+      --shadow-hover: 0 2px 8px rgba(0,0,0,0.25), 0 8px 24px rgba(0,0,0,0.2);
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -52,9 +65,9 @@
     body {
       background: var(--bg);
       color: var(--text);
-      font-family: 'Space Mono', monospace;
-      font-size: 14px;
-      line-height: 1.7;
+      font-family: 'Outfit', -apple-system, system-ui, sans-serif;
+      font-weight: 400;
+      line-height: 1.65;
       -webkit-font-smoothing: antialiased;
       transition: background var(--transition), color var(--transition);
     }
@@ -62,144 +75,141 @@
     a { color: inherit; text-decoration: none; }
     img { display: block; max-width: 100%; }
 
-    .container { 
-      max-width: var(--container); 
-      margin: 0 auto; 
-      padding: 0 40px; 
-    }
-    @media (max-width: 768px) {
-      .container { padding: 0 20px; }
-    }
+    .container { max-width: var(--container); margin: 0 auto; padding: 0 var(--pad); }
 
-    /* Header */
+    /* ===== Header ===== */
     header {
-      position: fixed;
+      position: sticky;
       top: 0;
-      left: 0;
-      right: 0;
       z-index: 100;
-      padding: 20px 0;
       background: var(--bg);
       border-bottom: 1px solid var(--border);
       transition: background var(--transition);
     }
 
-    .header-inner {
+    .head {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      max-width: var(--container);
-      margin: 0 auto;
-      padding: 0 40px;
-    }
-    @media (max-width: 768px) {
-      .header-inner { padding: 0 20px; }
+      gap: 16px;
+      padding: 16px 0;
     }
 
-    .logo {
+    .brand {
       display: flex;
       align-items: center;
       gap: 12px;
-      font-size: 15px;
-      font-weight: 700;
-      letter-spacing: -0.02em;
+      transition: opacity var(--transition);
     }
+    .brand:hover { opacity: 0.7; }
 
-    .logo-img {
-      width: 32px;
-      height: 32px;
+    .logo {
+      width: 40px;
+      height: 40px;
       border-radius: 50%;
-      object-fit: cover;
+      overflow: hidden;
       border: 1px solid var(--border);
+      background: var(--bg-card);
+    }
+    .logo img { width: 100%; height: 100%; object-fit: cover; }
+
+    .brandtext strong {
+      font-weight: 500;
+      font-size: 15px;
+      letter-spacing: -0.01em;
     }
 
-    .header-nav {
+    .nav-row {
       display: flex;
       align-items: center;
-      gap: 20px;
+      gap: 8px;
     }
 
-    .back-btn {
+    .btn {
       display: inline-flex;
       align-items: center;
       gap: 6px;
-      font-size: 12px;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      color: var(--text-secondary);
       padding: 8px 14px;
+      border-radius: 999px;
+      font-size: 14px;
+      font-weight: 500;
       border: 1px solid var(--border);
-      transition: all var(--transition);
-    }
-    .back-btn:hover {
+      background: var(--bg-card);
       color: var(--text);
-      border-color: var(--text-secondary);
+      transition: all var(--transition);
+      cursor: pointer;
     }
-    .back-btn svg { width: 14px; height: 14px; }
+    .btn:hover {
+      border-color: var(--border-hover);
+      box-shadow: var(--shadow);
+    }
 
-    .theme-btn {
-      width: 32px;
-      height: 32px;
+    .theme-toggle {
+      width: 40px;
+      height: 40px;
       border: 1px solid var(--border);
-      background: transparent;
+      background: var(--bg-card);
+      border-radius: var(--radius-sm);
       display: flex;
       align-items: center;
       justify-content: center;
       cursor: pointer;
       transition: border-color var(--transition);
     }
-    .theme-btn:hover { border-color: var(--text-secondary); }
-    .theme-btn svg { width: 14px; height: 14px; color: var(--text-secondary); }
-    .theme-btn .sun { display: none; }
-    [data-theme="dark"] .theme-btn .sun { display: block; }
-    [data-theme="dark"] .theme-btn .moon { display: none; }
+    .theme-toggle:hover { border-color: var(--border-hover); }
+    .theme-toggle svg { width: 18px; height: 18px; color: var(--text-secondary); }
+    .theme-toggle .sun { display: none; }
+    .theme-toggle .moon { display: block; }
+    [data-theme="dark"] .theme-toggle .sun { display: block; }
+    [data-theme="dark"] .theme-toggle .moon { display: none; }
 
-    /* Page */
-    main { padding-top: 100px; }
+    /* ===== Main ===== */
+    main { padding: 48px 0 80px; }
 
     .page-header {
-      padding: 48px 0;
-      border-bottom: 1px solid var(--border);
+      margin-bottom: 48px;
     }
 
-    .page-title {
-      font-size: clamp(32px, 5vw, 48px);
-      font-weight: 700;
-      letter-spacing: -0.03em;
+    h1 {
+      font-family: 'Newsreader', Georgia, serif;
+      font-weight: 400;
+      font-size: 36px;
+      letter-spacing: -0.02em;
       margin-bottom: 12px;
     }
 
     .page-lead {
-      font-size: 14px;
       color: var(--text-secondary);
-      line-height: 1.7;
+      font-size: 16px;
     }
 
-    /* Articles List */
-    .articles-section {
-      padding: 48px 0;
-    }
-
+    /* ===== Articles List ===== */
     .articles-list {
       display: flex;
       flex-direction: column;
+      gap: 24px;
     }
 
     .article-card {
       display: grid;
-      grid-template-columns: 1fr;
+      grid-template-columns: 1fr auto;
       gap: 20px;
-      padding: 32px 0;
-      border-bottom: 1px solid var(--border);
-      transition: opacity var(--transition);
+      padding: 24px;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      transition: border-color var(--transition), box-shadow var(--transition), transform var(--transition);
     }
-    .article-card:first-child { padding-top: 0; }
-    .article-card:hover { opacity: 0.8; }
+    .article-card:hover {
+      border-color: var(--border-hover);
+      box-shadow: var(--shadow-hover);
+      transform: translateY(-2px);
+    }
 
     .article-card.has-thumbnail {
-      grid-template-columns: 1fr 160px;
-      align-items: start;
+      grid-template-columns: 1fr 140px;
     }
+
     @media (max-width: 600px) {
       .article-card.has-thumbnail {
         grid-template-columns: 1fr;
@@ -214,68 +224,74 @@
     .article-meta {
       display: flex;
       align-items: center;
-      gap: 16px;
-      margin-bottom: 12px;
-      font-size: 11px;
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
+      gap: 12px;
+      margin-bottom: 10px;
+      font-size: 13px;
       color: var(--text-tertiary);
     }
 
+    .article-date {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .article-read-time {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
     .article-title {
-      font-size: 20px;
-      font-weight: 700;
-      letter-spacing: -0.02em;
-      margin-bottom: 12px;
+      font-family: 'Newsreader', Georgia, serif;
+      font-weight: 400;
+      font-size: 22px;
+      letter-spacing: -0.01em;
+      margin-bottom: 8px;
       line-height: 1.3;
     }
 
     .article-excerpt {
       color: var(--text-secondary);
-      font-size: 14px;
-      line-height: 1.7;
-      margin-bottom: 16px;
+      font-size: 15px;
+      line-height: 1.6;
+      margin-bottom: 12px;
     }
 
     .article-tags {
       display: flex;
       flex-wrap: wrap;
-      gap: 8px;
+      gap: 6px;
     }
 
     .tag {
-      font-size: 10px;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      padding: 6px 10px;
+      font-size: 12px;
+      padding: 4px 10px;
       background: var(--accent-soft);
-      color: var(--text-secondary);
-      border: 1px solid var(--border);
+      color: var(--accent);
+      border-radius: 999px;
     }
 
     .article-thumbnail {
-      width: 160px;
-      height: 120px;
+      width: 140px;
+      height: 100px;
+      border-radius: var(--radius-sm);
       overflow: hidden;
-      flex-shrink: 0;
       border: 1px solid var(--border);
+      flex-shrink: 0;
     }
     .article-thumbnail img {
       width: 100%;
       height: 100%;
       object-fit: cover;
-      transition: transform 0.4s ease;
-    }
-    .article-card:hover .article-thumbnail img {
-      transform: scale(1.05);
     }
 
     .article-author {
       display: flex;
       align-items: center;
-      gap: 10px;
-      margin-top: 20px;
-      padding-top: 20px;
+      gap: 8px;
+      margin-top: 16px;
+      padding-top: 16px;
       border-top: 1px solid var(--border);
     }
 
@@ -293,107 +309,88 @@
     }
 
     .author-name {
-      font-size: 12px;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
+      font-size: 13px;
+      font-weight: 500;
     }
 
     .external-badge {
-      font-size: 10px;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
+      font-size: 12px;
       color: var(--text-tertiary);
       margin-left: auto;
     }
 
-    /* Empty State */
+    /* ===== Empty State ===== */
     .empty-state {
       text-align: center;
-      padding: 80px 20px;
-    }
-
-    .empty-state-icon {
-      width: 48px;
-      height: 48px;
-      margin: 0 auto 24px;
+      padding: 60px 20px;
       color: var(--text-tertiary);
     }
-
-    .empty-state-title {
-      font-size: 18px;
-      font-weight: 700;
-      margin-bottom: 8px;
+    .empty-state p {
+      font-size: 15px;
     }
 
-    .empty-state-text {
-      font-size: 14px;
-      color: var(--text-tertiary);
-    }
-
-    /* Footer */
+    /* ===== Footer ===== */
     footer {
-      padding: 32px 0;
+      padding: 24px 0;
       border-top: 1px solid var(--border);
       margin-top: 48px;
     }
 
-    .footer-inner {
+    .foot {
       display: flex;
       justify-content: space-between;
-      font-size: 11px;
+      gap: 16px;
+      font-size: 13px;
       color: var(--text-tertiary);
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
     }
   </style>
 </head>
 
 <body>
   <header>
-    <div class="header-inner">
-      <a href="/" class="logo">
-        <img src="/assets/logo.png" alt="" class="logo-img">
-        Zino Asamaige
+    <div class="container head">
+      <a class="brand" href="/" aria-label="Home">
+        <span class="logo"><img src="/assets/logo.png" alt=""></span>
+        <div class="brandtext">
+          <strong>Zino Asamaige</strong>
+        </div>
       </a>
-      <nav class="header-nav">
-        <a href="/" class="back-btn">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
-          Home
-        </a>
-        <button class="theme-btn" id="themeToggle" aria-label="Toggle theme">
-          <svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
-          <svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+
+      <div class="nav-row">
+        <a class="btn" href="/">← Home</a>
+        <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+          <svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+          </svg>
+          <svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
+          </svg>
         </button>
-      </nav>
+      </div>
     </div>
   </header>
 
   <main>
     <div class="container">
       <div class="page-header">
-        <h1 class="page-title">Articles</h1>
+        <h1>Articles</h1>
         <p class="page-lead">Thoughts on building, creating, and living.</p>
       </div>
 
-      <section class="articles-section">
-        <div class="articles-list" id="articlesList"></div>
-      </section>
+      <div class="articles-list" id="articlesList"></div>
     </div>
   </main>
 
   <footer>
-    <div class="container footer-inner">
+    <div class="container foot">
       <span>© <span id="year"></span> Zino Asamaige</span>
       <span>Lagos, Nigeria</span>
     </div>
   </footer>
 
-  <!-- External articles data -->
   <script src="/articles/assets/articles.js"></script>
-  
   <script>
-    // Theme
+    // ========= THEME TOGGLE =========
     const themeToggle = document.getElementById('themeToggle');
     const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
     const savedTheme = localStorage.getItem('theme');
@@ -414,37 +411,25 @@
       setTheme(!isDark);
     });
 
-    // Utilities
+    // ========= UTILITIES =========
     const esc = s => String(s || '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 
     function formatDate(dateStr) {
       const date = new Date(dateStr);
       return date.toLocaleDateString('en-US', { 
         year: 'numeric', 
-        month: 'short', 
+        month: 'long', 
         day: 'numeric' 
-      }).toUpperCase();
+      });
     }
 
-    // Render Articles
+    // ========= RENDER ARTICLES =========
     function renderArticles() {
       const list = document.getElementById('articlesList');
       
-      // Check if ARTICLES is defined (from external articles.js)
+      // Check if ARTICLES exists and has items
       if (typeof ARTICLES === 'undefined' || !ARTICLES || ARTICLES.length === 0) {
-        list.innerHTML = `
-          <div class="empty-state">
-            <svg class="empty-state-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
-              <polyline points="14 2 14 8 20 8"/>
-              <line x1="16" y1="13" x2="8" y2="13"/>
-              <line x1="16" y1="17" x2="8" y2="17"/>
-              <polyline points="10 9 9 9 8 9"/>
-            </svg>
-            <h3 class="empty-state-title">Coming soon</h3>
-            <p class="empty-state-text">I'm working on some articles. Check back later.</p>
-          </div>
-        `;
+        list.innerHTML = '<div class="empty-state"><p>No articles yet. Check back soon!</p></div>';
         return;
       }
 
@@ -452,14 +437,16 @@
       const sorted = [...ARTICLES].sort((a, b) => new Date(b.date) - new Date(a.date));
 
       list.innerHTML = sorted.map(article => {
+        // Use externalUrl if available, otherwise internal path
         const articleUrl = article.externalUrl || `/articles/${esc(article.slug)}/`;
         const isExternal = !!article.externalUrl;
+        
         return `
           <a href="${articleUrl}" ${isExternal ? 'target="_blank" rel="noopener"' : ''} class="article-card ${article.thumbnail ? 'has-thumbnail' : ''}">
             <div class="article-content">
               <div class="article-meta">
-                <span>${formatDate(article.date)}</span>
-                ${article.readTime ? `<span>${esc(article.readTime)}</span>` : ''}
+                <span class="article-date">📅 ${formatDate(article.date)}</span>
+                ${article.readTime ? `<span class="article-read-time">⏱ ${esc(article.readTime)}</span>` : ''}
               </div>
               <h2 class="article-title">${esc(article.title)}</h2>
               <p class="article-excerpt">${esc(article.excerpt)}</p>
@@ -484,7 +471,7 @@
       }).join('');
     }
 
-    // Init
+    // ========= INIT =========
     document.getElementById('year').textContent = new Date().getFullYear();
     renderArticles();
   </script>
