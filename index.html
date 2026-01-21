@@ -3,49 +3,28 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="view-transition" content="same-origin" />
-
   <title>Zino Asamaige</title>
   <meta name="description" content="Building fintech, shooting street, staying moving. Based in Lagos." />
-
   <meta property="og:title" content="Zino Asamaige" />
   <meta property="og:description" content="Building fintech, shooting street, staying moving. Based in Lagos." />
   <meta property="og:type" content="website" />
-  <meta property="og:url" content="/" />
-  <meta property="og:image" content="/assets/og.jpg" />
-  <meta name="twitter:card" content="summary_large_image" />
-
   <link rel="icon" type="image/png" href="/assets/logo.png" />
-
-  <!-- Preload critical fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Instrument+Serif:ital@0;1&display=swap" />
   <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet" />
-
-  <!-- Styles -->
   <link rel="stylesheet" href="styles.css" />
-
-  <!-- GSAP for animations -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
 </head>
-
 <body>
-  <!-- Custom Cursor -->
   <div class="cursor" id="cursor"></div>
   <div class="cursor-label" id="cursorLabel"></div>
-
   <a class="skip-link" href="#main">Skip to content</a>
 
-  <!-- Header -->
   <header id="header">
     <div class="header-inner">
       <a href="/" class="logo" data-magnetic>
         <img src="/assets/logo.png" alt="" class="logo-img" width="36" height="36" />
         Zino Asamaige
       </a>
-
       <nav class="header-nav" aria-label="Primary navigation">
         <a href="/about.html" class="nav-link">About</a>
         <a href="/photos.html" class="nav-link">Photos</a>
@@ -53,252 +32,153 @@
         <a href="/movement.html" class="nav-link">Movement</a>
         <a href="/travels.html" class="nav-link">Travels</a>
         <a href="/contact.html" class="nav-link">Contact</a>
-
         <button class="theme-btn" id="themeToggle" aria-label="Toggle theme" data-magnetic>
-          <svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
-          </svg>
-          <svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-            <circle cx="12" cy="12" r="5"/>
-            <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
-          </svg>
+          <svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+          <svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
         </button>
       </nav>
-
       <div class="mobile-controls">
         <button class="theme-btn" id="mobileThemeToggle" aria-label="Toggle theme">
-          <svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
-          </svg>
-          <svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-            <circle cx="12" cy="12" r="5"/>
-            <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
-          </svg>
+          <svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+          <svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
         </button>
-
-        <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Open menu">
-          <span></span><span></span><span></span>
-        </button>
+        <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Open menu"><span></span><span></span><span></span></button>
       </div>
     </div>
   </header>
 
-  <!-- Mobile Menu -->
   <div class="mobile-menu" id="mobileMenu" aria-hidden="true">
     <div class="mobile-menu-header">
-      <span class="logo">
-        <img src="/assets/logo.png" alt="" class="logo-img" width="36" height="36" />
-        Zino
-      </span>
+      <span class="logo"><img src="/assets/logo.png" alt="" class="logo-img" width="36" height="36" />Zino</span>
       <button class="mobile-menu-close" id="mobileMenuClose" aria-label="Close menu">&times;</button>
     </div>
-    <nav aria-label="Mobile navigation">
-      <a href="/about.html">About</a>
-      <a href="/photos.html">Photos</a>
-      <a href="/articles.html">Articles</a>
-      <a href="/movement.html">Movement</a>
-      <a href="/travels.html">Travels</a>
-      <a href="/contact.html">Contact</a>
-    </nav>
+    <nav><a href="/about.html">About</a><a href="/photos.html">Photos</a><a href="/articles.html">Articles</a><a href="/movement.html">Movement</a><a href="/travels.html">Travels</a><a href="/contact.html">Contact</a></nav>
   </div>
 
-  <!-- Lightbox -->
-  <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-hidden="true" aria-label="Photo viewer">
-    <div class="lightbox-panel" tabindex="-1">
+  <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-hidden="true">
+    <div class="lightbox-panel">
       <button class="lightbox-close" type="button" aria-label="Close">&times;</button>
-      <button class="lightbox-nav lightbox-prev" type="button" aria-label="Previous photo">&#8249;</button>
-      <button class="lightbox-nav lightbox-next" type="button" aria-label="Next photo">&#8250;</button>
+      <button class="lightbox-nav lightbox-prev" type="button" aria-label="Previous">&#8249;</button>
+      <button class="lightbox-nav lightbox-next" type="button" aria-label="Next">&#8250;</button>
       <img src="" alt="" id="lightboxImg" />
       <div class="lightbox-caption" id="lightboxCaption"></div>
     </div>
   </div>
 
-  <!-- Main Content -->
   <main id="main">
-    <!-- Hero Section -->
-    <section class="hero" aria-label="Introduction">
+    <section class="hero">
       <div class="container">
         <div class="hero-grid">
           <div class="hero-content">
-            <div class="hero-location">
-              <span class="location-dot"></span>
-              Lagos, Nigeria
-            </div>
-
+            <div class="hero-location"><span class="location-dot"></span>Lagos, Nigeria</div>
             <h1 class="hero-title">
               <span class="line"><span class="line-inner">Building fintech,</span></span>
               <span class="line"><span class="line-inner">shooting street,</span></span>
               <span class="line"><span class="line-inner"><em>staying moving.</em></span></span>
             </h1>
-
             <p class="hero-text">
               I'm building <a href="https://useaccrue.com/" target="_blank" rel="noopener noreferrer">Accrue</a> with
               <a href="https://clintonmbah.com/" target="_blank" rel="noopener noreferrer">Clinton</a> and
               <a href="https://medium.com/@adesuwaomoruyi" target="_blank" rel="noopener noreferrer">Adesuwa</a>.
               Outside work, I'm usually walking with a camera, playing FIFA, or trying to get back in the pool.
             </p>
-
             <div class="hero-ctas">
-              <a href="/contact.html" class="btn btn-primary" data-magnetic>
-                <span class="btn-inner">
-                  Say hello
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg>
-                </span>
-              </a>
-              <a href="/about.html" class="btn" data-magnetic>
-                <span class="btn-inner">
-                  About me
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-                </span>
-              </a>
+              <a href="/contact.html" class="btn btn-primary" data-magnetic><span class="btn-inner">Say hello<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg></span></a>
+              <a href="/about.html" class="btn" data-magnetic><span class="btn-inner">About me<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span></a>
             </div>
           </div>
-
-          <div class="hero-visual" aria-label="Featured photos" data-parallax="0.05">
-            <div class="photo-stack" id="heroPhotoStack"></div>
+          <div class="hero-visual">
+            <div class="photo-gallery" id="heroPhotoStack"></div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- Photos Section -->
     <section id="photos" class="section-soft">
       <div class="container">
-        <div class="section-header">
-          <div>
-            <div class="section-label">
-              Photography
-              <span class="photo-source" aria-label="Shot on iPhone">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
-                  <rect x="5" y="2" width="14" height="20" rx="2" ry="2"/>
-                  <line x1="12" y1="18" x2="12.01" y2="18"/>
-                </svg>
-                Shot on iPhone
-              </span>
+        <div class="section-content">
+          <div class="section-header">
+            <div>
+              <div class="section-label">Photography <span class="photo-source"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>Shot on iPhone</span></div>
+              <h2 class="section-title">Through my lens</h2>
             </div>
-            <h2 class="section-title">Through my lens</h2>
+            <a href="/photos.html" class="section-link">View all<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
           </div>
-
-          <a href="/photos.html" class="section-link">
-            View all
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-          </a>
-        </div>
-
-        <div class="photos-masonry" id="photoGrid" aria-label="Photo grid"></div>
-
-        <div class="carousel-hint" aria-hidden="true">
-          <span>Swipe to explore</span>
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          <div class="photos-grid" id="photoGrid"></div>
         </div>
       </div>
     </section>
 
-    <!-- Writing Section -->
     <section id="writing">
       <div class="container">
-        <div class="section-header">
-          <div>
-            <div class="section-label">Writing</div>
-            <h2 class="section-title">A few notes</h2>
-            <p class="section-subtitle">Short things I'm thinking about. Sometimes practical, sometimes just me trying to make sense of stuff.</p>
+        <div class="section-content">
+          <div class="section-header">
+            <div>
+              <div class="section-label">Writing</div>
+              <h2 class="section-title">A few notes</h2>
+              <p class="section-subtitle">Short things I'm thinking about. Sometimes practical, sometimes just me trying to make sense of stuff.</p>
+            </div>
+            <a href="/articles.html" class="section-link">View all<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
           </div>
-          <a href="/articles.html" class="section-link">
-            View all
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-          </a>
+          <div class="writing-grid" id="articleGrid"></div>
         </div>
-
-        <div class="grid-2" id="articleGrid"></div>
       </div>
     </section>
 
-    <!-- Movement Section -->
     <section id="movement" class="section-soft">
       <div class="container">
-        <div class="section-header">
-          <div>
-            <div class="section-label">Movement</div>
-            <h2 class="section-title">Staying active</h2>
+        <div class="section-content">
+          <div class="movement-header">
+            <div>
+              <div class="section-label">Movement</div>
+              <h2 class="section-title">Staying active</h2>
+            </div>
+            <div class="movement-stats">
+              <div class="movement-stat"><span class="movement-stat-value" id="totalSteps" data-target="599117">0</span><span class="movement-stat-label">Steps</span></div>
+              <div class="movement-stat"><span class="movement-stat-value" id="totalKm" data-target="447">0</span><span class="movement-stat-label">Km</span></div>
+              <div class="movement-stat"><span class="movement-stat-value" id="dailyAvg" data-target="11427">0</span><span class="movement-stat-label">Daily avg</span></div>
+            </div>
           </div>
-          <a href="/movement.html" class="section-link">
-            See all months
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-          </a>
+          <div class="month-cards" id="monthCards"></div>
         </div>
-
-        <div class="year-summary">
-          <div class="year-summary-header">
-            <span class="year-badge" id="yearLabel">2025 Summary</span>
-          </div>
-          <div class="year-summary-stats" aria-label="Movement totals">
-            <div class="year-stat">
-              <span class="year-stat-value" id="totalSteps" data-target="599117">0</span>
-              <span class="year-stat-label">Steps</span>
-            </div>
-            <div class="year-stat">
-              <span class="year-stat-value" id="totalKm" data-target="447">0</span>
-              <span class="year-stat-label">Km</span>
-            </div>
-            <div class="year-stat">
-              <span class="year-stat-value" id="dailyAvg" data-target="11426">0</span>
-              <span class="year-stat-label">Daily avg</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="month-cards" id="monthCards"></div>
       </div>
     </section>
 
-    <!-- Travels Section -->
     <section id="travels">
       <div class="container">
-        <div class="section-header">
-          <div>
-            <div class="section-label">Travels</div>
-            <h2 class="section-title">Places I've been</h2>
-            <p class="section-subtitle">A small map-in-my-head. Photos, tiny stories, and what I remember most.</p>
+        <div class="section-content">
+          <div class="section-header">
+            <div>
+              <div class="section-label">Travels</div>
+              <h2 class="section-title">Places I've been</h2>
+              <p class="section-subtitle">A small map-in-my-head. Photos, tiny stories, and what I remember most.</p>
+            </div>
+            <a href="/travels.html" class="section-link">View all<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
           </div>
-          <a href="/travels.html" class="section-link">
-            View all
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-          </a>
+          <div class="travels-grid" id="travelGrid"></div>
         </div>
-
-        <div class="grid-2" id="travelGrid"></div>
       </div>
     </section>
 
-    <!-- Currently Into Section -->
     <section id="into" class="section-soft">
       <div class="container">
-        <div class="section-header">
-          <div>
-            <div class="section-label">Currently</div>
-            <h2 class="section-title">What I'm into</h2>
-            <p class="section-subtitle">A few things on repeat lately. I update this whenever I remember.</p>
+        <div class="section-content">
+          <div class="section-header">
+            <div>
+              <div class="section-label">Currently</div>
+              <h2 class="section-title">What I'm into</h2>
+              <p class="section-subtitle">A few things on repeat lately. I update this whenever I remember.</p>
+            </div>
           </div>
-        </div>
-
-        <div class="into-grid">
-          <div class="into-card">
-            <div class="into-card-header">Music</div>
-            <div id="musicList"></div>
-          </div>
-          <div class="into-card">
-            <div class="into-card-header">Reading</div>
-            <div id="bookList"></div>
-          </div>
-          <div class="into-card">
-            <div class="into-card-header">Watching</div>
-            <div id="tvList"></div>
+          <div class="into-grid">
+            <div class="into-card"><div class="into-card-header">Music</div><div id="musicList"></div></div>
+            <div class="into-card"><div class="into-card-header">Reading</div><div id="bookList"></div></div>
+            <div class="into-card"><div class="into-card-header">Watching</div><div id="tvList"></div></div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- Contact Section -->
     <section class="contact-section" id="contact">
       <div class="container">
         <div class="contact-inner">
@@ -306,36 +186,22 @@
           <h2 class="contact-title">Have something interesting? Let's talk.</h2>
           <p class="contact-text">Whether you're building something cool, want to chat product, or just like street photography.</p>
           <div class="contact-ctas">
-            <a href="/contact.html" class="btn btn-primary" data-magnetic>
-              <span class="btn-inner">
-                Send a message
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg>
-              </span>
-            </a>
-            <a href="https://x.com/ererezino" target="_blank" rel="noopener noreferrer" class="btn" data-magnetic>
-              <span class="btn-inner">X</span>
-            </a>
-            <a href="https://www.linkedin.com/in/ererezino/" target="_blank" rel="noopener noreferrer" class="btn" data-magnetic>
-              <span class="btn-inner">LinkedIn</span>
-            </a>
+            <a href="/contact.html" class="btn btn-primary" data-magnetic><span class="btn-inner">Send a message<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg></span></a>
+            <a href="https://x.com/ererezino" target="_blank" rel="noopener noreferrer" class="btn" data-magnetic><span class="btn-inner">X</span></a>
+            <a href="https://www.linkedin.com/in/ererezino/" target="_blank" rel="noopener noreferrer" class="btn" data-magnetic><span class="btn-inner">LinkedIn</span></a>
           </div>
         </div>
       </div>
     </section>
   </main>
 
-  <!-- Footer -->
   <footer>
     <div class="container footer-inner">
       <div class="footer-left">© 2026 Zino Asamaige</div>
-      <div class="footer-status">
-        <span class="location-dot"></span>
-        Lagos, Nigeria
-      </div>
+      <div class="footer-status"><span class="location-dot"></span>Lagos, Nigeria</div>
     </div>
   </footer>
 
-  <!-- Scripts -->
-  <script src="script.js" defer></script>
+  <script src="script.js"></script>
 </body>
 </html>
