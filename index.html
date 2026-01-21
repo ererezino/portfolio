@@ -118,11 +118,11 @@
     .mobile-menu nav a { font-family: 'Space Mono', monospace; font-size: 32px; font-weight: 700; color: var(--text); text-transform: uppercase; letter-spacing: 0.05em; }
 
     /* Hero */
-    .hero { min-height: 100vh; display: flex; align-items: center; position: relative; overflow: hidden; }
+    .hero { display: flex; align-items: center; position: relative; overflow: hidden; padding: 120px 0 80px; }
     .hero-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; width: 100%; }
     @media (max-width: 1100px) { .hero-grid { grid-template-columns: 1fr; gap: 60px; } }
-    .hero-content { padding: 100px 0 60px; }
-    @media (max-width: 1100px) { .hero-content { padding: 110px 0 40px; text-align: center; } }
+    .hero-content { padding: 0; }
+    @media (max-width: 1100px) { .hero-content { padding: 0; text-align: center; } }
     .hero-location {
       display: inline-flex; align-items: center; gap: 10px;
       font-size: 11px; text-transform: uppercase; letter-spacing: 0.15em;
