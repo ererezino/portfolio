@@ -3,15 +3,12 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Why I'm Building Accrue - Zino Asamaige</title>
-
-  <meta name="description" content="Africa moves a lot of money. The problem is how. Cross-border payments hit $329 billion in 2025, but 75% moves through informal channels.">
+  <title>Articles - Zino Asamaige</title>
+  <meta name="description" content="Thoughts on building, creating, and living. By Zino Asamaige.">
   <meta name="author" content="Zino Asamaige">
-  <meta property="og:title" content="Why I'm Building Accrue">
-  <meta property="og:description" content="Africa moves a lot of money. The problem is how. Here's why we're building the rails for Africa's digital economy.">
-  <meta property="og:type" content="article">
-  <meta property="og:url" content="https://ererezino.com/articles/why-im-building-accrue/">
-  <meta name="twitter:card" content="summary_large_image">
+  <meta property="og:title" content="Articles - Zino Asamaige">
+  <meta property="og:description" content="Thoughts on building, creating, and living.">
+  <meta property="og:type" content="website">
 
   <link rel="icon" type="image/png" href="/assets/logo.png">
   <link rel="apple-touch-icon" href="/assets/logo.png">
@@ -76,16 +73,6 @@
     }
     @media (max-width: 768px) {
       .container { padding: 0 20px; }
-    }
-
-    /* Scroll Progress */
-    .scroll-progress {
-      position: fixed;
-      top: 0;
-      left: 0;
-      height: 2px;
-      background: var(--violet);
-      z-index: 1000;
     }
 
     /* Header */
@@ -246,57 +233,93 @@
       letter-spacing: -0.01em;
     }
 
-    /* Article Layout */
-    .article-header {
+    /* Page Header */
+    .page-header {
       padding: 140px 0 60px;
       border-bottom: 1px solid var(--border);
     }
 
-    .article-back {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      font-size: 11px;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      color: var(--text-tertiary);
-      margin-bottom: 32px;
-      transition: color var(--transition);
-    }
-    .article-back:hover { color: var(--text); }
-    .article-back svg { width: 14px; height: 14px; }
-
-    .article-meta {
-      display: flex;
-      align-items: center;
-      gap: 16px;
-      font-size: 11px;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      color: var(--text-tertiary);
-      margin-bottom: 20px;
-    }
-
-    .article-title {
+    .page-title {
       font-size: clamp(32px, 5vw, 48px);
       font-weight: 700;
-      line-height: 1.15;
       letter-spacing: -0.03em;
-      margin-bottom: 24px;
-      max-width: 800px;
+      margin-bottom: 16px;
     }
 
-    .article-excerpt {
-      font-size: 16px;
-      line-height: 1.7;
+    .page-description {
+      font-size: 15px;
       color: var(--text-secondary);
-      max-width: 640px;
+      max-width: 480px;
     }
 
-    .article-tags {
+    /* Articles List */
+    .articles-section {
+      padding: 60px 0 100px;
+    }
+
+    .articles-list {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .article-card {
+      display: flex;
+      gap: 32px;
+      padding: 32px 0;
+      border-bottom: 1px solid var(--border);
+      transition: background var(--transition);
+    }
+    .article-card:first-child {
+      padding-top: 0;
+    }
+    .article-card:hover {
+      background: var(--bg-alt);
+      margin: 0 -20px;
+      padding-left: 20px;
+      padding-right: 20px;
+    }
+
+    @media (max-width: 768px) {
+      .article-card {
+        flex-direction: column-reverse;
+        gap: 20px;
+      }
+    }
+
+    .article-card-content {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .article-card-meta {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-tertiary);
+      margin-bottom: 12px;
+    }
+
+    .article-card-title {
+      font-size: 20px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin-bottom: 12px;
+      line-height: 1.3;
+    }
+
+    .article-card-excerpt {
+      font-size: 14px;
+      color: var(--text-secondary);
+      line-height: 1.7;
+      margin-bottom: 16px;
+    }
+
+    .article-card-tags {
       display: flex;
       gap: 8px;
-      margin-top: 24px;
       flex-wrap: wrap;
     }
 
@@ -304,164 +327,54 @@
       font-size: 10px;
       text-transform: uppercase;
       letter-spacing: 0.08em;
-      padding: 6px 12px;
+      padding: 4px 10px;
       border: 1px solid var(--border);
-      color: var(--text-secondary);
+      color: var(--text-tertiary);
     }
 
-    /* Article Content */
-    .article-content {
-      padding: 60px 0 100px;
-    }
-
-    .article-body {
-      max-width: 680px;
-    }
-
-    .article-body p {
-      font-size: 15px;
-      line-height: 1.85;
-      color: var(--text-secondary);
-      margin-bottom: 24px;
-    }
-
-    .article-body p:first-of-type {
-      font-size: 17px;
-      color: var(--text);
-    }
-
-    .article-body strong {
-      color: var(--text);
-      font-weight: 700;
-    }
-
-    .article-body a {
-      color: var(--violet);
-      border-bottom: 1px solid var(--violet-soft);
-      transition: border-color var(--transition);
-    }
-    .article-body a:hover {
-      border-color: var(--violet);
-    }
-
-    .article-body hr {
-      border: none;
-      height: 1px;
-      background: var(--border);
-      margin: 48px 0;
-    }
-
-    .article-body h2 {
-      font-size: 13px;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-      color: var(--text);
-      margin-top: 56px;
-      margin-bottom: 24px;
-    }
-
-    .article-body ul {
-      margin-bottom: 24px;
-      padding-left: 20px;
-    }
-
-    .article-body li {
-      font-size: 15px;
-      line-height: 1.85;
-      color: var(--text-secondary);
-      margin-bottom: 8px;
-    }
-
-    /* Highlight Box */
-    .highlight-box {
+    .article-card-thumbnail {
+      width: 200px;
+      height: 140px;
+      flex-shrink: 0;
+      overflow: hidden;
       background: var(--bg-alt);
-      border: 1px solid var(--border);
-      padding: 32px;
-      margin: 40px 0;
     }
-
-    .highlight-box p {
-      font-size: 14px;
-      margin-bottom: 0;
-    }
-
-    .highlight-box p + p {
-      margin-top: 16px;
-    }
-
-    /* Stats Grid */
-    .stats-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 2px;
-      background: var(--border);
-      margin: 48px 0;
-    }
-    @media (max-width: 600px) {
-      .stats-grid { grid-template-columns: 1fr; }
-    }
-
-    .stat-card {
-      background: var(--bg);
-      padding: 32px;
-    }
-
-    .stat-value {
-      font-size: clamp(32px, 5vw, 40px);
-      font-weight: 700;
-      letter-spacing: -0.03em;
-      line-height: 1;
-      margin-bottom: 8px;
-    }
-
-    .stat-label {
-      font-size: 11px;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      color: var(--text-tertiary);
-    }
-
-    /* Full Width Graphic */
-    .article-graphic {
-      margin: 56px 0;
-      margin-left: calc(-50vw + 50%);
-      margin-right: calc(-50vw + 50%);
-      padding: 0 40px;
-    }
-    @media (max-width: 768px) {
-      .article-graphic { padding: 0 20px; }
-    }
-
-    .article-graphic-inner {
-      max-width: 900px;
-      margin: 0 auto;
-    }
-
-    .article-graphic svg {
+    .article-card-thumbnail img {
       width: 100%;
-      height: auto;
+      height: 100%;
+      object-fit: cover;
     }
 
-    .graphic-caption {
-      font-size: 11px;
+    @media (max-width: 768px) {
+      .article-card-thumbnail {
+        width: 100%;
+        height: 180px;
+      }
+    }
+
+    .external-badge {
+      font-size: 10px;
       text-transform: uppercase;
-      letter-spacing: 0.08em;
+      letter-spacing: 0.05em;
       color: var(--text-tertiary);
-      text-align: center;
-      margin-top: 16px;
+      padding: 4px 8px;
+      border: 1px solid var(--border);
     }
 
-    /* Pull Quote */
-    .pull-quote {
-      font-size: 20px;
-      font-weight: 700;
-      line-height: 1.5;
-      letter-spacing: -0.02em;
-      color: var(--text);
-      margin: 48px 0;
-      padding-left: 24px;
-      border-left: 3px solid var(--violet);
+    /* Featured Card */
+    .article-card.featured {
+      background: var(--violet-soft);
+      margin: 0 -20px;
+      padding: 32px 20px;
+      border: 1px solid var(--violet);
+      border-bottom: 1px solid var(--violet);
+    }
+    .article-card.featured:hover {
+      background: var(--violet-soft);
+    }
+    .article-card.featured .tag {
+      border-color: var(--violet);
+      color: var(--violet);
     }
 
     /* Footer */
@@ -522,43 +435,18 @@
       letter-spacing: 0.05em;
     }
 
-    /* Article Footer */
-    .article-footer {
-      border-top: 1px solid var(--border);
-      padding: 48px 0;
-      margin-top: 48px;
+    /* Empty State */
+    .empty-state {
+      text-align: center;
+      padding: 80px 20px;
     }
-
-    .article-author-card {
-      display: flex;
-      gap: 20px;
-      align-items: center;
-    }
-
-    .author-avatar {
-      width: 56px;
-      height: 56px;
-      border-radius: 50%;
-      overflow: hidden;
-      border: 1px solid var(--border);
-      flex-shrink: 0;
-    }
-    .author-avatar img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-
-    .author-info h4 {
-      font-size: 15px;
+    .empty-state-title {
+      font-size: 20px;
       font-weight: 700;
-      margin-bottom: 4px;
+      margin-bottom: 12px;
     }
-
-    .author-info p {
-      font-size: 13px;
+    .empty-state-text {
       color: var(--text-secondary);
-      margin-bottom: 0;
     }
 
     @media (prefers-reduced-motion: reduce) {
@@ -568,8 +456,6 @@
 </head>
 
 <body>
-  <div class="scroll-progress" id="scrollProgress"></div>
-
   <header id="header">
     <div class="container header-inner">
       <a href="/" class="logo">
@@ -627,131 +513,23 @@
   </div>
 
   <main>
-    <article>
-      <div class="article-header">
-        <div class="container">
-          <a href="/articles/" class="article-back">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
-            Back to Articles
-          </a>
-          <div class="article-meta">
-            <span>January 2026</span>
-            <span>6 min read</span>
-          </div>
-          <h1 class="article-title">Why I'm Building Accrue</h1>
-          <p class="article-excerpt">Africa moves a lot of money. The problem is how. Cross-border payments hit $329 billion in 2025, but 75% moves through informal channels. Here's why we're building the rails for Africa's digital economy.</p>
-          <div class="article-tags">
-            <span class="tag">Fintech</span>
-            <span class="tag">Africa</span>
-            <span class="tag">Startups</span>
-          </div>
-        </div>
+    <div class="page-header">
+      <div class="container">
+        <h1 class="page-title">Articles</h1>
+        <p class="page-description">Thoughts on building, creating, and living.</p>
       </div>
+    </div>
 
-      <div class="article-content">
-        <div class="container">
-          <div class="article-body">
-            <p>Africa moves a lot of money. The problem is how.</p>
-
-            <p>Cross-border payments on the continent hit $329 billion in 2025. Remittances alone account for nearly $100 billion a year, making up over 5% of GDP. But here's the thing: 75% of that money moves through informal channels. Cash in envelopes. Bus drivers carrying bundles across borders. Family networks.</p>
-
-            <p>Why? Because formal transfers cost 8% on average, the highest rate in the world. Add currency conversion losses, and you're looking at $5 billion a year vanishing into the friction of moving money.</p>
-
-            <p>That's the problem we're solving.</p>
-
-            <!-- Stats Grid -->
-            <div class="stats-grid">
-              <div class="stat-card">
-                <div class="stat-value">$329B</div>
-                <div class="stat-label">Cross-border payments (2025)</div>
-              </div>
-              <div class="stat-card">
-                <div class="stat-value">75%</div>
-                <div class="stat-label">Moves informally</div>
-              </div>
-              <div class="stat-card">
-                <div class="stat-value">8%</div>
-                <div class="stat-label">Average transfer cost</div>
-              </div>
-              <div class="stat-card">
-                <div class="stat-value">$5B</div>
-                <div class="stat-label">Lost to friction annually</div>
-              </div>
-            </div>
-
-            <hr>
-
-            <h2>What We Built</h2>
-
-            <p><strong>Accrue</strong> is a mobile app. Anyone in Africa can save in USD stablecoins, send and receive payments instantly, and participate in the global economy. For millions facing volatile local currencies, stablecoins aren't speculation. They're the safest store of value available.</p>
-
-            <p><strong>Cashramp</strong> is infrastructure. Think M-Pesa on stablecoin rails. It's a stablecoin agent network spread across over 11 African countries. Users walk up to agents, hand over local currency, and receive stablecoin equivalents. When that money needs to cross a border, say from Ghana to Nigeria, the Ghanaian user sends money to an agent in local currency, receives stablecoins at the prevailing market rate, and another agent in Nigeria converts it to naira and deposits it into the recipient's bank account. The user never sees the complexity of cryptocurrency.</p>
-
-            <p>Both products are live today, processing transactions across over 11 countries. This isn't a pitch deck. It's a business.</p>
-
-            <hr>
-
-            <h2>Four Years of Work</h2>
-
-            <p>We've scaled to over 11 African markets. We process millions in monthly transaction volume. Our payment success rate is 98%, compared to industry averages that often struggle below 80%. Revenue has grown over 15% quarter over quarter, mostly from organic demand.</p>
-
-            <p>We've done this with a small, market-embedded team operating at roughly 10% of the overhead of legacy remittance companies. Western Union took decades to achieve continental coverage. We did it in under 24 months.</p>
-
-            <div class="pull-quote">
-              The growth isn't hype-driven. It's utility-driven. People use Accrue because it solves real problems.
-            </div>
-
-            <p>A trader in Ghana can pay a supplier in Kenya in seconds, not days. A Nigerian freelancer can receive USD from a European client without losing a big chunk to intermediaries. A family can save for the future in stable USD, safe from local currency collapse.</p>
-
-            <hr>
-
-            <h2>Why Now</h2>
-
-            <p>Three forces are converging.</p>
-
-            <p><strong>First, stablecoin adoption is accelerating.</strong> Africa isn't waiting for traditional finance to catch up. Stablecoins offer a way out of currency volatility and a bridge to the global economy.</p>
-
-            <p><strong>Second, infrastructure is maturing.</strong> Mobile penetration is high. Internet access is expanding. The rails exist. What's missing is the layer that connects them.</p>
-
-            <p><strong>Third, regulatory momentum.</strong> From Nigeria to Ghana to Kenya's regulatory sandboxes and pan-African trade frameworks, governments are starting to support fintech innovation. South Africa already has a license framework for crypto businesses. Five years ago, governments saw crypto as a threat. Now they're building frameworks for it.</p>
-
-            <hr>
-
-            <h2>The Longer View</h2>
-
-            <p>Payments are the wedge. The real opportunity is broader.</p>
-
-            <p>Once you're the trusted layer for moving money, you can build everything else on top: credit, insurance, investments, business tools. Every major fintech in emerging markets followed this playbook. We're doing the same, but with stablecoins as the foundation instead of legacy banking infrastructure.</p>
-
-            <div class="highlight-box">
-              <p><strong>The vision:</strong> Make moving money between Yaounde and Kampala as easy as moving it between New York and San Francisco.</p>
-              <p>That's a big goal. But every month, we get closer. And every month, more people depend on us to move their money safely.</p>
-            </div>
-
-            <p>That's why I'm building Accrue. Not because it's interesting. Because it matters.</p>
-
-            <!-- Author Card -->
-            <div class="article-footer">
-              <div class="article-author-card">
-                <div class="author-avatar">
-                  <img src="/assets/logo.png" alt="Zino Asamaige">
-                </div>
-                <div class="author-info">
-                  <h4>Zino Asamaige</h4>
-                  <p>Co-Founder & COO at Accrue</p>
-                </div>
-              </div>
-            </div>
-
-          </div>
-        </div>
+    <section class="articles-section">
+      <div class="container">
+        <div class="articles-list" id="articlesList"></div>
       </div>
-    </article>
+    </section>
   </main>
 
   <footer>
     <div class="container footer-inner">
-      <div class="footer-left">© 2026 Zino Asamaige</div>
+      <div class="footer-left">&copy; 2026 Zino Asamaige</div>
       <div class="footer-status">
         <span class="location-dot"></span>
         Lagos, Nigeria
@@ -760,6 +538,107 @@
   </footer>
 
   <script>
+    // Articles Data
+    const ARTICLES = [
+      {
+        title: "Why I'm Building Accrue",
+        slug: "why-im-building-accrue",
+        date: "2026-01-20",
+        excerpt: "Africa moves a lot of money. The problem is how. Cross-border payments hit $329 billion in 2025, but 75% moves through informal channels.",
+        author: "Zino Asamaige",
+        readTime: "6 min read",
+        tags: ["Fintech", "Africa", "Startups"],
+        thumbnail: null,
+        featured: true
+      },
+      {
+        title: "Lived It, Loved It: Farewell Helicarrier",
+        slug: "farewell-helicarrier",
+        date: "2022-10-01",
+        excerpt: "Today's my last day at Helicarrier. I joined in 2018, and I'm incredibly proud of how much growth has happened since then. I'm leaving to continue growing Accrue.",
+        author: "Zino Asamaige",
+        readTime: "3 min read",
+        tags: ["Career", "Helicarrier", "Reflection"],
+        thumbnail: "https://miro.medium.com/v2/resize:fit:1400/format:webp/1*Zyf7Z5XOLEM0i4JX4-x4BA.jpeg",
+        externalUrl: "https://medium.com/@ererezino/lived-it-loved-it-farewell-helicarrier-f112fd1c6302"
+      },
+      {
+        title: "It's the 12th!",
+        slug: "its-the-12th",
+        date: "2019-12-12",
+        excerpt: "One year ago today, I joined BuyCoins, and it's been the most amazing and busiest twelve months of my professional career.",
+        author: "Zino Asamaige",
+        readTime: "4 min read",
+        tags: ["Career", "BuyCoins"],
+        thumbnail: null,
+        externalUrl: "https://medium.com/buycoins/its-the-12th-e62f34e82c07"
+      },
+      {
+        title: "Trading USDT Peer-to-Peer - Now Available on BuyCoins!",
+        slug: "usdt-p2p",
+        date: "2020-11-17",
+        excerpt: "We're introducing support for USDT on our peer-to-peer exchange and wallet. You can buy or sell USDT at your preferred price.",
+        author: "Zino Asamaige",
+        readTime: "3 min read",
+        tags: ["Product", "BuyCoins", "Crypto"],
+        thumbnail: null,
+        externalUrl: "https://medium.com/buycoins/trading-usdt-peer-to-peer-now-available-on-buycoins-44b08d7fae2b"
+      }
+    ];
+
+    // Helper functions
+    function esc(str) {
+      if (!str) return '';
+      return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+    }
+
+    function formatDate(dateStr) {
+      const date = new Date(dateStr);
+      return date.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+    }
+
+    // Render articles
+    function renderArticles() {
+      const list = document.getElementById('articlesList');
+      
+      if (!ARTICLES || ARTICLES.length === 0) {
+        list.innerHTML = '<div class="empty-state"><h3 class="empty-state-title">Coming soon</h3><p class="empty-state-text">I\'m working on some articles. Check back later.</p></div>';
+        return;
+      }
+
+      const sorted = [...ARTICLES].sort((a, b) => new Date(b.date) - new Date(a.date));
+
+      list.innerHTML = sorted.map(article => {
+        const articleUrl = article.externalUrl || `/articles/${esc(article.slug)}/`;
+        const isExternal = !!article.externalUrl;
+        const isFeatured = !!article.featured;
+        
+        return `
+          <a href="${articleUrl}" ${isExternal ? 'target="_blank" rel="noopener"' : ''} class="article-card ${isFeatured ? 'featured' : ''}">
+            <div class="article-card-content">
+              <div class="article-card-meta">
+                <span>${formatDate(article.date)}</span>
+                ${article.readTime ? `<span>${esc(article.readTime)}</span>` : ''}
+                ${isExternal ? '<span class="external-badge">Medium</span>' : ''}
+              </div>
+              <h2 class="article-card-title">${esc(article.title)}</h2>
+              <p class="article-card-excerpt">${esc(article.excerpt)}</p>
+              ${article.tags && article.tags.length ? `
+                <div class="article-card-tags">
+                  ${article.tags.map(tag => `<span class="tag">${esc(tag)}</span>`).join('')}
+                </div>
+              ` : ''}
+            </div>
+            ${article.thumbnail ? `
+              <div class="article-card-thumbnail">
+                <img src="${esc(article.thumbnail)}" alt="" loading="lazy">
+              </div>
+            ` : ''}
+          </a>
+        `;
+      }).join('');
+    }
+
     // Theme Toggle
     function setTheme(dark) {
       document.documentElement.setAttribute('data-theme', dark ? 'dark' : 'light');
@@ -782,10 +661,6 @@
     // Header scroll
     window.addEventListener('scroll', () => {
       document.getElementById('header').classList.toggle('scrolled', window.scrollY > 50);
-      const scrollTop = window.scrollY;
-      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
-      const progress = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
-      document.getElementById('scrollProgress').style.width = progress + '%';
     });
 
     // Mobile menu
@@ -793,6 +668,9 @@
     document.getElementById('mobileMenuBtn').onclick = () => mm.classList.add('open');
     document.getElementById('mobileMenuClose').onclick = () => mm.classList.remove('open');
     mm.querySelectorAll('a').forEach(a => a.onclick = () => mm.classList.remove('open'));
+
+    // Initialize
+    renderArticles();
   </script>
 </body>
 </html>
