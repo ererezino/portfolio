@@ -452,36 +452,35 @@
       const sorted = [...ARTICLES].sort((a, b) => new Date(b.date) - new Date(a.date));
 
       list.innerHTML = sorted.map(article => {
-        // Use external URL if available, otherwise internal slug
         const articleUrl = article.externalUrl || `/articles/${esc(article.slug)}/`;
         const isExternal = !!article.externalUrl;
         return `
-        <a href="${articleUrl}" ${isExternal ? 'target="_blank" rel="noopener"' : ''} class="article-card ${article.thumbnail ? 'has-thumbnail' : ''}">`
-          <div class="article-content">
-            <div class="article-meta">
-              <span>${formatDate(article.date)}</span>
-              ${article.readTime ? `<span>${esc(article.readTime)}</span>` : ''}
+          <a href="${articleUrl}" ${isExternal ? 'target="_blank" rel="noopener"' : ''} class="article-card ${article.thumbnail ? 'has-thumbnail' : ''}">
+            <div class="article-content">
+              <div class="article-meta">
+                <span>${formatDate(article.date)}</span>
+                ${article.readTime ? `<span>${esc(article.readTime)}</span>` : ''}
+              </div>
+              <h2 class="article-title">${esc(article.title)}</h2>
+              <p class="article-excerpt">${esc(article.excerpt)}</p>
+              ${article.tags && article.tags.length ? `
+                <div class="article-tags">
+                  ${article.tags.map(tag => `<span class="tag">${esc(tag)}</span>`).join('')}
+                </div>
+              ` : ''}
+              <div class="article-author">
+                <span class="author-avatar"><img src="/assets/logo.png" alt=""></span>
+                <span class="author-name">${esc(article.author)}</span>
+                ${isExternal ? '<span class="external-badge">Medium ↗</span>' : ''}
+              </div>
             </div>
-            <h2 class="article-title">${esc(article.title)}</h2>
-            <p class="article-excerpt">${esc(article.excerpt)}</p>
-            ${article.tags && article.tags.length ? `
-              <div class="article-tags">
-                ${article.tags.map(tag => `<span class="tag">${esc(tag)}</span>`).join('')}
+            ${article.thumbnail ? `
+              <div class="article-thumbnail">
+                <img src="${esc(article.thumbnail)}" alt="" loading="lazy">
               </div>
             ` : ''}
-            <div class="article-author">
-              <span class="author-avatar"><img src="/assets/logo.png" alt=""></span>
-              <span class="author-name">${esc(article.author)}</span>
-              ${isExternal ? '<span class="external-badge">Medium ↗</span>' : ''}
-            </div>
-          </div>
-          ${article.thumbnail ? `
-            <div class="article-thumbnail">
-              <img src="${esc(article.thumbnail)}" alt="" loading="lazy">
-            </div>
-          ` : ''}
-        </a>
-      `;
+          </a>
+        `;
       }).join('');
     }
 
