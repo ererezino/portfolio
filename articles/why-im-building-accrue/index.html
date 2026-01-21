@@ -37,6 +37,7 @@
       --transition: 0.2s ease;
       --violet: #6D28D9;
       --violet-soft: rgba(109, 40, 217, 0.10);
+      --teal: #00D4AA;
     }
 
     [data-theme="dark"] {
@@ -84,7 +85,7 @@
       top: 0;
       left: 0;
       height: 2px;
-      background: var(--violet);
+      background: var(--teal);
       z-index: 1000;
     }
 
@@ -336,12 +337,12 @@
     }
 
     .article-body a {
-      color: var(--violet);
-      border-bottom: 1px solid var(--violet-soft);
+      color: var(--teal);
+      border-bottom: 1px solid rgba(0, 212, 170, 0.3);
       transition: border-color var(--transition);
     }
     .article-body a:hover {
-      border-color: var(--violet);
+      border-color: var(--teal);
     }
 
     .article-body hr {
@@ -361,18 +362,6 @@
       margin-bottom: 24px;
     }
 
-    .article-body ul {
-      margin-bottom: 24px;
-      padding-left: 20px;
-    }
-
-    .article-body li {
-      font-size: 15px;
-      line-height: 1.85;
-      color: var(--text-secondary);
-      margin-bottom: 8px;
-    }
-
     /* Highlight Box */
     .highlight-box {
       background: var(--bg-alt);
@@ -390,55 +379,40 @@
       margin-top: 16px;
     }
 
-    /* Stats Grid */
-    .stats-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 2px;
-      background: var(--border);
-      margin: 48px 0;
-    }
-    @media (max-width: 600px) {
-      .stats-grid { grid-template-columns: 1fr; }
-    }
-
-    .stat-card {
-      background: var(--bg);
-      padding: 32px;
-    }
-
-    .stat-value {
-      font-size: clamp(32px, 5vw, 40px);
+    /* Pull Quote */
+    .pull-quote {
+      font-size: 20px;
       font-weight: 700;
-      letter-spacing: -0.03em;
-      line-height: 1;
-      margin-bottom: 8px;
+      line-height: 1.5;
+      letter-spacing: -0.02em;
+      color: var(--text);
+      margin: 48px 0;
+      padding-left: 24px;
+      border-left: 3px solid var(--teal);
     }
 
-    .stat-label {
-      font-size: 11px;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      color: var(--text-tertiary);
-    }
-
-    /* Full Width Graphic */
+    /* Full Width Graphics */
     .article-graphic {
       margin: 56px 0;
       margin-left: calc(-50vw + 50%);
       margin-right: calc(-50vw + 50%);
-      padding: 0 40px;
-    }
-    @media (max-width: 768px) {
-      .article-graphic { padding: 0 20px; }
+      padding: 0 20px;
     }
 
     .article-graphic-inner {
-      max-width: 900px;
+      max-width: 1000px;
       margin: 0 auto;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 4px 24px rgba(0, 0, 0, 0.1);
+    }
+
+    [data-theme="dark"] .article-graphic-inner {
+      box-shadow: 0 4px 24px rgba(0, 0, 0, 0.4);
     }
 
     .article-graphic svg {
+      display: block;
       width: 100%;
       height: auto;
     }
@@ -450,18 +424,6 @@
       color: var(--text-tertiary);
       text-align: center;
       margin-top: 16px;
-    }
-
-    /* Pull Quote */
-    .pull-quote {
-      font-size: 20px;
-      font-weight: 700;
-      line-height: 1.5;
-      letter-spacing: -0.02em;
-      color: var(--text);
-      margin: 48px 0;
-      padding-left: 24px;
-      border-left: 3px solid var(--violet);
     }
 
     /* Footer */
@@ -659,26 +621,6 @@
 
             <p>That's the problem we're solving.</p>
 
-            <!-- Stats Grid -->
-            <div class="stats-grid">
-              <div class="stat-card">
-                <div class="stat-value">$329B</div>
-                <div class="stat-label">Cross-border payments (2025)</div>
-              </div>
-              <div class="stat-card">
-                <div class="stat-value">75%</div>
-                <div class="stat-label">Moves informally</div>
-              </div>
-              <div class="stat-card">
-                <div class="stat-value">8%</div>
-                <div class="stat-label">Average transfer cost</div>
-              </div>
-              <div class="stat-card">
-                <div class="stat-value">$5B</div>
-                <div class="stat-label">Lost to friction annually</div>
-              </div>
-            </div>
-
             <hr>
 
             <h2>What We Built</h2>
@@ -687,6 +629,83 @@
 
             <p><strong>Cashramp</strong> is infrastructure. Think M-Pesa on stablecoin rails. It's a stablecoin agent network spread across over 11 African countries. Users walk up to agents, hand over local currency, and receive stablecoin equivalents. When that money needs to cross a border, say from Ghana to Nigeria, the Ghanaian user sends money to an agent in local currency, receives stablecoins at the prevailing market rate, and another agent in Nigeria converts it to naira and deposits it into the recipient's bank account. The user never sees the complexity of cryptocurrency.</p>
 
+            <!-- GRAPHIC: How Cashramp Works -->
+            <div class="article-graphic">
+              <div class="article-graphic-inner">
+                <svg viewBox="0 0 1200 600" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <defs>
+                    <filter id="glow1" x="-50%" y="-50%" width="200%" height="200%">
+                      <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+                      <feMerge><feMergeNode in="coloredBlur"/><feMergeNode in="SourceGraphic"/></feMerge>
+                    </filter>
+                  </defs>
+                  <rect width="1200" height="600" fill="#0B0F14"/>
+                  <text x="600" y="50" text-anchor="middle" fill="#6B7280" font-family="monospace" font-size="13" letter-spacing="0.3em">HOW CASHRAMP WORKS</text>
+                  <text x="600" y="95" text-anchor="middle" fill="#FFFFFF" font-family="Georgia, serif" font-size="38" font-weight="600">M-Pesa on Stablecoin Rails</text>
+                  
+                  <!-- Step 1: Ghana -->
+                  <rect x="100" y="150" width="280" height="280" rx="16" fill="#12171E" stroke="#1E2530" stroke-width="1"/>
+                  <rect x="100" y="150" width="93" height="8" fill="#CE1126"/>
+                  <rect x="193" y="150" width="94" height="8" fill="#FCD116"/>
+                  <rect x="287" y="150" width="93" height="8" fill="#006B3F"/>
+                  <text x="240" y="195" text-anchor="middle" fill="#6B7280" font-family="monospace" font-size="12" letter-spacing="0.2em">STEP 1</text>
+                  <text x="240" y="235" text-anchor="middle" fill="#FFFFFF" font-family="monospace" font-size="24" font-weight="700">Ghana</text>
+                  <circle cx="240" cy="305" r="40" fill="#0D2530" stroke="#00D4AA" stroke-width="2"/>
+                  <circle cx="240" cy="290" r="14" fill="#FFFFFF"/>
+                  <ellipse cx="240" cy="330" rx="20" ry="12" fill="#FFFFFF"/>
+                  <text x="240" y="375" text-anchor="middle" fill="#9CA3AF" font-family="monospace" font-size="13">User pays</text>
+                  <text x="240" y="400" text-anchor="middle" fill="#00D4AA" font-family="monospace" font-size="16" font-weight="700">GHS (Cedis)</text>
+                  <text x="240" y="420" text-anchor="middle" fill="#6B7280" font-family="monospace" font-size="12">to local agent</text>
+                  
+                  <!-- Arrow 1 -->
+                  <path d="M400 290 L440 290" stroke="#00D4AA" stroke-width="2" filter="url(#glow1)"/>
+                  <polygon points="450,290 438,283 438,297" fill="#00D4AA"/>
+                  
+                  <!-- Step 2: Stablecoin -->
+                  <rect x="460" y="150" width="280" height="280" rx="16" fill="#12171E" stroke="#00D4AA" stroke-width="2"/>
+                  <text x="600" y="195" text-anchor="middle" fill="#6B7280" font-family="monospace" font-size="12" letter-spacing="0.2em">STEP 2</text>
+                  <text x="600" y="235" text-anchor="middle" fill="#FFFFFF" font-family="monospace" font-size="24" font-weight="700">Stablecoin</text>
+                  <circle cx="600" cy="305" r="45" fill="#F7931A"/>
+                  <circle cx="600" cy="305" r="38" fill="none" stroke="#FFD93D" stroke-width="3"/>
+                  <text x="600" y="320" text-anchor="middle" fill="#0B0F14" font-family="Georgia, serif" font-size="40" font-weight="700">$</text>
+                  <text x="600" y="380" text-anchor="middle" fill="#9CA3AF" font-family="monospace" font-size="13">Converted at</text>
+                  <text x="600" y="405" text-anchor="middle" fill="#00D4AA" font-family="monospace" font-size="16" font-weight="700">market rate</text>
+                  <text x="600" y="425" text-anchor="middle" fill="#6B7280" font-family="monospace" font-size="12">User never touches crypto</text>
+                  
+                  <!-- Arrow 2 -->
+                  <path d="M760 290 L800 290" stroke="#00D4AA" stroke-width="2" filter="url(#glow1)"/>
+                  <polygon points="810,290 798,283 798,297" fill="#00D4AA"/>
+                  
+                  <!-- Step 3: Nigeria -->
+                  <rect x="820" y="150" width="280" height="280" rx="16" fill="#12171E" stroke="#1E2530" stroke-width="1"/>
+                  <rect x="820" y="150" width="93" height="8" fill="#008751"/>
+                  <rect x="913" y="150" width="94" height="8" fill="#FFFFFF"/>
+                  <rect x="1007" y="150" width="93" height="8" fill="#008751"/>
+                  <text x="960" y="195" text-anchor="middle" fill="#6B7280" font-family="monospace" font-size="12" letter-spacing="0.2em">STEP 3</text>
+                  <text x="960" y="235" text-anchor="middle" fill="#FFFFFF" font-family="monospace" font-size="24" font-weight="700">Nigeria</text>
+                  <rect x="920" y="275" width="80" height="60" rx="6" fill="#0D2530" stroke="#00D4AA" stroke-width="2"/>
+                  <rect x="932" y="295" width="12" height="35" fill="#1E3A5F"/>
+                  <rect x="954" y="295" width="12" height="35" fill="#1E3A5F"/>
+                  <rect x="976" y="295" width="12" height="35" fill="#1E3A5F"/>
+                  <text x="960" y="375" text-anchor="middle" fill="#9CA3AF" font-family="monospace" font-size="13">Recipient gets</text>
+                  <text x="960" y="400" text-anchor="middle" fill="#00D4AA" font-family="monospace" font-size="16" font-weight="700">NGN (Naira)</text>
+                  <text x="960" y="420" text-anchor="middle" fill="#6B7280" font-family="monospace" font-size="12">in bank account</text>
+                  
+                  <!-- Comparison -->
+                  <rect x="200" y="480" width="350" height="90" rx="12" fill="#1A1215" stroke="#7F1D1D" stroke-width="1"/>
+                  <text x="375" y="515" text-anchor="middle" fill="#EF4444" font-family="monospace" font-size="12" letter-spacing="0.15em">TRADITIONAL</text>
+                  <text x="375" y="545" text-anchor="middle" fill="#FFFFFF" font-family="monospace" font-size="20" font-weight="700">3-5 days · 8-10% fees</text>
+                  <text x="375" y="565" text-anchor="middle" fill="#6B7280" font-family="monospace" font-size="12">Multiple intermediaries</text>
+                  
+                  <rect x="650" y="480" width="350" height="90" rx="12" fill="#0A1A1A" stroke="#065F46" stroke-width="1"/>
+                  <text x="825" y="515" text-anchor="middle" fill="#00D4AA" font-family="monospace" font-size="12" letter-spacing="0.15em">CASHRAMP</text>
+                  <text x="825" y="545" text-anchor="middle" fill="#FFFFFF" font-family="monospace" font-size="20" font-weight="700">Minutes · Low fees</text>
+                  <text x="825" y="565" text-anchor="middle" fill="#6B7280" font-family="monospace" font-size="12">Direct agent network</text>
+                </svg>
+              </div>
+              <p class="graphic-caption">How Cashramp works</p>
+            </div>
+
             <p>Both products are live today, processing transactions across over 11 countries. This isn't a pitch deck. It's a business.</p>
 
             <hr>
@@ -694,6 +713,67 @@
             <h2>Four Years of Work</h2>
 
             <p>We've scaled to over 11 African markets. We process millions in monthly transaction volume. Our payment success rate is 98%, compared to industry averages that often struggle below 80%. Revenue has grown over 15% quarter over quarter, mostly from organic demand.</p>
+
+            <!-- GRAPHIC: Traction -->
+            <div class="article-graphic">
+              <div class="article-graphic-inner">
+                <svg viewBox="0 0 1200 450" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <rect width="1200" height="450" fill="#0B0F14"/>
+                  <text x="600" y="50" text-anchor="middle" fill="#6B7280" font-family="monospace" font-size="13" letter-spacing="0.3em">FOUR YEARS OF BUILDING</text>
+                  
+                  <!-- Card 1 -->
+                  <rect x="60" y="90" width="250" height="200" rx="16" fill="#12171E" stroke="#1E2530" stroke-width="1"/>
+                  <text x="185" y="155" text-anchor="middle" fill="#00D4AA" font-family="Georgia, serif" font-size="72" font-weight="700">11+</text>
+                  <text x="185" y="195" text-anchor="middle" fill="#6B7280" font-family="monospace" font-size="12" letter-spacing="0.15em">AFRICAN</text>
+                  <text x="185" y="215" text-anchor="middle" fill="#6B7280" font-family="monospace" font-size="12" letter-spacing="0.15em">MARKETS</text>
+                  <circle cx="110" cy="260" r="6" fill="#00D4AA" opacity="0.4"/>
+                  <circle cx="130" cy="260" r="6" fill="#00D4AA" opacity="0.5"/>
+                  <circle cx="150" cy="260" r="6" fill="#00D4AA" opacity="0.6"/>
+                  <circle cx="170" cy="260" r="6" fill="#00D4AA" opacity="0.7"/>
+                  <circle cx="190" cy="260" r="6" fill="#00D4AA" opacity="0.8"/>
+                  <circle cx="210" cy="260" r="6" fill="#00D4AA" opacity="0.9"/>
+                  <circle cx="230" cy="260" r="6" fill="#00D4AA"/>
+                  <circle cx="250" cy="260" r="6" fill="#00D4AA" opacity="0.3"/>
+                  
+                  <!-- Card 2 -->
+                  <rect x="340" y="90" width="250" height="200" rx="16" fill="#12171E" stroke="#1E2530" stroke-width="1"/>
+                  <text x="465" y="155" text-anchor="middle" fill="#00D4AA" font-family="Georgia, serif" font-size="72" font-weight="700">98%</text>
+                  <text x="465" y="195" text-anchor="middle" fill="#6B7280" font-family="monospace" font-size="12" letter-spacing="0.15em">PAYMENT</text>
+                  <text x="465" y="215" text-anchor="middle" fill="#6B7280" font-family="monospace" font-size="12" letter-spacing="0.15em">SUCCESS RATE</text>
+                  <rect x="370" y="245" width="150" height="10" rx="5" fill="#1E2530"/>
+                  <rect x="370" y="245" width="147" height="10" rx="5" fill="#00D4AA"/>
+                  <text x="530" y="254" fill="#00D4AA" font-family="monospace" font-size="10">98%</text>
+                  <rect x="370" y="265" width="150" height="10" rx="5" fill="#1E2530"/>
+                  <rect x="370" y="265" width="115" height="10" rx="5" fill="#7F1D1D"/>
+                  <text x="530" y="274" fill="#9CA3AF" font-family="monospace" font-size="10">~77%</text>
+                  
+                  <!-- Card 3 -->
+                  <rect x="620" y="90" width="250" height="200" rx="16" fill="#12171E" stroke="#1E2530" stroke-width="1"/>
+                  <text x="745" y="155" text-anchor="middle" fill="#FFFFFF" font-family="Georgia, serif" font-size="72" font-weight="700">15%+</text>
+                  <text x="745" y="195" text-anchor="middle" fill="#6B7280" font-family="monospace" font-size="12" letter-spacing="0.15em">QUARTER OVER</text>
+                  <text x="745" y="215" text-anchor="middle" fill="#6B7280" font-family="monospace" font-size="12" letter-spacing="0.15em">QUARTER GROWTH</text>
+                  <polyline points="660,275 690,268 720,255 750,238 780,220 810,195 830,175" stroke="#00D4AA" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+                  <circle cx="660" cy="275" r="4" fill="#00D4AA"/>
+                  <circle cx="720" cy="255" r="4" fill="#00D4AA"/>
+                  <circle cx="780" cy="220" r="4" fill="#00D4AA"/>
+                  <circle cx="830" cy="175" r="4" fill="#00D4AA"/>
+                  
+                  <!-- Card 4 -->
+                  <rect x="900" y="90" width="250" height="200" rx="16" fill="#12171E" stroke="#1E2530" stroke-width="1"/>
+                  <text x="1025" y="155" text-anchor="middle" fill="#FFFFFF" font-family="Georgia, serif" font-size="72" font-weight="700">10%</text>
+                  <text x="1025" y="195" text-anchor="middle" fill="#6B7280" font-family="monospace" font-size="12" letter-spacing="0.15em">OVERHEAD VS</text>
+                  <text x="1025" y="215" text-anchor="middle" fill="#6B7280" font-family="monospace" font-size="12" letter-spacing="0.15em">LEGACY PLAYERS</text>
+                  <rect x="980" y="235" width="30" height="50" rx="4" fill="#00D4AA"/>
+                  <text x="995" y="298" text-anchor="middle" fill="#6B7280" font-family="monospace" font-size="10">US</text>
+                  <rect x="1030" y="180" width="30" height="105" rx="4" fill="#7F1D1D"/>
+                  <text x="1045" y="298" text-anchor="middle" fill="#6B7280" font-family="monospace" font-size="10">WU</text>
+                  
+                  <text x="600" y="360" text-anchor="middle" fill="#FFFFFF" font-family="Georgia, serif" font-size="26" font-style="italic">"Western Union took decades. We did it in four years."</text>
+                  <text x="600" y="400" text-anchor="middle" fill="#6B7280" font-family="monospace" font-size="14">Organic, utility-driven growth</text>
+                </svg>
+              </div>
+              <p class="graphic-caption">Four years of building</p>
+            </div>
 
             <p>We've done this with a small, market-embedded team operating at roughly 10% of the overhead of legacy remittance companies. Western Union took decades to achieve continental coverage. We did it in under 24 months.</p>
 
@@ -715,6 +795,64 @@
 
             <p><strong>Third, regulatory momentum.</strong> From Nigeria to Ghana to Kenya's regulatory sandboxes and pan-African trade frameworks, governments are starting to support fintech innovation. South Africa already has a license framework for crypto businesses. Five years ago, governments saw crypto as a threat. Now they're building frameworks for it.</p>
 
+            <!-- GRAPHIC: Three Forces -->
+            <div class="article-graphic">
+              <div class="article-graphic-inner">
+                <svg viewBox="0 0 1200 550" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <defs>
+                    <filter id="glow2" x="-50%" y="-50%" width="200%" height="200%">
+                      <feGaussianBlur stdDeviation="8" result="coloredBlur"/>
+                      <feMerge><feMergeNode in="coloredBlur"/><feMergeNode in="SourceGraphic"/></feMerge>
+                    </filter>
+                    <radialGradient id="centerGlow" cx="50%" cy="50%" r="50%">
+                      <stop offset="0%" style="stop-color:#00D4AA;stop-opacity:0.4"/>
+                      <stop offset="100%" style="stop-color:#00D4AA;stop-opacity:0"/>
+                    </radialGradient>
+                  </defs>
+                  <rect width="1200" height="550" fill="#0B0F14"/>
+                  <text x="600" y="50" text-anchor="middle" fill="#6B7280" font-family="monospace" font-size="13" letter-spacing="0.3em">WHY NOW</text>
+                  <text x="600" y="95" text-anchor="middle" fill="#FFFFFF" font-family="Georgia, serif" font-size="38" font-weight="600">Three Forces Converging</text>
+                  
+                  <!-- Center -->
+                  <circle cx="600" cy="300" r="100" fill="url(#centerGlow)"/>
+                  <circle cx="600" cy="300" r="55" fill="#0A1A1A" stroke="#00D4AA" stroke-width="3" filter="url(#glow2)"/>
+                  <circle cx="600" cy="300" r="70" fill="none" stroke="#00D4AA" stroke-width="1" opacity="0.3"/>
+                  <circle cx="600" cy="300" r="85" fill="none" stroke="#00D4AA" stroke-width="1" opacity="0.15"/>
+                  <text x="600" y="310" text-anchor="middle" fill="#00D4AA" font-family="monospace" font-size="22" font-weight="700">NOW</text>
+                  
+                  <!-- Force 1 -->
+                  <line x1="430" y1="220" x2="550" y2="270" stroke="#EF4444" stroke-width="2" opacity="0.8"/>
+                  <circle cx="415" cy="210" r="10" fill="#EF4444"/>
+                  <rect x="180" y="150" width="260" height="120" rx="12" fill="#1A1215" stroke="#7F1D1D" stroke-width="1"/>
+                  <circle cx="220" cy="185" r="16" fill="none" stroke="#EF4444" stroke-width="2"/>
+                  <text x="220" y="191" text-anchor="middle" fill="#FFFFFF" font-family="monospace" font-size="16" font-weight="700">1</text>
+                  <text x="310" y="190" text-anchor="middle" fill="#EF4444" font-family="monospace" font-size="18" font-weight="700">Demographics</text>
+                  <text x="310" y="220" text-anchor="middle" fill="#9CA3AF" font-family="monospace" font-size="13">Median age under 20</text>
+                  <text x="310" y="245" text-anchor="middle" fill="#9CA3AF" font-family="monospace" font-size="13">Mobile-native generation</text>
+                  
+                  <!-- Force 2 -->
+                  <line x1="770" y1="220" x2="650" y2="270" stroke="#00D4AA" stroke-width="2" opacity="0.8"/>
+                  <circle cx="785" cy="210" r="10" fill="#00D4AA"/>
+                  <rect x="760" y="150" width="260" height="120" rx="12" fill="#0A1A1A" stroke="#065F46" stroke-width="1"/>
+                  <circle cx="800" cy="185" r="16" fill="none" stroke="#00D4AA" stroke-width="2"/>
+                  <text x="800" y="191" text-anchor="middle" fill="#FFFFFF" font-family="monospace" font-size="16" font-weight="700">2</text>
+                  <text x="890" y="190" text-anchor="middle" fill="#00D4AA" font-family="monospace" font-size="18" font-weight="700">Technology</text>
+                  <text x="890" y="220" text-anchor="middle" fill="#9CA3AF" font-family="monospace" font-size="13">80% smartphone by 2030</text>
+                  <text x="890" y="245" text-anchor="middle" fill="#9CA3AF" font-family="monospace" font-size="13">M-Pesa proved leapfrog</text>
+                  
+                  <!-- Force 3 -->
+                  <line x1="600" y1="380" x2="600" y2="355" stroke="#A78BFA" stroke-width="2" opacity="0.8"/>
+                  <circle cx="600" cy="395" r="10" fill="#A78BFA"/>
+                  <rect x="470" y="420" width="260" height="100" rx="12" fill="#1A1520" stroke="#6D28D9" stroke-width="1"/>
+                  <circle cx="510" cy="455" r="16" fill="none" stroke="#A78BFA" stroke-width="2"/>
+                  <text x="510" y="461" text-anchor="middle" fill="#FFFFFF" font-family="monospace" font-size="16" font-weight="700">3</text>
+                  <text x="600" y="460" text-anchor="middle" fill="#A78BFA" font-family="monospace" font-size="18" font-weight="700">Regulation</text>
+                  <text x="600" y="495" text-anchor="middle" fill="#9CA3AF" font-family="monospace" font-size="13">NG, GH, KE sandboxes · SA licensed</text>
+                </svg>
+              </div>
+              <p class="graphic-caption">Three forces converging at once</p>
+            </div>
+
             <hr>
 
             <h2>The Longer View</h2>
@@ -722,6 +860,51 @@
             <p>Payments are the wedge. The real opportunity is broader.</p>
 
             <p>Once you're the trusted layer for moving money, you can build everything else on top: credit, insurance, investments, business tools. Every major fintech in emerging markets followed this playbook. We're doing the same, but with stablecoins as the foundation instead of legacy banking infrastructure.</p>
+
+            <!-- GRAPHIC: Vision -->
+            <div class="article-graphic">
+              <div class="article-graphic-inner">
+                <svg viewBox="0 0 1200 280" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <defs>
+                    <linearGradient id="wedgeGrad" x1="0%" y1="50%" x2="100%" y2="50%">
+                      <stop offset="0%" style="stop-color:#00D4AA;stop-opacity:1"/>
+                      <stop offset="100%" style="stop-color:#6D28D9;stop-opacity:0.6"/>
+                    </linearGradient>
+                    <linearGradient id="wedgeFade" x1="0%" y1="50%" x2="100%" y2="50%">
+                      <stop offset="0%" style="stop-color:#00D4AA;stop-opacity:0.3"/>
+                      <stop offset="100%" style="stop-color:#6D28D9;stop-opacity:0.05"/>
+                    </linearGradient>
+                  </defs>
+                  <rect width="1200" height="280" fill="#0B0F14"/>
+                  <polygon points="100,140 280,100 480,75 700,55 950,40 1100,35 1100,245 950,240 700,225 480,205 280,180 100,140" fill="url(#wedgeFade)"/>
+                  <polygon points="100,140 280,110 480,90 700,75 950,65 1100,60 1100,220 950,215 700,205 480,190 280,170 100,140" fill="url(#wedgeGrad)" opacity="0.15"/>
+                  <polygon points="100,140 280,120 480,105 700,95 950,88 1100,85 1100,195 950,192 700,185 480,175 280,160 100,140" fill="url(#wedgeGrad)" opacity="0.25"/>
+                  <polyline points="100,140 280,140 480,140 700,140 950,140 1100,140" stroke="#00D4AA" stroke-width="2" opacity="0.6"/>
+                  
+                  <circle cx="100" cy="140" r="12" fill="#00D4AA"/>
+                  <circle cx="100" cy="140" r="18" fill="none" stroke="#00D4AA" stroke-width="1" opacity="0.5"/>
+                  <text x="100" y="180" text-anchor="middle" fill="#00D4AA" font-family="monospace" font-size="11" font-weight="700">PAYMENTS</text>
+                  
+                  <circle cx="280" cy="140" r="8" fill="#00D4AA" opacity="0.8"/>
+                  <text x="280" y="180" text-anchor="middle" fill="#FFFFFF" font-family="monospace" font-size="11">SAVINGS</text>
+                  
+                  <circle cx="480" cy="140" r="8" fill="#00D4AA" opacity="0.6"/>
+                  <text x="480" y="180" text-anchor="middle" fill="#FFFFFF" font-family="monospace" font-size="11">CREDIT</text>
+                  
+                  <circle cx="700" cy="140" r="8" fill="#A78BFA" opacity="0.5"/>
+                  <text x="700" y="180" text-anchor="middle" fill="#FFFFFF" font-family="monospace" font-size="11">INSURANCE</text>
+                  
+                  <circle cx="950" cy="140" r="8" fill="#A78BFA" opacity="0.4"/>
+                  <text x="950" y="180" text-anchor="middle" fill="#FFFFFF" font-family="monospace" font-size="11">INVESTMENTS</text>
+                  
+                  <circle cx="1100" cy="140" r="8" fill="#6D28D9" opacity="0.3"/>
+                  <text x="1100" y="180" text-anchor="middle" fill="#9CA3AF" font-family="monospace" font-size="11">& MORE</text>
+                  
+                  <text x="600" y="240" text-anchor="middle" fill="#6B7280" font-family="monospace" font-size="14">Payments are the wedge. Everything else follows.</text>
+                </svg>
+              </div>
+              <p class="graphic-caption">Payments are the wedge. Everything else follows.</p>
+            </div>
 
             <div class="highlight-box">
               <p><strong>The vision:</strong> Make moving money between Yaounde and Kampala as easy as moving it between New York and San Francisco.</p>
@@ -751,7 +934,7 @@
 
   <footer>
     <div class="container footer-inner">
-      <div class="footer-left">© 2026 Zino Asamaige</div>
+      <div class="footer-left">&copy; 2026 Zino Asamaige</div>
       <div class="footer-status">
         <span class="location-dot"></span>
         Lagos, Nigeria
@@ -760,26 +943,20 @@
   </footer>
 
   <script>
-    // Theme Toggle
     function setTheme(dark) {
       document.documentElement.setAttribute('data-theme', dark ? 'dark' : 'light');
       localStorage.setItem('theme', dark ? 'dark' : 'light');
     }
-
     function toggleTheme() {
       const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
       setTheme(!isDark);
     }
-
     const saved = localStorage.getItem('theme');
     const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
     setTheme(saved ? saved === 'dark' : prefersDark);
-
     document.getElementById('themeToggle').onclick = toggleTheme;
     document.getElementById('mobileThemeToggle').onclick = toggleTheme;
     document.getElementById('mobileHeaderThemeToggle').onclick = toggleTheme;
-
-    // Header scroll
     window.addEventListener('scroll', () => {
       document.getElementById('header').classList.toggle('scrolled', window.scrollY > 50);
       const scrollTop = window.scrollY;
@@ -787,8 +964,6 @@
       const progress = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
       document.getElementById('scrollProgress').style.width = progress + '%';
     });
-
-    // Mobile menu
     const mm = document.getElementById('mobileMenu');
     document.getElementById('mobileMenuBtn').onclick = () => mm.classList.add('open');
     document.getElementById('mobileMenuClose').onclick = () => mm.classList.remove('open');
