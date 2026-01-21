@@ -32,7 +32,7 @@
       --violet: #A78BFA;
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    html { scroll-behavior: smooth; }
+    html { scroll-behavior: smooth; overflow-x: hidden; }
     body {
       background: var(--bg);
       color: var(--text);
@@ -41,6 +41,7 @@
       line-height: 1.7;
       -webkit-font-smoothing: antialiased;
       overflow-x: hidden;
+      position: relative;
     }
     a { color: inherit; text-decoration: none; }
     img { display: block; max-width: 100%; }
@@ -114,7 +115,7 @@
       background: transparent; font-size: 20px; cursor: pointer; color: var(--text);
     }
     .mobile-menu nav { display: flex; flex-direction: column; gap: 24px; }
-    .mobile-menu nav a { font-family: 'Instrument Serif', serif; font-size: 42px; color: var(--text); }
+    .mobile-menu nav a { font-family: 'Space Mono', monospace; font-size: 32px; font-weight: 700; color: var(--text); text-transform: uppercase; letter-spacing: 0.05em; }
 
     /* Hero */
     .hero { min-height: 100vh; display: flex; align-items: center; position: relative; overflow: hidden; }
@@ -193,8 +194,9 @@
     .btn-primary:hover { color: var(--text); }
 
     /* Hero Visual */
-    .hero-visual { position: relative; height: 620px; opacity: 0; animation: fadeIn 1.2s ease forwards 0.4s; }
-    @media (max-width: 1100px) { .hero-visual { height: 420px; margin: 0 -20px; } }
+    .hero-visual { position: relative; height: 620px; opacity: 0; animation: fadeIn 1.2s ease forwards 0.4s; overflow: hidden; }
+    @media (max-width: 1100px) { .hero-visual { height: 420px; margin: 0 -20px; overflow: hidden; } }
+    @media (max-width: 600px) { .hero-visual { height: 350px; } }
     .photo-stack { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; }
     .photo-card {
       position: absolute; width: 300px; background: var(--bg); padding: 12px;
@@ -211,6 +213,12 @@
     .photo-stack:hover .photo-card:nth-child(2) { transform: rotate(10deg) translateX(100px) translateY(50px); }
     .photo-stack:hover .photo-card:nth-child(3) { transform: rotate(0deg) translateX(0) translateY(0) scale(1.06); z-index: 10; }
     @media (max-width: 1100px) { .photo-card { width: 200px; } }
+    @media (max-width: 600px) {
+      .photo-card { width: 160px; }
+      .photo-card:nth-child(1) { transform: rotate(-6deg) translateX(-40px); }
+      .photo-card:nth-child(2) { transform: rotate(4deg) translateX(30px) translateY(20px); }
+      .photo-card:nth-child(3) { transform: rotate(-2deg) translateX(-10px) translateY(-25px); }
+    }
 
     /* Scroll Indicator */
     .scroll-indicator {
@@ -240,8 +248,22 @@
     .section-link svg { width: 14px; height: 14px; }
 
     /* Photos Masonry */
+    /* Photos Section */
     .photos-masonry { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
     @media (max-width: 1000px) { .photos-masonry { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 600px) {
+      .photos-masonry {
+        display: flex; gap: 16px; overflow-x: auto; scroll-snap-type: x mandatory;
+        -webkit-overflow-scrolling: touch; padding-bottom: 16px;
+        scrollbar-width: none; -ms-overflow-style: none;
+        margin: 0 -20px; padding-left: 20px; padding-right: 20px;
+      }
+      .photos-masonry::-webkit-scrollbar { display: none; }
+      .photos-masonry .photo-item {
+        flex: 0 0 280px; scroll-snap-align: start; aspect-ratio: 3/4;
+      }
+      .photos-masonry .photo-item img { height: 100%; }
+    }
     .photo-item { position: relative; overflow: hidden; cursor: pointer; }
     .photo-item:nth-child(1) { grid-row: span 2; }
     .photo-item:nth-child(4) { grid-row: span 2; }
@@ -260,6 +282,27 @@
     }
     .photo-item:hover .photo-item-caption { opacity: 1; transform: translateY(0); }
 
+    /* Carousel scroll indicator for mobile */
+    .carousel-hint {
+      display: none; align-items: center; justify-content: center; gap: 8px;
+      margin-top: 20px; color: var(--text-tertiary); font-size: 11px;
+      text-transform: uppercase; letter-spacing: 0.1em;
+    }
+    .carousel-hint svg { width: 16px; height: 16px; animation: swipe-hint 1.5s ease-in-out infinite; }
+    @keyframes swipe-hint {
+      0%, 100% { transform: translateX(0); opacity: 0.5; }
+      50% { transform: translateX(8px); opacity: 1; }
+    }
+    @media (max-width: 600px) { .carousel-hint { display: flex; } }
+
+    /* Shot on iPhone badge */
+    .photo-source {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-size: 10px; text-transform: uppercase; letter-spacing: 0.12em;
+      color: var(--text-tertiary); margin-left: 16px;
+    }
+    .photo-source svg { width: 14px; height: 14px; }
+
     /* Movement Stats */
     .movement-stats { display: grid; grid-template-columns: repeat(3, 1fr); border: 1px solid var(--border); }
     @media (max-width: 768px) { .movement-stats { grid-template-columns: 1fr; } }
@@ -276,31 +319,32 @@
     /* Year Summary Bar */
     .year-summary {
       display: flex; align-items: center; justify-content: space-between;
-      padding: 24px 32px; margin-bottom: 24px;
+      padding: 32px 40px; margin-bottom: 24px;
       background: var(--bg-alt); border: 1px solid var(--border);
     }
     @media (max-width: 768px) {
-      .year-summary { flex-direction: column; gap: 20px; text-align: center; }
+      .year-summary { flex-direction: column; gap: 24px; text-align: center; padding: 28px 24px; }
     }
     .year-badge {
-      font-size: 11px; font-weight: 700; text-transform: uppercase;
-      letter-spacing: 0.15em; color: var(--green);
+      font-size: 13px; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 0.12em; color: var(--text-secondary);
       display: flex; align-items: center; gap: 10px;
     }
     .year-badge::before {
-      content: ''; width: 8px; height: 8px; background: var(--green);
+      content: ''; width: 8px; height: 8px; background: var(--text-tertiary);
       border-radius: 50%;
     }
-    .year-summary-stats { display: flex; gap: 40px; }
-    @media (max-width: 768px) { .year-summary-stats { gap: 24px; } }
-    .year-stat { text-align: center; }
+    .year-summary-stats { display: flex; gap: 48px; }
+    @media (max-width: 768px) { .year-summary-stats { gap: 32px; } }
+    .year-stat { text-align: center; display: flex; align-items: baseline; gap: 8px; }
+    @media (max-width: 768px) { .year-stat { flex-direction: column; gap: 4px; } }
     .year-stat-value {
-      font-family: 'Instrument Serif', serif; font-size: 28px;
+      font-family: 'Instrument Serif', serif; font-size: 32px;
       font-weight: 400; letter-spacing: -0.02em;
     }
     .year-stat-label {
-      font-size: 9px; text-transform: uppercase;
-      letter-spacing: 0.15em; color: var(--text-tertiary); margin-left: 8px;
+      font-size: 10px; text-transform: uppercase;
+      letter-spacing: 0.15em; color: var(--text-tertiary);
     }
 
     /* Month Cards */
@@ -527,10 +571,17 @@
     <section id="photos">
       <div class="container">
         <div class="section-header">
-          <div><div class="section-label">Photography</div><h2 class="section-title">Through my lens</h2></div>
+          <div>
+            <div class="section-label">Photography <span class="photo-source"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg> Shot on iPhone</span></div>
+            <h2 class="section-title">Through my lens</h2>
+          </div>
           <a href="/photos.html" class="section-link">View all <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
         </div>
         <div class="photos-masonry" id="photoGrid"></div>
+        <div class="carousel-hint">
+          <span>Swipe to explore</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </div>
       </div>
     </section>
 
