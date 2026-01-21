@@ -1,527 +1,98 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="view-transition" content="same-origin" />
+
   <title>Zino Asamaige</title>
-  <meta name="description" content="Building things, taking photos, trying to get better at swimming. Based in Lagos.">
-  <link rel="icon" type="image/png" href="/assets/logo.png">
+  <meta name="description" content="Building fintech, shooting street, staying moving. Based in Lagos." />
+
+  <meta property="og:title" content="Zino Asamaige" />
+  <meta property="og:description" content="Building fintech, shooting street, staying moving. Based in Lagos." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="/" />
+  <meta property="og:image" content="/assets/og.jpg" />
+  <meta name="twitter:card" content="summary_large_image" />
+
+  <link rel="icon" type="image/png" href="/assets/logo.png" />
+
+  <!-- Preload critical fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Instrument+Serif:ital@0;1&display=swap" />
   <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet" />
-  <style>
-    :root {
-      --bg: #FAFAFA;
-      --bg-alt: #F0F0F0;
-      --text: #0A0A0A;
-      --text-secondary: #555555;
-      --text-tertiary: #888888;
-      --border: #E0E0E0;
-      --green: #00D26A;
-      --violet: #6D28D9;
-      --container: 1400px;
-      --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-    [data-theme="dark"] {
-      --bg: #0A0A0A;
-      --bg-alt: #111111;
-      --text: #FFFFFF;
-      --text-secondary: #AAAAAA;
-      --text-tertiary: #666666;
-      --border: #222222;
-      --violet: #A78BFA;
-    }
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    html { scroll-behavior: smooth; overflow-x: hidden; }
-    body {
-      background: var(--bg);
-      color: var(--text);
-      font-family: 'Space Mono', monospace;
-      font-size: 14px;
-      line-height: 1.7;
-      -webkit-font-smoothing: antialiased;
-      overflow-x: hidden;
-      position: relative;
-    }
-    a { color: inherit; text-decoration: none; }
-    img { display: block; max-width: 100%; }
-    .container { max-width: var(--container); margin: 0 auto; padding: 0 48px; }
-    @media (max-width: 768px) { .container { padding: 0 20px; } }
 
-    /* Header */
-    header {
-      position: fixed; top: 0; left: 0; right: 0; z-index: 100; padding: 24px 0;
-      transition: background var(--transition), backdrop-filter var(--transition);
-    }
-    header.scrolled {
-      background: rgba(250, 250, 250, 0.85);
-      backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
-    }
-    [data-theme="dark"] header.scrolled { background: rgba(10, 10, 10, 0.85); }
-    .header-inner {
-      display: flex; align-items: center; justify-content: space-between;
-      max-width: var(--container); margin: 0 auto; padding: 0 48px;
-    }
-    @media (max-width: 768px) { .header-inner { padding: 0 20px; } }
-    .logo {
-      display: flex; align-items: center; gap: 12px;
-      font-size: 15px; font-weight: 700;
-      opacity: 0; animation: fadeInDown 0.8s ease forwards 0.5s;
-    }
-    .logo-img { width: 36px; height: 36px; border-radius: 50%; object-fit: cover; border: 2px solid var(--border); }
-    .header-nav {
-      display: flex; align-items: center; gap: 32px;
-      opacity: 0; animation: fadeInDown 0.8s ease forwards 0.6s;
-    }
-    .header-nav a {
-      font-size: 11px; color: var(--text-secondary); text-transform: uppercase;
-      letter-spacing: 0.1em; transition: color var(--transition); position: relative;
-    }
-    .header-nav a::after {
-      content: ''; position: absolute; bottom: -4px; left: 0;
-      width: 0; height: 1px; background: var(--text); transition: width var(--transition);
-    }
-    .header-nav a:hover { color: var(--text); }
-    .header-nav a:hover::after { width: 100%; }
-    @media (max-width: 900px) { .header-nav { display: none; } }
-    .theme-btn {
-      width: 36px; height: 36px; border: 1px solid var(--border); border-radius: 50%;
-      background: transparent; display: flex; align-items: center; justify-content: center;
-      cursor: pointer; transition: all var(--transition);
-    }
-    .theme-btn:hover { border-color: var(--text); transform: rotate(180deg); }
-    .theme-btn svg { width: 14px; height: 14px; color: var(--text-secondary); }
-    .theme-btn .sun { display: none; }
-    [data-theme="dark"] .theme-btn .sun { display: block; }
-    [data-theme="dark"] .theme-btn .moon { display: none; }
-    .mobile-controls { display: none; align-items: center; gap: 12px; }
-    @media (max-width: 900px) { .mobile-controls { display: flex; } }
-    .mobile-menu-btn {
-      width: 36px; height: 36px; border: 1px solid var(--border); border-radius: 50%;
-      background: transparent; cursor: pointer; display: flex; flex-direction: column;
-      align-items: center; justify-content: center; gap: 4px;
-    }
-    .mobile-menu-btn span { width: 14px; height: 1px; background: var(--text); }
+  <!-- Styles -->
+  <link rel="stylesheet" href="styles.css" />
 
-    /* Mobile Menu */
-    .mobile-menu {
-      position: fixed; inset: 0; background: var(--bg); z-index: 200; padding: 24px;
-      display: flex; flex-direction: column; opacity: 0; visibility: hidden; transition: all var(--transition);
-    }
-    .mobile-menu.open { opacity: 1; visibility: visible; }
-    .mobile-menu-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 60px; }
-    .mobile-menu-close {
-      width: 36px; height: 36px; border: 1px solid var(--border); border-radius: 50%;
-      background: transparent; font-size: 20px; cursor: pointer; color: var(--text);
-    }
-    .mobile-menu nav { display: flex; flex-direction: column; gap: 24px; }
-    .mobile-menu nav a { font-family: 'Space Mono', monospace; font-size: 32px; font-weight: 700; color: var(--text); text-transform: uppercase; letter-spacing: 0.05em; }
-
-    /* Hero */
-    .hero { display: flex; align-items: center; position: relative; overflow: hidden; padding: 120px 0 80px; }
-    .hero-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; width: 100%; }
-    @media (max-width: 1100px) { .hero-grid { grid-template-columns: 1fr; gap: 60px; } }
-    .hero-content { padding: 0; }
-    @media (max-width: 1100px) { .hero-content { padding: 0; text-align: center; } }
-    .hero-location {
-      display: inline-flex; align-items: center; gap: 10px;
-      font-size: 11px; text-transform: uppercase; letter-spacing: 0.15em;
-      color: var(--text-tertiary); margin-bottom: 40px;
-      opacity: 0; animation: fadeInUp 0.8s ease forwards 0.2s;
-    }
-    @media (max-width: 1100px) { .hero-location { justify-content: center; } }
-    .location-dot { position: relative; width: 8px; height: 8px; }
-    .location-dot::before {
-      content: ''; position: absolute; inset: 0; background: var(--green); border-radius: 50%; z-index: 1;
-    }
-    .location-dot::after {
-      content: ''; position: absolute; inset: -4px; background: var(--green); border-radius: 50%;
-      opacity: 0.4; animation: pulse 2s ease-in-out infinite;
-    }
-    @keyframes pulse { 0%, 100% { transform: scale(1); opacity: 0.4; } 50% { transform: scale(2); opacity: 0; } }
-    .hero-title {
-      font-family: 'Instrument Serif', serif; font-size: clamp(52px, 9vw, 100px);
-      font-weight: 400; line-height: 1.0; letter-spacing: -0.03em; margin-bottom: 32px;
-    }
-    .hero-title .line { display: block; overflow: hidden; }
-    .hero-title .line-inner {
-      display: block; opacity: 0; transform: translateY(100%);
-      animation: revealLine 1s cubic-bezier(0.4, 0, 0.2, 1) forwards;
-    }
-    .hero-title .line:nth-child(1) .line-inner { animation-delay: 0.3s; }
-    .hero-title .line:nth-child(2) .line-inner { animation-delay: 0.45s; }
-    .hero-title .line:nth-child(3) .line-inner { animation-delay: 0.6s; }
-    @keyframes revealLine { to { opacity: 1; transform: translateY(0); } }
-    .hero-title em { font-style: italic; color: var(--violet); position: relative; }
-    .hero-title em::after {
-      content: ''; position: absolute; bottom: 8px; left: 0; width: 100%; height: 4px;
-      background: var(--violet); transform: scaleX(0); transform-origin: left;
-      animation: underline 0.8s ease forwards 1.1s;
-    }
-    @keyframes underline { to { transform: scaleX(1); } }
-    .hero-text {
-      font-size: 17px; line-height: 1.9; color: var(--text-secondary);
-      max-width: 500px; margin-bottom: 48px;
-      opacity: 0; animation: fadeInUp 0.8s ease forwards 0.8s;
-    }
-    @media (max-width: 1100px) { .hero-text { margin: 0 auto 48px; } }
-    .hero-text a { color: var(--text); font-weight: 700; position: relative; }
-    .hero-text a::after {
-      content: ''; position: absolute; bottom: -2px; left: 0;
-      width: 100%; height: 2px; background: var(--violet);
-    }
-    .hero-ctas {
-      display: flex; gap: 16px; flex-wrap: wrap;
-      opacity: 0; animation: fadeInUp 0.8s ease forwards 1s;
-    }
-    @media (max-width: 1100px) { .hero-ctas { justify-content: center; } }
-    .btn {
-      display: inline-flex; align-items: center; gap: 10px; padding: 18px 32px;
-      font-family: 'Space Mono', monospace; font-size: 11px; text-transform: uppercase;
-      letter-spacing: 0.1em; border: 1px solid var(--border); background: transparent;
-      color: var(--text); cursor: pointer; transition: all var(--transition);
-      position: relative; overflow: hidden;
-    }
-    .btn::before {
-      content: ''; position: absolute; inset: 0; background: var(--text);
-      transform: translateY(100%); transition: transform var(--transition); z-index: -1;
-    }
-    .btn:hover { color: var(--bg); border-color: var(--text); }
-    .btn:hover::before { transform: translateY(0); }
-    .btn svg { width: 14px; height: 14px; }
-    .btn-primary { background: var(--text); border-color: var(--text); color: var(--bg); }
-    .btn-primary::before { background: var(--bg); }
-    .btn-primary:hover { color: var(--text); }
-
-    /* Hero Visual */
-    .hero-visual { position: relative; height: 620px; opacity: 0; animation: fadeIn 1.2s ease forwards 0.4s; overflow: hidden; }
-    @media (max-width: 1100px) { .hero-visual { height: 420px; margin: 0 -20px; overflow: hidden; } }
-    @media (max-width: 600px) { .hero-visual { height: 350px; } }
-    .photo-stack { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; }
-    .photo-card {
-      position: absolute; width: 300px; background: var(--bg); padding: 12px;
-      box-shadow: 0 30px 100px rgba(0, 0, 0, 0.12);
-      transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1); cursor: pointer;
-    }
-    [data-theme="dark"] .photo-card { background: #181818; box-shadow: 0 30px 100px rgba(0, 0, 0, 0.5); }
-    .photo-card img { width: 100%; aspect-ratio: 3/4; object-fit: cover; }
-    .photo-card-caption { padding: 14px 4px 4px; font-size: 10px; text-transform: uppercase; letter-spacing: 0.12em; color: var(--text-tertiary); }
-    .photo-card:nth-child(1) { transform: rotate(-8deg) translateX(-70px); z-index: 1; }
-    .photo-card:nth-child(2) { transform: rotate(5deg) translateX(50px) translateY(30px); z-index: 2; }
-    .photo-card:nth-child(3) { transform: rotate(-2deg) translateX(-20px) translateY(-40px); z-index: 3; }
-    .photo-stack:hover .photo-card:nth-child(1) { transform: rotate(-14deg) translateX(-120px) translateY(-30px); }
-    .photo-stack:hover .photo-card:nth-child(2) { transform: rotate(10deg) translateX(100px) translateY(50px); }
-    .photo-stack:hover .photo-card:nth-child(3) { transform: rotate(0deg) translateX(0) translateY(0) scale(1.06); z-index: 10; }
-    @media (max-width: 1100px) { .photo-card { width: 200px; } }
-    @media (max-width: 600px) {
-      .photo-card { width: 160px; }
-      .photo-card:nth-child(1) { transform: rotate(-6deg) translateX(-40px); }
-      .photo-card:nth-child(2) { transform: rotate(4deg) translateX(30px) translateY(20px); }
-      .photo-card:nth-child(3) { transform: rotate(-2deg) translateX(-10px) translateY(-25px); }
-    }
-
-    /* Scroll Indicator */
-    .scroll-indicator {
-      position: absolute; bottom: 48px; left: 50%; transform: translateX(-50%);
-      display: flex; flex-direction: column; align-items: center; gap: 14px;
-      opacity: 0; animation: fadeIn 1s ease forwards 1.6s;
-    }
-    @media (max-width: 768px) { .scroll-indicator { display: none; } }
-    .scroll-indicator span { font-size: 10px; text-transform: uppercase; letter-spacing: 0.2em; color: var(--text-tertiary); }
-    .scroll-line { width: 1px; height: 70px; background: var(--border); position: relative; overflow: hidden; }
-    .scroll-line::after {
-      content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 30px;
-      background: var(--text); animation: scrollDown 1.5s ease-in-out infinite;
-    }
-    @keyframes scrollDown { 0% { transform: translateY(-100%); } 100% { transform: translateY(300%); } }
-
-    /* Sections */
-    section { padding: 140px 0; border-top: 1px solid var(--border); }
-    .section-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 72px; flex-wrap: wrap; gap: 24px; }
-    .section-label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.25em; color: var(--text-tertiary); margin-bottom: 14px; }
-    .section-title { font-family: 'Instrument Serif', serif; font-size: clamp(36px, 6vw, 56px); font-weight: 400; letter-spacing: -0.02em; }
-    .section-link {
-      display: inline-flex; align-items: center; gap: 8px; font-size: 11px;
-      text-transform: uppercase; letter-spacing: 0.12em; color: var(--text-secondary); transition: all var(--transition);
-    }
-    .section-link:hover { color: var(--text); gap: 14px; }
-    .section-link svg { width: 14px; height: 14px; }
-
-    /* Photos Masonry */
-    /* Photos Section */
-    .photos-masonry { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
-    @media (max-width: 1000px) { .photos-masonry { grid-template-columns: repeat(2, 1fr); } }
-    @media (max-width: 600px) {
-      .photos-masonry {
-        display: flex; gap: 16px; overflow-x: auto; scroll-snap-type: x mandatory;
-        -webkit-overflow-scrolling: touch; padding-bottom: 16px;
-        scrollbar-width: none; -ms-overflow-style: none;
-        margin: 0 -20px; padding-left: 20px; padding-right: 20px;
-      }
-      .photos-masonry::-webkit-scrollbar { display: none; }
-      .photos-masonry .photo-item {
-        flex: 0 0 280px; scroll-snap-align: start; aspect-ratio: 3/4;
-      }
-      .photos-masonry .photo-item img { height: 100%; }
-    }
-    .photo-item { position: relative; overflow: hidden; cursor: pointer; }
-    .photo-item:nth-child(1) { grid-row: span 2; }
-    .photo-item:nth-child(4) { grid-row: span 2; }
-    .photo-item img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1); }
-    .photo-item:hover img { transform: scale(1.08); }
-    .photo-item::after {
-      content: ''; position: absolute; inset: 0;
-      background: linear-gradient(to top, rgba(0,0,0,0.6) 0%, transparent 50%);
-      opacity: 0; transition: opacity var(--transition);
-    }
-    .photo-item:hover::after { opacity: 1; }
-    .photo-item-caption {
-      position: absolute; bottom: 24px; left: 24px; font-size: 10px;
-      text-transform: uppercase; letter-spacing: 0.12em; color: #fff;
-      opacity: 0; transform: translateY(10px); transition: all var(--transition); z-index: 1;
-    }
-    .photo-item:hover .photo-item-caption { opacity: 1; transform: translateY(0); }
-
-    /* Carousel scroll indicator for mobile */
-    .carousel-hint {
-      display: none; align-items: center; justify-content: center; gap: 8px;
-      margin-top: 20px; color: var(--text-tertiary); font-size: 11px;
-      text-transform: uppercase; letter-spacing: 0.1em;
-    }
-    .carousel-hint svg { width: 16px; height: 16px; animation: swipe-hint 1.5s ease-in-out infinite; }
-    @keyframes swipe-hint {
-      0%, 100% { transform: translateX(0); opacity: 0.5; }
-      50% { transform: translateX(8px); opacity: 1; }
-    }
-    @media (max-width: 600px) { .carousel-hint { display: flex; } }
-
-    /* Shot on iPhone badge */
-    .photo-source {
-      display: inline-flex; align-items: center; gap: 6px;
-      font-size: 10px; text-transform: uppercase; letter-spacing: 0.12em;
-      color: var(--text-tertiary); margin-left: 16px;
-    }
-    .photo-source svg { width: 14px; height: 14px; }
-
-    /* Movement Stats */
-    .movement-stats { display: grid; grid-template-columns: repeat(3, 1fr); border: 1px solid var(--border); }
-    @media (max-width: 768px) { .movement-stats { grid-template-columns: 1fr; } }
-    .stat-card { padding: 72px 56px; border-right: 1px solid var(--border); transition: background var(--transition); }
-    .stat-card:last-child { border-right: none; }
-    .stat-card:hover { background: var(--bg-alt); }
-    @media (max-width: 768px) {
-      .stat-card { border-right: none; border-bottom: 1px solid var(--border); padding: 48px 32px; }
-      .stat-card:last-child { border-bottom: none; }
-    }
-    .stat-value { font-family: 'Instrument Serif', serif; font-size: clamp(56px, 10vw, 84px); font-weight: 400; letter-spacing: -0.03em; line-height: 1; margin-bottom: 16px; }
-    .stat-label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.2em; color: var(--text-tertiary); }
-
-    /* Year Summary Bar */
-    .year-summary {
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 32px 40px; margin-bottom: 24px;
-      background: var(--bg-alt); border: 1px solid var(--border);
-    }
-    @media (max-width: 768px) {
-      .year-summary { flex-direction: column; gap: 24px; text-align: center; padding: 28px 24px; }
-    }
-    .year-badge {
-      font-size: 13px; font-weight: 700; text-transform: uppercase;
-      letter-spacing: 0.12em; color: var(--text-secondary);
-      display: flex; align-items: center; gap: 10px;
-    }
-    .year-badge::before {
-      content: ''; width: 8px; height: 8px; background: var(--text-tertiary);
-      border-radius: 50%;
-    }
-    .year-summary-stats { display: flex; gap: 48px; }
-    @media (max-width: 768px) { .year-summary-stats { gap: 32px; } }
-    .year-stat { text-align: center; display: flex; align-items: baseline; gap: 8px; }
-    @media (max-width: 768px) { .year-stat { flex-direction: column; gap: 4px; } }
-    .year-stat-value {
-      font-family: 'Instrument Serif', serif; font-size: 32px;
-      font-weight: 400; letter-spacing: -0.02em;
-    }
-    .year-stat-label {
-      font-size: 10px; text-transform: uppercase;
-      letter-spacing: 0.15em; color: var(--text-tertiary);
-    }
-
-    /* Month Cards */
-    .month-cards { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; }
-    @media (max-width: 768px) { .month-cards { grid-template-columns: 1fr; } }
-    
-    .month-card {
-      border: 1px solid var(--border); padding: 40px;
-      transition: all var(--transition); position: relative; overflow: hidden;
-    }
-    .month-card:hover { border-color: var(--text-secondary); }
-    .month-card.current { border-color: var(--text); }
-    .month-card.completed { background: var(--bg-alt); }
-    
-    .month-card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; }
-    .month-name { font-family: 'Instrument Serif', serif; font-size: 28px; font-weight: 400; }
-    
-    .month-badge {
-      font-size: 9px; font-weight: 700; text-transform: uppercase;
-      letter-spacing: 0.1em; padding: 8px 16px; border: 1px solid var(--border);
-      color: var(--text-secondary);
-    }
-    .month-badge.now {
-      background: var(--text); border-color: var(--text); color: var(--bg);
-      position: relative; overflow: hidden;
-    }
-    .month-badge.now::after {
-      content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%;
-      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
-      animation: shimmer 2s infinite;
-    }
-    @keyframes shimmer { 100% { left: 100%; } }
-    .month-badge.complete { background: var(--green); border-color: var(--green); color: #fff; }
-    
-    .month-steps {
-      font-family: 'Instrument Serif', serif;
-      font-size: clamp(48px, 8vw, 64px); font-weight: 400;
-      letter-spacing: -0.03em; line-height: 1; margin-bottom: 8px;
-    }
-    .month-card.completed .month-steps { color: var(--text-secondary); }
-    
-    .month-goal { font-size: 13px; color: var(--text-tertiary); margin-bottom: 24px; }
-    .month-pct { font-weight: 700; color: var(--text); font-size: 15px; }
-    .month-card.completed .month-pct { color: var(--text-secondary); }
-    
-    /* Progress Bar */
-    .progress-wrapper { position: relative; margin-bottom: 32px; }
-    .progress-track {
-      height: 8px; background: var(--border); border-radius: 4px;
-      overflow: hidden; position: relative;
-    }
-    .progress-fill {
-      height: 100%; background: var(--text); border-radius: 4px;
-      position: relative; transition: width 1.5s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-    .month-card.current .progress-fill {
-      background: linear-gradient(90deg, var(--text) 0%, var(--violet) 100%);
-    }
-    .month-card.current .progress-track::after {
-      content: ''; position: absolute; inset: 0;
-      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-      animation: progress-shimmer 2s ease-in-out infinite;
-    }
-    @keyframes progress-shimmer {
-      0% { transform: translateX(-100%); }
-      100% { transform: translateX(100%); }
-    }
-    .month-card.completed .progress-fill { background: var(--text-tertiary); opacity: 0.5; }
-    
-    /* Progress indicator dot */
-    .progress-dot {
-      position: absolute; top: 50%; right: 0; transform: translate(50%, -50%);
-      width: 16px; height: 16px; background: var(--text); border-radius: 50%;
-      border: 3px solid var(--bg); box-shadow: 0 2px 8px rgba(0,0,0,0.2);
-      opacity: 0; transition: opacity 0.5s ease 1.2s;
-    }
-    .month-card.current .progress-dot { opacity: 1; animation: pulse-dot 2s ease-in-out infinite; }
-    @keyframes pulse-dot {
-      0%, 100% { transform: translate(50%, -50%) scale(1); box-shadow: 0 2px 8px rgba(0,0,0,0.2); }
-      50% { transform: translate(50%, -50%) scale(1.15); box-shadow: 0 4px 16px rgba(0,0,0,0.3); }
-    }
-    
-    .month-details { display: flex; gap: 48px; }
-    .month-detail-value { font-size: 20px; font-weight: 700; letter-spacing: -0.02em; }
-    .month-card.completed .month-detail-value { color: var(--text-secondary); }
-    .month-detail-label {
-      font-size: 10px; text-transform: uppercase;
-      letter-spacing: 0.12em; color: var(--text-tertiary); margin-top: 6px;
-    }
-
-    /* Currently Into */
-    .into-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; background: var(--border); }
-    @media (max-width: 900px) { .into-grid { grid-template-columns: 1fr; } }
-    .into-card { background: var(--bg); }
-    .into-card-header { padding: 28px 32px; font-size: 10px; text-transform: uppercase; letter-spacing: 0.2em; color: var(--text-tertiary); border-bottom: 1px solid var(--border); }
-    .into-item { display: flex; gap: 20px; padding: 24px 32px; border-bottom: 1px solid var(--border); transition: all var(--transition); }
-    .into-item:last-child { border-bottom: none; }
-    .into-item:hover { background: var(--bg-alt); padding-left: 40px; }
-    .into-cover { width: 60px; height: 60px; overflow: hidden; flex-shrink: 0; }
-    .into-cover.book { width: 48px; height: 72px; }
-    .into-cover img { width: 100%; height: 100%; object-fit: cover; }
-    .into-text { flex: 1; min-width: 0; display: flex; flex-direction: column; justify-content: center; }
-    .into-title { font-size: 15px; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .into-meta { font-size: 12px; color: var(--text-tertiary); margin-top: 6px; }
-
-    /* Contact */
-    .contact-section { text-align: center; padding: 180px 0; background: var(--text); color: var(--bg); }
-    .contact-inner { max-width: 720px; margin: 0 auto; }
-    .contact-label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.25em; opacity: 0.5; margin-bottom: 28px; }
-    .contact-title { font-family: 'Instrument Serif', serif; font-size: clamp(48px, 8vw, 80px); font-weight: 400; letter-spacing: -0.03em; margin-bottom: 28px; line-height: 1.05; }
-    .contact-text { font-size: 17px; opacity: 0.65; margin-bottom: 56px; line-height: 1.9; }
-    .contact-ctas { display: flex; justify-content: center; gap: 16px; flex-wrap: wrap; }
-    .contact-section .btn { border-color: rgba(255,255,255,0.2); color: var(--bg); }
-    .contact-section .btn::before { background: var(--bg); }
-    .contact-section .btn:hover { color: var(--text); border-color: var(--bg); }
-    .contact-section .btn-primary { background: var(--bg); border-color: var(--bg); color: var(--text); }
-    .contact-section .btn-primary::before { background: var(--text); }
-    .contact-section .btn-primary:hover { color: var(--bg); }
-
-    /* Footer */
-    footer { padding: 48px 0; background: var(--text); color: var(--bg); }
-    .footer-inner { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px; }
-    .footer-left { font-size: 11px; opacity: 0.5; text-transform: uppercase; letter-spacing: 0.12em; }
-    .footer-status { display: flex; align-items: center; gap: 10px; font-size: 11px; text-transform: uppercase; letter-spacing: 0.12em; opacity: 0.5; }
-    .footer-status .location-dot { width: 6px; height: 6px; }
-
-    /* Animations */
-    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-    @keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
-    @keyframes fadeInDown { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
-
-    /* Lightbox */
-    .lightbox { position: fixed; inset: 0; background: rgba(0, 0, 0, 0.96); z-index: 1000; display: flex; align-items: center; justify-content: center; opacity: 0; visibility: hidden; transition: all 0.4s ease; }
-    .lightbox.active { opacity: 1; visibility: visible; }
-    .lightbox img { max-width: 90vw; max-height: 90vh; object-fit: contain; }
-    .lightbox-close { position: absolute; top: 28px; right: 28px; width: 52px; height: 52px; border: 1px solid rgba(255,255,255,0.2); border-radius: 50%; background: transparent; color: #fff; font-size: 26px; cursor: pointer; transition: all var(--transition); }
-    .lightbox-close:hover { background: #fff; color: #000; }
-    .lightbox-caption { position: absolute; bottom: 28px; left: 50%; transform: translateX(-50%); color: rgba(255,255,255,0.6); font-size: 11px; text-transform: uppercase; letter-spacing: 0.15em; }
-    .lightbox-nav { position: absolute; top: 50%; transform: translateY(-50%); width: 52px; height: 52px; border: 1px solid rgba(255,255,255,0.2); border-radius: 50%; background: transparent; color: #fff; font-size: 22px; cursor: pointer; transition: all var(--transition); }
-    .lightbox-nav:hover { background: #fff; color: #000; }
-    .lightbox-prev { left: 28px; }
-    .lightbox-next { right: 28px; }
-    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; } }
-  </style>
+  <!-- GSAP for animations -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
 </head>
+
 <body>
+  <!-- Custom Cursor -->
+  <div class="cursor" id="cursor"></div>
+  <div class="cursor-label" id="cursorLabel"></div>
+
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <!-- Header -->
   <header id="header">
     <div class="header-inner">
-      <a href="/" class="logo"><img src="/assets/logo.png" alt="" class="logo-img"> Zino Asamaige</a>
-      <nav class="header-nav">
-        <a href="/about.html">About</a>
-        <a href="/photos.html">Photos</a>
-        <a href="/articles.html">Articles</a>
-        <a href="/movement.html">Movement</a>
-        <a href="/travels.html">Travels</a>
-        <a href="/contact.html">Contact</a>
-        <button class="theme-btn" id="themeToggle" aria-label="Toggle theme">
-          <svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
-          <svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+      <a href="/" class="logo" data-magnetic>
+        <img src="/assets/logo.png" alt="" class="logo-img" width="36" height="36" />
+        Zino Asamaige
+      </a>
+
+      <nav class="header-nav" aria-label="Primary navigation">
+        <a href="/about.html" class="nav-link">About</a>
+        <a href="/photos.html" class="nav-link">Photos</a>
+        <a href="/articles.html" class="nav-link">Articles</a>
+        <a href="/movement.html" class="nav-link">Movement</a>
+        <a href="/travels.html" class="nav-link">Travels</a>
+        <a href="/contact.html" class="nav-link">Contact</a>
+
+        <button class="theme-btn" id="themeToggle" aria-label="Toggle theme" data-magnetic>
+          <svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+          </svg>
+          <svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <circle cx="12" cy="12" r="5"/>
+            <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
+          </svg>
         </button>
       </nav>
+
       <div class="mobile-controls">
         <button class="theme-btn" id="mobileThemeToggle" aria-label="Toggle theme">
-          <svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
-          <svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+          <svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+          </svg>
+          <svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <circle cx="12" cy="12" r="5"/>
+            <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
+          </svg>
         </button>
-        <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Menu"><span></span><span></span><span></span></button>
+
+        <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Open menu">
+          <span></span><span></span><span></span>
+        </button>
       </div>
     </div>
   </header>
 
-  <div class="mobile-menu" id="mobileMenu">
+  <!-- Mobile Menu -->
+  <div class="mobile-menu" id="mobileMenu" aria-hidden="true">
     <div class="mobile-menu-header">
-      <span class="logo"><img src="/assets/logo.png" alt="" class="logo-img"> Zino</span>
-      <button class="mobile-menu-close" id="mobileMenuClose">&times;</button>
+      <span class="logo">
+        <img src="/assets/logo.png" alt="" class="logo-img" width="36" height="36" />
+        Zino
+      </span>
+      <button class="mobile-menu-close" id="mobileMenuClose" aria-label="Close menu">&times;</button>
     </div>
-    <nav>
+    <nav aria-label="Mobile navigation">
       <a href="/about.html">About</a>
       <a href="/photos.html">Photos</a>
       <a href="/articles.html">Articles</a>
@@ -531,235 +102,240 @@
     </nav>
   </div>
 
-  <div class="lightbox" id="lightbox">
-    <button class="lightbox-close">&times;</button>
-    <button class="lightbox-nav lightbox-prev">&#8249;</button>
-    <button class="lightbox-nav lightbox-next">&#8250;</button>
-    <img src="" alt="" id="lightboxImg">
-    <div class="lightbox-caption" id="lightboxCaption"></div>
+  <!-- Lightbox -->
+  <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-hidden="true" aria-label="Photo viewer">
+    <div class="lightbox-panel" tabindex="-1">
+      <button class="lightbox-close" type="button" aria-label="Close">&times;</button>
+      <button class="lightbox-nav lightbox-prev" type="button" aria-label="Previous photo">&#8249;</button>
+      <button class="lightbox-nav lightbox-next" type="button" aria-label="Next photo">&#8250;</button>
+      <img src="" alt="" id="lightboxImg" />
+      <div class="lightbox-caption" id="lightboxCaption"></div>
+    </div>
   </div>
 
-  <main>
-    <section class="hero">
+  <!-- Main Content -->
+  <main id="main">
+    <!-- Hero Section -->
+    <section class="hero" aria-label="Introduction">
       <div class="container">
         <div class="hero-grid">
           <div class="hero-content">
-            <div class="hero-location"><span class="location-dot"></span> Lagos, Nigeria</div>
+            <div class="hero-location">
+              <span class="location-dot"></span>
+              Lagos, Nigeria
+            </div>
+
             <h1 class="hero-title">
-              <span class="line"><span class="line-inner">Doing the</span></span>
-              <span class="line"><span class="line-inner">best I can,</span></span>
-              <span class="line"><span class="line-inner"><em>daily.</em></span></span>
+              <span class="line"><span class="line-inner">Building fintech,</span></span>
+              <span class="line"><span class="line-inner">shooting street,</span></span>
+              <span class="line"><span class="line-inner"><em>staying moving.</em></span></span>
             </h1>
-            <p class="hero-text">Building <a href="https://useaccrue.com/" target="_blank">Accrue</a> with <a href="https://clintonmbah.com/" target="_blank">Clinton</a> & <a href="https://medium.com/@adesuwaomoruyi" target="_blank">Adesuwa</a>. When I'm not working, I'm probably walking somewhere with my camera, playing FIFA, or trying to get back in the pool.</p>
+
+            <p class="hero-text">
+              I'm building <a href="https://useaccrue.com/" target="_blank" rel="noopener noreferrer">Accrue</a> with
+              <a href="https://clintonmbah.com/" target="_blank" rel="noopener noreferrer">Clinton</a> and
+              <a href="https://medium.com/@adesuwaomoruyi" target="_blank" rel="noopener noreferrer">Adesuwa</a>.
+              Outside work, I'm usually walking with a camera, playing FIFA, or trying to get back in the pool.
+            </p>
+
             <div class="hero-ctas">
-              <a href="/contact.html" class="btn btn-primary">Say hello <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg></a>
-              <a href="/about.html" class="btn">About me <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+              <a href="/contact.html" class="btn btn-primary" data-magnetic>
+                <span class="btn-inner">
+                  Say hello
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg>
+                </span>
+              </a>
+              <a href="/about.html" class="btn" data-magnetic>
+                <span class="btn-inner">
+                  About me
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                </span>
+              </a>
             </div>
           </div>
-          <div class="hero-visual">
-            <div class="photo-stack">
-              <div class="photo-card"><img src="/assets/photos/photo-1.jpg" alt="Frankfurt"><div class="photo-card-caption">Frankfurt, 2025</div></div>
-              <div class="photo-card"><img src="/assets/photos/photo-2.jpg" alt="Frankfurt"><div class="photo-card-caption">Frankfurt, 2025</div></div>
-              <div class="photo-card"><img src="/assets/photos/photo-3.jpg" alt="Frankfurt"><div class="photo-card-caption">Frankfurt, 2025</div></div>
-            </div>
+
+          <div class="hero-visual" aria-label="Featured photos" data-parallax="0.05">
+            <div class="photo-stack" id="heroPhotoStack"></div>
           </div>
         </div>
       </div>
-      <div class="scroll-indicator"><span>Scroll</span><div class="scroll-line"></div></div>
     </section>
 
-    <section id="photos">
+    <!-- Photos Section -->
+    <section id="photos" class="section-soft">
       <div class="container">
         <div class="section-header">
           <div>
-            <div class="section-label">Photography <span class="photo-source"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg> Shot on iPhone</span></div>
+            <div class="section-label">
+              Photography
+              <span class="photo-source" aria-label="Shot on iPhone">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                  <rect x="5" y="2" width="14" height="20" rx="2" ry="2"/>
+                  <line x1="12" y1="18" x2="12.01" y2="18"/>
+                </svg>
+                Shot on iPhone
+              </span>
+            </div>
             <h2 class="section-title">Through my lens</h2>
           </div>
-          <a href="/photos.html" class="section-link">View all <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+
+          <a href="/photos.html" class="section-link">
+            View all
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </a>
         </div>
-        <div class="photos-masonry" id="photoGrid"></div>
-        <div class="carousel-hint">
+
+        <div class="photos-masonry" id="photoGrid" aria-label="Photo grid"></div>
+
+        <div class="carousel-hint" aria-hidden="true">
           <span>Swipe to explore</span>
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
         </div>
       </div>
     </section>
 
-    <section id="movement">
+    <!-- Writing Section -->
+    <section id="writing">
       <div class="container">
         <div class="section-header">
-          <div><div class="section-label">Movement</div><h2 class="section-title">Staying active</h2></div>
-          <a href="/movement.html" class="section-link">See all months <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+          <div>
+            <div class="section-label">Writing</div>
+            <h2 class="section-title">A few notes</h2>
+            <p class="section-subtitle">Short things I'm thinking about. Sometimes practical, sometimes just me trying to make sense of stuff.</p>
+          </div>
+          <a href="/articles.html" class="section-link">
+            View all
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </a>
         </div>
-        
-        <!-- Year Summary -->
+
+        <div class="grid-2" id="articleGrid"></div>
+      </div>
+    </section>
+
+    <!-- Movement Section -->
+    <section id="movement" class="section-soft">
+      <div class="container">
+        <div class="section-header">
+          <div>
+            <div class="section-label">Movement</div>
+            <h2 class="section-title">Staying active</h2>
+          </div>
+          <a href="/movement.html" class="section-link">
+            See all months
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </a>
+        </div>
+
         <div class="year-summary">
           <div class="year-summary-header">
-            <span class="year-badge">2025 Total</span>
+            <span class="year-badge" id="yearLabel">2025 Summary</span>
           </div>
-          <div class="year-summary-stats">
-            <div class="year-stat"><span class="year-stat-value">2.6M</span><span class="year-stat-label">Steps</span></div>
-            <div class="year-stat"><span class="year-stat-value">1,980</span><span class="year-stat-label">Kilometers</span></div>
-            <div class="year-stat"><span class="year-stat-value">7,072</span><span class="year-stat-label">Daily Avg</span></div>
+          <div class="year-summary-stats" aria-label="Movement totals">
+            <div class="year-stat">
+              <span class="year-stat-value" id="totalSteps" data-target="599117">0</span>
+              <span class="year-stat-label">Steps</span>
+            </div>
+            <div class="year-stat">
+              <span class="year-stat-value" id="totalKm" data-target="447">0</span>
+              <span class="year-stat-label">Km</span>
+            </div>
+            <div class="year-stat">
+              <span class="year-stat-value" id="dailyAvg" data-target="11426">0</span>
+              <span class="year-stat-label">Daily avg</span>
+            </div>
           </div>
         </div>
 
-        <!-- Month Cards -->
         <div class="month-cards" id="monthCards"></div>
       </div>
     </section>
 
-    <section id="into">
+    <!-- Travels Section -->
+    <section id="travels">
       <div class="container">
-        <div class="section-header"><div><div class="section-label">Currently</div><h2 class="section-title">What I'm into</h2></div></div>
+        <div class="section-header">
+          <div>
+            <div class="section-label">Travels</div>
+            <h2 class="section-title">Places I've been</h2>
+            <p class="section-subtitle">A small map-in-my-head. Photos, tiny stories, and what I remember most.</p>
+          </div>
+          <a href="/travels.html" class="section-link">
+            View all
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </a>
+        </div>
+
+        <div class="grid-2" id="travelGrid"></div>
+      </div>
+    </section>
+
+    <!-- Currently Into Section -->
+    <section id="into" class="section-soft">
+      <div class="container">
+        <div class="section-header">
+          <div>
+            <div class="section-label">Currently</div>
+            <h2 class="section-title">What I'm into</h2>
+            <p class="section-subtitle">A few things on repeat lately. I update this whenever I remember.</p>
+          </div>
+        </div>
+
         <div class="into-grid">
-          <div class="into-card"><div class="into-card-header">Music</div><div id="musicList"></div></div>
-          <div class="into-card"><div class="into-card-header">Reading</div><div id="bookList"></div></div>
-          <div class="into-card"><div class="into-card-header">Watching</div><div id="tvList"></div></div>
+          <div class="into-card">
+            <div class="into-card-header">Music</div>
+            <div id="musicList"></div>
+          </div>
+          <div class="into-card">
+            <div class="into-card-header">Reading</div>
+            <div id="bookList"></div>
+          </div>
+          <div class="into-card">
+            <div class="into-card-header">Watching</div>
+            <div id="tvList"></div>
+          </div>
         </div>
       </div>
     </section>
 
+    <!-- Contact Section -->
     <section class="contact-section" id="contact">
       <div class="container">
         <div class="contact-inner">
           <div class="contact-label">Get in touch</div>
-          <h2 class="contact-title">Let's build something together</h2>
-          <p class="contact-text">Have a question, a project idea, or just want to say hello? I'd love to hear from you.</p>
+          <h2 class="contact-title">Have something interesting? Let's talk.</h2>
+          <p class="contact-text">Whether you're building something cool, want to chat product, or just like street photography.</p>
           <div class="contact-ctas">
-            <a href="/contact.html" class="btn btn-primary">Send a message <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg></a>
-            <a href="https://x.com/ererezino" target="_blank" rel="noopener" class="btn">Twitter</a>
-            <a href="https://www.linkedin.com/in/ererezino/" target="_blank" rel="noopener" class="btn">LinkedIn</a>
+            <a href="/contact.html" class="btn btn-primary" data-magnetic>
+              <span class="btn-inner">
+                Send a message
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg>
+              </span>
+            </a>
+            <a href="https://x.com/ererezino" target="_blank" rel="noopener noreferrer" class="btn" data-magnetic>
+              <span class="btn-inner">X</span>
+            </a>
+            <a href="https://www.linkedin.com/in/ererezino/" target="_blank" rel="noopener noreferrer" class="btn" data-magnetic>
+              <span class="btn-inner">LinkedIn</span>
+            </a>
           </div>
         </div>
       </div>
     </section>
   </main>
 
+  <!-- Footer -->
   <footer>
     <div class="container footer-inner">
       <div class="footer-left">© 2026 Zino Asamaige</div>
-      <div class="footer-status"><span class="location-dot"></span> Lagos, Nigeria</div>
+      <div class="footer-status">
+        <span class="location-dot"></span>
+        Lagos, Nigeria
+      </div>
     </div>
   </footer>
 
-  <script>
-    const PHOTOS = [
-      { src: "/assets/photos/photo-1.jpg", caption: "Frankfurt, 2025" },
-      { src: "/assets/photos/photo-2.jpg", caption: "Frankfurt, 2025" },
-      { src: "/assets/photos/photo-3.jpg", caption: "Frankfurt, 2025" },
-      { src: "/assets/photos/photo-4.jpg", caption: "Frankfurt, 2025" }
-    ];
-    const MUSIC = [
-      { title: "Remember", artist: "Asake", url: "https://music.youtube.com/watch?v=MhvVRw5XTVY", cover: "https://upload.wikimedia.org/wikipedia/en/9/97/Asake_-_Work_of_Art.png" },
-      { title: "Gratitude", artist: "Anendlessocean", url: "https://music.youtube.com/watch?v=49mF49MR_Es", cover: "https://i.scdn.co/image/ab67616d0000b27331b046b5e8493d36db0f11da" },
-      { title: "E Ti Tobi", artist: "EmmaOMG", url: "https://music.youtube.com/watch?v=ccg6uBQfViI", cover: "https://lh3.googleusercontent.com/LbQgNpK2UZz73LWbUFvvZ38O09ZzUQm0fkIISmrutPQVmEJ2yttEAmBKbqn-5UvE40fC6AHuSNEInvE0=w544-h544-l90-rj" }
-    ];
-    const BOOKS = [{ title: "Harry Potter and the Sorcerer's Stone", author: "J.K. Rowling", url: "https://www.goodreads.com/book/show/42844155", cover: "https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1598823299i/42844155.jpg" }];
-    const TV = [{ title: "Elsbeth", year: "2024", url: "https://www.imdb.com/title/tt26591110/", cover: "https://m.media-amazon.com/images/M/MV5BOTcwYzc0M2QtM2NiYy00MWU1LWEwYmYtZGYzYWM4MTZjZmU1XkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg" }];
-
-    // Movement data
-    const MONTHLY_GOAL = 310000;
-    const MONTHS = [
-      { month: "January", year: 2026, isCurrent: true, steps: 198000, km: 140, avgStepsPerDay: 9914 },
-      { month: "December", year: 2025, isCurrent: false, steps: 401117, km: 307, avgStepsPerDay: 12939 }
-    ];
-    const fmt = n => n >= 1e6 ? (n/1e6).toFixed(1)+'M' : n.toLocaleString();
-
-    function setTheme(dark) {
-      document.documentElement.setAttribute('data-theme', dark ? 'dark' : 'light');
-      localStorage.setItem('theme', dark ? 'dark' : 'light');
-    }
-    function toggleTheme() {
-      const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
-      setTheme(!isDark);
-    }
-    const saved = localStorage.getItem('theme');
-    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-    setTheme(saved ? saved === 'dark' : prefersDark);
-    document.getElementById('themeToggle').onclick = toggleTheme;
-    document.getElementById('mobileThemeToggle').onclick = toggleTheme;
-
-    window.addEventListener('scroll', () => {
-      document.getElementById('header').classList.toggle('scrolled', window.scrollY > 50);
-    });
-
-    const mm = document.getElementById('mobileMenu');
-    document.getElementById('mobileMenuBtn').onclick = () => mm.classList.add('open');
-    document.getElementById('mobileMenuClose').onclick = () => mm.classList.remove('open');
-    mm.querySelectorAll('a').forEach(a => a.onclick = () => mm.classList.remove('open'));
-
-    const lb = document.getElementById('lightbox');
-    const lbImg = document.getElementById('lightboxImg');
-    const lbCap = document.getElementById('lightboxCaption');
-    let idx = 0;
-    function openLb(i) { idx = i; lbImg.src = PHOTOS[i].src; lbCap.textContent = PHOTOS[i].caption; lb.classList.add('active'); document.body.style.overflow = 'hidden'; }
-    function closeLb() { lb.classList.remove('active'); document.body.style.overflow = ''; }
-    function navLb(d) { idx = (idx + d + PHOTOS.length) % PHOTOS.length; lbImg.src = PHOTOS[idx].src; lbCap.textContent = PHOTOS[idx].caption; }
-    lb.querySelector('.lightbox-close').onclick = closeLb;
-    lb.querySelector('.lightbox-prev').onclick = () => navLb(-1);
-    lb.querySelector('.lightbox-next').onclick = () => navLb(1);
-    lb.onclick = e => { if (e.target === lb) closeLb(); };
-    document.onkeydown = e => { if (!lb.classList.contains('active')) return; if (e.key === 'Escape') closeLb(); if (e.key === 'ArrowLeft') navLb(-1); if (e.key === 'ArrowRight') navLb(1); };
-
-    document.getElementById('photoGrid').innerHTML = PHOTOS.map((p, i) => '<div class="photo-item" onclick="openLb('+i+')"><img src="'+p.src+'" alt="'+p.caption+'" loading="lazy"><span class="photo-item-caption">'+p.caption+'</span></div>').join('');
-    document.getElementById('musicList').innerHTML = MUSIC.map(m => '<a href="'+m.url+'" target="_blank" rel="noopener" class="into-item"><div class="into-cover"><img src="'+m.cover+'" alt="" loading="lazy"></div><div class="into-text"><div class="into-title">'+m.title+'</div><div class="into-meta">'+m.artist+'</div></div></a>').join('');
-    document.getElementById('bookList').innerHTML = BOOKS.map(b => '<a href="'+b.url+'" target="_blank" rel="noopener" class="into-item"><div class="into-cover book"><img src="'+b.cover+'" alt="" loading="lazy"></div><div class="into-text"><div class="into-title">'+b.title+'</div><div class="into-meta">'+b.author+'</div></div></a>').join('');
-    document.getElementById('tvList').innerHTML = TV.map(t => '<a href="'+t.url+'" target="_blank" rel="noopener" class="into-item"><div class="into-cover"><img src="'+t.cover+'" alt="" loading="lazy"></div><div class="into-text"><div class="into-title">'+t.title+'</div><div class="into-meta">'+t.year+'</div></div></a>').join('');
-
-    // Render month cards with animated progress bars
-    document.getElementById('monthCards').innerHTML = MONTHS.map(m => {
-      const pct = (m.steps / MONTHLY_GOAL) * 100;
-      const displayPct = Math.round(pct);
-      const barWidth = Math.min(pct, 100);
-      const met = m.steps >= MONTHLY_GOAL;
-      const stateClass = m.isCurrent ? 'current' : (met ? 'completed' : '');
-      const badgeClass = m.isCurrent ? 'now' : (met ? 'complete' : '');
-      const badgeText = m.isCurrent ? 'In Progress' : (met ? 'Complete' : '');
-      
-      return '<div class="month-card '+stateClass+'">' +
-        '<div class="month-card-header">' +
-          '<div class="month-name">'+m.month+' '+m.year+'</div>' +
-          '<span class="month-badge '+badgeClass+'">'+badgeText+'</span>' +
-        '</div>' +
-        '<div class="month-steps">'+fmt(m.steps)+'</div>' +
-        '<div class="month-goal"><span class="month-pct">'+displayPct+'%</span> of 310k goal</div>' +
-        '<div class="progress-wrapper">' +
-          '<div class="progress-track"><div class="progress-fill" data-width="'+barWidth+'"></div></div>' +
-          (m.isCurrent ? '<div class="progress-dot"></div>' : '') +
-        '</div>' +
-        '<div class="month-details">' +
-          '<div><div class="month-detail-value">'+m.km+' km</div><div class="month-detail-label">Distance</div></div>' +
-          '<div><div class="month-detail-value">'+fmt(m.avgStepsPerDay)+'</div><div class="month-detail-label">Daily Avg</div></div>' +
-        '</div>' +
-      '</div>';
-    }).join('');
-
-    // Animate progress bars when they come into view
-    const progressObserver = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          const fills = entry.target.querySelectorAll('.progress-fill');
-          fills.forEach(fill => {
-            const width = fill.getAttribute('data-width');
-            setTimeout(() => { fill.style.width = width + '%'; }, 200);
-          });
-          progressObserver.unobserve(entry.target);
-        }
-      });
-    }, { threshold: 0.3 });
-    
-    const monthCardsEl = document.getElementById('monthCards');
-    if (monthCardsEl) progressObserver.observe(monthCardsEl);
-
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => { if (entry.isIntersecting) { entry.target.style.opacity = '1'; entry.target.style.transform = 'translateY(0)'; } });
-    }, { threshold: 0.1, rootMargin: '0px 0px -60px 0px' });
-    document.querySelectorAll('section:not(.hero)').forEach(section => {
-      section.style.opacity = '0'; section.style.transform = 'translateY(50px)';
-      section.style.transition = 'opacity 0.9s ease, transform 0.9s ease';
-      observer.observe(section);
-    });
-  </script>
+  <!-- Scripts -->
+  <script src="main.js" defer></script>
 </body>
 </html>
