@@ -5,51 +5,40 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Zino Asamaige</title>
 
-  <!-- ===========================================
-       SECURITY HEADERS (via meta tags)
-       Note: For maximum security, these should also
-       be set as HTTP headers on your server/CDN
-       =========================================== -->
-  
-  <!-- Prevent MIME type sniffing -->
-  <meta http-equiv="X-Content-Type-Options" content="nosniff">
-  
-  <!-- Control referrer information -->
-  <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin">
-  
-  <!-- Prevent clickjacking -->
-  <meta http-equiv="X-Frame-Options" content="DENY">
-  
-  <!-- XSS Protection (legacy browsers) -->
-  <meta http-equiv="X-XSS-Protection" content="1; mode=block">
-  
-  <!-- Content Security Policy - STRICT -->
-  <meta http-equiv="Content-Security-Policy" content="
-    default-src 'self';
-    script-src 'self' 'unsafe-inline';
-    style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
-    font-src 'self' https://fonts.gstatic.com;
-    img-src 'self' data: https: blob:;
-    connect-src 'self' https://api.spotify.com;
-    frame-ancestors 'none';
-    base-uri 'self';
-    form-action 'self';
-    upgrade-insecure-requests;
-  ">
-  
-  <!-- Permissions Policy - Disable unnecessary browser features -->
-  <meta http-equiv="Permissions-Policy" content="
-    accelerometer=(),
-    camera=(),
-    geolocation=(),
-    gyroscope=(),
-    magnetometer=(),
-    microphone=(),
-    payment=(),
-    usb=()
-  ">
+  <!-- Prevent FOUC - Must be inline and first -->
+  <script>
+    (function() {
+      try {
+        var saved = localStorage.getItem('theme');
+        var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        var isDark = saved ? saved === 'dark' : prefersDark;
+        document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light');
+      } catch(e) {}
+    })();
+  </script>
 
-  <!-- Basic meta -->
+  <!-- PERFORMANCE: Preconnect to external domains FIRST -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  
+  <!-- PERFORMANCE: DNS prefetch for external images -->
+  <link rel="dns-prefetch" href="https://upload.wikimedia.org" />
+  <link rel="dns-prefetch" href="https://i.scdn.co" />
+  <link rel="dns-prefetch" href="https://m.media-amazon.com" />
+
+  <!-- PERFORMANCE: Preload critical CSS -->
+  <link rel="preload" href="styles.css" as="style" />
+  
+  <!-- PERFORMANCE: Preload critical fonts (subset) -->
+  <link rel="preload" href="https://fonts.gstatic.com/s/inter/v13/UcCO3FwrK3iLTeHuS_fvQtMwCp50KnMw2boKoduKmMEVuLyfAZ9hjp-Ek-_EeA.woff2" as="font" type="font/woff2" crossorigin />
+  
+  <!-- Security headers (supplement server headers) -->
+  <meta http-equiv="X-Content-Type-Options" content="nosniff">
+  <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' https: data: blob:; connect-src 'self'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests;">
+  <meta http-equiv="Permissions-Policy" content="accelerometer=(), camera=(), geolocation=(), gyroscope=(), magnetometer=(), microphone=(), payment=(), usb=()">
+
+  <!-- Meta -->
   <meta name="description" content="Photos, walks, and short notes. Based in Lagos." />
   <meta property="og:title" content="Zino Asamaige" />
   <meta property="og:description" content="Photos, walks, and short notes. Based in Lagos." />
@@ -63,41 +52,12 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="default">
 
   <link rel="icon" type="image/png" href="/assets/logo.png" />
-  
-  <!-- Preconnect for faster font loading -->
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 
-  <!-- Google Fonts with crossorigin for potential SRI in future -->
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Mono:wght@400;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet" crossorigin="anonymous" />
+  <!-- Google Fonts with display=swap for non-blocking -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Mono:wght@400;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet" />
 
-  <!-- Local stylesheet -->
+  <!-- Main stylesheet -->
   <link rel="stylesheet" href="styles.css" />
-  
-  <!-- Prevent FOUC - Theme initialization -->
-  <script nonce="theme-init">
-    (function() {
-      'use strict';
-      try {
-        var saved = localStorage.getItem('theme');
-        var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-        var isDark = saved ? saved === 'dark' : prefersDark;
-        document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light');
-      } catch(e) {
-        // localStorage not available, use system preference
-        document.documentElement.setAttribute('data-theme', 
-          window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
-        );
-      }
-    })();
-  </script>
-  
-  <!-- View Transitions API -->
-  <style>
-    @view-transition {
-      navigation: auto;
-    }
-  </style>
 </head>
 
 <body>
@@ -106,7 +66,7 @@
     <div class="loader-spinner"></div>
   </div>
 
-  <!-- Custom cursor with trail -->
+  <!-- Custom cursor (desktop only, hidden by default) -->
   <div class="cursor" id="cursor" aria-hidden="true"></div>
   <div class="cursor-trail" id="cursorTrail" aria-hidden="true"></div>
   <div class="cursor-label" id="cursorLabel" aria-hidden="true"></div>
@@ -132,7 +92,8 @@
   <header id="header" role="banner">
     <div class="header-inner">
       <a href="/" class="logo" data-magnetic aria-label="Zino Asamaige - Home">
-        <img src="/assets/logo.png" alt="" class="logo-img" width="36" height="36" loading="eager" decoding="async" />
+        <!-- PERFORMANCE: fetchpriority high for above-fold image -->
+        <img src="/assets/logo.png" alt="" class="logo-img" width="36" height="36" fetchpriority="high" />
         <span class="logo-text">Zino Asamaige</span>
       </a>
 
@@ -218,7 +179,7 @@
 
             <p class="hero-text">
               I'm building <a href="https://useaccrue.com/" target="_blank" rel="noopener noreferrer">Accrue</a> and 
-              <a href="https://cashramp.co/" target="_blank" rel="noopener noreferrer">Cashramp</a> to make cross-border payments seamless, and I'm lucky to be doing it alongside 
+              <a href="https://cashramp.co/" target="_blank" rel="noopener noreferrer">Cashramp</a> to make cross-border payments seamless—and I'm fortunate to be doing it alongside 
               <a href="https://www.clintonmbah.com/" target="_blank" rel="noopener noreferrer">Clinton</a> and 
               <a href="https://medium.com/@adesuwaomoruyi" target="_blank" rel="noopener noreferrer">Adesuwa</a>.
             </p>
@@ -246,7 +207,6 @@
         </div>
       </div>
       
-      <!-- Scroll indicator -->
       <div class="scroll-indicator" aria-hidden="true">
         <div class="scroll-mouse">
           <div class="scroll-wheel"></div>
@@ -266,7 +226,7 @@
                   <rect x="5" y="2" width="14" height="20" rx="2"/>
                   <line x1="12" y1="18" x2="12.01" y2="18"/>
                 </svg>
-                Shot on my iPhone
+                Shot on iPhone
               </span>
             </span>
             <h2 class="section-title" id="photos-title">Through my lens</h2>
@@ -351,7 +311,6 @@
           </div>
         </div>
 
-        <!-- Now Playing (Spotify) -->
         <div class="now-playing" id="nowPlaying" aria-label="Currently playing">
           <div class="now-playing-indicator">
             <span class="now-playing-bar"></span>
@@ -454,14 +413,7 @@
     </svg>
   </button>
 
-  <!-- Console Easter Egg -->
-  <script nonce="console-msg">
-    console.log('%c👋 Hey there, curious developer!', 'font-size: 24px; font-weight: bold;');
-    console.log('%cWelcome to my site. Built with care, caffeine, and Claude.', 'font-size: 14px; color: #6D28D9;');
-    console.log('%cTry the Konami code for a surprise: ↑↑↓↓←→←→BA', 'font-size: 12px; color: #737373;');
-  </script>
-
-  <!-- Main script - loaded last for performance -->
+  <!-- PERFORMANCE: Defer non-critical JavaScript -->
   <script src="script.js" defer></script>
 </body>
 </html>
