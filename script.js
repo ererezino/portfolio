@@ -85,13 +85,28 @@ function $(sel, ctx) {
 }
 
 function $$(sel, ctx) {
-  return Array.prototype.slice.call((ctx || document).querySelectorAll(sel));
+  var elements = (ctx || document).querySelectorAll(sel);
+  var arr = [];
+  for (var i = 0; i < elements.length; i++) {
+    arr.push(elements[i]);
+  }
+  return arr;
 }
 
-var prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+var prefersReducedMotion = false;
+try {
+  prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+} catch(e) {}
 
 function formatNumber(n) {
-  return n >= 1000000 ? (n / 1000000).toFixed(1) + 'M' : n.toLocaleString();
+  if (n >= 1000000) {
+    return (n / 1000000).toFixed(1) + 'M';
+  }
+  try {
+    return n.toLocaleString();
+  } catch(e) {
+    return String(n);
+  }
 }
 
 function lerp(a, b, t) {
@@ -149,7 +164,10 @@ function initPageLoader() {
 
 function initTheme() {
   var saved = storage.get('theme');
-  var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+  var prefersDark = false;
+  try {
+    prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+  } catch(e) {}
   var isDark = saved ? saved === 'dark' : prefersDark;
   document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light');
   updateThemeColorMeta(isDark ? 'dark' : 'light');
@@ -162,7 +180,6 @@ function toggleTheme() {
   storage.set('theme', next);
   updateThemeColorMeta(next);
   playSound('click');
-  announceToScreenReader('Theme changed to ' + next + ' mode');
 }
 
 function updateThemeColorMeta(theme) {
@@ -171,16 +188,18 @@ function updateThemeColorMeta(theme) {
 }
 
 function initSystemThemeListener() {
-  window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function(e) {
-    if (!storage.get('theme')) {
-      document.documentElement.setAttribute('data-theme', e.matches ? 'dark' : 'light');
-      updateThemeColorMeta(e.matches ? 'dark' : 'light');
-    }
-  });
+  try {
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function(e) {
+      if (!storage.get('theme')) {
+        document.documentElement.setAttribute('data-theme', e.matches ? 'dark' : 'light');
+        updateThemeColorMeta(e.matches ? 'dark' : 'light');
+      }
+    });
+  } catch(e) {}
 }
 
 // =============================================================================
-// TIME-BASED GREETING
+// TIME-BASED GREETING - Safari compatible
 // =============================================================================
 
 function initTimeGreeting() {
@@ -189,29 +208,35 @@ function initTimeGreeting() {
   if (!greetingEl) return;
 
   function update() {
-    var now = new Date();
-    var lagosTime = new Date(now.toLocaleString('en-US', { timeZone: 'Africa/Lagos' }));
-    var hour = lagosTime.getHours();
-    
-    var greeting;
-    if (hour >= 5 && hour < 12) {
-      greeting = 'Good morning ☀️';
-    } else if (hour >= 12 && hour < 17) {
-      greeting = 'Good afternoon 🌤️';
-    } else if (hour >= 17 && hour < 21) {
-      greeting = 'Good evening 🌅';
-    } else {
-      greeting = 'Good night 🌙';
-    }
-    
-    greetingEl.textContent = greeting;
-    
-    if (timeEl) {
-      timeEl.textContent = lagosTime.toLocaleTimeString('en-US', { 
-        hour: 'numeric', 
-        minute: '2-digit',
-        hour12: true 
-      });
+    try {
+      var now = new Date();
+      var hour = now.getUTCHours() + 1; // Lagos is UTC+1
+      if (hour >= 24) hour -= 24;
+      
+      var greeting;
+      if (hour >= 5 && hour < 12) {
+        greeting = 'Good morning';
+      } else if (hour >= 12 && hour < 17) {
+        greeting = 'Good afternoon';
+      } else if (hour >= 17 && hour < 21) {
+        greeting = 'Good evening';
+      } else {
+        greeting = 'Good night';
+      }
+      
+      greetingEl.textContent = greeting;
+      
+      if (timeEl) {
+        var hours = hour;
+        var minutes = now.getUTCMinutes();
+        var ampm = hours >= 12 ? 'PM' : 'AM';
+        hours = hours % 12;
+        hours = hours ? hours : 12;
+        var minuteStr = minutes < 10 ? '0' + minutes : minutes;
+        timeEl.textContent = hours + ':' + minuteStr + ' ' + ampm;
+      }
+    } catch(e) {
+      greetingEl.textContent = 'Hello';
     }
   }
   
@@ -251,216 +276,46 @@ function initAudioContext() {
   
   try {
     var AudioContext = window.AudioContext || window.webkitAudioContext;
-    sounds.context = new AudioContext();
-  } catch (e) {
-    console.warn('Web Audio API not supported');
-  }
+    if (AudioContext) {
+      sounds.context = new AudioContext();
+    }
+  } catch (e) {}
 }
 
 function playSound(type) {
   if (!soundEnabled || !sounds.context || prefersReducedMotion) return;
 
-  var ctx = sounds.context;
-  var oscillator = ctx.createOscillator();
-  var gainNode = ctx.createGain();
+  try {
+    var ctx = sounds.context;
+    var oscillator = ctx.createOscillator();
+    var gainNode = ctx.createGain();
 
-  oscillator.connect(gainNode);
-  gainNode.connect(ctx.destination);
+    oscillator.connect(gainNode);
+    gainNode.connect(ctx.destination);
 
-  if (type === 'click') {
-    oscillator.frequency.value = 800;
-    oscillator.type = 'sine';
-    gainNode.gain.value = 0.1;
-    gainNode.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.1);
-    oscillator.start(ctx.currentTime);
-    oscillator.stop(ctx.currentTime + 0.1);
-  } else if (type === 'whoosh') {
-    oscillator.frequency.value = 400;
-    oscillator.frequency.exponentialRampToValueAtTime(100, ctx.currentTime + 0.2);
-    oscillator.type = 'sine';
-    gainNode.gain.value = 0.05;
-    gainNode.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.2);
-    oscillator.start(ctx.currentTime);
-    oscillator.stop(ctx.currentTime + 0.2);
-  }
+    if (type === 'click') {
+      oscillator.frequency.value = 800;
+      oscillator.type = 'sine';
+      gainNode.gain.value = 0.1;
+      gainNode.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.1);
+      oscillator.start(ctx.currentTime);
+      oscillator.stop(ctx.currentTime + 0.1);
+    } else if (type === 'whoosh') {
+      oscillator.frequency.value = 400;
+      oscillator.frequency.exponentialRampToValueAtTime(100, ctx.currentTime + 0.2);
+      oscillator.type = 'sine';
+      gainNode.gain.value = 0.05;
+      gainNode.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.2);
+      oscillator.start(ctx.currentTime);
+      oscillator.stop(ctx.currentTime + 0.2);
+    }
+  } catch(e) {}
 }
 
 function bindSounds() {
   $$('[data-sound]').forEach(function(el) {
     el.addEventListener('click', function() {
       playSound(el.dataset.sound);
-    });
-  });
-}
-
-// =============================================================================
-// ACCESSIBILITY HELPERS
-// =============================================================================
-
-function announceToScreenReader(message) {
-  var announcement = document.createElement('div');
-  announcement.setAttribute('role', 'status');
-  announcement.setAttribute('aria-live', 'polite');
-  announcement.setAttribute('aria-atomic', 'true');
-  announcement.className = 'sr-only';
-  announcement.textContent = message;
-  document.body.appendChild(announcement);
-  setTimeout(function() { document.body.removeChild(announcement); }, 1000);
-}
-
-function trapFocus(element) {
-  var focusable = element.querySelectorAll(
-    'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
-  );
-  var first = focusable[0];
-  var last = focusable[focusable.length - 1];
-
-  function handleTab(e) {
-    if (e.key !== 'Tab') return;
-    if (e.shiftKey) {
-      if (document.activeElement === first) { e.preventDefault(); last.focus(); }
-    } else {
-      if (document.activeElement === last) { e.preventDefault(); first.focus(); }
-    }
-  }
-
-  element.addEventListener('keydown', handleTab);
-  return function() { element.removeEventListener('keydown', handleTab); };
-}
-
-// =============================================================================
-// CUSTOM CURSOR WITH TRAIL
-// =============================================================================
-
-function initCursor() {
-  if (prefersReducedMotion || !window.matchMedia('(hover: hover)').matches) return;
-
-  var cursor = $('#cursor');
-  var cursorTrail = $('#cursorTrail');
-  var cursorLabel = $('#cursorLabel');
-  if (!cursor) return;
-
-  var mouseX = 0, mouseY = 0, cursorX = 0, cursorY = 0;
-  var trailX = 0, trailY = 0;
-  var moveTimeout;
-
-  document.addEventListener('mousemove', function(e) {
-    mouseX = e.clientX;
-    mouseY = e.clientY;
-    cursor.classList.add('visible');
-    
-    if (cursorTrail) cursorTrail.classList.add('visible');
-    
-    clearTimeout(moveTimeout);
-    moveTimeout = setTimeout(function() {
-      if (cursorTrail) cursorTrail.classList.remove('visible');
-    }, 100);
-  }, { passive: true });
-
-  document.addEventListener('mouseleave', function() {
-    cursor.classList.remove('visible');
-    if (cursorTrail) cursorTrail.classList.remove('visible');
-    if (cursorLabel) cursorLabel.classList.remove('visible');
-  });
-
-  function animate() {
-    cursorX = lerp(cursorX, mouseX, 0.15);
-    cursorY = lerp(cursorY, mouseY, 0.15);
-    cursor.style.left = cursorX + 'px';
-    cursor.style.top = cursorY + 'px';
-    
-    if (cursorLabel) {
-      cursorLabel.style.left = cursorX + 'px';
-      cursorLabel.style.top = cursorY + 'px';
-    }
-    
-    if (cursorTrail) {
-      trailX = lerp(trailX, mouseX, 0.08);
-      trailY = lerp(trailY, mouseY, 0.08);
-      cursorTrail.style.left = trailX + 'px';
-      cursorTrail.style.top = trailY + 'px';
-    }
-    
-    requestAnimationFrame(animate);
-  }
-  animate();
-
-  document.addEventListener('mouseover', function(e) {
-    var target = e.target.closest('a, button');
-    var photoTarget = e.target.closest('.photo-item, .stack-card, .travel-postcard');
-    var labelTarget = e.target.closest('[data-cursor-label]');
-
-    if (photoTarget) {
-      cursor.classList.add('photo-hover');
-      cursor.classList.remove('hover');
-      if (cursorLabel) {
-        cursorLabel.textContent = 'View';
-        cursorLabel.classList.add('visible');
-      }
-    } else if (labelTarget && cursorLabel) {
-      cursor.classList.add('hover');
-      cursorLabel.textContent = labelTarget.dataset.cursorLabel;
-      cursorLabel.classList.add('visible');
-    } else if (target) {
-      cursor.classList.add('hover');
-      cursor.classList.remove('photo-hover');
-      if (cursorLabel) cursorLabel.classList.remove('visible');
-    }
-  });
-
-  document.addEventListener('mouseout', function(e) {
-    var target = e.target.closest('a, button, .photo-item, .stack-card, .travel-postcard, [data-cursor-label]');
-    if (target) {
-      cursor.classList.remove('hover', 'photo-hover');
-      if (cursorLabel) cursorLabel.classList.remove('visible');
-    }
-  });
-}
-
-// =============================================================================
-// 3D TILT EFFECT
-// =============================================================================
-
-function initTiltEffect() {
-  if (prefersReducedMotion) return;
-
-  $$('[data-tilt]').forEach(function(el) {
-    el.addEventListener('mousemove', function(e) {
-      var rect = el.getBoundingClientRect();
-      var x = e.clientX - rect.left;
-      var y = e.clientY - rect.top;
-      var centerX = rect.width / 2;
-      var centerY = rect.height / 2;
-      
-      var rotateX = (y - centerY) / 20;
-      var rotateY = (centerX - x) / 20;
-      
-      el.style.transform = 'perspective(1000px) rotateX(' + rotateX + 'deg) rotateY(' + rotateY + 'deg) scale3d(1.02, 1.02, 1.02)';
-    });
-
-    el.addEventListener('mouseleave', function() {
-      el.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) scale3d(1, 1, 1)';
-    });
-  });
-}
-
-// =============================================================================
-// MAGNETIC BUTTONS
-// =============================================================================
-
-function initMagneticButtons() {
-  if (prefersReducedMotion) return;
-
-  $$('[data-magnetic]').forEach(function(btn) {
-    btn.addEventListener('mousemove', function(e) {
-      var rect = btn.getBoundingClientRect();
-      var x = e.clientX - rect.left - rect.width / 2;
-      var y = e.clientY - rect.top - rect.height / 2;
-      btn.style.transform = 'translate(' + (x * 0.2) + 'px, ' + (y * 0.2) + 'px)';
-    });
-
-    btn.addEventListener('mouseleave', function() {
-      btn.style.transform = 'translate(0, 0)';
     });
   });
 }
@@ -474,7 +329,7 @@ function initHeader() {
   var backToTop = $('#backToTop');
   
   var handleScroll = throttle(function() {
-    var scrollY = window.scrollY;
+    var scrollY = window.pageYOffset || document.documentElement.scrollTop;
     if (header) header.classList.toggle('scrolled', scrollY > 50);
     if (backToTop) backToTop.classList.toggle('visible', scrollY > 600);
   }, 100);
@@ -483,7 +338,7 @@ function initHeader() {
 
   if (backToTop) {
     backToTop.addEventListener('click', function() {
-      window.scrollTo({ top: 0, behavior: prefersReducedMotion ? 'auto' : 'smooth' });
+      window.scrollTo(0, 0);
       playSound('whoosh');
     });
   }
@@ -497,7 +352,6 @@ function initMobileMenu() {
   var menu = $('#mobileMenu');
   var openBtn = $('#mobileMenuBtn');
   var closeBtn = $('#mobileMenuClose');
-  var removeTrapFocus = null;
 
   function open() {
     if (menu) {
@@ -506,12 +360,6 @@ function initMobileMenu() {
     }
     if (openBtn) openBtn.setAttribute('aria-expanded', 'true');
     document.body.style.overflow = 'hidden';
-    setTimeout(function() {
-      var firstLink = $('nav a', menu);
-      if (firstLink) firstLink.focus();
-    }, 100);
-    if (menu) removeTrapFocus = trapFocus(menu);
-    announceToScreenReader('Navigation menu opened');
   }
 
   function close() {
@@ -521,9 +369,6 @@ function initMobileMenu() {
     }
     if (openBtn) openBtn.setAttribute('aria-expanded', 'false');
     document.body.style.overflow = '';
-    if (openBtn) openBtn.focus();
-    if (removeTrapFocus) { removeTrapFocus(); removeTrapFocus = null; }
-    announceToScreenReader('Navigation menu closed');
   }
 
   if (openBtn) openBtn.addEventListener('click', open);
@@ -539,76 +384,46 @@ function initMobileMenu() {
 // =============================================================================
 
 var currentPhotoIndex = 0;
-var lastFocusedElement = null;
-var removeLightboxTrapFocus = null;
-var lightboxTouchStartX = 0;
 
 function initLightbox() {
   var lightbox = $('#lightbox');
+  if (!lightbox) return;
+  
   var img = $('#lightboxImg');
   var caption = $('#lightboxCaption');
   var counter = $('#lightboxCounter');
-  var loading = $('.lightbox-loading', lightbox);
 
-  function showLoading() { if (loading) loading.classList.add('visible'); }
-  function hideLoading() { if (loading) loading.classList.remove('visible'); }
-
-  function open(index, opener) {
+  function open(index) {
     currentPhotoIndex = index;
-    lastFocusedElement = opener || document.activeElement;
-    showLoading();
-    
-    var newImg = new Image();
-    newImg.onload = function() {
+    if (img) {
       img.src = PHOTOS[index].src;
       img.alt = PHOTOS[index].alt;
-      hideLoading();
-    };
-    newImg.onerror = function() { hideLoading(); img.alt = 'Failed to load image'; };
-    newImg.src = PHOTOS[index].src;
-    
-    caption.textContent = PHOTOS[index].caption;
+    }
+    if (caption) caption.textContent = PHOTOS[index].caption;
     if (counter) counter.textContent = (index + 1) + ' / ' + PHOTOS.length;
     
     lightbox.classList.add('active');
     lightbox.setAttribute('aria-hidden', 'false');
     document.body.style.overflow = 'hidden';
     
-    setTimeout(function() {
-      var closeBtn = $('.lightbox-close', lightbox);
-      if (closeBtn) closeBtn.focus();
-    }, 100);
-    if (lightbox) removeLightboxTrapFocus = trapFocus(lightbox);
-    
     playSound('whoosh');
-    announceToScreenReader('Photo ' + (index + 1) + ' of ' + PHOTOS.length + ': ' + PHOTOS[index].caption);
   }
 
   function close() {
     lightbox.classList.remove('active');
     lightbox.setAttribute('aria-hidden', 'true');
     document.body.style.overflow = '';
-    if (lastFocusedElement) lastFocusedElement.focus();
-    if (removeLightboxTrapFocus) { removeLightboxTrapFocus(); removeLightboxTrapFocus = null; }
   }
 
   function navigate(dir) {
     currentPhotoIndex = (currentPhotoIndex + dir + PHOTOS.length) % PHOTOS.length;
-    showLoading();
-    
-    var newImg = new Image();
-    newImg.onload = function() {
+    if (img) {
       img.src = PHOTOS[currentPhotoIndex].src;
       img.alt = PHOTOS[currentPhotoIndex].alt;
-      hideLoading();
-    };
-    newImg.src = PHOTOS[currentPhotoIndex].src;
-    
-    caption.textContent = PHOTOS[currentPhotoIndex].caption;
+    }
+    if (caption) caption.textContent = PHOTOS[currentPhotoIndex].caption;
     if (counter) counter.textContent = (currentPhotoIndex + 1) + ' / ' + PHOTOS.length;
-    
     playSound('whoosh');
-    announceToScreenReader('Photo ' + (currentPhotoIndex + 1) + ' of ' + PHOTOS.length + ': ' + PHOTOS[currentPhotoIndex].caption);
   }
 
   var closeBtn = $('.lightbox-close', lightbox);
@@ -618,26 +433,14 @@ function initLightbox() {
   if (closeBtn) closeBtn.addEventListener('click', close);
   if (prevBtn) prevBtn.addEventListener('click', function() { navigate(-1); });
   if (nextBtn) nextBtn.addEventListener('click', function() { navigate(1); });
-  if (lightbox) lightbox.addEventListener('click', function(e) { if (e.target === lightbox) close(); });
+  lightbox.addEventListener('click', function(e) { if (e.target === lightbox) close(); });
 
   document.addEventListener('keydown', function(e) {
-    if (!lightbox || !lightbox.classList.contains('active')) return;
+    if (!lightbox.classList.contains('active')) return;
     if (e.key === 'Escape') close();
     if (e.key === 'ArrowLeft') navigate(-1);
     if (e.key === 'ArrowRight') navigate(1);
   });
-
-  var imgContainer = $('.lightbox-img-container', lightbox);
-  if (imgContainer) {
-    imgContainer.addEventListener('touchstart', function(e) {
-      lightboxTouchStartX = e.touches[0].clientX;
-    }, { passive: true });
-
-    imgContainer.addEventListener('touchend', function(e) {
-      var diff = e.changedTouches[0].clientX - lightboxTouchStartX;
-      if (Math.abs(diff) > 50) navigate(diff > 0 ? -1 : 1);
-    }, { passive: true });
-  }
 
   window.openLightbox = open;
 }
@@ -650,12 +453,7 @@ function PhotoStack(container, photos) {
   this.container = container;
   this.photos = photos;
   this.currentIndex = 0;
-  this.isDragging = false;
-  this.startX = 0;
-  this.deltaX = 0;
-  this.hintHidden = false;
   this.cards = [];
-  this.hint = null;
   this.render();
   this.bindEvents();
 }
@@ -671,14 +469,14 @@ PhotoStack.prototype.render = function() {
     card.className = 'stack-card';
     card.dataset.index = i;
     card.setAttribute('aria-label', 'View photo: ' + photo.caption);
-    card.setAttribute('tabindex', i === 0 ? '0' : '-1');
     
-    var dotsHTML = self.photos.map(function(_, j) {
-      return '<span ' + (j === 0 ? 'class="active"' : '') + '></span>';
-    }).join('');
+    var dotsHTML = '';
+    for (var j = 0; j < self.photos.length; j++) {
+      dotsHTML += '<span' + (j === 0 ? ' class="active"' : '') + '></span>';
+    }
     
     card.innerHTML = 
-      '<img src="' + photo.src + '" alt="' + photo.alt + '" draggable="false" loading="' + (i === 0 ? 'eager' : 'lazy') + '" />' +
+      '<img src="' + photo.src + '" alt="' + photo.alt + '" draggable="false" />' +
       '<div class="stack-card-footer">' +
         '<span class="stack-card-caption">' + photo.caption + '</span>' +
         '<div class="stack-card-dots" aria-hidden="true">' + dotsHTML + '</div>' +
@@ -688,22 +486,13 @@ PhotoStack.prototype.render = function() {
 
   var hint = document.createElement('div');
   hint.className = 'stack-hint';
-  hint.setAttribute('aria-hidden', 'true');
-  hint.innerHTML = '<span>Swipe or tap to browse</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>';
+  hint.innerHTML = '<span>Swipe or tap to browse</span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>';
 
   this.container.innerHTML = '';
   this.container.appendChild(track);
   this.container.appendChild(hint);
   this.cards = $$('.stack-card', track);
-  this.hint = hint;
   this.updatePositions();
-};
-
-PhotoStack.prototype.hideHint = function() {
-  if (!this.hintHidden && this.hint) {
-    this.hint.classList.add('hidden');
-    this.hintHidden = true;
-  }
 };
 
 PhotoStack.prototype.updatePositions = function() {
@@ -713,39 +502,28 @@ PhotoStack.prototype.updatePositions = function() {
     
     if (offset === 0) {
       card.dataset.position = '0';
-      card.setAttribute('tabindex', '0');
-      card.setAttribute('aria-current', 'true');
     } else if (offset === 1) {
       card.dataset.position = '1';
-      card.setAttribute('tabindex', '-1');
-      card.setAttribute('aria-current', 'false');
     } else if (offset === self.photos.length - 1) {
       card.dataset.position = '2';
-      card.setAttribute('tabindex', '-1');
-      card.setAttribute('aria-current', 'false');
     } else {
       card.dataset.position = 'hidden';
-      card.setAttribute('tabindex', '-1');
-      card.setAttribute('aria-current', 'false');
     }
 
-    $$('.stack-card-dots span', card).forEach(function(dot, j) {
-      dot.classList.toggle('active', j === self.currentIndex);
-    });
+    var dots = $$('.stack-card-dots span', card);
+    for (var j = 0; j < dots.length; j++) {
+      if (j === self.currentIndex) {
+        dots[j].className = 'active';
+      } else {
+        dots[j].className = '';
+      }
+    }
   });
 };
 
 PhotoStack.prototype.next = function() { 
   this.currentIndex = (this.currentIndex + 1) % this.photos.length; 
   this.updatePositions();
-  this.hideHint();
-  playSound('whoosh');
-};
-
-PhotoStack.prototype.prev = function() { 
-  this.currentIndex = (this.currentIndex - 1 + this.photos.length) % this.photos.length; 
-  this.updatePositions();
-  this.hideHint();
   playSound('whoosh');
 };
 
@@ -755,44 +533,14 @@ PhotoStack.prototype.bindEvents = function() {
   this.cards.forEach(function(card) {
     card.addEventListener('click', function() {
       if (card.dataset.position === '0') {
-        window.openLightbox(parseInt(card.dataset.index, 10), card);
+        if (window.openLightbox) {
+          window.openLightbox(parseInt(card.dataset.index, 10));
+        }
       } else {
         self.next();
       }
     });
-    
-    card.addEventListener('mousedown', function(e) { self.onDragStart(e); });
-    card.addEventListener('touchstart', function(e) { self.onDragStart(e); }, { passive: true });
   });
-
-  document.addEventListener('mousemove', function(e) { self.onDragMove(e); }, { passive: true });
-  document.addEventListener('touchmove', function(e) { self.onDragMove(e); }, { passive: true });
-  document.addEventListener('mouseup', function() { self.onDragEnd(); });
-  document.addEventListener('touchend', function() { self.onDragEnd(); });
-
-  this.container.addEventListener('keydown', function(e) {
-    if (e.key === 'ArrowLeft') { self.prev(); e.preventDefault(); }
-    if (e.key === 'ArrowRight') { self.next(); e.preventDefault(); }
-  });
-};
-
-PhotoStack.prototype.onDragStart = function(e) {
-  this.isDragging = true;
-  this.startX = e.type.indexOf('mouse') !== -1 ? e.clientX : e.touches[0].clientX;
-};
-
-PhotoStack.prototype.onDragMove = function(e) {
-  if (!this.isDragging) return;
-  var x = e.type.indexOf('mouse') !== -1 ? e.clientX : e.touches[0].clientX;
-  this.deltaX = x - this.startX;
-};
-
-PhotoStack.prototype.onDragEnd = function() {
-  if (!this.isDragging) return;
-  this.isDragging = false;
-  if (this.deltaX > 60) this.prev();
-  else if (this.deltaX < -60) this.next();
-  this.deltaX = 0;
 };
 
 // =============================================================================
@@ -804,42 +552,24 @@ function renderPhotoGrid() {
   if (!container) return;
 
   var displayPhotos = PHOTOS.slice(0, 4);
+  var html = '';
 
-  container.innerHTML = displayPhotos.map(function() {
-    return '<div class="photo-item skeleton" role="listitem"></div>';
-  }).join('');
-
-  var photoItems = $$('.photo-item', container);
-  
   displayPhotos.forEach(function(photo, i) {
-    var item = photoItems[i];
-    var img = new Image();
-    
-    img.onload = function() {
-      item.innerHTML = 
-        '<img src="' + photo.src + '" alt="' + photo.alt + '" loading="lazy" />' +
-        '<div class="photo-item-overlay"></div>' +
-        '<span class="photo-item-caption">' + photo.caption + '</span>';
-      item.classList.remove('skeleton');
-      item.dataset.index = i;
-      item.setAttribute('tabindex', '0');
-      item.setAttribute('aria-label', 'View photo: ' + photo.caption);
-      
-      item.addEventListener('click', function() { window.openLightbox(parseInt(item.dataset.index, 10), item); });
-      item.addEventListener('keydown', function(e) {
-        if (e.key === 'Enter' || e.key === ' ') {
-          e.preventDefault();
-          window.openLightbox(parseInt(item.dataset.index, 10), item);
-        }
-      });
-    };
-    
-    img.onerror = function() {
-      item.innerHTML = '<span class="photo-item-caption">Failed to load</span>';
-      item.classList.remove('skeleton');
-    };
-    
-    img.src = photo.src;
+    html += '<div class="photo-item" data-index="' + i + '" tabindex="0" role="listitem">' +
+      '<img src="' + photo.src + '" alt="' + photo.alt + '" loading="lazy" />' +
+      '<div class="photo-item-overlay"></div>' +
+      '<span class="photo-item-caption">' + photo.caption + '</span>' +
+    '</div>';
+  });
+
+  container.innerHTML = html;
+
+  $$('.photo-item', container).forEach(function(item) {
+    item.addEventListener('click', function() {
+      if (window.openLightbox) {
+        window.openLightbox(parseInt(item.dataset.index, 10));
+      }
+    });
   });
 
   var countEl = $('#photoCount');
@@ -850,8 +580,9 @@ function renderArticles() {
   var container = $('#articleGrid');
   if (!container) return;
 
-  container.innerHTML = ARTICLES.map(function(article) {
-    return '<a href="' + article.url + '" class="article-card" role="listitem">' +
+  var html = '';
+  ARTICLES.forEach(function(article) {
+    html += '<a href="' + article.url + '" class="article-card" role="listitem">' +
       '<div>' +
         '<div class="article-card-topic">' + article.topic + '</div>' +
         '<h3 class="article-card-title">' + article.title + '</h3>' +
@@ -859,13 +590,15 @@ function renderArticles() {
       '<div class="article-card-footer">' +
         '<span class="article-card-date">' + article.date + '</span>' +
         '<span class="article-card-arrow" aria-hidden="true">' +
-          '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">' +
+          '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">' +
             '<path d="M7 17L17 7M17 7H7M17 7v10"/>' +
           '</svg>' +
         '</span>' +
       '</div>' +
     '</a>';
-  }).join('');
+  });
+
+  container.innerHTML = html;
 }
 
 function renderStepsSimple() {
@@ -914,7 +647,7 @@ function renderStepsSimple() {
       '</div>' +
       '<a href="/steps.html" class="steps-history-btn">' +
         'See step history' +
-        '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">' +
+        '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">' +
           '<path d="M5 12h14M12 5l7 7-7 7"/>' +
         '</svg>' +
       '</a>' +
@@ -925,17 +658,17 @@ function renderTravels() {
   var container = $('#travelGrid');
   if (!container) return;
 
-  container.innerHTML = TRAVELS.map(function(travel) {
-    return '<a href="' + travel.url + '" class="travel-postcard" role="listitem" rel="noopener">' +
+  var html = '';
+  TRAVELS.forEach(function(travel) {
+    html += '<a href="' + travel.url + '" class="travel-postcard" role="listitem">' +
       '<div class="travel-postcard-frame">' +
         '<div class="travel-postcard-photo">' +
           '<div class="travel-postcard-bg" style="background-image: url(\'' + travel.photo + '\')"></div>' +
           '<div class="travel-postcard-overlay"></div>' +
           '<div class="travel-postcard-content">' +
             '<h3 class="travel-postcard-title">' + travel.title + '</h3>' +
-            '<p class="travel-postcard-meta">' + travel.year + ' · ' + travel.meta + '</p>' +
+            '<p class="travel-postcard-meta">' + travel.year + ' &middot; ' + travel.meta + '</p>' +
           '</div>' +
-          '<div class="travel-postcard-wish">Wish you were here...</div>' +
         '</div>' +
         '<div class="travel-postcard-stamp">' +
           '<span class="travel-postcard-stamp-country">' + travel.countryCode + '</span>' +
@@ -949,7 +682,9 @@ function renderTravels() {
         '<div class="travel-postcard-airmail"></div>' +
       '</div>' +
     '</a>';
-  }).join('');
+  });
+
+  container.innerHTML = html;
 }
 
 function renderInto() {
@@ -958,39 +693,45 @@ function renderInto() {
   var tvList = $('#tvList');
 
   if (musicList) {
-    musicList.innerHTML = MUSIC.map(function(item) {
-      return '<a href="' + item.url + '" target="_blank" rel="noopener noreferrer" class="into-item" role="listitem">' +
+    var html = '';
+    MUSIC.forEach(function(item) {
+      html += '<a href="' + item.url + '" target="_blank" rel="noopener noreferrer" class="into-item" role="listitem">' +
         '<div class="into-cover"><img src="' + item.cover + '" alt="" loading="lazy" /></div>' +
         '<div class="into-text">' +
           '<div class="into-title">' + item.title + '</div>' +
           '<div class="into-meta">' + item.artist + '</div>' +
         '</div>' +
       '</a>';
-    }).join('');
+    });
+    musicList.innerHTML = html;
   }
 
   if (bookList) {
-    bookList.innerHTML = BOOKS.map(function(item) {
-      return '<a href="' + item.url + '" target="_blank" rel="noopener noreferrer" class="into-item" role="listitem">' +
+    var html = '';
+    BOOKS.forEach(function(item) {
+      html += '<a href="' + item.url + '" target="_blank" rel="noopener noreferrer" class="into-item" role="listitem">' +
         '<div class="into-cover"><img src="' + item.cover + '" alt="" loading="lazy" /></div>' +
         '<div class="into-text">' +
           '<div class="into-title">' + item.title + '</div>' +
           '<div class="into-meta">' + item.author + '</div>' +
         '</div>' +
       '</a>';
-    }).join('');
+    });
+    bookList.innerHTML = html;
   }
 
   if (tvList) {
-    tvList.innerHTML = TV.map(function(item) {
-      return '<a href="' + item.url + '" target="_blank" rel="noopener noreferrer" class="into-item" role="listitem">' +
+    var html = '';
+    TV.forEach(function(item) {
+      html += '<a href="' + item.url + '" target="_blank" rel="noopener noreferrer" class="into-item" role="listitem">' +
         '<div class="into-cover"><img src="' + item.cover + '" alt="" loading="lazy" /></div>' +
         '<div class="into-text">' +
           '<div class="into-title">' + item.title + '</div>' +
           '<div class="into-meta">' + item.year + '</div>' +
         '</div>' +
       '</a>';
-    }).join('');
+    });
+    tvList.innerHTML = html;
   }
 }
 
@@ -1022,15 +763,18 @@ function initHeroAnimations() {
 }
 
 function initScrollAnimations() {
+  if (typeof IntersectionObserver === 'undefined') return;
+  
   var sections = $$('section');
 
   var observer = new IntersectionObserver(function(entries) {
     entries.forEach(function(entry) {
-      if (!entry.isIntersecting) return;
-      entry.target.classList.add('visible');
-      observer.unobserve(entry.target);
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        observer.unobserve(entry.target);
+      }
     });
-  }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+  }, { threshold: 0.1 });
 
   sections.forEach(function(section) {
     section.classList.add('reveal');
@@ -1039,104 +783,11 @@ function initScrollAnimations() {
 }
 
 // =============================================================================
-// KONAMI CODE EASTER EGG
-// =============================================================================
-
-function initKonamiCode() {
-  var konamiCode = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'KeyB', 'KeyA'];
-  var konamiIndex = 0;
-
-  document.addEventListener('keydown', function(e) {
-    if (e.code === konamiCode[konamiIndex]) {
-      konamiIndex++;
-      
-      if (konamiIndex === konamiCode.length) {
-        triggerEasterEgg();
-        konamiIndex = 0;
-      }
-    } else {
-      konamiIndex = 0;
-    }
-  });
-}
-
-function triggerEasterEgg() {
-  var overlay = document.createElement('div');
-  overlay.className = 'easter-egg-overlay';
-  overlay.innerHTML = 
-    '<div class="easter-egg-content">' +
-      '<div class="easter-egg-emoji">🎉</div>' +
-      '<div class="easter-egg-text">You found the secret!</div>' +
-    '</div>';
-  document.body.appendChild(overlay);
-  
-  requestAnimationFrame(function() {
-    overlay.classList.add('active');
-  });
-  
-  if (soundEnabled && sounds.context) {
-    var ctx = sounds.context;
-    var notes = [523.25, 659.25, 783.99, 1046.50];
-    notes.forEach(function(freq, i) {
-      var osc = ctx.createOscillator();
-      var gain = ctx.createGain();
-      osc.connect(gain);
-      gain.connect(ctx.destination);
-      osc.frequency.value = freq;
-      osc.type = 'sine';
-      gain.gain.value = 0.1;
-      gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + i * 0.15 + 0.3);
-      osc.start(ctx.currentTime + i * 0.15);
-      osc.stop(ctx.currentTime + i * 0.15 + 0.3);
-    });
-  }
-  
-  setTimeout(function() {
-    overlay.classList.remove('active');
-    setTimeout(function() { overlay.remove(); }, 500);
-  }, 2000);
-}
-
-// =============================================================================
-// KEYBOARD SHORTCUTS
-// =============================================================================
-
-function initKeyboardShortcuts() {
-  document.addEventListener('keydown', function(e) {
-    if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
-    
-    if ((e.key === 'd' || e.key === 'D') && !e.metaKey && !e.ctrlKey) {
-      toggleTheme();
-    }
-    
-    if ((e.key === 'h' || e.key === 'H') && !e.metaKey && !e.ctrlKey) {
-      window.scrollTo({ top: 0, behavior: prefersReducedMotion ? 'auto' : 'smooth' });
-      playSound('whoosh');
-    }
-  });
-}
-
-// =============================================================================
-// ERROR HANDLING
-// =============================================================================
-
-function initErrorHandling() {
-  document.addEventListener('error', function(e) {
-    if (e.target.tagName === 'IMG') {
-      console.warn('Image failed to load:', e.target.src);
-      e.target.style.opacity = '0.3';
-    }
-  }, true);
-}
-
-// =============================================================================
 // INIT
 // =============================================================================
 
 document.addEventListener('DOMContentLoaded', function() {
-  initErrorHandling();
   initPageLoader();
-  
   initTheme();
   initSystemThemeListener();
   
@@ -1146,13 +797,8 @@ document.addEventListener('DOMContentLoaded', function() {
   if (mobileThemeToggle) mobileThemeToggle.addEventListener('click', toggleTheme);
   
   initTimeGreeting();
-  
   initSounds();
   bindSounds();
-
-  initCursor();
-  initMagneticButtons();
-  initTiltEffect();
   initHeader();
   initMobileMenu();
   initLightbox();
@@ -1168,15 +814,4 @@ document.addEventListener('DOMContentLoaded', function() {
 
   initHeroAnimations();
   initScrollAnimations();
-  
-  initKonamiCode();
-  initKeyboardShortcuts();
-});
-
-document.addEventListener('visibilitychange', function() {
-  if (document.hidden) {
-    document.body.classList.add('page-hidden');
-  } else {
-    document.body.classList.remove('page-hidden');
-  }
 });
