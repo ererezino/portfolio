@@ -29,7 +29,7 @@ const TRAVELS = [
     countryCode: "DE",
     flag: "🇩🇪",
     city: "Frankfurt",
-    date: "2025",
+    year: "2025",
     stampValue: "€1.60"
   },
   { 
@@ -41,7 +41,7 @@ const TRAVELS = [
     countryCode: "GH",
     flag: "🇬🇭",
     city: "Accra",
-    date: "2025",
+    year: "2025",
     stampValue: "₵8.00"
   }
 ];
@@ -905,7 +905,7 @@ function renderTravels() {
           
           <div class="travel-postcard-content">
             <h3 class="travel-postcard-title">${travel.title}</h3>
-            <p class="travel-postcard-meta">${travel.meta}</p>
+            <p class="travel-postcard-meta">${travel.year} · ${travel.meta}</p>
           </div>
           
           <div class="travel-postcard-wish">Wish you were here...</div>
@@ -921,7 +921,7 @@ function renderTravels() {
         <!-- Postmark -->
         <div class="travel-postcard-postmark">
           <span class="travel-postcard-postmark-city">${travel.city}</span>
-          <span class="travel-postcard-postmark-date">${travel.date}</span>
+          <span class="travel-postcard-postmark-date">${travel.year}</span>
         </div>
         
         <!-- Airmail stripes -->
