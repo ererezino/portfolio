@@ -5,10 +5,10 @@
 const PHOTOS = [
   { src: "/assets/photos/photo-1.jpg", caption: "Lagos, 2025", alt: "Street scene in Lagos", location: "Lagos" },
   { src: "/assets/photos/photo-2.jpg", caption: "Frankfurt, 2025", alt: "Frankfurt street", location: "Frankfurt" },
-  { src: "/assets/photos/photo-3.jpg", caption: "Frankfurt, 2025", alt: "Architecture in Frankfurt", location: "Frankfurt" },
-  { src: "/assets/photos/photo-4.jpg", caption: "Accra, 2025", alt: "Accra market", location: "Accra" },
-  { src: "/assets/photos/photo-5.jpg", caption: "Lagos, 2025", alt: "Lagos street", location: "Lagos" },
-  { src: "/assets/photos/photo-6.jpg", caption: "Durham, 2024", alt: "Durham scene", location: "Durham" }
+  { src: "/assets/photos/photo-3.jpg", caption: "Accra, 2025", alt: "Accra market", location: "Accra" },
+  { src: "/assets/photos/photo-4.jpg", caption: "Lagos, 2025", alt: "Lagos street", location: "Lagos" },
+  { src: "/assets/photos/photo-5.jpg", caption: "Durham, 2024", alt: "Durham scene", location: "Durham" },
+  { src: "/assets/photos/photo-6.jpg", caption: "Frankfurt, 2025", alt: "Architecture in Frankfurt", location: "Frankfurt" }
 ];
 
 const ARTICLES = [
@@ -17,8 +17,8 @@ const ARTICLES = [
 ];
 
 const TRAVELS = [
-  { title: "Frankfurt", meta: "2025 · small details, big calm", url: "/travels.html" },
-  { title: "Accra", meta: "2025 · food, pace, and sunlight", url: "/travels.html" }
+  { title: "Frankfurt", meta: "2025 · small details, big calm", url: "/travel.html" },
+  { title: "Accra", meta: "2025 · food, pace, and sunlight", url: "/travel.html" }
 ];
 
 const MUSIC = [
@@ -35,11 +35,27 @@ const TV = [
   { title: "Elsbeth", year: "2024", url: "https://www.imdb.com/title/tt26591110/", cover: "https://m.media-amazon.com/images/M/MV5BOTcwYzc0M2QtM2NiYy00MWU1LWEwYmYtZGYzYWM4MTZjZmU1XkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg" }
 ];
 
-const MONTHLY_GOAL = 310000;
-const MONTHS = [
-  { month: "January", year: 2026, isCurrent: true, steps: 198000, km: 140, avgStepsPerDay: 9914 },
-  { month: "December", year: 2025, isCurrent: false, steps: 401117, km: 307, avgStepsPerDay: 12939 }
-];
+// January 2026 data only
+const STEPS_DATA = {
+  month: "January",
+  year: 2026,
+  goal: 310000,
+  current: 198000,
+  distance: 140,
+  activeMinutes: 1680,
+  calories: 8200,
+  dailyAvg: 9914,
+  daysElapsed: 20,
+  weeklyData: [
+    { day: "Mon", steps: 11200 },
+    { day: "Tue", steps: 8500 },
+    { day: "Wed", steps: 12300 },
+    { day: "Thu", steps: 9800 },
+    { day: "Fri", steps: 7600 },
+    { day: "Sat", steps: 14200 },
+    { day: "Sun", steps: 10500 }
+  ]
+};
 
 // =============================================================================
 // UTILITIES
@@ -47,13 +63,9 @@ const MONTHS = [
 
 const $ = (sel, ctx = document) => ctx.querySelector(sel);
 const $$ = (sel, ctx = document) => [...ctx.querySelectorAll(sel)];
-
 const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-const formatNumber = (n) => {
-  if (n >= 1000000) return (n / 1000000).toFixed(1) + 'M';
-  return n.toLocaleString();
-};
+const formatNumber = (n) => n >= 1000000 ? (n / 1000000).toFixed(1) + 'M' : n.toLocaleString();
+const lerp = (a, b, t) => a + (b - a) * t;
 
 // =============================================================================
 // THEME
@@ -63,7 +75,6 @@ function initTheme() {
   const saved = localStorage.getItem('theme');
   const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
   const isDark = saved ? saved === 'dark' : prefersDark;
-  
   document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light');
 }
 
@@ -75,15 +86,96 @@ function toggleTheme() {
 }
 
 // =============================================================================
+// CUSTOM CURSOR
+// =============================================================================
+
+function initCursor() {
+  if (prefersReducedMotion || !window.matchMedia('(hover: hover)').matches) return;
+
+  const cursor = $('#cursor');
+  const cursorLabel = $('#cursorLabel');
+  if (!cursor) return;
+
+  let mouseX = 0, mouseY = 0, cursorX = 0, cursorY = 0;
+
+  document.addEventListener('mousemove', (e) => {
+    mouseX = e.clientX;
+    mouseY = e.clientY;
+    cursor.classList.add('visible');
+  }, { passive: true });
+
+  document.addEventListener('mouseleave', () => {
+    cursor.classList.remove('visible');
+    cursorLabel.classList.remove('visible');
+  });
+
+  function animate() {
+    cursorX = lerp(cursorX, mouseX, 0.15);
+    cursorY = lerp(cursorY, mouseY, 0.15);
+    cursor.style.left = `${cursorX}px`;
+    cursor.style.top = `${cursorY}px`;
+    cursorLabel.style.left = `${cursorX}px`;
+    cursorLabel.style.top = `${cursorY}px`;
+    requestAnimationFrame(animate);
+  }
+  animate();
+
+  // Bind hover effects
+  document.addEventListener('mouseover', (e) => {
+    const target = e.target.closest('a, button');
+    const photoTarget = e.target.closest('.photo-item, .stack-card');
+
+    if (photoTarget) {
+      cursor.classList.add('photo-hover');
+      cursor.classList.remove('hover');
+      cursorLabel.textContent = 'View';
+      cursorLabel.classList.add('visible');
+    } else if (target) {
+      cursor.classList.add('hover');
+      cursor.classList.remove('photo-hover');
+      cursorLabel.classList.remove('visible');
+    }
+  });
+
+  document.addEventListener('mouseout', (e) => {
+    const target = e.target.closest('a, button, .photo-item, .stack-card');
+    if (target) {
+      cursor.classList.remove('hover', 'photo-hover');
+      cursorLabel.classList.remove('visible');
+    }
+  });
+}
+
+// =============================================================================
+// MAGNETIC BUTTONS
+// =============================================================================
+
+function initMagneticButtons() {
+  if (prefersReducedMotion) return;
+
+  $$('[data-magnetic]').forEach(btn => {
+    btn.addEventListener('mousemove', (e) => {
+      const rect = btn.getBoundingClientRect();
+      const x = e.clientX - rect.left - rect.width / 2;
+      const y = e.clientY - rect.top - rect.height / 2;
+      btn.style.transform = `translate(${x * 0.2}px, ${y * 0.2}px)`;
+    });
+
+    btn.addEventListener('mouseleave', () => {
+      btn.style.transform = 'translate(0, 0)';
+    });
+  });
+}
+
+// =============================================================================
 // HEADER
 // =============================================================================
 
 function initHeader() {
   const header = $('#header');
   const backToTop = $('#backToTop');
-  
   let ticking = false;
-  
+
   window.addEventListener('scroll', () => {
     if (!ticking) {
       requestAnimationFrame(() => {
@@ -94,7 +186,7 @@ function initHeader() {
       ticking = true;
     }
   }, { passive: true });
-  
+
   backToTop?.addEventListener('click', () => {
     window.scrollTo({ top: 0, behavior: prefersReducedMotion ? 'auto' : 'smooth' });
   });
@@ -108,24 +200,22 @@ function initMobileMenu() {
   const menu = $('#mobileMenu');
   const openBtn = $('#mobileMenuBtn');
   const closeBtn = $('#mobileMenuClose');
-  
+
   function open() {
     menu?.classList.add('open');
     menu?.setAttribute('aria-hidden', 'false');
     document.body.style.overflow = 'hidden';
   }
-  
+
   function close() {
     menu?.classList.remove('open');
     menu?.setAttribute('aria-hidden', 'true');
     document.body.style.overflow = '';
   }
-  
+
   openBtn?.addEventListener('click', open);
   closeBtn?.addEventListener('click', close);
-  
   $$('a', menu).forEach(link => link.addEventListener('click', close));
-  
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape' && menu?.classList.contains('open')) close();
   });
@@ -142,52 +232,45 @@ function initLightbox() {
   const lightbox = $('#lightbox');
   const img = $('#lightboxImg');
   const caption = $('#lightboxCaption');
-  
+
   function open(index, opener) {
     currentPhotoIndex = index;
     lastFocusedElement = opener || document.activeElement;
-    
     img.src = PHOTOS[index].src;
     img.alt = PHOTOS[index].alt;
     caption.textContent = PHOTOS[index].caption;
-    
     lightbox.classList.add('active');
     lightbox.setAttribute('aria-hidden', 'false');
     document.body.style.overflow = 'hidden';
-    
     $('.lightbox-close', lightbox)?.focus();
   }
-  
+
   function close() {
     lightbox.classList.remove('active');
     lightbox.setAttribute('aria-hidden', 'true');
     document.body.style.overflow = '';
     lastFocusedElement?.focus();
   }
-  
+
   function navigate(dir) {
     currentPhotoIndex = (currentPhotoIndex + dir + PHOTOS.length) % PHOTOS.length;
     img.src = PHOTOS[currentPhotoIndex].src;
     img.alt = PHOTOS[currentPhotoIndex].alt;
     caption.textContent = PHOTOS[currentPhotoIndex].caption;
   }
-  
+
   $('.lightbox-close', lightbox)?.addEventListener('click', close);
   $('.lightbox-prev', lightbox)?.addEventListener('click', () => navigate(-1));
   $('.lightbox-next', lightbox)?.addEventListener('click', () => navigate(1));
-  
-  lightbox?.addEventListener('click', (e) => {
-    if (e.target === lightbox) close();
-  });
-  
+  lightbox?.addEventListener('click', (e) => { if (e.target === lightbox) close(); });
+
   document.addEventListener('keydown', (e) => {
     if (!lightbox?.classList.contains('active')) return;
-    
     if (e.key === 'Escape') close();
     if (e.key === 'ArrowLeft') navigate(-1);
     if (e.key === 'ArrowRight') navigate(1);
   });
-  
+
   window.openLightbox = open;
 }
 
@@ -203,22 +286,20 @@ class PhotoStack {
     this.isDragging = false;
     this.startX = 0;
     this.deltaX = 0;
-    
     this.render();
     this.bindEvents();
   }
-  
+
   render() {
     const track = document.createElement('div');
     track.className = 'photo-stack-track';
-    
+
     this.photos.forEach((photo, i) => {
       const card = document.createElement('button');
       card.type = 'button';
       card.className = 'stack-card';
       card.dataset.index = i;
       card.setAttribute('aria-label', `View photo: ${photo.caption}`);
-      
       card.innerHTML = `
         <img src="${photo.src}" alt="${photo.alt}" draggable="false" />
         <div class="stack-card-footer">
@@ -228,173 +309,115 @@ class PhotoStack {
           </div>
         </div>
       `;
-      
       track.appendChild(card);
     });
-    
+
     const hint = document.createElement('div');
     hint.className = 'stack-hint';
-    hint.innerHTML = `
-      <span>Swipe or tap</span>
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-        <path d="M5 12h14M12 5l7 7-7 7"/>
-      </svg>
-    `;
-    
+    hint.innerHTML = `<span>Swipe or tap</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>`;
+
     this.container.innerHTML = '';
     this.container.appendChild(track);
     this.container.appendChild(hint);
-    
     this.cards = $$('.stack-card', track);
     this.updatePositions();
   }
-  
+
   updatePositions() {
     this.cards.forEach((card, i) => {
       const offset = (i - this.currentIndex + this.photos.length) % this.photos.length;
-      
-      if (offset === 0) {
-        card.dataset.position = '0';
-      } else if (offset === 1) {
-        card.dataset.position = '1';
-      } else if (offset === this.photos.length - 1) {
-        card.dataset.position = '2';
-      } else {
-        card.dataset.position = 'hidden';
-      }
-      
+      if (offset === 0) card.dataset.position = '0';
+      else if (offset === 1) card.dataset.position = '1';
+      else if (offset === this.photos.length - 1) card.dataset.position = '2';
+      else card.dataset.position = 'hidden';
+
       $$('.stack-card-dots span', card).forEach((dot, j) => {
         dot.classList.toggle('active', j === this.currentIndex);
       });
     });
   }
-  
-  next() {
-    this.currentIndex = (this.currentIndex + 1) % this.photos.length;
-    this.updatePositions();
-  }
-  
-  prev() {
-    this.currentIndex = (this.currentIndex - 1 + this.photos.length) % this.photos.length;
-    this.updatePositions();
-  }
-  
+
+  next() { this.currentIndex = (this.currentIndex + 1) % this.photos.length; this.updatePositions(); }
+  prev() { this.currentIndex = (this.currentIndex - 1 + this.photos.length) % this.photos.length; this.updatePositions(); }
+
   bindEvents() {
     this.cards.forEach(card => {
       card.addEventListener('click', () => {
-        const pos = card.dataset.position;
-        if (pos === '0') {
-          const idx = parseInt(card.dataset.index, 10);
-          window.openLightbox(idx, card);
+        if (card.dataset.position === '0') {
+          window.openLightbox(parseInt(card.dataset.index, 10), card);
         } else {
           this.next();
         }
       });
-      
       card.addEventListener('mousedown', (e) => this.onDragStart(e));
       card.addEventListener('touchstart', (e) => this.onDragStart(e), { passive: true });
     });
-    
+
     document.addEventListener('mousemove', (e) => this.onDragMove(e), { passive: true });
     document.addEventListener('touchmove', (e) => this.onDragMove(e), { passive: true });
     document.addEventListener('mouseup', () => this.onDragEnd());
     document.addEventListener('touchend', () => this.onDragEnd());
-    
+
     this.container.addEventListener('keydown', (e) => {
       if (e.key === 'ArrowLeft') this.prev();
       if (e.key === 'ArrowRight') this.next();
     });
   }
-  
+
   onDragStart(e) {
     this.isDragging = true;
     this.startX = e.type.includes('mouse') ? e.clientX : e.touches[0].clientX;
   }
-  
+
   onDragMove(e) {
     if (!this.isDragging) return;
     const x = e.type.includes('mouse') ? e.clientX : e.touches[0].clientX;
     this.deltaX = x - this.startX;
   }
-  
+
   onDragEnd() {
     if (!this.isDragging) return;
     this.isDragging = false;
-    
     if (this.deltaX > 50) this.prev();
     else if (this.deltaX < -50) this.next();
-    
     this.deltaX = 0;
   }
 }
 
 // =============================================================================
-// PHOTO GRID
+// RENDER FUNCTIONS
 // =============================================================================
-
-let activeFilter = 'All';
-
-function getLocations() {
-  const locations = [...new Set(PHOTOS.map(p => p.location))].sort();
-  return ['All', ...locations];
-}
-
-function renderPhotoFilters() {
-  const container = $('#photoFilters');
-  if (!container) return;
-  
-  const locations = getLocations();
-  
-  container.innerHTML = locations.map(loc => `
-    <button class="filter-chip ${loc === activeFilter ? 'active' : ''}" type="button" data-filter="${loc}">
-      ${loc}
-    </button>
-  `).join('');
-  
-  $$('.filter-chip', container).forEach(chip => {
-    chip.addEventListener('click', () => {
-      activeFilter = chip.dataset.filter;
-      renderPhotoFilters();
-      renderPhotoGrid();
-    });
-  });
-}
 
 function renderPhotoGrid() {
   const container = $('#photoGrid');
   if (!container) return;
-  
-  const filtered = activeFilter === 'All' 
-    ? PHOTOS 
-    : PHOTOS.filter(p => p.location === activeFilter);
-  
-  container.innerHTML = filtered.map((photo) => {
-    const originalIndex = PHOTOS.indexOf(photo);
-    return `
-      <button type="button" class="photo-item" data-index="${originalIndex}">
-        <img src="${photo.src}" alt="${photo.alt}" loading="lazy" />
-        <div class="photo-item-overlay"></div>
-        <span class="photo-item-caption">${photo.caption}</span>
-      </button>
-    `;
-  }).join('');
-  
+
+  // Show only 4 photos for minimal look
+  const displayPhotos = PHOTOS.slice(0, 4);
+
+  container.innerHTML = displayPhotos.map((photo, i) => `
+    <button type="button" class="photo-item" data-index="${i}">
+      <img src="${photo.src}" alt="${photo.alt}" loading="lazy" />
+      <div class="photo-item-overlay"></div>
+      <span class="photo-item-caption">${photo.caption}</span>
+    </button>
+  `).join('');
+
   $$('.photo-item', container).forEach(item => {
     item.addEventListener('click', () => {
-      const index = parseInt(item.dataset.index, 10);
-      window.openLightbox(index, item);
+      window.openLightbox(parseInt(item.dataset.index, 10), item);
     });
   });
-}
 
-// =============================================================================
-// ARTICLES
-// =============================================================================
+  // Update photo count
+  const countEl = $('#photoCount');
+  if (countEl) countEl.textContent = `${PHOTOS.length}+ photos`;
+}
 
 function renderArticles() {
   const container = $('#articleGrid');
   if (!container) return;
-  
+
   container.innerHTML = ARTICLES.map(article => `
     <a href="${article.url}" class="article-card">
       <div>
@@ -413,66 +436,135 @@ function renderArticles() {
   `).join('');
 }
 
-// =============================================================================
-// MOVEMENT
-// =============================================================================
-
-function animateCounter(el, target, duration = 1500) {
-  if (prefersReducedMotion) {
-    el.textContent = formatNumber(target);
-    return;
-  }
-  
-  const start = performance.now();
-  
-  function update(now) {
-    const progress = Math.min((now - start) / duration, 1);
-    const eased = 1 - Math.pow(1 - progress, 3);
-    el.textContent = formatNumber(Math.floor(target * eased));
-    
-    if (progress < 1) requestAnimationFrame(update);
-  }
-  
-  requestAnimationFrame(update);
-}
-
-function renderMonthCards() {
-  const container = $('#monthGrid');
+function renderStepsDashboard() {
+  const container = $('#stepsDashboard');
   if (!container) return;
-  
-  container.innerHTML = MONTHS.map(m => {
-    const pct = Math.round((m.steps / MONTHLY_GOAL) * 100);
-    const barWidth = Math.min(pct, 100);
-    const isComplete = m.steps >= MONTHLY_GOAL;
-    
-    return `
-      <div class="month-card">
-        <div class="month-card-header">
-          <span class="month-card-name">${m.month} ${m.year}</span>
-          <span class="month-card-status ${m.isCurrent ? 'current' : isComplete ? 'complete' : ''}">
-            ${m.isCurrent ? 'In progress' : isComplete ? 'Complete' : 'Incomplete'}
-          </span>
-        </div>
-        <div class="month-card-steps">${formatNumber(m.steps)}</div>
-        <div class="month-card-goal">
-          <strong>${pct}%</strong> of 310k goal
-        </div>
-        <div class="progress-bar">
-          <div class="progress-fill" data-width="${barWidth}"></div>
+
+  const d = STEPS_DATA;
+  const pct = Math.round((d.current / d.goal) * 100);
+  const ringOffset = 377 - (377 * Math.min(pct, 100) / 100);
+  const remaining = Math.max(d.goal - d.current, 0);
+  const daysLeft = 31 - d.daysElapsed;
+  const dailyNeeded = daysLeft > 0 ? Math.ceil(remaining / daysLeft) : 0;
+
+  container.innerHTML = `
+    <!-- Main stats card -->
+    <div class="steps-main-card">
+      <div class="steps-primary">
+        <div class="steps-value" id="stepsValue">${formatNumber(d.current)}</div>
+        <div class="steps-label">steps this month</div>
+      </div>
+      <div class="steps-ring-container">
+        <svg class="steps-ring" viewBox="0 0 120 120">
+          <defs>
+            <linearGradient id="ringGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" stop-color="var(--accent)" />
+              <stop offset="100%" stop-color="var(--accent-light)" />
+            </linearGradient>
+          </defs>
+          <circle class="ring-bg" cx="60" cy="60" r="52" />
+          <circle class="ring-progress" cx="60" cy="60" r="52" id="ringProgress" style="stroke-dashoffset: ${ringOffset};" />
+        </svg>
+        <div class="steps-ring-center">
+          <span class="ring-percentage">${pct}%</span>
+          <span class="ring-goal-label">of goal</span>
         </div>
       </div>
-    `;
-  }).join('');
-}
+    </div>
 
-// =============================================================================
-// TRAVELS
-// =============================================================================
+    <!-- Stats row -->
+    <div class="steps-stats-row">
+      <div class="steps-stat-card">
+        <div class="steps-stat-icon distance">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+            <circle cx="12" cy="10" r="3"/>
+          </svg>
+        </div>
+        <div class="steps-stat-value">${d.distance} km</div>
+        <div class="steps-stat-label">Distance</div>
+      </div>
+
+      <div class="steps-stat-card">
+        <div class="steps-stat-icon time">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10"/>
+            <polyline points="12 6 12 12 16 14"/>
+          </svg>
+        </div>
+        <div class="steps-stat-value">${Math.floor(d.activeMinutes / 60)}h ${d.activeMinutes % 60}m</div>
+        <div class="steps-stat-label">Active time</div>
+      </div>
+
+      <div class="steps-stat-card">
+        <div class="steps-stat-icon calories">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M12 22c-4.97 0-9-2.582-9-7v-.088C3 12.794 4.338 11.1 6.375 10c1.949-1.052 3.101-2.99 3.112-5l.013-3 2.26 1.378a8.002 8.002 0 0 1 3.54 4.53l.168.5.168-.5a8.002 8.002 0 0 1 3.54-4.53L21.438 2l.012 3c.011 2.01 1.163 3.948 3.112 5C26.662 11.1 28 12.794 28 14.912V15c0 4.418-4.03 7-9 7z" transform="scale(0.85) translate(2, 2)"/>
+          </svg>
+        </div>
+        <div class="steps-stat-value">${formatNumber(d.calories)}</div>
+        <div class="steps-stat-label">Calories</div>
+      </div>
+
+      <div class="steps-stat-card">
+        <div class="steps-stat-icon avg">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="12" y1="20" x2="12" y2="10"/>
+            <line x1="18" y1="20" x2="18" y2="4"/>
+            <line x1="6" y1="20" x2="6" y2="16"/>
+          </svg>
+        </div>
+        <div class="steps-stat-value">${formatNumber(d.dailyAvg)}</div>
+        <div class="steps-stat-label">Daily avg</div>
+      </div>
+    </div>
+
+    <!-- Weekly chart -->
+    <div class="steps-chart-card">
+      <div class="steps-chart-header">
+        <span class="steps-chart-title">This week</span>
+        <span class="steps-chart-period">Jan 13 - 19</span>
+      </div>
+      <div class="steps-chart">
+        ${d.weeklyData.map(day => {
+          const height = (day.steps / 15000) * 100;
+          return `
+            <div class="chart-bar">
+              <div class="chart-bar-fill" style="height: ${height}px;"></div>
+              <span class="chart-bar-label">${day.day}</span>
+            </div>
+          `;
+        }).join('')}
+      </div>
+    </div>
+
+    <!-- Goal card -->
+    <div class="steps-goal-card">
+      <div class="steps-goal-header">
+        <span class="steps-goal-title">Monthly Goal</span>
+        <span class="steps-goal-status in-progress">In progress</span>
+      </div>
+      <div class="steps-goal-progress">
+        <div class="steps-goal-numbers">
+          <span class="steps-goal-current">${formatNumber(d.current)}</span>
+          <span class="steps-goal-target">/ ${formatNumber(d.goal)}</span>
+        </div>
+        <div class="progress-bar">
+          <div class="progress-fill" id="goalProgress" data-width="${pct}"></div>
+        </div>
+      </div>
+      <div class="steps-goal-meta">
+        <span>${formatNumber(remaining)} to go</span>
+        <span>${formatNumber(dailyNeeded)}/day needed</span>
+      </div>
+    </div>
+  `;
+}
 
 function renderTravels() {
   const container = $('#travelGrid');
   if (!container) return;
-  
+
   container.innerHTML = TRAVELS.map(travel => `
     <a href="${travel.url}" class="travel-card">
       <div>
@@ -488,21 +580,15 @@ function renderTravels() {
   `).join('');
 }
 
-// =============================================================================
-// INTO (Music, Books, TV)
-// =============================================================================
-
 function renderInto() {
   const musicList = $('#musicList');
   const bookList = $('#bookList');
   const tvList = $('#tvList');
-  
+
   if (musicList) {
     musicList.innerHTML = MUSIC.map(item => `
       <a href="${item.url}" target="_blank" rel="noopener noreferrer" class="into-item">
-        <div class="into-cover">
-          <img src="${item.cover}" alt="${item.title}" loading="lazy" />
-        </div>
+        <div class="into-cover"><img src="${item.cover}" alt="${item.title}" loading="lazy" /></div>
         <div class="into-text">
           <div class="into-title">${item.title}</div>
           <div class="into-meta">${item.artist}</div>
@@ -510,13 +596,11 @@ function renderInto() {
       </a>
     `).join('');
   }
-  
+
   if (bookList) {
     bookList.innerHTML = BOOKS.map(item => `
       <a href="${item.url}" target="_blank" rel="noopener noreferrer" class="into-item">
-        <div class="into-cover">
-          <img src="${item.cover}" alt="${item.title}" loading="lazy" />
-        </div>
+        <div class="into-cover"><img src="${item.cover}" alt="${item.title}" loading="lazy" /></div>
         <div class="into-text">
           <div class="into-title">${item.title}</div>
           <div class="into-meta">${item.author}</div>
@@ -524,13 +608,11 @@ function renderInto() {
       </a>
     `).join('');
   }
-  
+
   if (tvList) {
     tvList.innerHTML = TV.map(item => `
       <a href="${item.url}" target="_blank" rel="noopener noreferrer" class="into-item">
-        <div class="into-cover">
-          <img src="${item.cover}" alt="${item.title}" loading="lazy" />
-        </div>
+        <div class="into-cover"><img src="${item.cover}" alt="${item.title}" loading="lazy" /></div>
         <div class="into-text">
           <div class="into-title">${item.title}</div>
           <div class="into-meta">${item.year}</div>
@@ -541,41 +623,50 @@ function renderInto() {
 }
 
 // =============================================================================
-// SCROLL ANIMATIONS
+// ANIMATIONS
 // =============================================================================
+
+function animateCounter(el, target, duration = 1500) {
+  if (prefersReducedMotion) { el.textContent = formatNumber(target); return; }
+  const start = performance.now();
+  function update(now) {
+    const progress = Math.min((now - start) / duration, 1);
+    const eased = 1 - Math.pow(1 - progress, 3);
+    el.textContent = formatNumber(Math.floor(target * eased));
+    if (progress < 1) requestAnimationFrame(update);
+  }
+  requestAnimationFrame(update);
+}
+
+function initHeroAnimations() {
+  $$('.hero-title .line-inner').forEach(el => el.classList.add('animate'));
+  $('.hero-text')?.classList.add('animate');
+  $('.hero-ctas')?.classList.add('animate');
+  $('.hero-visual')?.classList.add('animate');
+}
 
 function initScrollAnimations() {
   const sections = $$('section');
-  
+
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
       if (!entry.isIntersecting) return;
-      
       entry.target.classList.add('visible');
-      
-      if (entry.target.id === 'movement') {
-        const yearSteps = $('#yearSteps');
-        const totalKm = $('#totalKm');
-        const dailyAvg = $('#dailyAvg');
-        
-        if (yearSteps) animateCounter(yearSteps, parseInt(yearSteps.dataset.target, 10));
-        if (totalKm) animateCounter(totalKm, parseInt(totalKm.dataset.target, 10));
-        if (dailyAvg) animateCounter(dailyAvg, parseInt(dailyAvg.dataset.target, 10));
-        
-        setTimeout(() => {
-          $$('.progress-fill', entry.target).forEach(fill => {
-            fill.style.width = fill.dataset.width + '%';
-          });
-        }, 300);
+
+      // Animate steps dashboard
+      if (entry.target.id === 'steps') {
+        const goalProgress = $('#goalProgress');
+        if (goalProgress) {
+          setTimeout(() => {
+            goalProgress.style.width = goalProgress.dataset.width + '%';
+          }, 300);
+        }
       }
-      
+
       observer.unobserve(entry.target);
     });
-  }, {
-    threshold: 0.1,
-    rootMargin: '0px 0px -50px 0px'
-  });
-  
+  }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+
   sections.forEach(section => {
     section.classList.add('reveal');
     observer.observe(section);
@@ -591,26 +682,26 @@ document.addEventListener('DOMContentLoaded', () => {
   initTheme();
   $('#themeToggle')?.addEventListener('click', toggleTheme);
   $('#mobileThemeToggle')?.addEventListener('click', toggleTheme);
-  
+
   // Core functionality
+  initCursor();
+  initMagneticButtons();
   initHeader();
   initMobileMenu();
   initLightbox();
-  
+
   // Hero photo stack
   const heroStack = $('#heroPhotoStack');
-  if (heroStack) {
-    new PhotoStack(heroStack, PHOTOS.slice(0, 4));
-  }
-  
+  if (heroStack) new PhotoStack(heroStack, PHOTOS.slice(0, 4));
+
   // Render content
-  renderPhotoFilters();
   renderPhotoGrid();
   renderArticles();
-  renderMonthCards();
+  renderStepsDashboard();
   renderTravels();
   renderInto();
-  
-  // Scroll animations
+
+  // Animations
+  initHeroAnimations();
   initScrollAnimations();
 });
