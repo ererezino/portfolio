@@ -16,9 +16,22 @@ const ARTICLES = [
   { title: "What I'm learning from walking", date: "Dec 2025", topic: "Movement", url: "/articles.html" }
 ];
 
+// Travel data with photos for postcards
 const TRAVELS = [
-  { title: "Frankfurt", meta: "2025 · small details, big calm", url: "/travel.html" },
-  { title: "Accra", meta: "2025 · food, pace, and sunlight", url: "/travel.html" }
+  { 
+    title: "Frankfurt", 
+    meta: "2025 · small details, big calm", 
+    url: "https://www.ererezino.com/travels",
+    photo: "/assets/photos/photo-2.jpg", // Frankfurt photo
+    stamp: "DE"
+  },
+  { 
+    title: "Accra", 
+    meta: "2025 · food, pace, and sunlight", 
+    url: "https://www.ererezino.com/travels",
+    photo: "/assets/photos/photo-3.jpg", // Accra photo
+    stamp: "GH"
+  }
 ];
 
 const MUSIC = [
@@ -35,26 +48,22 @@ const TV = [
   { title: "Elsbeth", year: "2024", url: "https://www.imdb.com/title/tt26591110/", cover: "https://m.media-amazon.com/images/M/MV5BOTcwYzc0M2QtM2NiYy00MWU1LWEwYmYtZGYzYWM4MTZjZmU1XkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg" }
 ];
 
-// January 2026 data only
+// Simplified steps data
 const STEPS_DATA = {
-  month: "January",
-  year: 2026,
-  goal: 310000,
-  current: 198000,
-  distance: 140,
-  activeMinutes: 1680,
-  calories: 8200,
-  dailyAvg: 9914,
-  daysElapsed: 20,
-  weeklyData: [
-    { day: "Mon", steps: 11200 },
-    { day: "Tue", steps: 8500 },
-    { day: "Wed", steps: 12300 },
-    { day: "Thu", steps: 9800 },
-    { day: "Fri", steps: 7600 },
-    { day: "Sat", steps: 14200 },
-    { day: "Sun", steps: 10500 }
-  ]
+  currentMonth: {
+    name: "January",
+    year: 2026,
+    steps: 198000,
+    distance: 140, // km
+    avgDaily: 9900
+  },
+  lastMonth: {
+    name: "December",
+    year: 2025,
+    steps: 287000,
+    distance: 203,
+    avgDaily: 9258
+  }
 };
 
 // =============================================================================
@@ -70,34 +79,16 @@ const lerp = (a, b, t) => a + (b - a) * t;
 // Safe localStorage wrapper
 const storage = {
   get(key) {
-    try {
-      return localStorage.getItem(key);
-    } catch (e) {
-      console.warn('localStorage not available:', e);
-      return null;
-    }
+    try { return localStorage.getItem(key); } 
+    catch (e) { return null; }
   },
   set(key, value) {
-    try {
-      localStorage.setItem(key, value);
-      return true;
-    } catch (e) {
-      console.warn('localStorage not available:', e);
-      return false;
-    }
+    try { localStorage.setItem(key, value); return true; } 
+    catch (e) { return false; }
   }
 };
 
-// Debounce utility
-function debounce(fn, delay) {
-  let timeoutId;
-  return (...args) => {
-    clearTimeout(timeoutId);
-    timeoutId = setTimeout(() => fn.apply(this, args), delay);
-  };
-}
-
-// Throttle utility for scroll events
+// Throttle utility
 function throttle(fn, limit) {
   let inThrottle;
   return (...args) => {
@@ -117,7 +108,6 @@ function initPageLoader() {
   const loader = $('#pageLoader');
   if (!loader) return;
 
-  // Hide loader when page is fully loaded
   window.addEventListener('load', () => {
     setTimeout(() => {
       loader.classList.add('hidden');
@@ -125,7 +115,7 @@ function initPageLoader() {
     }, 300);
   });
 
-  // Fallback: hide loader after 3 seconds regardless
+  // Fallback
   setTimeout(() => {
     loader.classList.add('hidden');
     document.body.style.overflow = '';
@@ -141,8 +131,6 @@ function initTheme() {
   const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
   const isDark = saved ? saved === 'dark' : prefersDark;
   document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light');
-  
-  // Update theme-color meta tag
   updateThemeColorMeta(isDark ? 'dark' : 'light');
 }
 
@@ -152,22 +140,17 @@ function toggleTheme() {
   document.documentElement.setAttribute('data-theme', next);
   storage.set('theme', next);
   updateThemeColorMeta(next);
-  
-  // Announce theme change to screen readers
+  playSound('click');
   announceToScreenReader(`Theme changed to ${next} mode`);
 }
 
 function updateThemeColorMeta(theme) {
-  const metaThemeColor = document.querySelector('meta[name="theme-color"]');
-  if (metaThemeColor) {
-    metaThemeColor.setAttribute('content', theme === 'dark' ? '#0A0A0A' : '#FAFAFA');
-  }
+  const meta = document.querySelector('meta[name="theme-color"]');
+  if (meta) meta.setAttribute('content', theme === 'dark' ? '#0A0A0A' : '#FAFAFA');
 }
 
-// Listen for system theme changes
 function initSystemThemeListener() {
   window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
-    // Only auto-switch if user hasn't manually set a preference
     if (!storage.get('theme')) {
       document.documentElement.setAttribute('data-theme', e.matches ? 'dark' : 'light');
       updateThemeColorMeta(e.matches ? 'dark' : 'light');
@@ -176,10 +159,126 @@ function initSystemThemeListener() {
 }
 
 // =============================================================================
+// TIME-BASED GREETING
+// =============================================================================
+
+function initTimeGreeting() {
+  const greetingEl = $('#heroGreeting');
+  const timeEl = $('#heroTime');
+  if (!greetingEl) return;
+
+  function update() {
+    // Lagos is UTC+1
+    const now = new Date();
+    const lagosTime = new Date(now.toLocaleString('en-US', { timeZone: 'Africa/Lagos' }));
+    const hour = lagosTime.getHours();
+    
+    let greeting;
+    if (hour >= 5 && hour < 12) {
+      greeting = 'Good morning ☀️';
+    } else if (hour >= 12 && hour < 17) {
+      greeting = 'Good afternoon 🌤️';
+    } else if (hour >= 17 && hour < 21) {
+      greeting = 'Good evening 🌅';
+    } else {
+      greeting = 'Good night 🌙';
+    }
+    
+    greetingEl.textContent = greeting;
+    
+    if (timeEl) {
+      timeEl.textContent = lagosTime.toLocaleTimeString('en-US', { 
+        hour: 'numeric', 
+        minute: '2-digit',
+        hour12: true 
+      });
+    }
+  }
+  
+  update();
+  setInterval(update, 60000); // Update every minute
+}
+
+// =============================================================================
+// SOUND EFFECTS
+// =============================================================================
+
+let soundEnabled = false;
+const sounds = {};
+
+function initSounds() {
+  const toggle = $('#soundToggle');
+  if (!toggle) return;
+
+  // Check saved preference
+  soundEnabled = storage.get('soundEnabled') === 'true';
+  toggle.classList.toggle('muted', !soundEnabled);
+
+  toggle.addEventListener('click', () => {
+    soundEnabled = !soundEnabled;
+    storage.set('soundEnabled', soundEnabled);
+    toggle.classList.toggle('muted', !soundEnabled);
+    
+    if (soundEnabled) {
+      playSound('click');
+    }
+  });
+
+  // Create audio context on first interaction
+  document.addEventListener('click', initAudioContext, { once: true });
+}
+
+function initAudioContext() {
+  if (sounds.context) return;
+  
+  try {
+    sounds.context = new (window.AudioContext || window.webkitAudioContext)();
+  } catch (e) {
+    console.warn('Web Audio API not supported');
+  }
+}
+
+function playSound(type) {
+  if (!soundEnabled || !sounds.context || prefersReducedMotion) return;
+
+  const ctx = sounds.context;
+  const oscillator = ctx.createOscillator();
+  const gainNode = ctx.createGain();
+
+  oscillator.connect(gainNode);
+  gainNode.connect(ctx.destination);
+
+  if (type === 'click') {
+    oscillator.frequency.value = 800;
+    oscillator.type = 'sine';
+    gainNode.gain.value = 0.1;
+    gainNode.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.1);
+    oscillator.start(ctx.currentTime);
+    oscillator.stop(ctx.currentTime + 0.1);
+  } else if (type === 'whoosh') {
+    oscillator.frequency.value = 400;
+    oscillator.frequency.exponentialRampToValueAtTime(100, ctx.currentTime + 0.2);
+    oscillator.type = 'sine';
+    gainNode.gain.value = 0.05;
+    gainNode.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.2);
+    oscillator.start(ctx.currentTime);
+    oscillator.stop(ctx.currentTime + 0.2);
+  }
+}
+
+// Bind sound to elements
+function bindSounds() {
+  $$('[data-sound]').forEach(el => {
+    el.addEventListener('click', () => {
+      playSound(el.dataset.sound);
+    });
+  });
+}
+
+// =============================================================================
 // ACCESSIBILITY HELPERS
 // =============================================================================
 
-// Announce messages to screen readers
 function announceToScreenReader(message) {
   const announcement = document.createElement('div');
   announcement.setAttribute('role', 'status');
@@ -188,62 +287,65 @@ function announceToScreenReader(message) {
   announcement.className = 'sr-only';
   announcement.textContent = message;
   document.body.appendChild(announcement);
-  
-  setTimeout(() => {
-    document.body.removeChild(announcement);
-  }, 1000);
+  setTimeout(() => document.body.removeChild(announcement), 1000);
 }
 
-// Trap focus within modal
 function trapFocus(element) {
-  const focusableElements = element.querySelectorAll(
+  const focusable = element.querySelectorAll(
     'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
   );
-  const firstElement = focusableElements[0];
-  const lastElement = focusableElements[focusableElements.length - 1];
+  const first = focusable[0];
+  const last = focusable[focusable.length - 1];
 
-  function handleTabKey(e) {
+  function handleTab(e) {
     if (e.key !== 'Tab') return;
-
     if (e.shiftKey) {
-      if (document.activeElement === firstElement) {
-        e.preventDefault();
-        lastElement.focus();
-      }
+      if (document.activeElement === first) { e.preventDefault(); last.focus(); }
     } else {
-      if (document.activeElement === lastElement) {
-        e.preventDefault();
-        firstElement.focus();
-      }
+      if (document.activeElement === last) { e.preventDefault(); first.focus(); }
     }
   }
 
-  element.addEventListener('keydown', handleTabKey);
-  return () => element.removeEventListener('keydown', handleTabKey);
+  element.addEventListener('keydown', handleTab);
+  return () => element.removeEventListener('keydown', handleTab);
 }
 
 // =============================================================================
-// CUSTOM CURSOR
+// CUSTOM CURSOR WITH TRAIL
 // =============================================================================
 
 function initCursor() {
   if (prefersReducedMotion || !window.matchMedia('(hover: hover)').matches) return;
 
   const cursor = $('#cursor');
+  const cursorTrail = $('#cursorTrail');
   const cursorLabel = $('#cursorLabel');
   if (!cursor) return;
 
   let mouseX = 0, mouseY = 0, cursorX = 0, cursorY = 0;
-  let animationId;
+  let trailX = 0, trailY = 0;
+  let isMoving = false;
+  let moveTimeout;
 
   document.addEventListener('mousemove', (e) => {
     mouseX = e.clientX;
     mouseY = e.clientY;
     cursor.classList.add('visible');
+    
+    // Show trail when moving fast
+    isMoving = true;
+    cursorTrail?.classList.add('visible');
+    
+    clearTimeout(moveTimeout);
+    moveTimeout = setTimeout(() => {
+      isMoving = false;
+      cursorTrail?.classList.remove('visible');
+    }, 100);
   }, { passive: true });
 
   document.addEventListener('mouseleave', () => {
     cursor.classList.remove('visible');
+    cursorTrail?.classList.remove('visible');
     cursorLabel?.classList.remove('visible');
   });
 
@@ -252,18 +354,28 @@ function initCursor() {
     cursorY = lerp(cursorY, mouseY, 0.15);
     cursor.style.left = `${cursorX}px`;
     cursor.style.top = `${cursorY}px`;
+    
     if (cursorLabel) {
       cursorLabel.style.left = `${cursorX}px`;
       cursorLabel.style.top = `${cursorY}px`;
     }
-    animationId = requestAnimationFrame(animate);
+    
+    // Trail follows slower
+    if (cursorTrail) {
+      trailX = lerp(trailX, mouseX, 0.08);
+      trailY = lerp(trailY, mouseY, 0.08);
+      cursorTrail.style.left = `${trailX}px`;
+      cursorTrail.style.top = `${trailY}px`;
+    }
+    
+    requestAnimationFrame(animate);
   }
   animate();
 
-  // Bind hover effects using event delegation
+  // Hover effects
   document.addEventListener('mouseover', (e) => {
     const target = e.target.closest('a, button');
-    const photoTarget = e.target.closest('.photo-item, .stack-card');
+    const photoTarget = e.target.closest('.photo-item, .stack-card, .travel-postcard');
     const labelTarget = e.target.closest('[data-cursor-label]');
 
     if (photoTarget) {
@@ -285,20 +397,38 @@ function initCursor() {
   });
 
   document.addEventListener('mouseout', (e) => {
-    const target = e.target.closest('a, button, .photo-item, .stack-card, [data-cursor-label]');
+    const target = e.target.closest('a, button, .photo-item, .stack-card, .travel-postcard, [data-cursor-label]');
     if (target) {
       cursor.classList.remove('hover', 'photo-hover');
       cursorLabel?.classList.remove('visible');
     }
   });
+}
 
-  // Clean up on page hide
-  document.addEventListener('visibilitychange', () => {
-    if (document.hidden && animationId) {
-      cancelAnimationFrame(animationId);
-    } else if (!document.hidden) {
-      animate();
-    }
+// =============================================================================
+// 3D TILT EFFECT
+// =============================================================================
+
+function initTiltEffect() {
+  if (prefersReducedMotion) return;
+
+  $$('[data-tilt]').forEach(el => {
+    el.addEventListener('mousemove', (e) => {
+      const rect = el.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      const centerX = rect.width / 2;
+      const centerY = rect.height / 2;
+      
+      const rotateX = (y - centerY) / 20;
+      const rotateY = (centerX - x) / 20;
+      
+      el.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
+    });
+
+    el.addEventListener('mouseleave', () => {
+      el.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) scale3d(1, 1, 1)';
+    });
   });
 }
 
@@ -341,8 +471,7 @@ function initHeader() {
 
   backToTop?.addEventListener('click', () => {
     window.scrollTo({ top: 0, behavior: prefersReducedMotion ? 'auto' : 'smooth' });
-    // Focus on skip link or main content for accessibility
-    $('#main')?.focus();
+    playSound('whoosh');
   });
 }
 
@@ -361,17 +490,8 @@ function initMobileMenu() {
     menu?.setAttribute('aria-hidden', 'false');
     openBtn?.setAttribute('aria-expanded', 'true');
     document.body.style.overflow = 'hidden';
-    
-    // Focus first menu item
-    setTimeout(() => {
-      $('nav a', menu)?.focus();
-    }, 100);
-    
-    // Trap focus within menu
-    if (menu) {
-      removeTrapFocus = trapFocus(menu);
-    }
-    
+    setTimeout(() => $('nav a', menu)?.focus(), 100);
+    if (menu) removeTrapFocus = trapFocus(menu);
     announceToScreenReader('Navigation menu opened');
   }
 
@@ -380,23 +500,14 @@ function initMobileMenu() {
     menu?.setAttribute('aria-hidden', 'true');
     openBtn?.setAttribute('aria-expanded', 'false');
     document.body.style.overflow = '';
-    
-    // Return focus to menu button
     openBtn?.focus();
-    
-    // Remove focus trap
-    if (removeTrapFocus) {
-      removeTrapFocus();
-      removeTrapFocus = null;
-    }
-    
+    if (removeTrapFocus) { removeTrapFocus(); removeTrapFocus = null; }
     announceToScreenReader('Navigation menu closed');
   }
 
   openBtn?.addEventListener('click', open);
   closeBtn?.addEventListener('click', close);
   $$('a', menu).forEach(link => link.addEventListener('click', close));
-  
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape' && menu?.classList.contains('open')) close();
   });
@@ -410,7 +521,6 @@ let currentPhotoIndex = 0;
 let lastFocusedElement = null;
 let removeLightboxTrapFocus = null;
 let lightboxTouchStartX = 0;
-let lightboxTouchStartY = 0;
 
 function initLightbox() {
   const lightbox = $('#lightbox');
@@ -419,52 +529,34 @@ function initLightbox() {
   const counter = $('#lightboxCounter');
   const loading = $('.lightbox-loading', lightbox);
 
-  function showLoading() {
-    loading?.classList.add('visible');
-  }
-
-  function hideLoading() {
-    loading?.classList.remove('visible');
-  }
+  function showLoading() { loading?.classList.add('visible'); }
+  function hideLoading() { loading?.classList.remove('visible'); }
 
   function open(index, opener) {
     currentPhotoIndex = index;
     lastFocusedElement = opener || document.activeElement;
-    
     showLoading();
     
-    // Preload image
     const newImg = new Image();
     newImg.onload = () => {
       img.src = PHOTOS[index].src;
       img.alt = PHOTOS[index].alt;
       hideLoading();
     };
-    newImg.onerror = () => {
-      hideLoading();
-      img.alt = 'Failed to load image';
-    };
+    newImg.onerror = () => { hideLoading(); img.alt = 'Failed to load image'; };
     newImg.src = PHOTOS[index].src;
     
     caption.textContent = PHOTOS[index].caption;
-    if (counter) {
-      counter.textContent = `${index + 1} / ${PHOTOS.length}`;
-    }
+    if (counter) counter.textContent = `${index + 1} / ${PHOTOS.length}`;
     
     lightbox.classList.add('active');
     lightbox.setAttribute('aria-hidden', 'false');
     document.body.style.overflow = 'hidden';
     
-    // Focus close button
-    setTimeout(() => {
-      $('.lightbox-close', lightbox)?.focus();
-    }, 100);
+    setTimeout(() => $('.lightbox-close', lightbox)?.focus(), 100);
+    if (lightbox) removeLightboxTrapFocus = trapFocus(lightbox);
     
-    // Trap focus
-    if (lightbox) {
-      removeLightboxTrapFocus = trapFocus(lightbox);
-    }
-    
+    playSound('whoosh');
     announceToScreenReader(`Photo ${index + 1} of ${PHOTOS.length}: ${PHOTOS[index].caption}`);
   }
 
@@ -472,20 +564,12 @@ function initLightbox() {
     lightbox.classList.remove('active');
     lightbox.setAttribute('aria-hidden', 'true');
     document.body.style.overflow = '';
-    
-    // Return focus
     lastFocusedElement?.focus();
-    
-    // Remove focus trap
-    if (removeLightboxTrapFocus) {
-      removeLightboxTrapFocus();
-      removeLightboxTrapFocus = null;
-    }
+    if (removeLightboxTrapFocus) { removeLightboxTrapFocus(); removeLightboxTrapFocus = null; }
   }
 
   function navigate(dir) {
     currentPhotoIndex = (currentPhotoIndex + dir + PHOTOS.length) % PHOTOS.length;
-    
     showLoading();
     
     const newImg = new Image();
@@ -497,24 +581,17 @@ function initLightbox() {
     newImg.src = PHOTOS[currentPhotoIndex].src;
     
     caption.textContent = PHOTOS[currentPhotoIndex].caption;
-    if (counter) {
-      counter.textContent = `${currentPhotoIndex + 1} / ${PHOTOS.length}`;
-    }
+    if (counter) counter.textContent = `${currentPhotoIndex + 1} / ${PHOTOS.length}`;
     
+    playSound('whoosh');
     announceToScreenReader(`Photo ${currentPhotoIndex + 1} of ${PHOTOS.length}: ${PHOTOS[currentPhotoIndex].caption}`);
   }
 
-  // Button event listeners
   $('.lightbox-close', lightbox)?.addEventListener('click', close);
   $('.lightbox-prev', lightbox)?.addEventListener('click', () => navigate(-1));
   $('.lightbox-next', lightbox)?.addEventListener('click', () => navigate(1));
-  
-  // Click outside to close
-  lightbox?.addEventListener('click', (e) => { 
-    if (e.target === lightbox) close(); 
-  });
+  lightbox?.addEventListener('click', (e) => { if (e.target === lightbox) close(); });
 
-  // Keyboard navigation
   document.addEventListener('keydown', (e) => {
     if (!lightbox?.classList.contains('active')) return;
     if (e.key === 'Escape') close();
@@ -522,48 +599,22 @@ function initLightbox() {
     if (e.key === 'ArrowRight') navigate(1);
   });
 
-  // Touch gestures for lightbox
+  // Touch gestures
   const imgContainer = $('.lightbox-img-container', lightbox);
-  
   imgContainer?.addEventListener('touchstart', (e) => {
     lightboxTouchStartX = e.touches[0].clientX;
-    lightboxTouchStartY = e.touches[0].clientY;
   }, { passive: true });
 
   imgContainer?.addEventListener('touchend', (e) => {
-    const touchEndX = e.changedTouches[0].clientX;
-    const touchEndY = e.changedTouches[0].clientY;
-    const diffX = touchEndX - lightboxTouchStartX;
-    const diffY = touchEndY - lightboxTouchStartY;
-    
-    // Only trigger if horizontal swipe is greater than vertical
-    if (Math.abs(diffX) > Math.abs(diffY) && Math.abs(diffX) > 50) {
-      if (diffX > 0) {
-        navigate(-1); // Swipe right = previous
-      } else {
-        navigate(1); // Swipe left = next
-      }
-    }
+    const diff = e.changedTouches[0].clientX - lightboxTouchStartX;
+    if (Math.abs(diff) > 50) navigate(diff > 0 ? -1 : 1);
   }, { passive: true });
 
-  // Preload adjacent images
-  function preloadAdjacent() {
-    const prevIndex = (currentPhotoIndex - 1 + PHOTOS.length) % PHOTOS.length;
-    const nextIndex = (currentPhotoIndex + 1) % PHOTOS.length;
-    
-    new Image().src = PHOTOS[prevIndex].src;
-    new Image().src = PHOTOS[nextIndex].src;
-  }
-
-  // Export open function
-  window.openLightbox = (index, opener) => {
-    open(index, opener);
-    preloadAdjacent();
-  };
+  window.openLightbox = open;
 }
 
 // =============================================================================
-// PHOTO STACK (Hero)
+// PHOTO STACK (Hero) - MORE SPREAD APART
 // =============================================================================
 
 class PhotoStack {
@@ -605,7 +656,7 @@ class PhotoStack {
     const hint = document.createElement('div');
     hint.className = 'stack-hint';
     hint.setAttribute('aria-hidden', 'true');
-    hint.innerHTML = `<span>Swipe or tap</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>`;
+    hint.innerHTML = `<span>Swipe or tap to browse</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>`;
 
     this.container.innerHTML = '';
     this.container.appendChild(track);
@@ -654,12 +705,14 @@ class PhotoStack {
     this.currentIndex = (this.currentIndex + 1) % this.photos.length; 
     this.updatePositions();
     this.hideHint();
+    playSound('whoosh');
   }
   
   prev() { 
     this.currentIndex = (this.currentIndex - 1 + this.photos.length) % this.photos.length; 
     this.updatePositions();
     this.hideHint();
+    playSound('whoosh');
   }
 
   bindEvents() {
@@ -682,14 +735,8 @@ class PhotoStack {
     document.addEventListener('touchend', () => this.onDragEnd());
 
     this.container.addEventListener('keydown', (e) => {
-      if (e.key === 'ArrowLeft') {
-        this.prev();
-        e.preventDefault();
-      }
-      if (e.key === 'ArrowRight') {
-        this.next();
-        e.preventDefault();
-      }
+      if (e.key === 'ArrowLeft') { this.prev(); e.preventDefault(); }
+      if (e.key === 'ArrowRight') { this.next(); e.preventDefault(); }
     });
   }
 
@@ -707,11 +754,8 @@ class PhotoStack {
   onDragEnd() {
     if (!this.isDragging) return;
     this.isDragging = false;
-    
-    // Increased threshold for less sensitive swiping
     if (this.deltaX > 60) this.prev();
     else if (this.deltaX < -60) this.next();
-    
     this.deltaX = 0;
   }
 }
@@ -724,15 +768,13 @@ function renderPhotoGrid() {
   const container = $('#photoGrid');
   if (!container) return;
 
-  // Show only 4 photos for minimal look
   const displayPhotos = PHOTOS.slice(0, 4);
 
-  // Initially render skeletons
+  // Skeletons first
   container.innerHTML = displayPhotos.map(() => `
     <div class="photo-item skeleton" role="listitem"></div>
   `).join('');
 
-  // Load actual photos
   const photoItems = $$('.photo-item', container);
   
   displayPhotos.forEach((photo, i) => {
@@ -746,19 +788,11 @@ function renderPhotoGrid() {
         <span class="photo-item-caption">${photo.caption}</span>
       `;
       item.classList.remove('skeleton');
-      item.setAttribute('role', 'listitem');
       item.dataset.index = i;
-      
-      // Make it a button for accessibility
       item.setAttribute('tabindex', '0');
       item.setAttribute('aria-label', `View photo: ${photo.caption}`);
       
-      // Add click handler
-      item.addEventListener('click', () => {
-        window.openLightbox(parseInt(item.dataset.index, 10), item);
-      });
-      
-      // Add keyboard handler
+      item.addEventListener('click', () => window.openLightbox(parseInt(item.dataset.index, 10), item));
       item.addEventListener('keydown', (e) => {
         if (e.key === 'Enter' || e.key === ' ') {
           e.preventDefault();
@@ -775,7 +809,6 @@ function renderPhotoGrid() {
     img.src = photo.src;
   });
 
-  // Update photo count
   const countEl = $('#photoCount');
   if (countEl) countEl.textContent = `${PHOTOS.length}+ photos`;
 }
@@ -802,146 +835,84 @@ function renderArticles() {
   `).join('');
 }
 
-function renderStepsDashboard() {
-  const container = $('#stepsDashboard');
+// SIMPLIFIED STEPS
+function renderStepsSimple() {
+  const container = $('#stepsSimple');
   if (!container) return;
 
-  const d = STEPS_DATA;
-  const pct = Math.round((d.current / d.goal) * 100);
-  const ringOffset = 377 - (377 * Math.min(pct, 100) / 100);
-  const remaining = Math.max(d.goal - d.current, 0);
-  const daysLeft = 31 - d.daysElapsed;
-  const dailyNeeded = daysLeft > 0 ? Math.ceil(remaining / daysLeft) : 0;
+  const current = STEPS_DATA.currentMonth;
+  const last = STEPS_DATA.lastMonth;
 
   container.innerHTML = `
-    <!-- Main stats card -->
-    <div class="steps-main-card">
-      <div class="steps-primary">
-        <div class="steps-value" id="stepsValue" aria-label="${formatNumber(d.current)} steps this month">${formatNumber(d.current)}</div>
-        <div class="steps-label">steps this month</div>
+    <!-- Current Month -->
+    <div class="steps-current-card">
+      <div class="steps-current-header">
+        <span class="steps-current-month">${current.name} ${current.year}</span>
+        <span class="steps-current-badge">This month</span>
       </div>
-      <div class="steps-ring-container" role="progressbar" aria-valuenow="${pct}" aria-valuemin="0" aria-valuemax="100" aria-label="Monthly goal progress: ${pct}%">
-        <svg class="steps-ring" viewBox="0 0 120 120" aria-hidden="true">
-          <defs>
-            <linearGradient id="ringGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-              <stop offset="0%" stop-color="var(--accent)" />
-              <stop offset="100%" stop-color="var(--accent-light)" />
-            </linearGradient>
-          </defs>
-          <circle class="ring-bg" cx="60" cy="60" r="52" />
-          <circle class="ring-progress" cx="60" cy="60" r="52" id="ringProgress" style="stroke-dashoffset: 377;" data-offset="${ringOffset}" />
+      
+      <div>
+        <div class="steps-current-value">${formatNumber(current.steps)}</div>
+        <div class="steps-current-label">steps so far</div>
+      </div>
+      
+      <div class="steps-current-stats">
+        <div class="steps-mini-stat">
+          <div class="steps-mini-value">${current.distance} km</div>
+          <div class="steps-mini-label">Distance</div>
+        </div>
+        <div class="steps-mini-stat">
+          <div class="steps-mini-value">${formatNumber(current.avgDaily)}</div>
+          <div class="steps-mini-label">Daily avg</div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Last Month -->
+    <div class="steps-last-card">
+      <div class="steps-last-header">${last.name} ${last.year}</div>
+      
+      <div>
+        <div class="steps-last-value">${formatNumber(last.steps)}</div>
+        <div class="steps-last-label">total steps</div>
+      </div>
+      
+      <div class="steps-last-stats">
+        <div class="steps-mini-stat">
+          <div class="steps-mini-value">${last.distance} km</div>
+          <div class="steps-mini-label">Distance</div>
+        </div>
+        <div class="steps-mini-stat">
+          <div class="steps-mini-value">${formatNumber(last.avgDaily)}</div>
+          <div class="steps-mini-label">Daily avg</div>
+        </div>
+      </div>
+      
+      <a href="/steps.html" class="steps-history-btn">
+        See step history
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M5 12h14M12 5l7 7-7 7"/>
         </svg>
-        <div class="steps-ring-center">
-          <span class="ring-percentage">${pct}%</span>
-          <span class="ring-goal-label">of goal</span>
-        </div>
-      </div>
-    </div>
-
-    <!-- Stats row -->
-    <div class="steps-stats-row">
-      <div class="steps-stat-card">
-        <div class="steps-stat-icon distance" aria-hidden="true">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
-            <circle cx="12" cy="10" r="3"/>
-          </svg>
-        </div>
-        <div class="steps-stat-value">${d.distance} km</div>
-        <div class="steps-stat-label">Distance</div>
-      </div>
-
-      <div class="steps-stat-card">
-        <div class="steps-stat-icon time" aria-hidden="true">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <circle cx="12" cy="12" r="10"/>
-            <polyline points="12 6 12 12 16 14"/>
-          </svg>
-        </div>
-        <div class="steps-stat-value">${Math.floor(d.activeMinutes / 60)}h ${d.activeMinutes % 60}m</div>
-        <div class="steps-stat-label">Active time</div>
-      </div>
-
-      <div class="steps-stat-card">
-        <div class="steps-stat-icon calories" aria-hidden="true">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M12 22c-4.97 0-9-2.582-9-7v-.088C3 12.794 4.338 11.1 6.375 10c1.949-1.052 3.101-2.99 3.112-5l.013-3 2.26 1.378a8.002 8.002 0 0 1 3.54 4.53l.168.5.168-.5a8.002 8.002 0 0 1 3.54-4.53L21.438 2l.012 3c.011 2.01 1.163 3.948 3.112 5C26.662 11.1 28 12.794 28 14.912V15c0 4.418-4.03 7-9 7z" transform="scale(0.85) translate(2, 2)"/>
-          </svg>
-        </div>
-        <div class="steps-stat-value">${formatNumber(d.calories)}</div>
-        <div class="steps-stat-label">Calories</div>
-      </div>
-
-      <div class="steps-stat-card">
-        <div class="steps-stat-icon avg" aria-hidden="true">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <line x1="12" y1="20" x2="12" y2="10"/>
-            <line x1="18" y1="20" x2="18" y2="4"/>
-            <line x1="6" y1="20" x2="6" y2="16"/>
-          </svg>
-        </div>
-        <div class="steps-stat-value">${formatNumber(d.dailyAvg)}</div>
-        <div class="steps-stat-label">Daily avg</div>
-      </div>
-    </div>
-
-    <!-- Weekly chart -->
-    <div class="steps-chart-card">
-      <div class="steps-chart-header">
-        <span class="steps-chart-title">This week</span>
-        <span class="steps-chart-period">Jan 13 - 19</span>
-      </div>
-      <div class="steps-chart" role="img" aria-label="Weekly steps chart showing ${d.weeklyData.map(day => `${day.day}: ${formatNumber(day.steps)} steps`).join(', ')}">
-        ${d.weeklyData.map(day => {
-          const height = (day.steps / 15000) * 100;
-          return `
-            <div class="chart-bar">
-              <div class="chart-bar-fill" style="height: 0px;" data-height="${height}"></div>
-              <span class="chart-bar-label">${day.day}</span>
-            </div>
-          `;
-        }).join('')}
-      </div>
-    </div>
-
-    <!-- Goal card -->
-    <div class="steps-goal-card">
-      <div class="steps-goal-header">
-        <span class="steps-goal-title">Monthly Goal</span>
-        <span class="steps-goal-status in-progress">${pct >= 100 ? 'Complete' : 'In progress'}</span>
-      </div>
-      <div class="steps-goal-progress">
-        <div class="steps-goal-numbers">
-          <span class="steps-goal-current">${formatNumber(d.current)}</span>
-          <span class="steps-goal-target">/ ${formatNumber(d.goal)}</span>
-        </div>
-        <div class="progress-bar" role="progressbar" aria-valuenow="${pct}" aria-valuemin="0" aria-valuemax="100">
-          <div class="progress-fill" id="goalProgress" data-width="${pct}"></div>
-        </div>
-      </div>
-      <div class="steps-goal-meta">
-        <span>${formatNumber(remaining)} to go</span>
-        <span>${formatNumber(dailyNeeded)}/day needed</span>
-      </div>
+      </a>
     </div>
   `;
 }
 
+// TRAVEL POSTCARDS
 function renderTravels() {
   const container = $('#travelGrid');
   if (!container) return;
 
   container.innerHTML = TRAVELS.map(travel => `
-    <a href="${travel.url}" class="travel-card" role="listitem">
-      <div>
-        <h3 class="travel-card-title">${travel.title}</h3>
-        <p class="travel-card-meta">${travel.meta}</p>
+    <a href="${travel.url}" class="travel-postcard" role="listitem">
+      <div class="travel-postcard-bg" style="background-image: url('${travel.photo}')"></div>
+      <div class="travel-postcard-overlay"></div>
+      <div class="travel-postcard-stamp">${travel.stamp}</div>
+      <div class="travel-postcard-content">
+        <h3 class="travel-postcard-title">${travel.title}</h3>
+        <p class="travel-postcard-meta">${travel.meta}</p>
       </div>
-      <span class="travel-card-arrow" aria-hidden="true">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <path d="M5 12h14M12 5l7 7-7 7"/>
-        </svg>
-      </span>
+      <div class="travel-postcard-corner"></div>
     </a>
   `).join('');
 }
@@ -992,86 +963,25 @@ function renderInto() {
 // ANIMATIONS
 // =============================================================================
 
-function animateCounter(el, target, duration = 1500) {
-  if (prefersReducedMotion) { 
-    el.textContent = formatNumber(target); 
-    return; 
-  }
-  
-  const start = performance.now();
-  function update(now) {
-    const progress = Math.min((now - start) / duration, 1);
-    const eased = 1 - Math.pow(1 - progress, 3);
-    el.textContent = formatNumber(Math.floor(target * eased));
-    if (progress < 1) requestAnimationFrame(update);
-  }
-  requestAnimationFrame(update);
-}
-
 function initHeroAnimations() {
   if (prefersReducedMotion) return;
   
-  // Stagger the animations
-  setTimeout(() => {
-    $$('.hero-title .line-inner').forEach(el => el.classList.add('animate'));
-  }, 100);
-  
-  setTimeout(() => {
-    $('.hero-text')?.classList.add('animate');
-  }, 200);
-  
-  setTimeout(() => {
-    $('.hero-ctas')?.classList.add('animate');
-  }, 300);
-  
-  setTimeout(() => {
-    $('.hero-visual')?.classList.add('animate');
-  }, 400);
+  setTimeout(() => $$('.hero-title .line-inner').forEach(el => el.classList.add('animate')), 100);
+  setTimeout(() => $('.hero-text')?.classList.add('animate'), 200);
+  setTimeout(() => $('.hero-ctas')?.classList.add('animate'), 300);
+  setTimeout(() => $('.hero-visual')?.classList.add('animate'), 400);
 }
 
 function initScrollAnimations() {
   const sections = $$('section');
 
-  const observerOptions = {
-    threshold: 0.1,
-    rootMargin: '0px 0px -50px 0px'
-  };
-
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
       if (!entry.isIntersecting) return;
-      
       entry.target.classList.add('visible');
-
-      // Animate steps dashboard elements
-      if (entry.target.id === 'steps') {
-        // Animate progress bar
-        const goalProgress = $('#goalProgress');
-        if (goalProgress) {
-          setTimeout(() => {
-            goalProgress.style.width = goalProgress.dataset.width + '%';
-          }, 300);
-        }
-        
-        // Animate ring progress
-        const ringProgress = $('#ringProgress');
-        if (ringProgress) {
-          setTimeout(() => {
-            ringProgress.style.strokeDashoffset = ringProgress.dataset.offset;
-          }, 300);
-        }
-        
-        // Animate chart bars
-        $$('.chart-bar-fill').forEach((bar, i) => {
-          setTimeout(() => {
-            bar.style.height = bar.dataset.height + 'px';
-          }, 400 + (i * 100));
-        });
-      }
-
       observer.unobserve(entry.target);
     });
-  }, observerOptions);
+  }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
 
   sections.forEach(section => {
     section.classList.add('reveal');
@@ -1080,26 +990,84 @@ function initScrollAnimations() {
 }
 
 // =============================================================================
+// KONAMI CODE EASTER EGG
+// =============================================================================
+
+function initKonamiCode() {
+  const konamiCode = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'KeyB', 'KeyA'];
+  let konamiIndex = 0;
+
+  document.addEventListener('keydown', (e) => {
+    if (e.code === konamiCode[konamiIndex]) {
+      konamiIndex++;
+      
+      if (konamiIndex === konamiCode.length) {
+        triggerEasterEgg();
+        konamiIndex = 0;
+      }
+    } else {
+      konamiIndex = 0;
+    }
+  });
+}
+
+function triggerEasterEgg() {
+  // Create overlay
+  const overlay = document.createElement('div');
+  overlay.className = 'easter-egg-overlay';
+  overlay.innerHTML = `
+    <div class="easter-egg-content">
+      <div class="easter-egg-emoji">🎉</div>
+      <div class="easter-egg-text">You found the secret!</div>
+    </div>
+  `;
+  document.body.appendChild(overlay);
+  
+  // Animate in
+  requestAnimationFrame(() => {
+    overlay.classList.add('active');
+  });
+  
+  // Play sound
+  if (soundEnabled && sounds.context) {
+    const ctx = sounds.context;
+    const notes = [523.25, 659.25, 783.99, 1046.50]; // C5, E5, G5, C6
+    notes.forEach((freq, i) => {
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.frequency.value = freq;
+      osc.type = 'sine';
+      gain.gain.value = 0.1;
+      gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + i * 0.15 + 0.3);
+      osc.start(ctx.currentTime + i * 0.15);
+      osc.stop(ctx.currentTime + i * 0.15 + 0.3);
+    });
+  }
+  
+  // Remove after 2 seconds
+  setTimeout(() => {
+    overlay.classList.remove('active');
+    setTimeout(() => overlay.remove(), 500);
+  }, 2000);
+}
+
+// =============================================================================
 // KEYBOARD SHORTCUTS
 // =============================================================================
 
 function initKeyboardShortcuts() {
   document.addEventListener('keydown', (e) => {
-    // Don't trigger shortcuts when typing in inputs
     if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
     
-    // Press 'D' for dark mode toggle
-    if (e.key === 'd' || e.key === 'D') {
-      if (!e.metaKey && !e.ctrlKey) {
-        toggleTheme();
-      }
+    if ((e.key === 'd' || e.key === 'D') && !e.metaKey && !e.ctrlKey) {
+      toggleTheme();
     }
     
-    // Press 'H' to go home
-    if (e.key === 'h' || e.key === 'H') {
-      if (!e.metaKey && !e.ctrlKey) {
-        window.scrollTo({ top: 0, behavior: prefersReducedMotion ? 'auto' : 'smooth' });
-      }
+    if ((e.key === 'h' || e.key === 'H') && !e.metaKey && !e.ctrlKey) {
+      window.scrollTo({ top: 0, behavior: prefersReducedMotion ? 'auto' : 'smooth' });
+      playSound('whoosh');
     }
   });
 }
@@ -1109,11 +1077,9 @@ function initKeyboardShortcuts() {
 // =============================================================================
 
 function initErrorHandling() {
-  // Handle image loading errors
   document.addEventListener('error', (e) => {
     if (e.target.tagName === 'IMG') {
       console.warn('Image failed to load:', e.target.src);
-      // Optionally set a placeholder
       e.target.style.opacity = '0.3';
     }
   }, true);
@@ -1124,10 +1090,7 @@ function initErrorHandling() {
 // =============================================================================
 
 document.addEventListener('DOMContentLoaded', () => {
-  // Error handling
   initErrorHandling();
-  
-  // Page loader
   initPageLoader();
   
   // Theme
@@ -1135,10 +1098,18 @@ document.addEventListener('DOMContentLoaded', () => {
   initSystemThemeListener();
   $('#themeToggle')?.addEventListener('click', toggleTheme);
   $('#mobileThemeToggle')?.addEventListener('click', toggleTheme);
+  
+  // Time greeting
+  initTimeGreeting();
+  
+  // Sound
+  initSounds();
+  bindSounds();
 
   // Core functionality
   initCursor();
   initMagneticButtons();
+  initTiltEffect();
   initHeader();
   initMobileMenu();
   initLightbox();
@@ -1150,7 +1121,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // Render content
   renderPhotoGrid();
   renderArticles();
-  renderStepsDashboard();
+  renderStepsSimple();
   renderTravels();
   renderInto();
 
@@ -1158,14 +1129,14 @@ document.addEventListener('DOMContentLoaded', () => {
   initHeroAnimations();
   initScrollAnimations();
   
-  // Keyboard shortcuts
+  // Easter eggs & shortcuts
+  initKonamiCode();
   initKeyboardShortcuts();
 });
 
-// Handle page visibility for performance
+// Handle page visibility
 document.addEventListener('visibilitychange', () => {
   if (document.hidden) {
-    // Pause any running animations
     document.body.classList.add('page-hidden');
   } else {
     document.body.classList.remove('page-hidden');
