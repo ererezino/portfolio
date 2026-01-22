@@ -19,6 +19,9 @@
   --green-subtle: rgba(16, 185, 129, 0.1);
   --orange: #F59E0B;
   --orange-subtle: rgba(245, 158, 11, 0.1);
+  --paper: #F5F2E8;
+  --paper-dark: #2A2520;
+  --stamp-brown: #8B4513;
   
   /* Typography */
   --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
@@ -796,14 +799,14 @@ header.scrolled .logo-img { width: 32px; height: 32px; }
 .btn-icon:hover svg { transform: none; }
 
 /* =============================================================================
-   HERO VISUAL / PHOTO STACK - MORE SPREAD APART
+   HERO VISUAL / PHOTO STACK
    ============================================================================= */
 
 .hero-visual { 
   position: relative; 
   height: 420px; 
   border-radius: var(--radius-xl); 
-  overflow: visible; /* Allow cards to spread */
+  overflow: visible;
   opacity: 0; 
 }
 
@@ -882,7 +885,6 @@ header.scrolled .logo-img { width: 32px; height: 32px; }
 }
 .stack-card-dots span.active { background: var(--accent); transform: scale(1.2); }
 
-/* MORE SPREAD APART POSITIONS */
 .stack-card[data-position="0"] { 
   transform: translateY(0) rotate(0deg) scale(1); 
   z-index: 3; 
@@ -1083,7 +1085,6 @@ section { padding: var(--section-gap) 0; }
 
 .photo-item:hover .photo-item-caption { opacity: 1; transform: translateY(0); }
 
-/* Skeleton */
 .photo-item.skeleton { pointer-events: none; }
 .photo-item.skeleton::before {
   content: '';
@@ -1099,7 +1100,6 @@ section { padding: var(--section-gap) 0; }
   100% { background-position: -200% 0; }
 }
 
-/* View all CTA */
 .view-all-cta { margin-top: clamp(24px, 4vw, 32px); text-align: center; }
 
 .btn-view-all { 
@@ -1204,7 +1204,6 @@ section { padding: var(--section-gap) 0; }
   }
 }
 
-/* Current Month Card */
 .steps-current-card {
   background: var(--bg-elevated);
   border: 1px solid var(--border);
@@ -1289,7 +1288,6 @@ section { padding: var(--section-gap) 0; }
   color: var(--text-tertiary);
 }
 
-/* Last Month Card */
 .steps-last-card {
   background: var(--bg-elevated);
   border: 1px solid var(--border);
@@ -1373,13 +1371,13 @@ section { padding: var(--section-gap) 0; }
 }
 
 /* =============================================================================
-   TRAVEL POSTCARDS
+   TRAVEL POSTCARDS - ENHANCED DESIGN
    ============================================================================= */
 
 .travel-postcards {
   display: grid;
   grid-template-columns: 1fr;
-  gap: clamp(16px, 3vw, 24px);
+  gap: clamp(24px, 4vw, 40px);
 }
 
 @media (min-width: 768px) {
@@ -1390,20 +1388,72 @@ section { padding: var(--section-gap) 0; }
 
 .travel-postcard {
   position: relative;
-  aspect-ratio: 4/3;
-  border-radius: var(--radius-xl);
-  overflow: hidden;
+  aspect-ratio: 3/2;
+  border-radius: 4px;
   cursor: pointer;
-  transition: transform var(--duration) var(--ease), box-shadow var(--duration);
+  transition: transform 0.4s var(--ease), box-shadow 0.4s var(--ease);
+  text-decoration: none;
+  color: inherit;
+  display: block;
 }
 
 .travel-postcard:hover {
   transform: translateY(-8px) rotate(1deg);
-  box-shadow: var(--shadow-lg), 0 20px 40px rgba(0,0,0,0.15);
+  box-shadow: 
+    0 20px 40px rgba(0, 0, 0, 0.2),
+    0 0 0 1px rgba(0, 0, 0, 0.05);
 }
 
 .travel-postcard:active {
   transform: translateY(-4px) scale(0.99);
+}
+
+/* Postcard Frame - Vintage paper */
+.travel-postcard-frame {
+  position: absolute;
+  inset: 0;
+  background: var(--paper);
+  border-radius: 4px;
+  padding: 12px;
+  box-shadow: 
+    inset 0 0 0 1px rgba(0, 0, 0, 0.1),
+    0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.travel-postcard-frame::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  opacity: 0.03;
+  pointer-events: none;
+  border-radius: 4px;
+}
+
+/* Corner wear */
+.travel-postcard-frame::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 30px;
+  height: 30px;
+  background: linear-gradient(135deg, transparent 50%, rgba(0, 0, 0, 0.03) 50%);
+  border-radius: 0 0 4px 0;
+}
+
+[data-theme="dark"] .travel-postcard-frame {
+  background: var(--paper-dark);
+}
+
+/* Photo Area */
+.travel-postcard-photo {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border-radius: 2px;
+  overflow: hidden;
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.1);
 }
 
 .travel-postcard-bg {
@@ -1423,50 +1473,32 @@ section { padding: var(--section-gap) 0; }
   inset: 0;
   background: linear-gradient(
     to top,
-    rgba(0, 0, 0, 0.8) 0%,
-    rgba(0, 0, 0, 0.4) 40%,
-    rgba(0, 0, 0, 0.1) 100%
+    rgba(0, 0, 0, 0.7) 0%,
+    rgba(0, 0, 0, 0.3) 40%,
+    rgba(0, 0, 0, 0) 70%
   );
 }
 
+/* Content */
 .travel-postcard-content {
   position: absolute;
-  inset: 0;
-  padding: clamp(20px, 4vw, 32px);
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: clamp(16px, 3vw, 24px);
   color: white;
-}
-
-.travel-postcard-stamp {
-  position: absolute;
-  top: 16px;
-  right: 16px;
-  width: 48px;
-  height: 48px;
-  background: rgba(255, 255, 255, 0.9);
-  border-radius: var(--radius-sm);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-family: var(--font-mono);
-  font-size: 10px;
-  font-weight: 700;
-  color: #0A0A0A;
-  text-transform: uppercase;
-  transform: rotate(8deg);
-  box-shadow: var(--shadow-sm);
+  z-index: 2;
 }
 
 .travel-postcard-title {
   font-family: var(--font-serif);
   font-size: clamp(28px, 5vw, 40px);
   font-weight: 400;
+  font-style: italic;
   letter-spacing: -0.02em;
   line-height: 1.1;
-  margin-bottom: 8px;
-  text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+  margin-bottom: 6px;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.4);
 }
 
 .travel-postcard-meta {
@@ -1475,16 +1507,205 @@ section { padding: var(--section-gap) 0; }
   font-weight: 500;
   text-transform: uppercase;
   letter-spacing: 0.1em;
-  opacity: 0.8;
+  opacity: 0.85;
 }
 
-.travel-postcard-corner {
+/* Postage Stamp */
+.travel-postcard-stamp {
   position: absolute;
-  bottom: 0;
-  right: 0;
+  top: 20px;
+  right: 20px;
+  width: 56px;
+  height: 68px;
+  background: #FFF9F0;
+  border-radius: 2px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  transform: rotate(6deg);
+  box-shadow: 
+    0 2px 8px rgba(0, 0, 0, 0.2),
+    inset 0 0 0 1px rgba(0, 0, 0, 0.05);
+  z-index: 3;
+  transition: transform 0.3s var(--ease);
+}
+
+.travel-postcard:hover .travel-postcard-stamp {
+  transform: rotate(8deg) scale(1.05);
+}
+
+/* Perforated edges */
+.travel-postcard-stamp::before {
+  content: '';
+  position: absolute;
+  inset: -4px;
+  background: radial-gradient(circle, transparent 2px, #FFF9F0 2px) 0 0 / 8px 8px;
+  border-radius: 2px;
+  z-index: -1;
+}
+
+.travel-postcard-stamp-country {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #1a1a1a;
+  margin-bottom: 2px;
+}
+
+.travel-postcard-stamp-flag {
+  font-size: 24px;
+  line-height: 1;
+  margin-bottom: 4px;
+}
+
+.travel-postcard-stamp-value {
+  font-family: var(--font-serif);
+  font-size: 12px;
+  color: var(--stamp-brown);
+  font-weight: 400;
+}
+
+/* Postmark */
+.travel-postcard-postmark {
+  position: absolute;
+  top: 16px;
+  right: 70px;
   width: 60px;
   height: 60px;
-  background: linear-gradient(135deg, transparent 50%, rgba(255,255,255,0.1) 50%);
+  border: 2px solid rgba(139, 69, 19, 0.4);
+  border-radius: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  transform: rotate(-15deg);
+  z-index: 3;
+  opacity: 0.7;
+}
+
+.travel-postcard-postmark::before {
+  content: '';
+  position: absolute;
+  left: -20px;
+  right: -20px;
+  top: 50%;
+  height: 2px;
+  background: repeating-linear-gradient(
+    90deg,
+    rgba(139, 69, 19, 0.4) 0px,
+    rgba(139, 69, 19, 0.4) 8px,
+    transparent 8px,
+    transparent 12px
+  );
+}
+
+.travel-postcard-postmark-city {
+  font-family: var(--font-mono);
+  font-size: 8px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: rgba(139, 69, 19, 0.8);
+  background: var(--paper);
+  padding: 0 4px;
+  position: relative;
+  z-index: 1;
+}
+
+.travel-postcard-postmark-date {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: 600;
+  color: rgba(139, 69, 19, 0.8);
+  background: var(--paper);
+  padding: 0 4px;
+  position: relative;
+  z-index: 1;
+}
+
+[data-theme="dark"] .travel-postcard-postmark-city,
+[data-theme="dark"] .travel-postcard-postmark-date {
+  background: var(--paper-dark);
+}
+
+/* Airmail Stripes */
+.travel-postcard-airmail {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 8px;
+  background: repeating-linear-gradient(
+    90deg,
+    #1e40af 0px,
+    #1e40af 12px,
+    #dc2626 12px,
+    #dc2626 24px,
+    #FFF9F0 24px,
+    #FFF9F0 36px
+  );
+  z-index: 4;
+  border-radius: 0 0 4px 4px;
+}
+
+/* Wish You Were Here */
+.travel-postcard-wish {
+  position: absolute;
+  top: 50%;
+  left: 20px;
+  transform: translateY(-50%) rotate(-8deg);
+  font-family: var(--font-serif);
+  font-size: 14px;
+  font-style: italic;
+  color: rgba(255, 255, 255, 0.6);
+  white-space: nowrap;
+  z-index: 2;
+  opacity: 0;
+  transition: opacity 0.3s var(--ease);
+  pointer-events: none;
+  text-shadow: 0 1px 4px rgba(0,0,0,0.5);
+}
+
+.travel-postcard:hover .travel-postcard-wish {
+  opacity: 1;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  .travel-postcard-stamp {
+    width: 44px;
+    height: 54px;
+    top: 14px;
+    right: 14px;
+  }
+  
+  .travel-postcard-stamp-flag {
+    font-size: 18px;
+  }
+  
+  .travel-postcard-postmark {
+    width: 48px;
+    height: 48px;
+    right: 54px;
+    top: 12px;
+  }
+  
+  .travel-postcard-postmark-city,
+  .travel-postcard-postmark-date {
+    font-size: 7px;
+  }
+  
+  .travel-postcard-airmail {
+    height: 6px;
+  }
+  
+  .travel-postcard-wish {
+    font-size: 12px;
+    left: 14px;
+  }
 }
 
 /* =============================================================================
@@ -1571,7 +1792,6 @@ section { padding: var(--section-gap) 0; }
 .into-card[data-card="reading"] { border-left-color: var(--green); }
 .into-card[data-card="watching"] { border-left-color: var(--orange); }
 
-/* 3D Tilt effect */
 [data-tilt] {
   transform-style: preserve-3d;
   transition: transform var(--duration) var(--ease);
@@ -1838,7 +2058,6 @@ footer { padding: 32px 0; border-top: 1px solid var(--border); }
 .reveal { opacity: 0; transform: translateY(20px); transition: opacity 0.8s var(--ease), transform 0.8s var(--ease); }
 .reveal.visible { opacity: 1; transform: translateY(0); }
 
-/* Parallax blur effect for hero on scroll */
 .hero-content.scrolled {
   filter: blur(2px);
   opacity: 0.5;
