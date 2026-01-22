@@ -1,4 +1,66 @@
 /* =============================================================================
+   CRITICAL FALLBACKS - For browsers without CSS variable support
+   ============================================================================= */
+
+/* Ensure all SVGs have explicit sizes */
+svg {
+  width: 1em;
+  height: 1em;
+  max-width: 100%;
+  max-height: 100%;
+  flex-shrink: 0;
+}
+
+/* Basic layout fallbacks */
+.steps-simple,
+.travel-postcards,
+.photo-grid-minimal,
+.article-grid,
+.into-grid {
+  display: block;
+}
+
+@supports (display: grid) {
+  .steps-simple,
+  .travel-postcards,
+  .article-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+  
+  .photo-grid-minimal {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+  
+  .into-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+}
+
+@media (min-width: 768px) {
+  @supports (display: grid) {
+    .steps-simple,
+    .travel-postcards,
+    .article-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .photo-grid-minimal {
+      grid-template-columns: repeat(4, 1fr);
+    }
+    
+    .into-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+}
+
+/* =============================================================================
    CSS CUSTOM PROPERTIES
    ============================================================================= */
 
@@ -782,7 +844,7 @@ header.scrolled .logo-img { width: 32px; height: 32px; }
 }
 
 .btn-text { position: relative; z-index: 1; transition: color var(--duration); }
-.btn svg { width: 14px; height: 14px; position: relative; z-index: 1; transition: transform var(--duration), color var(--duration); }
+.btn svg { width: 14px; height: 14px; position: relative; z-index: 1; transition: transform var(--duration), color var(--duration); flex-shrink: 0; }
 .btn:hover { border-color: var(--text); }
 .btn:hover::before { transform: translateY(0); }
 .btn:hover .btn-text, .btn:hover svg { color: var(--bg); }
