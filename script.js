@@ -67,22 +67,159 @@ const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)
 const formatNumber = (n) => n >= 1000000 ? (n / 1000000).toFixed(1) + 'M' : n.toLocaleString();
 const lerp = (a, b, t) => a + (b - a) * t;
 
+// Safe localStorage wrapper
+const storage = {
+  get(key) {
+    try {
+      return localStorage.getItem(key);
+    } catch (e) {
+      console.warn('localStorage not available:', e);
+      return null;
+    }
+  },
+  set(key, value) {
+    try {
+      localStorage.setItem(key, value);
+      return true;
+    } catch (e) {
+      console.warn('localStorage not available:', e);
+      return false;
+    }
+  }
+};
+
+// Debounce utility
+function debounce(fn, delay) {
+  let timeoutId;
+  return (...args) => {
+    clearTimeout(timeoutId);
+    timeoutId = setTimeout(() => fn.apply(this, args), delay);
+  };
+}
+
+// Throttle utility for scroll events
+function throttle(fn, limit) {
+  let inThrottle;
+  return (...args) => {
+    if (!inThrottle) {
+      fn.apply(this, args);
+      inThrottle = true;
+      setTimeout(() => inThrottle = false, limit);
+    }
+  };
+}
+
+// =============================================================================
+// PAGE LOADER
+// =============================================================================
+
+function initPageLoader() {
+  const loader = $('#pageLoader');
+  if (!loader) return;
+
+  // Hide loader when page is fully loaded
+  window.addEventListener('load', () => {
+    setTimeout(() => {
+      loader.classList.add('hidden');
+      document.body.style.overflow = '';
+    }, 300);
+  });
+
+  // Fallback: hide loader after 3 seconds regardless
+  setTimeout(() => {
+    loader.classList.add('hidden');
+    document.body.style.overflow = '';
+  }, 3000);
+}
+
 // =============================================================================
 // THEME
 // =============================================================================
 
 function initTheme() {
-  const saved = localStorage.getItem('theme');
+  const saved = storage.get('theme');
   const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
   const isDark = saved ? saved === 'dark' : prefersDark;
   document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light');
+  
+  // Update theme-color meta tag
+  updateThemeColorMeta(isDark ? 'dark' : 'light');
 }
 
 function toggleTheme() {
   const current = document.documentElement.getAttribute('data-theme');
   const next = current === 'dark' ? 'light' : 'dark';
   document.documentElement.setAttribute('data-theme', next);
-  localStorage.setItem('theme', next);
+  storage.set('theme', next);
+  updateThemeColorMeta(next);
+  
+  // Announce theme change to screen readers
+  announceToScreenReader(`Theme changed to ${next} mode`);
+}
+
+function updateThemeColorMeta(theme) {
+  const metaThemeColor = document.querySelector('meta[name="theme-color"]');
+  if (metaThemeColor) {
+    metaThemeColor.setAttribute('content', theme === 'dark' ? '#0A0A0A' : '#FAFAFA');
+  }
+}
+
+// Listen for system theme changes
+function initSystemThemeListener() {
+  window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+    // Only auto-switch if user hasn't manually set a preference
+    if (!storage.get('theme')) {
+      document.documentElement.setAttribute('data-theme', e.matches ? 'dark' : 'light');
+      updateThemeColorMeta(e.matches ? 'dark' : 'light');
+    }
+  });
+}
+
+// =============================================================================
+// ACCESSIBILITY HELPERS
+// =============================================================================
+
+// Announce messages to screen readers
+function announceToScreenReader(message) {
+  const announcement = document.createElement('div');
+  announcement.setAttribute('role', 'status');
+  announcement.setAttribute('aria-live', 'polite');
+  announcement.setAttribute('aria-atomic', 'true');
+  announcement.className = 'sr-only';
+  announcement.textContent = message;
+  document.body.appendChild(announcement);
+  
+  setTimeout(() => {
+    document.body.removeChild(announcement);
+  }, 1000);
+}
+
+// Trap focus within modal
+function trapFocus(element) {
+  const focusableElements = element.querySelectorAll(
+    'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+  );
+  const firstElement = focusableElements[0];
+  const lastElement = focusableElements[focusableElements.length - 1];
+
+  function handleTabKey(e) {
+    if (e.key !== 'Tab') return;
+
+    if (e.shiftKey) {
+      if (document.activeElement === firstElement) {
+        e.preventDefault();
+        lastElement.focus();
+      }
+    } else {
+      if (document.activeElement === lastElement) {
+        e.preventDefault();
+        firstElement.focus();
+      }
+    }
+  }
+
+  element.addEventListener('keydown', handleTabKey);
+  return () => element.removeEventListener('keydown', handleTabKey);
 }
 
 // =============================================================================
@@ -97,6 +234,7 @@ function initCursor() {
   if (!cursor) return;
 
   let mouseX = 0, mouseY = 0, cursorX = 0, cursorY = 0;
+  let animationId;
 
   document.addEventListener('mousemove', (e) => {
     mouseX = e.clientX;
@@ -106,7 +244,7 @@ function initCursor() {
 
   document.addEventListener('mouseleave', () => {
     cursor.classList.remove('visible');
-    cursorLabel.classList.remove('visible');
+    cursorLabel?.classList.remove('visible');
   });
 
   function animate() {
@@ -114,34 +252,52 @@ function initCursor() {
     cursorY = lerp(cursorY, mouseY, 0.15);
     cursor.style.left = `${cursorX}px`;
     cursor.style.top = `${cursorY}px`;
-    cursorLabel.style.left = `${cursorX}px`;
-    cursorLabel.style.top = `${cursorY}px`;
-    requestAnimationFrame(animate);
+    if (cursorLabel) {
+      cursorLabel.style.left = `${cursorX}px`;
+      cursorLabel.style.top = `${cursorY}px`;
+    }
+    animationId = requestAnimationFrame(animate);
   }
   animate();
 
-  // Bind hover effects
+  // Bind hover effects using event delegation
   document.addEventListener('mouseover', (e) => {
     const target = e.target.closest('a, button');
     const photoTarget = e.target.closest('.photo-item, .stack-card');
+    const labelTarget = e.target.closest('[data-cursor-label]');
 
     if (photoTarget) {
       cursor.classList.add('photo-hover');
       cursor.classList.remove('hover');
-      cursorLabel.textContent = 'View';
+      if (cursorLabel) {
+        cursorLabel.textContent = 'View';
+        cursorLabel.classList.add('visible');
+      }
+    } else if (labelTarget && cursorLabel) {
+      cursor.classList.add('hover');
+      cursorLabel.textContent = labelTarget.dataset.cursorLabel;
       cursorLabel.classList.add('visible');
     } else if (target) {
       cursor.classList.add('hover');
       cursor.classList.remove('photo-hover');
-      cursorLabel.classList.remove('visible');
+      cursorLabel?.classList.remove('visible');
     }
   });
 
   document.addEventListener('mouseout', (e) => {
-    const target = e.target.closest('a, button, .photo-item, .stack-card');
+    const target = e.target.closest('a, button, .photo-item, .stack-card, [data-cursor-label]');
     if (target) {
       cursor.classList.remove('hover', 'photo-hover');
-      cursorLabel.classList.remove('visible');
+      cursorLabel?.classList.remove('visible');
+    }
+  });
+
+  // Clean up on page hide
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden && animationId) {
+      cancelAnimationFrame(animationId);
+    } else if (!document.hidden) {
+      animate();
     }
   });
 }
@@ -174,21 +330,19 @@ function initMagneticButtons() {
 function initHeader() {
   const header = $('#header');
   const backToTop = $('#backToTop');
-  let ticking = false;
+  
+  const handleScroll = throttle(() => {
+    const scrollY = window.scrollY;
+    header?.classList.toggle('scrolled', scrollY > 50);
+    backToTop?.classList.toggle('visible', scrollY > 600);
+  }, 100);
 
-  window.addEventListener('scroll', () => {
-    if (!ticking) {
-      requestAnimationFrame(() => {
-        header?.classList.toggle('scrolled', window.scrollY > 50);
-        backToTop?.classList.toggle('visible', window.scrollY > 600);
-        ticking = false;
-      });
-      ticking = true;
-    }
-  }, { passive: true });
+  window.addEventListener('scroll', handleScroll, { passive: true });
 
   backToTop?.addEventListener('click', () => {
     window.scrollTo({ top: 0, behavior: prefersReducedMotion ? 'auto' : 'smooth' });
+    // Focus on skip link or main content for accessibility
+    $('#main')?.focus();
   });
 }
 
@@ -200,22 +354,49 @@ function initMobileMenu() {
   const menu = $('#mobileMenu');
   const openBtn = $('#mobileMenuBtn');
   const closeBtn = $('#mobileMenuClose');
+  let removeTrapFocus = null;
 
   function open() {
     menu?.classList.add('open');
     menu?.setAttribute('aria-hidden', 'false');
+    openBtn?.setAttribute('aria-expanded', 'true');
     document.body.style.overflow = 'hidden';
+    
+    // Focus first menu item
+    setTimeout(() => {
+      $('nav a', menu)?.focus();
+    }, 100);
+    
+    // Trap focus within menu
+    if (menu) {
+      removeTrapFocus = trapFocus(menu);
+    }
+    
+    announceToScreenReader('Navigation menu opened');
   }
 
   function close() {
     menu?.classList.remove('open');
     menu?.setAttribute('aria-hidden', 'true');
+    openBtn?.setAttribute('aria-expanded', 'false');
     document.body.style.overflow = '';
+    
+    // Return focus to menu button
+    openBtn?.focus();
+    
+    // Remove focus trap
+    if (removeTrapFocus) {
+      removeTrapFocus();
+      removeTrapFocus = null;
+    }
+    
+    announceToScreenReader('Navigation menu closed');
   }
 
   openBtn?.addEventListener('click', open);
   closeBtn?.addEventListener('click', close);
   $$('a', menu).forEach(link => link.addEventListener('click', close));
+  
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape' && menu?.classList.contains('open')) close();
   });
@@ -227,43 +408,113 @@ function initMobileMenu() {
 
 let currentPhotoIndex = 0;
 let lastFocusedElement = null;
+let removeLightboxTrapFocus = null;
+let lightboxTouchStartX = 0;
+let lightboxTouchStartY = 0;
 
 function initLightbox() {
   const lightbox = $('#lightbox');
   const img = $('#lightboxImg');
   const caption = $('#lightboxCaption');
+  const counter = $('#lightboxCounter');
+  const loading = $('.lightbox-loading', lightbox);
+
+  function showLoading() {
+    loading?.classList.add('visible');
+  }
+
+  function hideLoading() {
+    loading?.classList.remove('visible');
+  }
 
   function open(index, opener) {
     currentPhotoIndex = index;
     lastFocusedElement = opener || document.activeElement;
-    img.src = PHOTOS[index].src;
-    img.alt = PHOTOS[index].alt;
+    
+    showLoading();
+    
+    // Preload image
+    const newImg = new Image();
+    newImg.onload = () => {
+      img.src = PHOTOS[index].src;
+      img.alt = PHOTOS[index].alt;
+      hideLoading();
+    };
+    newImg.onerror = () => {
+      hideLoading();
+      img.alt = 'Failed to load image';
+    };
+    newImg.src = PHOTOS[index].src;
+    
     caption.textContent = PHOTOS[index].caption;
+    if (counter) {
+      counter.textContent = `${index + 1} / ${PHOTOS.length}`;
+    }
+    
     lightbox.classList.add('active');
     lightbox.setAttribute('aria-hidden', 'false');
     document.body.style.overflow = 'hidden';
-    $('.lightbox-close', lightbox)?.focus();
+    
+    // Focus close button
+    setTimeout(() => {
+      $('.lightbox-close', lightbox)?.focus();
+    }, 100);
+    
+    // Trap focus
+    if (lightbox) {
+      removeLightboxTrapFocus = trapFocus(lightbox);
+    }
+    
+    announceToScreenReader(`Photo ${index + 1} of ${PHOTOS.length}: ${PHOTOS[index].caption}`);
   }
 
   function close() {
     lightbox.classList.remove('active');
     lightbox.setAttribute('aria-hidden', 'true');
     document.body.style.overflow = '';
+    
+    // Return focus
     lastFocusedElement?.focus();
+    
+    // Remove focus trap
+    if (removeLightboxTrapFocus) {
+      removeLightboxTrapFocus();
+      removeLightboxTrapFocus = null;
+    }
   }
 
   function navigate(dir) {
     currentPhotoIndex = (currentPhotoIndex + dir + PHOTOS.length) % PHOTOS.length;
-    img.src = PHOTOS[currentPhotoIndex].src;
-    img.alt = PHOTOS[currentPhotoIndex].alt;
+    
+    showLoading();
+    
+    const newImg = new Image();
+    newImg.onload = () => {
+      img.src = PHOTOS[currentPhotoIndex].src;
+      img.alt = PHOTOS[currentPhotoIndex].alt;
+      hideLoading();
+    };
+    newImg.src = PHOTOS[currentPhotoIndex].src;
+    
     caption.textContent = PHOTOS[currentPhotoIndex].caption;
+    if (counter) {
+      counter.textContent = `${currentPhotoIndex + 1} / ${PHOTOS.length}`;
+    }
+    
+    announceToScreenReader(`Photo ${currentPhotoIndex + 1} of ${PHOTOS.length}: ${PHOTOS[currentPhotoIndex].caption}`);
   }
 
+  // Button event listeners
   $('.lightbox-close', lightbox)?.addEventListener('click', close);
   $('.lightbox-prev', lightbox)?.addEventListener('click', () => navigate(-1));
   $('.lightbox-next', lightbox)?.addEventListener('click', () => navigate(1));
-  lightbox?.addEventListener('click', (e) => { if (e.target === lightbox) close(); });
+  
+  // Click outside to close
+  lightbox?.addEventListener('click', (e) => { 
+    if (e.target === lightbox) close(); 
+  });
 
+  // Keyboard navigation
   document.addEventListener('keydown', (e) => {
     if (!lightbox?.classList.contains('active')) return;
     if (e.key === 'Escape') close();
@@ -271,7 +522,44 @@ function initLightbox() {
     if (e.key === 'ArrowRight') navigate(1);
   });
 
-  window.openLightbox = open;
+  // Touch gestures for lightbox
+  const imgContainer = $('.lightbox-img-container', lightbox);
+  
+  imgContainer?.addEventListener('touchstart', (e) => {
+    lightboxTouchStartX = e.touches[0].clientX;
+    lightboxTouchStartY = e.touches[0].clientY;
+  }, { passive: true });
+
+  imgContainer?.addEventListener('touchend', (e) => {
+    const touchEndX = e.changedTouches[0].clientX;
+    const touchEndY = e.changedTouches[0].clientY;
+    const diffX = touchEndX - lightboxTouchStartX;
+    const diffY = touchEndY - lightboxTouchStartY;
+    
+    // Only trigger if horizontal swipe is greater than vertical
+    if (Math.abs(diffX) > Math.abs(diffY) && Math.abs(diffX) > 50) {
+      if (diffX > 0) {
+        navigate(-1); // Swipe right = previous
+      } else {
+        navigate(1); // Swipe left = next
+      }
+    }
+  }, { passive: true });
+
+  // Preload adjacent images
+  function preloadAdjacent() {
+    const prevIndex = (currentPhotoIndex - 1 + PHOTOS.length) % PHOTOS.length;
+    const nextIndex = (currentPhotoIndex + 1) % PHOTOS.length;
+    
+    new Image().src = PHOTOS[prevIndex].src;
+    new Image().src = PHOTOS[nextIndex].src;
+  }
+
+  // Export open function
+  window.openLightbox = (index, opener) => {
+    open(index, opener);
+    preloadAdjacent();
+  };
 }
 
 // =============================================================================
@@ -286,6 +574,7 @@ class PhotoStack {
     this.isDragging = false;
     this.startX = 0;
     this.deltaX = 0;
+    this.hintHidden = false;
     this.render();
     this.bindEvents();
   }
@@ -300,11 +589,12 @@ class PhotoStack {
       card.className = 'stack-card';
       card.dataset.index = i;
       card.setAttribute('aria-label', `View photo: ${photo.caption}`);
+      card.setAttribute('tabindex', i === 0 ? '0' : '-1');
       card.innerHTML = `
-        <img src="${photo.src}" alt="${photo.alt}" draggable="false" />
+        <img src="${photo.src}" alt="${photo.alt}" draggable="false" loading="${i === 0 ? 'eager' : 'lazy'}" />
         <div class="stack-card-footer">
           <span class="stack-card-caption">${photo.caption}</span>
-          <div class="stack-card-dots">
+          <div class="stack-card-dots" aria-hidden="true">
             ${this.photos.map((_, j) => `<span ${j === 0 ? 'class="active"' : ''}></span>`).join('')}
           </div>
         </div>
@@ -314,22 +604,45 @@ class PhotoStack {
 
     const hint = document.createElement('div');
     hint.className = 'stack-hint';
+    hint.setAttribute('aria-hidden', 'true');
     hint.innerHTML = `<span>Swipe or tap</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>`;
 
     this.container.innerHTML = '';
     this.container.appendChild(track);
     this.container.appendChild(hint);
     this.cards = $$('.stack-card', track);
+    this.hint = hint;
     this.updatePositions();
+  }
+
+  hideHint() {
+    if (!this.hintHidden && this.hint) {
+      this.hint.classList.add('hidden');
+      this.hintHidden = true;
+    }
   }
 
   updatePositions() {
     this.cards.forEach((card, i) => {
       const offset = (i - this.currentIndex + this.photos.length) % this.photos.length;
-      if (offset === 0) card.dataset.position = '0';
-      else if (offset === 1) card.dataset.position = '1';
-      else if (offset === this.photos.length - 1) card.dataset.position = '2';
-      else card.dataset.position = 'hidden';
+      
+      if (offset === 0) {
+        card.dataset.position = '0';
+        card.setAttribute('tabindex', '0');
+        card.setAttribute('aria-current', 'true');
+      } else if (offset === 1) {
+        card.dataset.position = '1';
+        card.setAttribute('tabindex', '-1');
+        card.setAttribute('aria-current', 'false');
+      } else if (offset === this.photos.length - 1) {
+        card.dataset.position = '2';
+        card.setAttribute('tabindex', '-1');
+        card.setAttribute('aria-current', 'false');
+      } else {
+        card.dataset.position = 'hidden';
+        card.setAttribute('tabindex', '-1');
+        card.setAttribute('aria-current', 'false');
+      }
 
       $$('.stack-card-dots span', card).forEach((dot, j) => {
         dot.classList.toggle('active', j === this.currentIndex);
@@ -337,8 +650,17 @@ class PhotoStack {
     });
   }
 
-  next() { this.currentIndex = (this.currentIndex + 1) % this.photos.length; this.updatePositions(); }
-  prev() { this.currentIndex = (this.currentIndex - 1 + this.photos.length) % this.photos.length; this.updatePositions(); }
+  next() { 
+    this.currentIndex = (this.currentIndex + 1) % this.photos.length; 
+    this.updatePositions();
+    this.hideHint();
+  }
+  
+  prev() { 
+    this.currentIndex = (this.currentIndex - 1 + this.photos.length) % this.photos.length; 
+    this.updatePositions();
+    this.hideHint();
+  }
 
   bindEvents() {
     this.cards.forEach(card => {
@@ -349,6 +671,7 @@ class PhotoStack {
           this.next();
         }
       });
+      
       card.addEventListener('mousedown', (e) => this.onDragStart(e));
       card.addEventListener('touchstart', (e) => this.onDragStart(e), { passive: true });
     });
@@ -359,8 +682,14 @@ class PhotoStack {
     document.addEventListener('touchend', () => this.onDragEnd());
 
     this.container.addEventListener('keydown', (e) => {
-      if (e.key === 'ArrowLeft') this.prev();
-      if (e.key === 'ArrowRight') this.next();
+      if (e.key === 'ArrowLeft') {
+        this.prev();
+        e.preventDefault();
+      }
+      if (e.key === 'ArrowRight') {
+        this.next();
+        e.preventDefault();
+      }
     });
   }
 
@@ -378,8 +707,11 @@ class PhotoStack {
   onDragEnd() {
     if (!this.isDragging) return;
     this.isDragging = false;
-    if (this.deltaX > 50) this.prev();
-    else if (this.deltaX < -50) this.next();
+    
+    // Increased threshold for less sensitive swiping
+    if (this.deltaX > 60) this.prev();
+    else if (this.deltaX < -60) this.next();
+    
     this.deltaX = 0;
   }
 }
@@ -395,18 +727,52 @@ function renderPhotoGrid() {
   // Show only 4 photos for minimal look
   const displayPhotos = PHOTOS.slice(0, 4);
 
-  container.innerHTML = displayPhotos.map((photo, i) => `
-    <button type="button" class="photo-item" data-index="${i}">
-      <img src="${photo.src}" alt="${photo.alt}" loading="lazy" />
-      <div class="photo-item-overlay"></div>
-      <span class="photo-item-caption">${photo.caption}</span>
-    </button>
+  // Initially render skeletons
+  container.innerHTML = displayPhotos.map(() => `
+    <div class="photo-item skeleton" role="listitem"></div>
   `).join('');
 
-  $$('.photo-item', container).forEach(item => {
-    item.addEventListener('click', () => {
-      window.openLightbox(parseInt(item.dataset.index, 10), item);
-    });
+  // Load actual photos
+  const photoItems = $$('.photo-item', container);
+  
+  displayPhotos.forEach((photo, i) => {
+    const item = photoItems[i];
+    const img = new Image();
+    
+    img.onload = () => {
+      item.innerHTML = `
+        <img src="${photo.src}" alt="${photo.alt}" loading="lazy" />
+        <div class="photo-item-overlay"></div>
+        <span class="photo-item-caption">${photo.caption}</span>
+      `;
+      item.classList.remove('skeleton');
+      item.setAttribute('role', 'listitem');
+      item.dataset.index = i;
+      
+      // Make it a button for accessibility
+      item.setAttribute('tabindex', '0');
+      item.setAttribute('aria-label', `View photo: ${photo.caption}`);
+      
+      // Add click handler
+      item.addEventListener('click', () => {
+        window.openLightbox(parseInt(item.dataset.index, 10), item);
+      });
+      
+      // Add keyboard handler
+      item.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          window.openLightbox(parseInt(item.dataset.index, 10), item);
+        }
+      });
+    };
+    
+    img.onerror = () => {
+      item.innerHTML = `<span class="photo-item-caption">Failed to load</span>`;
+      item.classList.remove('skeleton');
+    };
+    
+    img.src = photo.src;
   });
 
   // Update photo count
@@ -419,14 +785,14 @@ function renderArticles() {
   if (!container) return;
 
   container.innerHTML = ARTICLES.map(article => `
-    <a href="${article.url}" class="article-card">
+    <a href="${article.url}" class="article-card" role="listitem">
       <div>
         <div class="article-card-topic">${article.topic}</div>
         <h3 class="article-card-title">${article.title}</h3>
       </div>
       <div class="article-card-footer">
         <span class="article-card-date">${article.date}</span>
-        <span class="article-card-arrow">
+        <span class="article-card-arrow" aria-hidden="true">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <path d="M7 17L17 7M17 7H7M17 7v10"/>
           </svg>
@@ -451,11 +817,11 @@ function renderStepsDashboard() {
     <!-- Main stats card -->
     <div class="steps-main-card">
       <div class="steps-primary">
-        <div class="steps-value" id="stepsValue">${formatNumber(d.current)}</div>
+        <div class="steps-value" id="stepsValue" aria-label="${formatNumber(d.current)} steps this month">${formatNumber(d.current)}</div>
         <div class="steps-label">steps this month</div>
       </div>
-      <div class="steps-ring-container">
-        <svg class="steps-ring" viewBox="0 0 120 120">
+      <div class="steps-ring-container" role="progressbar" aria-valuenow="${pct}" aria-valuemin="0" aria-valuemax="100" aria-label="Monthly goal progress: ${pct}%">
+        <svg class="steps-ring" viewBox="0 0 120 120" aria-hidden="true">
           <defs>
             <linearGradient id="ringGradient" x1="0%" y1="0%" x2="100%" y2="0%">
               <stop offset="0%" stop-color="var(--accent)" />
@@ -463,7 +829,7 @@ function renderStepsDashboard() {
             </linearGradient>
           </defs>
           <circle class="ring-bg" cx="60" cy="60" r="52" />
-          <circle class="ring-progress" cx="60" cy="60" r="52" id="ringProgress" style="stroke-dashoffset: ${ringOffset};" />
+          <circle class="ring-progress" cx="60" cy="60" r="52" id="ringProgress" style="stroke-dashoffset: 377;" data-offset="${ringOffset}" />
         </svg>
         <div class="steps-ring-center">
           <span class="ring-percentage">${pct}%</span>
@@ -475,7 +841,7 @@ function renderStepsDashboard() {
     <!-- Stats row -->
     <div class="steps-stats-row">
       <div class="steps-stat-card">
-        <div class="steps-stat-icon distance">
+        <div class="steps-stat-icon distance" aria-hidden="true">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
             <circle cx="12" cy="10" r="3"/>
@@ -486,7 +852,7 @@ function renderStepsDashboard() {
       </div>
 
       <div class="steps-stat-card">
-        <div class="steps-stat-icon time">
+        <div class="steps-stat-icon time" aria-hidden="true">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <circle cx="12" cy="12" r="10"/>
             <polyline points="12 6 12 12 16 14"/>
@@ -497,7 +863,7 @@ function renderStepsDashboard() {
       </div>
 
       <div class="steps-stat-card">
-        <div class="steps-stat-icon calories">
+        <div class="steps-stat-icon calories" aria-hidden="true">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <path d="M12 22c-4.97 0-9-2.582-9-7v-.088C3 12.794 4.338 11.1 6.375 10c1.949-1.052 3.101-2.99 3.112-5l.013-3 2.26 1.378a8.002 8.002 0 0 1 3.54 4.53l.168.5.168-.5a8.002 8.002 0 0 1 3.54-4.53L21.438 2l.012 3c.011 2.01 1.163 3.948 3.112 5C26.662 11.1 28 12.794 28 14.912V15c0 4.418-4.03 7-9 7z" transform="scale(0.85) translate(2, 2)"/>
           </svg>
@@ -507,7 +873,7 @@ function renderStepsDashboard() {
       </div>
 
       <div class="steps-stat-card">
-        <div class="steps-stat-icon avg">
+        <div class="steps-stat-icon avg" aria-hidden="true">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <line x1="12" y1="20" x2="12" y2="10"/>
             <line x1="18" y1="20" x2="18" y2="4"/>
@@ -525,12 +891,12 @@ function renderStepsDashboard() {
         <span class="steps-chart-title">This week</span>
         <span class="steps-chart-period">Jan 13 - 19</span>
       </div>
-      <div class="steps-chart">
+      <div class="steps-chart" role="img" aria-label="Weekly steps chart showing ${d.weeklyData.map(day => `${day.day}: ${formatNumber(day.steps)} steps`).join(', ')}">
         ${d.weeklyData.map(day => {
           const height = (day.steps / 15000) * 100;
           return `
             <div class="chart-bar">
-              <div class="chart-bar-fill" style="height: ${height}px;"></div>
+              <div class="chart-bar-fill" style="height: 0px;" data-height="${height}"></div>
               <span class="chart-bar-label">${day.day}</span>
             </div>
           `;
@@ -542,14 +908,14 @@ function renderStepsDashboard() {
     <div class="steps-goal-card">
       <div class="steps-goal-header">
         <span class="steps-goal-title">Monthly Goal</span>
-        <span class="steps-goal-status in-progress">In progress</span>
+        <span class="steps-goal-status in-progress">${pct >= 100 ? 'Complete' : 'In progress'}</span>
       </div>
       <div class="steps-goal-progress">
         <div class="steps-goal-numbers">
           <span class="steps-goal-current">${formatNumber(d.current)}</span>
           <span class="steps-goal-target">/ ${formatNumber(d.goal)}</span>
         </div>
-        <div class="progress-bar">
+        <div class="progress-bar" role="progressbar" aria-valuenow="${pct}" aria-valuemin="0" aria-valuemax="100">
           <div class="progress-fill" id="goalProgress" data-width="${pct}"></div>
         </div>
       </div>
@@ -566,12 +932,12 @@ function renderTravels() {
   if (!container) return;
 
   container.innerHTML = TRAVELS.map(travel => `
-    <a href="${travel.url}" class="travel-card">
+    <a href="${travel.url}" class="travel-card" role="listitem">
       <div>
         <h3 class="travel-card-title">${travel.title}</h3>
         <p class="travel-card-meta">${travel.meta}</p>
       </div>
-      <span class="travel-card-arrow">
+      <span class="travel-card-arrow" aria-hidden="true">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <path d="M5 12h14M12 5l7 7-7 7"/>
         </svg>
@@ -587,8 +953,8 @@ function renderInto() {
 
   if (musicList) {
     musicList.innerHTML = MUSIC.map(item => `
-      <a href="${item.url}" target="_blank" rel="noopener noreferrer" class="into-item">
-        <div class="into-cover"><img src="${item.cover}" alt="${item.title}" loading="lazy" /></div>
+      <a href="${item.url}" target="_blank" rel="noopener noreferrer" class="into-item" role="listitem">
+        <div class="into-cover"><img src="${item.cover}" alt="" loading="lazy" /></div>
         <div class="into-text">
           <div class="into-title">${item.title}</div>
           <div class="into-meta">${item.artist}</div>
@@ -599,8 +965,8 @@ function renderInto() {
 
   if (bookList) {
     bookList.innerHTML = BOOKS.map(item => `
-      <a href="${item.url}" target="_blank" rel="noopener noreferrer" class="into-item">
-        <div class="into-cover"><img src="${item.cover}" alt="${item.title}" loading="lazy" /></div>
+      <a href="${item.url}" target="_blank" rel="noopener noreferrer" class="into-item" role="listitem">
+        <div class="into-cover"><img src="${item.cover}" alt="" loading="lazy" /></div>
         <div class="into-text">
           <div class="into-title">${item.title}</div>
           <div class="into-meta">${item.author}</div>
@@ -611,8 +977,8 @@ function renderInto() {
 
   if (tvList) {
     tvList.innerHTML = TV.map(item => `
-      <a href="${item.url}" target="_blank" rel="noopener noreferrer" class="into-item">
-        <div class="into-cover"><img src="${item.cover}" alt="${item.title}" loading="lazy" /></div>
+      <a href="${item.url}" target="_blank" rel="noopener noreferrer" class="into-item" role="listitem">
+        <div class="into-cover"><img src="${item.cover}" alt="" loading="lazy" /></div>
         <div class="into-text">
           <div class="into-title">${item.title}</div>
           <div class="into-meta">${item.year}</div>
@@ -627,7 +993,11 @@ function renderInto() {
 // =============================================================================
 
 function animateCounter(el, target, duration = 1500) {
-  if (prefersReducedMotion) { el.textContent = formatNumber(target); return; }
+  if (prefersReducedMotion) { 
+    el.textContent = formatNumber(target); 
+    return; 
+  }
+  
   const start = performance.now();
   function update(now) {
     const progress = Math.min((now - start) / duration, 1);
@@ -639,33 +1009,69 @@ function animateCounter(el, target, duration = 1500) {
 }
 
 function initHeroAnimations() {
-  $$('.hero-title .line-inner').forEach(el => el.classList.add('animate'));
-  $('.hero-text')?.classList.add('animate');
-  $('.hero-ctas')?.classList.add('animate');
-  $('.hero-visual')?.classList.add('animate');
+  if (prefersReducedMotion) return;
+  
+  // Stagger the animations
+  setTimeout(() => {
+    $$('.hero-title .line-inner').forEach(el => el.classList.add('animate'));
+  }, 100);
+  
+  setTimeout(() => {
+    $('.hero-text')?.classList.add('animate');
+  }, 200);
+  
+  setTimeout(() => {
+    $('.hero-ctas')?.classList.add('animate');
+  }, 300);
+  
+  setTimeout(() => {
+    $('.hero-visual')?.classList.add('animate');
+  }, 400);
 }
 
 function initScrollAnimations() {
   const sections = $$('section');
 
+  const observerOptions = {
+    threshold: 0.1,
+    rootMargin: '0px 0px -50px 0px'
+  };
+
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
       if (!entry.isIntersecting) return;
+      
       entry.target.classList.add('visible');
 
-      // Animate steps dashboard
+      // Animate steps dashboard elements
       if (entry.target.id === 'steps') {
+        // Animate progress bar
         const goalProgress = $('#goalProgress');
         if (goalProgress) {
           setTimeout(() => {
             goalProgress.style.width = goalProgress.dataset.width + '%';
           }, 300);
         }
+        
+        // Animate ring progress
+        const ringProgress = $('#ringProgress');
+        if (ringProgress) {
+          setTimeout(() => {
+            ringProgress.style.strokeDashoffset = ringProgress.dataset.offset;
+          }, 300);
+        }
+        
+        // Animate chart bars
+        $$('.chart-bar-fill').forEach((bar, i) => {
+          setTimeout(() => {
+            bar.style.height = bar.dataset.height + 'px';
+          }, 400 + (i * 100));
+        });
       }
 
       observer.unobserve(entry.target);
     });
-  }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+  }, observerOptions);
 
   sections.forEach(section => {
     section.classList.add('reveal');
@@ -674,12 +1080,59 @@ function initScrollAnimations() {
 }
 
 // =============================================================================
+// KEYBOARD SHORTCUTS
+// =============================================================================
+
+function initKeyboardShortcuts() {
+  document.addEventListener('keydown', (e) => {
+    // Don't trigger shortcuts when typing in inputs
+    if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+    
+    // Press 'D' for dark mode toggle
+    if (e.key === 'd' || e.key === 'D') {
+      if (!e.metaKey && !e.ctrlKey) {
+        toggleTheme();
+      }
+    }
+    
+    // Press 'H' to go home
+    if (e.key === 'h' || e.key === 'H') {
+      if (!e.metaKey && !e.ctrlKey) {
+        window.scrollTo({ top: 0, behavior: prefersReducedMotion ? 'auto' : 'smooth' });
+      }
+    }
+  });
+}
+
+// =============================================================================
+// ERROR HANDLING
+// =============================================================================
+
+function initErrorHandling() {
+  // Handle image loading errors
+  document.addEventListener('error', (e) => {
+    if (e.target.tagName === 'IMG') {
+      console.warn('Image failed to load:', e.target.src);
+      // Optionally set a placeholder
+      e.target.style.opacity = '0.3';
+    }
+  }, true);
+}
+
+// =============================================================================
 // INIT
 // =============================================================================
 
 document.addEventListener('DOMContentLoaded', () => {
+  // Error handling
+  initErrorHandling();
+  
+  // Page loader
+  initPageLoader();
+  
   // Theme
   initTheme();
+  initSystemThemeListener();
   $('#themeToggle')?.addEventListener('click', toggleTheme);
   $('#mobileThemeToggle')?.addEventListener('click', toggleTheme);
 
@@ -704,4 +1157,17 @@ document.addEventListener('DOMContentLoaded', () => {
   // Animations
   initHeroAnimations();
   initScrollAnimations();
+  
+  // Keyboard shortcuts
+  initKeyboardShortcuts();
+});
+
+// Handle page visibility for performance
+document.addEventListener('visibilitychange', () => {
+  if (document.hidden) {
+    // Pause any running animations
+    document.body.classList.add('page-hidden');
+  } else {
+    document.body.classList.remove('page-hidden');
+  }
 });
