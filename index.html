@@ -8,7 +8,6 @@
   <!-- Security headers -->
   <meta http-equiv="X-Content-Type-Options" content="nosniff">
   <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin">
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' https: data:; font-src 'self' https://fonts.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; script-src 'self' 'unsafe-inline';">
 
   <meta name="description" content="Photos, walks, and short notes. Based in Lagos." />
   <meta property="og:title" content="Zino Asamaige" />
@@ -16,6 +15,11 @@
   <meta property="og:type" content="website" />
   <meta name="theme-color" content="#FAFAFA" media="(prefers-color-scheme: light)">
   <meta name="theme-color" content="#0A0A0A" media="(prefers-color-scheme: dark)">
+  
+  <!-- PWA -->
+  <link rel="manifest" href="/manifest.json">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
 
   <link rel="icon" type="image/png" href="/assets/logo.png" />
   
@@ -39,6 +43,13 @@
       } catch(e) {}
     })();
   </script>
+  
+  <!-- View Transitions API -->
+  <style>
+    @view-transition {
+      navigation: auto;
+    }
+  </style>
 </head>
 
 <body>
@@ -47,12 +58,26 @@
     <div class="loader-spinner"></div>
   </div>
 
-  <!-- Custom cursor -->
+  <!-- Custom cursor with trail -->
   <div class="cursor" id="cursor" aria-hidden="true"></div>
+  <div class="cursor-trail" id="cursorTrail" aria-hidden="true"></div>
   <div class="cursor-label" id="cursorLabel" aria-hidden="true"></div>
 
   <!-- Noise texture overlay -->
   <div class="noise-overlay" aria-hidden="true"></div>
+
+  <!-- Sound toggle -->
+  <button class="sound-toggle" id="soundToggle" aria-label="Toggle sound effects" title="Toggle sounds">
+    <svg class="sound-on" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
+      <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/>
+    </svg>
+    <svg class="sound-off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
+      <line x1="23" y1="9" x2="17" y2="15"/>
+      <line x1="17" y1="9" x2="23" y2="15"/>
+    </svg>
+  </button>
 
   <a class="skip-link" href="#main">Skip to content</a>
 
@@ -68,17 +93,17 @@
         <a href="/photos.html" class="nav-link">Photos</a>
         <a href="/articles.html" class="nav-link">Articles</a>
         <a href="/steps.html" class="nav-link">Steps</a>
-        <a href="/travel.html" class="nav-link">Travel</a>
+        <a href="https://www.ererezino.com/travels" class="nav-link">Travel</a>
         <a href="/contact.html" class="nav-link">Contact</a>
 
-        <button class="theme-btn" id="themeToggle" aria-label="Toggle dark mode" data-magnetic>
+        <button class="theme-btn" id="themeToggle" aria-label="Toggle dark mode" data-magnetic data-sound="click">
           <svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
           <svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
         </button>
       </nav>
 
       <div class="mobile-controls">
-        <button class="theme-btn" id="mobileThemeToggle" aria-label="Toggle dark mode">
+        <button class="theme-btn" id="mobileThemeToggle" aria-label="Toggle dark mode" data-sound="click">
           <svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
           <svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
         </button>
@@ -104,7 +129,7 @@
       <a href="/photos.html">Photos</a>
       <a href="/articles.html">Articles</a>
       <a href="/steps.html">Steps</a>
-      <a href="/travel.html">Travel</a>
+      <a href="https://www.ererezino.com/travels">Travel</a>
       <a href="/contact.html">Contact</a>
     </nav>
   </div>
@@ -130,9 +155,11 @@
       <div class="container">
         <div class="hero-grid">
           <div class="hero-content">
+            <div class="hero-greeting" id="heroGreeting"></div>
             <div class="hero-location">
               <span class="location-dot" aria-hidden="true"></span>
               <span>Lagos, Nigeria</span>
+              <span class="hero-time" id="heroTime"></span>
             </div>
 
             <h1 class="hero-title" id="hero-title">
@@ -142,22 +169,21 @@
             </h1>
 
             <p class="hero-text">
-              I'm also building 
-              <a href="https://useaccrue.com/" target="_blank" rel="noopener noreferrer">Accrue</a> & 
-              <a href="https://cashramp.co/" target="_blank" rel="noopener noreferrer">Cashramp</a> with 
+              I'm building <a href="https://useaccrue.com/" target="_blank" rel="noopener noreferrer">Accrue</a> and 
+              <a href="https://cashramp.co/" target="_blank" rel="noopener noreferrer">Cashramp</a> to make cross-border payments seamless—and I'm fortunate to be doing it alongside 
               <a href="https://www.clintonmbah.com/" target="_blank" rel="noopener noreferrer">Clinton</a> and 
               <a href="https://medium.com/@adesuwaomoruyi" target="_blank" rel="noopener noreferrer">Adesuwa</a>.
             </p>
 
             <div class="hero-ctas">
-              <a href="/photos.html" class="btn btn-primary" data-magnetic>
+              <a href="/photos.html" class="btn btn-primary" data-magnetic data-sound="whoosh">
                 <span class="btn-text">See photos</span>
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
                   <path d="M7 17L17 7M17 7H7M17 7v10"/>
                 </svg>
               </a>
 
-              <a href="/articles.html" class="btn btn-secondary" data-magnetic>
+              <a href="/articles.html" class="btn btn-secondary" data-magnetic data-sound="whoosh">
                 <span class="btn-text">Read notes</span>
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
                   <path d="M5 12h14M12 5l7 7-7 7"/>
@@ -170,6 +196,14 @@
             <div class="photo-stack" id="heroPhotoStack"></div>
           </div>
         </div>
+      </div>
+      
+      <!-- Scroll indicator -->
+      <div class="scroll-indicator" aria-hidden="true">
+        <div class="scroll-mouse">
+          <div class="scroll-wheel"></div>
+        </div>
+        <span>Scroll</span>
       </div>
     </section>
 
@@ -194,7 +228,7 @@
         <div class="photo-grid-minimal" id="photoGrid" role="list" aria-label="Photo gallery"></div>
 
         <div class="view-all-cta">
-          <a href="/photos.html" class="btn-view-all" data-magnetic data-cursor-label="View gallery">
+          <a href="/photos.html" class="btn-view-all" data-magnetic data-cursor-label="View gallery" data-sound="whoosh">
             <span class="view-all-content">
               <span class="view-all-text">View all photos</span>
               <span class="view-all-count" id="photoCount">50+ photos</span>
@@ -233,17 +267,11 @@
         <div class="section-header">
           <div class="section-header-text">
             <span class="section-label">Steps</span>
-            <h2 class="section-title" id="steps-title">January 2026</h2>
+            <h2 class="section-title" id="steps-title">Walking this month</h2>
           </div>
-          <a href="/steps.html" class="section-link">
-            Full history
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-              <path d="M5 12h14M12 5l7 7-7 7"/>
-            </svg>
-          </a>
         </div>
 
-        <div class="steps-dashboard" id="stepsDashboard" aria-label="Steps statistics"></div>
+        <div class="steps-simple" id="stepsSimple" aria-label="Steps statistics"></div>
       </div>
     </section>
 
@@ -254,7 +282,7 @@
             <span class="section-label">Travel</span>
             <h2 class="section-title" id="travel-title">Places I've been</h2>
           </div>
-          <a href="/travel.html" class="section-link">
+          <a href="https://www.ererezino.com/travels" class="section-link">
             View all
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
               <path d="M5 12h14M12 5l7 7-7 7"/>
@@ -262,7 +290,7 @@
           </a>
         </div>
 
-        <div class="travel-grid" id="travelGrid" role="list" aria-label="Travel destinations"></div>
+        <div class="travel-postcards" id="travelGrid" role="list" aria-label="Travel destinations"></div>
       </div>
     </section>
 
@@ -275,8 +303,19 @@
           </div>
         </div>
 
+        <!-- Now Playing (Spotify) -->
+        <div class="now-playing" id="nowPlaying" aria-label="Currently playing">
+          <div class="now-playing-indicator">
+            <span class="now-playing-bar"></span>
+            <span class="now-playing-bar"></span>
+            <span class="now-playing-bar"></span>
+          </div>
+          <span class="now-playing-label">Now playing</span>
+          <div class="now-playing-track" id="nowPlayingTrack">Not playing</div>
+        </div>
+
         <div class="into-grid">
-          <div class="into-card" data-card="music">
+          <div class="into-card" data-card="music" data-tilt>
             <div class="into-card-header">
               <span class="into-card-icon" aria-hidden="true">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
@@ -290,7 +329,7 @@
             <div class="into-list" id="musicList" role="list" aria-label="Currently listening"></div>
           </div>
 
-          <div class="into-card" data-card="reading">
+          <div class="into-card" data-card="reading" data-tilt>
             <div class="into-card-header">
               <span class="into-card-icon" aria-hidden="true">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
@@ -303,7 +342,7 @@
             <div class="into-list" id="bookList" role="list" aria-label="Currently reading"></div>
           </div>
 
-          <div class="into-card" data-card="watching">
+          <div class="into-card" data-card="watching" data-tilt>
             <div class="into-card-header">
               <span class="into-card-icon" aria-hidden="true">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
@@ -321,13 +360,13 @@
 
     <section id="contact" aria-labelledby="contact-title">
       <div class="container">
-        <div class="contact-card">
+        <div class="contact-card" data-tilt>
           <span class="section-label">Get in touch</span>
           <h2 class="contact-title" id="contact-title">Have something interesting? Let's talk.</h2>
           <p class="contact-text">If you like street photos, good writing, or building stuff, say hi.</p>
 
           <div class="contact-links">
-            <a href="/contact.html" class="btn btn-primary" data-magnetic>
+            <a href="/contact.html" class="btn btn-primary" data-magnetic data-sound="whoosh">
               <span class="btn-text">Send a message</span>
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
                 <path d="M7 17L17 7M17 7H7M17 7v10"/>
@@ -361,11 +400,18 @@
     </div>
   </footer>
 
-  <button class="back-to-top" id="backToTop" type="button" aria-label="Back to top">
+  <button class="back-to-top" id="backToTop" type="button" aria-label="Back to top" data-sound="whoosh">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
       <path d="M12 19V5M5 12l7-7 7 7"/>
     </svg>
   </button>
+
+  <!-- Console Easter Egg -->
+  <script>
+    console.log('%c👋 Hey there, curious developer!', 'font-size: 24px; font-weight: bold;');
+    console.log('%cWelcome to my site. Built with care, caffeine, and Claude.', 'font-size: 14px; color: #6D28D9;');
+    console.log('%cTry the Konami code for a surprise: ↑↑↓↓←→←→BA', 'font-size: 12px; color: #737373;');
+  </script>
 
   <script src="script.js"></script>
 </body>
