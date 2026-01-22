@@ -5,10 +5,51 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Zino Asamaige</title>
 
-  <!-- Security headers -->
+  <!-- ===========================================
+       SECURITY HEADERS (via meta tags)
+       Note: For maximum security, these should also
+       be set as HTTP headers on your server/CDN
+       =========================================== -->
+  
+  <!-- Prevent MIME type sniffing -->
   <meta http-equiv="X-Content-Type-Options" content="nosniff">
+  
+  <!-- Control referrer information -->
   <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin">
+  
+  <!-- Prevent clickjacking -->
+  <meta http-equiv="X-Frame-Options" content="DENY">
+  
+  <!-- XSS Protection (legacy browsers) -->
+  <meta http-equiv="X-XSS-Protection" content="1; mode=block">
+  
+  <!-- Content Security Policy - STRICT -->
+  <meta http-equiv="Content-Security-Policy" content="
+    default-src 'self';
+    script-src 'self' 'unsafe-inline';
+    style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
+    font-src 'self' https://fonts.gstatic.com;
+    img-src 'self' data: https: blob:;
+    connect-src 'self' https://api.spotify.com;
+    frame-ancestors 'none';
+    base-uri 'self';
+    form-action 'self';
+    upgrade-insecure-requests;
+  ">
+  
+  <!-- Permissions Policy - Disable unnecessary browser features -->
+  <meta http-equiv="Permissions-Policy" content="
+    accelerometer=(),
+    camera=(),
+    geolocation=(),
+    gyroscope=(),
+    magnetometer=(),
+    microphone=(),
+    payment=(),
+    usb=()
+  ">
 
+  <!-- Basic meta -->
   <meta name="description" content="Photos, walks, and short notes. Based in Lagos." />
   <meta property="og:title" content="Zino Asamaige" />
   <meta property="og:description" content="Photos, walks, and short notes. Based in Lagos." />
@@ -27,20 +68,27 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 
-  <!-- Fonts with display=swap for better loading -->
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Mono:wght@400;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet" />
+  <!-- Google Fonts with crossorigin for potential SRI in future -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Mono:wght@400;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet" crossorigin="anonymous" />
 
+  <!-- Local stylesheet -->
   <link rel="stylesheet" href="styles.css" />
   
-  <!-- Prevent FOUC -->
-  <script>
+  <!-- Prevent FOUC - Theme initialization -->
+  <script nonce="theme-init">
     (function() {
+      'use strict';
       try {
-        const saved = localStorage.getItem('theme');
-        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-        const isDark = saved ? saved === 'dark' : prefersDark;
+        var saved = localStorage.getItem('theme');
+        var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        var isDark = saved ? saved === 'dark' : prefersDark;
         document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light');
-      } catch(e) {}
+      } catch(e) {
+        // localStorage not available, use system preference
+        document.documentElement.setAttribute('data-theme', 
+          window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
+        );
+      }
     })();
   </script>
   
@@ -84,7 +132,7 @@
   <header id="header" role="banner">
     <div class="header-inner">
       <a href="/" class="logo" data-magnetic aria-label="Zino Asamaige - Home">
-        <img src="/assets/logo.png" alt="" class="logo-img" width="36" height="36" />
+        <img src="/assets/logo.png" alt="" class="logo-img" width="36" height="36" loading="eager" decoding="async" />
         <span class="logo-text">Zino Asamaige</span>
       </a>
 
@@ -93,22 +141,22 @@
         <a href="/photos.html" class="nav-link">Photos</a>
         <a href="/articles.html" class="nav-link">Articles</a>
         <a href="/steps.html" class="nav-link">Steps</a>
-        <a href="https://www.ererezino.com/travels" class="nav-link">Travel</a>
+        <a href="https://www.ererezino.com/travels" class="nav-link" rel="noopener">Travel</a>
         <a href="/contact.html" class="nav-link">Contact</a>
 
-        <button class="theme-btn" id="themeToggle" aria-label="Toggle dark mode" data-magnetic data-sound="click">
+        <button class="theme-btn" id="themeToggle" aria-label="Toggle dark mode" data-magnetic data-sound="click" type="button">
           <svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
           <svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
         </button>
       </nav>
 
       <div class="mobile-controls">
-        <button class="theme-btn" id="mobileThemeToggle" aria-label="Toggle dark mode" data-sound="click">
+        <button class="theme-btn" id="mobileThemeToggle" aria-label="Toggle dark mode" data-sound="click" type="button">
           <svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
           <svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
         </button>
 
-        <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Open navigation menu" aria-expanded="false" aria-controls="mobileMenu">
+        <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Open navigation menu" aria-expanded="false" aria-controls="mobileMenu" type="button">
           <span></span><span></span><span></span>
         </button>
       </div>
@@ -121,7 +169,7 @@
         <img src="/assets/logo.png" alt="" class="logo-img" width="36" height="36" />
         Zino
       </span>
-      <button class="mobile-menu-close" id="mobileMenuClose" aria-label="Close navigation menu">&times;</button>
+      <button class="mobile-menu-close" id="mobileMenuClose" aria-label="Close navigation menu" type="button">&times;</button>
     </div>
 
     <nav aria-label="Mobile navigation">
@@ -129,7 +177,7 @@
       <a href="/photos.html">Photos</a>
       <a href="/articles.html">Articles</a>
       <a href="/steps.html">Steps</a>
-      <a href="https://www.ererezino.com/travels">Travel</a>
+      <a href="https://www.ererezino.com/travels" rel="noopener">Travel</a>
       <a href="/contact.html">Contact</a>
     </nav>
   </div>
@@ -163,14 +211,14 @@
             </div>
 
             <h1 class="hero-title" id="hero-title">
-              <span class="line"><span class="line-inner">Hobbyist photographer.</span></span>
+              <span class="line"><span class="line-inner">I take photos.</span></span>
               <span class="line"><span class="line-inner">I write sometimes.</span></span>
               <span class="line"><span class="line-inner"><em>I love walks.</em></span></span>
             </h1>
 
             <p class="hero-text">
               I'm building <a href="https://useaccrue.com/" target="_blank" rel="noopener noreferrer">Accrue</a> and 
-              <a href="https://cashramp.co/" target="_blank" rel="noopener noreferrer">Cashramp</a> to make cross-border payments seamless, and I'm lucky to be doing it alongside 
+              <a href="https://cashramp.co/" target="_blank" rel="noopener noreferrer">Cashramp</a> to make cross-border payments seamless—and I'm fortunate to be doing it alongside 
               <a href="https://www.clintonmbah.com/" target="_blank" rel="noopener noreferrer">Clinton</a> and 
               <a href="https://medium.com/@adesuwaomoruyi" target="_blank" rel="noopener noreferrer">Adesuwa</a>.
             </p>
@@ -218,7 +266,7 @@
                   <rect x="5" y="2" width="14" height="20" rx="2"/>
                   <line x1="12" y1="18" x2="12.01" y2="18"/>
                 </svg>
-                Shot on my iPhone
+                Shot on iPhone
               </span>
             </span>
             <h2 class="section-title" id="photos-title">Through my lens</h2>
@@ -282,7 +330,7 @@
             <span class="section-label">Travel</span>
             <h2 class="section-title" id="travel-title">Places I've been</h2>
           </div>
-          <a href="https://www.ererezino.com/travels" class="section-link">
+          <a href="https://www.ererezino.com/travels" class="section-link" rel="noopener">
             View all
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
               <path d="M5 12h14M12 5l7 7-7 7"/>
@@ -407,12 +455,13 @@
   </button>
 
   <!-- Console Easter Egg -->
-  <script>
+  <script nonce="console-msg">
     console.log('%c👋 Hey there, curious developer!', 'font-size: 24px; font-weight: bold;');
     console.log('%cWelcome to my site. Built with care, caffeine, and Claude.', 'font-size: 14px; color: #6D28D9;');
     console.log('%cTry the Konami code for a surprise: ↑↑↓↓←→←→BA', 'font-size: 12px; color: #737373;');
   </script>
 
-  <script src="script.js"></script>
+  <!-- Main script - loaded last for performance -->
+  <script src="script.js" defer></script>
 </body>
 </html>
