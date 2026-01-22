@@ -1,0 +1,215 @@
+# =============================================================================
+# SECURITY HEADERS CONFIGURATION
+# =============================================================================
+# This file contains security header configurations for various hosting providers.
+# Choose the section that matches your hosting setup.
+#
+# IMPORTANT: These HTTP headers provide stronger security than meta tags alone.
+# =============================================================================
+
+
+# =============================================================================
+# VERCEL (vercel.json)
+# =============================================================================
+# Place this in your project root as vercel.json
+
+{
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        },
+        {
+          "key": "X-Frame-Options",
+          "value": "DENY"
+        },
+        {
+          "key": "X-XSS-Protection",
+          "value": "1; mode=block"
+        },
+        {
+          "key": "Referrer-Policy",
+          "value": "strict-origin-when-cross-origin"
+        },
+        {
+          "key": "Permissions-Policy",
+          "value": "accelerometer=(), camera=(), geolocation=(), gyroscope=(), magnetometer=(), microphone=(), payment=(), usb=()"
+        },
+        {
+          "key": "Content-Security-Policy",
+          "value": "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https: blob:; connect-src 'self' https://api.spotify.com; frame-ancestors 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests;"
+        },
+        {
+          "key": "Strict-Transport-Security",
+          "value": "max-age=31536000; includeSubDomains; preload"
+        }
+      ]
+    }
+  ]
+}
+
+
+# =============================================================================
+# NETLIFY (_headers)
+# =============================================================================
+# Place this in your project root as _headers (no extension)
+
+/*
+  X-Content-Type-Options: nosniff
+  X-Frame-Options: DENY
+  X-XSS-Protection: 1; mode=block
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: accelerometer=(), camera=(), geolocation=(), gyroscope=(), magnetometer=(), microphone=(), payment=(), usb=()
+  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https: blob:; connect-src 'self' https://api.spotify.com; frame-ancestors 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests;
+  Strict-Transport-Security: max-age=31536000; includeSubDomains; preload
+
+
+# =============================================================================
+# CLOUDFLARE PAGES (_headers)
+# =============================================================================
+# Same format as Netlify - place as _headers in project root
+
+/*
+  X-Content-Type-Options: nosniff
+  X-Frame-Options: DENY
+  X-XSS-Protection: 1; mode=block
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: accelerometer=(), camera=(), geolocation=(), gyroscope=(), magnetometer=(), microphone=(), payment=(), usb=()
+  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https: blob:; connect-src 'self' https://api.spotify.com; frame-ancestors 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests;
+  Strict-Transport-Security: max-age=31536000; includeSubDomains; preload
+
+
+# =============================================================================
+# NGINX (nginx.conf)
+# =============================================================================
+# Add to your server block
+
+server {
+    # ... existing config ...
+    
+    # Security Headers
+    add_header X-Content-Type-Options "nosniff" always;
+    add_header X-Frame-Options "DENY" always;
+    add_header X-XSS-Protection "1; mode=block" always;
+    add_header Referrer-Policy "strict-origin-when-cross-origin" always;
+    add_header Permissions-Policy "accelerometer=(), camera=(), geolocation=(), gyroscope=(), magnetometer=(), microphone=(), payment=(), usb=()" always;
+    add_header Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https: blob:; connect-src 'self' https://api.spotify.com; frame-ancestors 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests;" always;
+    add_header Strict-Transport-Security "max-age=31536000; includeSubDomains; preload" always;
+    
+    # Hide server version
+    server_tokens off;
+}
+
+
+# =============================================================================
+# APACHE (.htaccess)
+# =============================================================================
+# Place in your document root
+
+<IfModule mod_headers.c>
+    Header always set X-Content-Type-Options "nosniff"
+    Header always set X-Frame-Options "DENY"
+    Header always set X-XSS-Protection "1; mode=block"
+    Header always set Referrer-Policy "strict-origin-when-cross-origin"
+    Header always set Permissions-Policy "accelerometer=(), camera=(), geolocation=(), gyroscope=(), magnetometer=(), microphone=(), payment=(), usb=()"
+    Header always set Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https: blob:; connect-src 'self' https://api.spotify.com; frame-ancestors 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests;"
+    Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
+</IfModule>
+
+# Hide Apache version
+ServerSignature Off
+
+
+# =============================================================================
+# AWS S3 + CLOUDFRONT
+# =============================================================================
+# Use CloudFront Functions or Lambda@Edge to add headers
+# Example CloudFront Function:
+
+function handler(event) {
+    var response = event.response;
+    var headers = response.headers;
+    
+    headers['x-content-type-options'] = { value: 'nosniff' };
+    headers['x-frame-options'] = { value: 'DENY' };
+    headers['x-xss-protection'] = { value: '1; mode=block' };
+    headers['referrer-policy'] = { value: 'strict-origin-when-cross-origin' };
+    headers['permissions-policy'] = { value: 'accelerometer=(), camera=(), geolocation=(), gyroscope=(), magnetometer=(), microphone=(), payment=(), usb=()' };
+    headers['content-security-policy'] = { value: "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https: blob:; connect-src 'self' https://api.spotify.com; frame-ancestors 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests;" };
+    headers['strict-transport-security'] = { value: 'max-age=31536000; includeSubDomains; preload' };
+    
+    return response;
+}
+
+
+# =============================================================================
+# SECURITY HEADERS EXPLAINED
+# =============================================================================
+#
+# 1. X-Content-Type-Options: nosniff
+#    Prevents browsers from MIME-sniffing content types
+#    Stops attacks where malicious files are disguised
+#
+# 2. X-Frame-Options: DENY
+#    Prevents your site from being embedded in iframes
+#    Protects against clickjacking attacks
+#
+# 3. X-XSS-Protection: 1; mode=block
+#    Legacy XSS filter for older browsers
+#    Modern browsers use CSP instead
+#
+# 4. Referrer-Policy: strict-origin-when-cross-origin
+#    Controls how much referrer info is shared
+#    Protects privacy while maintaining functionality
+#
+# 5. Permissions-Policy
+#    Disables unnecessary browser features
+#    Reduces attack surface
+#
+# 6. Content-Security-Policy
+#    Controls what resources can be loaded
+#    Primary defense against XSS attacks
+#
+# 7. Strict-Transport-Security (HSTS)
+#    Forces HTTPS connections
+#    Prevents downgrade attacks
+#    Note: Only enable after confirming HTTPS works perfectly
+#
+# =============================================================================
+
+
+# =============================================================================
+# ADDITIONAL RECOMMENDATIONS
+# =============================================================================
+#
+# 1. ENABLE HTTPS
+#    - Use Let's Encrypt for free SSL certificates
+#    - Most hosting providers offer one-click SSL
+#    - Required for HSTS to work
+#
+# 2. ENABLE DNSSEC
+#    - Protects against DNS spoofing
+#    - Enable through your domain registrar
+#
+# 3. USE A CDN WITH WAF
+#    - Cloudflare (free tier available)
+#    - AWS CloudFront + WAF
+#    - Provides DDoS protection
+#
+# 4. REGULAR SECURITY AUDITS
+#    - Run https://securityheaders.com on your site
+#    - Use https://observatory.mozilla.org
+#    - Check https://www.ssllabs.com/ssltest/
+#
+# 5. KEEP DEPENDENCIES UPDATED
+#    - If using npm, run `npm audit` regularly
+#    - Subscribe to security advisories
+#
+# 6. BACKUP REGULARLY
+#    - Automated daily backups
+#    - Store backups in separate location
+#
+# =============================================================================
