@@ -1081,9 +1081,9 @@
     function updateMapTiles() {
       const dark = document.documentElement.getAttribute('data-theme') === 'dark';
       if (currentTileLayer) map.removeLayer(currentTileLayer);
-      currentTileLayer = L.tileLayer('https://{s}.basemaps.cartocdn.com/{style}/{z}/{x}/{y}{r}.png', {
+      const style = dark ? 'dark_all' : 'light_all';
+      currentTileLayer = L.tileLayer(`https://{s}.basemaps.cartocdn.com/${style}/{z}/{x}/{y}{r}.png`, {
         attribution: '©OpenStreetMap, ©CartoDB',
-        style: dark ? 'dark_all' : 'light_all',
         maxZoom: 19
       }).addTo(map);
     }
