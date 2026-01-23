@@ -1,779 +1,127 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Articles - Zino Asamaige</title>
-  <meta name="description" content="Thoughts on building, creating, and living. By Zino Asamaige.">
-  <meta name="author" content="Zino Asamaige">
-  <meta property="og:title" content="Articles - Zino Asamaige">
-  <meta property="og:description" content="Thoughts on building, creating, and living.">
-  <meta property="og:type" content="website">
 
-  <link rel="icon" type="image/png" href="/assets/logo.png">
-  <link rel="apple-touch-icon" href="/assets/logo.png">
-  <meta name="theme-color" content="#FFFFFF">
+  <!-- Prevent FOUC - Must be inline and first -->
+  <script>
+    (function() {
+      try {
+        var saved = localStorage.getItem('theme');
+        var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        var isDark = saved ? saved === 'dark' : prefersDark;
+        document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light');
+      } catch(e) {}
+    })();
+  </script>
 
-  <!-- Self-hosted fonts -->
+  <!-- Critical font preloads - STANDARDIZED across all pages -->
   <link rel="preload" href="/assets/fonts/inter-v20-latin-regular.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="/assets/fonts/inter-v20-latin-600.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="/assets/fonts/space-mono-v17-latin-regular.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="/assets/fonts/instrument-serif-v5-latin-regular.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/assets/fonts/instrument-serif-v5-latin-italic.woff2" as="font" type="font/woff2" crossorigin>
+
+  <!-- SEO Meta Tags -->
+  <meta name="description" content="Essays and thoughts on building products, photography, travel, and life by Zino Asamaige.">
+  <meta name="author" content="Zino Asamaige">
+  
+  <!-- Open Graph -->
+  <meta property="og:title" content="Articles - Zino Asamaige">
+  <meta property="og:description" content="Essays and thoughts on building products, photography, travel, and life.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://ererezino.com/articles/">
+  <meta property="og:image" content="https://ererezino.com/assets/og-image.jpg">
+  <meta property="og:site_name" content="Zino Asamaige">
+  
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:site" content="@ererezino">
+  <meta name="twitter:title" content="Articles - Zino Asamaige">
+  <meta name="twitter:description" content="Essays and thoughts on building products, photography, travel, and life.">
+  <meta name="twitter:image" content="https://ererezino.com/assets/og-image.jpg">
+  
+  <!-- Canonical -->
+  <link rel="canonical" href="https://ererezino.com/articles/">
+
+  <!-- Favicons -->
+  <link rel="icon" type="image/png" href="/assets/logo.png">
+  <link rel="apple-touch-icon" href="/assets/logo.png">
+  
+  <!-- Theme Colors -->
+  <meta name="theme-color" content="#FAFAFA" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#0A0A0A" media="(prefers-color-scheme: dark)">
+
+  <!-- Security headers -->
+  <meta http-equiv="X-Content-Type-Options" content="nosniff">
+  <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin">
+
+  <!-- PWA -->
+  <link rel="manifest" href="/manifest.json">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+
+  <!-- Stylesheets -->
   <link rel="stylesheet" href="/assets/fonts.css">
-
-  <style>
-    :root {
-      --bg: #FFFFFF;
-      --bg-alt: #F7F7F7;
-      --text: #0A0A0A;
-      --text-secondary: #4A4A4A;
-      --text-tertiary: #595959; /* AAA compliant */
-      --accent: #6D28D9;
-      --accent-soft: rgba(109, 40, 217, 0.08);
-      --border: #E5E5E5;
-      --green: #10B981;
-      --green-glow: rgba(16, 185, 129, 0.4);
-      --container: 1200px;
-      --transition: 0.2s ease;
-      --violet: #6D28D9;
-      --violet-soft: rgba(109, 40, 217, 0.10);
-
-      /* Fonts */
-      --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-      --font-mono: 'Space Mono', 'SF Mono', Consolas, monospace;
-      --font-serif: 'Instrument Serif', Georgia, serif;
-    }
-
-    [data-theme="dark"] {
-      --bg: #0A0A0A;
-      --bg-alt: #141414;
-      --text: #FAFAFA;
-      --text-secondary: #B3B3B3;
-      --text-tertiary: #9A9A9A; /* AAA compliant */
-      --accent: #8B5CF6;
-      --accent-soft: rgba(139, 92, 246, 0.12);
-      --border: #262626;
-      --green-glow: rgba(16, 185, 129, 0.5);
-      --violet: #A78BFA;
-      --violet-soft: rgba(167, 139, 250, 0.12);
-    }
-
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    html { scroll-behavior: smooth; }
-
-    body {
-      background: var(--bg);
-      color: var(--text);
-      font-family: var(--font-sans);
-      font-size: 15px;
-      line-height: 1.6;
-      -webkit-font-smoothing: antialiased;
-      -moz-osx-font-smoothing: grayscale;
-      transition: background var(--transition), color var(--transition);
-      font-feature-settings: 'kern' 1, 'liga' 1, 'calt' 1;
-    }
-
-    a { color: inherit; text-decoration: none; }
-    img { display: block; max-width: 100%; }
-
-    /* Skip link for accessibility */
-    .skip-link {
-      position: fixed;
-      top: 16px;
-      left: 16px;
-      padding: 12px 24px;
-      background: var(--accent);
-      color: #fff;
-      border-radius: 9999px;
-      font-size: 13px;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      transform: translateY(-150%);
-      transition: transform var(--transition);
-      z-index: 9999;
-    }
-    .skip-link:focus { transform: translateY(0); }
-
-    /* Enhanced focus states */
-    :focus-visible {
-      outline: 2px solid var(--accent);
-      outline-offset: 3px;
-    }
-    button:focus-visible,
-    a:focus-visible {
-      outline: 2px solid var(--accent);
-      outline-offset: 3px;
-      box-shadow: 0 0 0 4px var(--accent-soft);
-    }
-
-    .container {
-      max-width: var(--container);
-      margin: 0 auto;
-      padding: 0 40px;
-    }
-    @media (max-width: 768px) {
-      .container { padding: 0 20px; }
-    }
-
-    /* Header */
-    header {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      z-index: 100;
-      padding: 20px 0;
-      transition: background var(--transition), border var(--transition);
-    }
-    header.scrolled {
-      background: var(--bg);
-      border-bottom: 1px solid var(--border);
-    }
-
-    .header-inner {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      max-width: var(--container);
-      margin: 0 auto;
-      padding: 0 40px;
-    }
-    @media (max-width: 768px) {
-      .header-inner { padding: 0 20px; }
-    }
-
-    .logo {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      font-family: var(--font-sans);
-      font-size: 15px;
-      font-weight: 600;
-      letter-spacing: -0.02em;
-    }
-
-    .logo-img {
-      width: 32px;
-      height: 32px;
-      border-radius: 50%;
-      object-fit: cover;
-      border: 1px solid var(--border);
-    }
-
-    .header-nav {
-      display: flex;
-      align-items: center;
-      gap: 24px;
-    }
-    .header-nav a {
-      font-family: var(--font-mono);
-      font-size: 12px;
-      color: var(--text-secondary);
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      transition: color var(--transition);
-    }
-    .header-nav a:hover { color: var(--text); }
-
-    @media (max-width: 768px) {
-      .header-nav { display: none; }
-    }
-
-    .theme-btn {
-      width: 32px;
-      height: 32px;
-      border: 1px solid var(--border);
-      background: transparent;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      transition: border-color var(--transition);
-    }
-    .theme-btn:hover { border-color: var(--text-secondary); }
-    .theme-btn svg { width: 14px; height: 14px; color: var(--text-secondary); }
-    .theme-btn .sun { display: none; }
-    [data-theme="dark"] .theme-btn .sun { display: block; }
-    [data-theme="dark"] .theme-btn .moon { display: none; }
-
-    .mobile-menu-btn {
-      display: none;
-      width: 32px;
-      height: 32px;
-      border: 1px solid var(--border);
-      background: transparent;
-      cursor: pointer;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 4px;
-    }
-    .mobile-menu-btn span {
-      width: 14px;
-      height: 1px;
-      background: var(--text);
-    }
-
-    .mobile-controls {
-      display: none;
-      align-items: center;
-      gap: 8px;
-    }
-
-    @media (max-width: 768px) {
-      .mobile-controls { display: flex; }
-      .mobile-menu-btn { display: flex; }
-    }
-
-    /* Mobile Menu */
-    .mobile-menu {
-      position: fixed;
-      inset: 0;
-      background: var(--bg);
-      z-index: 200;
-      padding: 20px;
-      display: flex;
-      flex-direction: column;
-      opacity: 0;
-      visibility: hidden;
-      transition: opacity var(--transition), visibility var(--transition);
-    }
-    .mobile-menu.open { opacity: 1; visibility: visible; }
-    .mobile-menu-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 48px;
-    }
-    .mobile-menu-actions {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-    .mobile-menu-close {
-      width: 32px;
-      height: 32px;
-      border: 1px solid var(--border);
-      background: transparent;
-      cursor: pointer;
-      font-size: 18px;
-      color: var(--text);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    .mobile-menu nav {
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
-    }
-    .mobile-menu nav a {
-      font-family: var(--font-sans);
-      font-size: 20px;
-      font-weight: 600;
-      color: var(--text);
-      text-transform: none;
-      letter-spacing: -0.01em;
-    }
-
-    /* Page Header */
-    .page-header {
-      padding: 140px 0 60px;
-      border-bottom: 1px solid var(--border);
-    }
-
-    .page-title {
-      font-family: var(--font-serif);
-      font-size: clamp(40px, 6vw, 64px);
-      font-weight: 400;
-      font-style: italic;
-      letter-spacing: -0.02em;
-      margin-bottom: 16px;
-      line-height: 1.1;
-    }
-
-    .page-description {
-      font-family: var(--font-sans);
-      font-size: 16px;
-      color: var(--text-secondary);
-      max-width: 480px;
-      line-height: 1.6;
-    }
-
-    /* Articles List */
-    .articles-section {
-      padding: 60px 0 100px;
-    }
-
-    .articles-list {
-      display: flex;
-      flex-direction: column;
-    }
-
-    .article-card {
-      display: flex;
-      gap: 32px;
-      padding: 32px 0;
-      border-bottom: 1px solid var(--border);
-      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1),
-                  box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1),
-                  background var(--transition);
-      border-radius: 12px;
-    }
-    .article-card:first-child {
-      padding-top: 0;
-    }
-    .article-card:hover {
-      background: var(--bg-alt);
-      margin: 0 -20px;
-      padding-left: 20px;
-      padding-right: 20px;
-      transform: translateY(-4px);
-      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.08);
-    }
-    [data-theme="dark"] .article-card:hover {
-      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
-    }
-
-    @media (max-width: 768px) {
-      .article-card {
-        flex-direction: column-reverse;
-        gap: 20px;
-      }
-      .article-card:hover {
-        transform: none;
-      }
-    }
-
-    .article-card-content {
-      flex: 1;
-      min-width: 0;
-    }
-
-    .article-card-meta {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      font-family: var(--font-mono);
-      font-size: 11px;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      color: var(--text-tertiary);
-      margin-bottom: 12px;
-    }
-
-    .article-card-title {
-      font-family: var(--font-sans);
-      font-size: 20px;
-      font-weight: 600;
-      letter-spacing: -0.02em;
-      margin-bottom: 12px;
-      line-height: 1.3;
-      transition: color 0.2s ease;
-    }
-    .article-card:hover .article-card-title {
-      color: var(--accent);
-    }
-
-    .article-card-excerpt {
-      font-family: var(--font-sans);
-      font-size: 15px;
-      color: var(--text-secondary);
-      line-height: 1.6;
-      margin-bottom: 16px;
-    }
-
-    .article-card-tags {
-      display: flex;
-      gap: 8px;
-      flex-wrap: wrap;
-    }
-
-    .tag {
-      font-family: var(--font-mono);
-      font-size: 10px;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      padding: 4px 10px;
-      border: 1px solid var(--border);
-      color: var(--text-tertiary);
-      transition: border-color var(--transition), color var(--transition);
-    }
-
-    .article-card-thumbnail {
-      width: 200px;
-      height: 140px;
-      flex-shrink: 0;
-      overflow: hidden;
-      background: var(--bg-alt);
-    }
-    .article-card-thumbnail img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-
-    @media (max-width: 768px) {
-      .article-card-thumbnail {
-        width: 100%;
-        height: 160px;
-      }
-    }
-
-    .external-badge {
-      font-family: var(--font-mono);
-      font-size: 10px;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      color: var(--text-tertiary);
-      padding: 4px 8px;
-      border: 1px solid var(--border);
-    }
-
-    /* Featured Hero Card */
-    .featured-hero {
-      display: block;
-      background: linear-gradient(135deg, var(--violet-soft) 0%, var(--bg-alt) 100%);
-      border: 1px solid var(--violet);
-      border-radius: 16px;
-      padding: 40px;
-      margin-bottom: 48px;
-      position: relative;
-      overflow: hidden;
-      transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1),
-                  box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-    }
-    .featured-hero::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      right: 0;
-      width: 300px;
-      height: 300px;
-      background: radial-gradient(circle, var(--violet) 0%, transparent 70%);
-      opacity: 0.1;
-      transform: translate(30%, -30%);
-    }
-    .featured-hero:hover {
-      transform: translateY(-6px);
-      box-shadow: 0 20px 60px rgba(109, 40, 217, 0.15);
-    }
-    [data-theme="dark"] .featured-hero:hover {
-      box-shadow: 0 20px 60px rgba(139, 92, 246, 0.2);
-    }
-    .featured-hero-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      font-family: var(--font-mono);
-      font-size: 11px;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-      color: var(--violet);
-      margin-bottom: 16px;
-    }
-    .featured-hero-badge svg {
-      width: 14px;
-      height: 14px;
-    }
-    .featured-hero-title {
-      font-family: var(--font-serif);
-      font-size: clamp(28px, 4vw, 40px);
-      font-weight: 400;
-      font-style: italic;
-      letter-spacing: -0.02em;
-      line-height: 1.2;
-      margin-bottom: 16px;
-    }
-    .featured-hero-excerpt {
-      font-family: var(--font-sans);
-      font-size: 17px;
-      color: var(--text-secondary);
-      line-height: 1.7;
-      max-width: 640px;
-      margin-bottom: 24px;
-    }
-    .featured-hero-meta {
-      display: flex;
-      align-items: center;
-      gap: 16px;
-      flex-wrap: wrap;
-    }
-    .featured-hero-date {
-      font-family: var(--font-mono);
-      font-size: 12px;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      color: var(--text-tertiary);
-    }
-    .featured-hero-tags {
-      display: flex;
-      gap: 8px;
-    }
-    .featured-hero .tag {
-      border-color: var(--violet);
-      color: var(--violet);
-      background: rgba(109, 40, 217, 0.05);
-    }
-    .featured-hero-cta {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      font-family: var(--font-mono);
-      font-size: 12px;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      color: var(--violet);
-      margin-top: 24px;
-      transition: gap 0.3s ease;
-    }
-    .featured-hero:hover .featured-hero-cta {
-      gap: 12px;
-    }
-    .featured-hero-cta svg {
-      width: 16px;
-      height: 16px;
-      transition: transform 0.3s ease;
-    }
-    .featured-hero:hover .featured-hero-cta svg {
-      transform: translateX(4px);
-    }
-    @media (max-width: 768px) {
-      .featured-hero {
-        padding: 24px;
-        margin-bottom: 32px;
-      }
-    }
-
-    /* Regular Featured Card (fallback) */
-    .article-card.featured {
-      background: var(--violet-soft);
-      margin: 0 -20px;
-      padding: 32px 20px;
-      border: 1px solid var(--violet);
-      border-bottom: 1px solid var(--violet);
-    }
-    .article-card.featured:hover {
-      background: var(--violet-soft);
-      transform: translateY(-4px);
-    }
-    .article-card.featured .tag {
-      border-color: var(--violet);
-      color: var(--violet);
-    }
-
-    /* Article placeholder icon for cards without thumbnails */
-    .article-card-icon {
-      width: 200px;
-      height: 140px;
-      flex-shrink: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: linear-gradient(135deg, var(--bg-alt) 0%, var(--border) 100%);
-      border-radius: 8px;
-      position: relative;
-      overflow: hidden;
-    }
-    .article-card-icon::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(135deg, transparent 0%, var(--accent-soft) 100%);
-      opacity: 0;
-      transition: opacity 0.3s ease;
-    }
-    .article-card:hover .article-card-icon::before {
-      opacity: 1;
-    }
-    .article-card-icon svg {
-      width: 48px;
-      height: 48px;
-      color: var(--text-tertiary);
-      opacity: 0.5;
-      transition: transform 0.3s ease, opacity 0.3s ease;
-    }
-    .article-card:hover .article-card-icon svg {
-      transform: scale(1.1);
-      opacity: 0.7;
-    }
-    @media (max-width: 768px) {
-      .article-card-icon {
-        width: 100%;
-        height: 120px;
-      }
-    }
-
-    /* New badge */
-    .new-badge {
-      display: inline-flex;
-      align-items: center;
-      font-family: var(--font-mono);
-      font-size: 9px;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-      color: #fff;
-      background: var(--green);
-      padding: 3px 8px;
-      border-radius: 4px;
-      margin-left: 8px;
-      animation: pulse-badge 2s ease-in-out infinite;
-    }
-    @keyframes pulse-badge {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0.7; }
-    }
-
-    /* Thumbnail hover effect */
-    .article-card-thumbnail {
-      width: 200px;
-      height: 140px;
-      flex-shrink: 0;
-      overflow: hidden;
-      background: var(--bg-alt);
-      border-radius: 8px;
-    }
-    .article-card-thumbnail img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-    }
-    .article-card:hover .article-card-thumbnail img {
-      transform: scale(1.05);
-    }
-
-    /* Footer */
-    footer {
-      padding: 32px 0;
-      border-top: 1px solid var(--border);
-    }
-
-    .footer-inner {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 16px;
-    }
-
-    .footer-left {
-      font-family: var(--font-mono);
-      font-size: 11px;
-      color: var(--text-tertiary);
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-    }
-
-    .location-dot {
-      position: relative;
-      width: 6px;
-      height: 6px;
-    }
-    .location-dot::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: var(--green);
-      border-radius: 50%;
-      z-index: 1;
-    }
-    .location-dot::after {
-      content: '';
-      position: absolute;
-      inset: -3px;
-      background: var(--green);
-      border-radius: 50%;
-      opacity: 0.4;
-      animation: locationPulse 2s ease-in-out infinite;
-    }
-    @keyframes locationPulse {
-      0%, 100% { transform: scale(1); opacity: 0.4; }
-      50% { transform: scale(1.8); opacity: 0; }
-    }
-
-    .footer-status {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      font-family: var(--font-mono);
-      font-size: 11px;
-      color: var(--text-tertiary);
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-    }
-
-    /* Empty State */
-    .empty-state {
-      text-align: center;
-      padding: 80px 20px;
-    }
-    .empty-state-title {
-      font-family: var(--font-serif);
-      font-size: 24px;
-      font-weight: 400;
-      font-style: italic;
-      margin-bottom: 12px;
-    }
-    .empty-state-text {
-      font-family: var(--font-sans);
-      color: var(--text-secondary);
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-      * { animation: none !important; transition: none !important; }
-    }
-  </style>
+  <link rel="stylesheet" href="/styles.css">
 </head>
 
 <body>
-  <a href="#main" class="skip-link">Skip to content</a>
+  <!-- Noise texture overlay -->
+  <div class="noise-overlay" aria-hidden="true"></div>
 
-  <header id="header">
+  <!-- Skip link for accessibility -->
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <!-- HEADER - Consistent across all pages -->
+  <header id="header" role="banner">
     <div class="header-inner">
-      <a href="/" class="logo">
-        <img src="/assets/logo.png" alt="" class="logo-img">
-        Zino Asamaige
+      <a href="/" class="logo" aria-label="Zino Asamaige - Home">
+        <img src="/assets/logo.png" alt="" class="logo-img" width="36" height="36" loading="eager">
+        <span class="logo-text">Zino Asamaige</span>
       </a>
-      <nav class="header-nav">
-        <a href="/about.html">About</a>
-        <a href="/photos/">Photos</a>
-        <a href="/articles/">Articles</a>
-        <a href="/movement.html">Movement</a>
-        <a href="/travels.html">Travels</a>
-        <a href="/contact.html">Contact</a>
-        <button class="theme-btn" id="themeToggle" aria-label="Toggle theme">
-          <svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
-          <svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+
+      <nav class="header-nav" aria-label="Primary navigation">
+        <a href="/about.html" class="nav-link">About</a>
+        <a href="/photos/" class="nav-link">Photos</a>
+        <a href="/articles/" class="nav-link" aria-current="page">Articles</a>
+        <a href="/movement.html" class="nav-link">Movement</a>
+        <a href="/travels.html" class="nav-link">Travels</a>
+        <a href="/contact.html" class="nav-link">Contact</a>
+
+        <button class="theme-btn" id="themeToggle" aria-label="Toggle dark mode" type="button">
+          <svg class="moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+          <svg class="sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
         </button>
       </nav>
+
       <div class="mobile-controls">
-        <button class="theme-btn" id="mobileThemeToggle" aria-label="Toggle theme">
-          <svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
-          <svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+        <button class="theme-btn" id="mobileThemeToggle" aria-label="Toggle dark mode" type="button">
+          <svg class="moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+          <svg class="sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
         </button>
-        <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Menu">
+
+        <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Open navigation menu" aria-expanded="false" aria-controls="mobileMenu" type="button">
           <span></span><span></span><span></span>
         </button>
       </div>
     </div>
   </header>
 
-  <div class="mobile-menu" id="mobileMenu">
+  <!-- MOBILE MENU - Consistent across all pages -->
+  <div class="mobile-menu" id="mobileMenu" aria-hidden="true" role="dialog" aria-modal="true" aria-label="Navigation menu">
     <div class="mobile-menu-header">
       <a href="/" class="logo">
-        <img src="/assets/logo.png" alt="" class="logo-img">
-        Zino
+        <img src="/assets/logo.png" alt="" class="logo-img" width="32" height="32">
+        <span>Zino</span>
       </a>
       <div class="mobile-menu-actions">
-        <button class="mobile-menu-close" id="mobileMenuClose" aria-label="Close menu">&times;</button>
+        <button class="mobile-menu-close" id="mobileMenuClose" aria-label="Close navigation menu" type="button">&times;</button>
       </div>
     </div>
-    <nav>
+    <nav aria-label="Mobile navigation">
       <a href="/about.html">About</a>
       <a href="/photos/">Photos</a>
       <a href="/articles/">Articles</a>
@@ -783,21 +131,36 @@
     </nav>
   </div>
 
-  <main id="main">
-    <div class="page-header">
-      <div class="container">
+  <!-- MAIN CONTENT -->
+  <main id="main" class="page-main" role="main">
+    <div class="container">
+      <div class="page-header">
+        <a href="/" class="back-link">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+          Back to home
+        </a>
         <h1 class="page-title">Articles</h1>
-        <p class="page-description">Thoughts on building, creating, and living.</p>
+        <p class="page-lead">
+          Thoughts on building products, photography, travel, and whatever else comes to mind.
+        </p>
       </div>
-    </div>
 
-    <section class="articles-section">
-      <div class="container">
-        <div class="articles-list" id="articlesList"></div>
-      </div>
-    </section>
+      <section class="articles-section" aria-labelledby="articles-heading">
+        <h2 id="articles-heading" class="visually-hidden">All articles</h2>
+        <div class="articles-list" id="articlesList" role="list">
+          <!-- Articles rendered by JavaScript -->
+        </div>
+        
+        <!-- Empty state -->
+        <div class="empty-state" id="emptyState" style="display: none;">
+          <h2 class="empty-state-title">No articles yet</h2>
+          <p class="empty-state-text">Check back soon for new posts.</p>
+        </div>
+      </section>
+    </div>
   </main>
 
+  <!-- FOOTER - Consistent across all pages -->
   <footer role="contentinfo">
     <div class="container footer-inner">
       <span class="footer-copy">&copy; 2026 Zino Asamaige</span>
@@ -808,220 +171,118 @@
     </div>
   </footer>
 
+  <!-- Shared JavaScript -->
+  <script src="/shared.js" defer></script>
+  
+  <!-- Page-specific JavaScript -->
   <script>
-    // Articles Data
-    const ARTICLES = [
-      {
-        title: "Why I'm Building Accrue",
-        slug: "why-im-building-accrue",
-        date: "2026-01-20",
-        excerpt: "Africa moves a lot of money. The problem is how. Cross-border payments hit $329 billion in 2025, but 75% moves through informal channels.",
-        author: "Zino Asamaige",
-        readTime: "6 min read",
-        tags: ["Fintech", "Africa", "Startups"],
-        thumbnail: null,
-        featured: true
-      },
-      {
-        title: "Lived It, Loved It: Farewell Helicarrier",
-        slug: "farewell-helicarrier",
-        date: "2022-10-01",
-        excerpt: "Today's my last day at Helicarrier. I joined in 2018, and I'm incredibly proud of how much growth has happened since then. I'm leaving to continue growing Accrue.",
-        author: "Zino Asamaige",
-        readTime: "3 min read",
-        tags: ["Career", "Helicarrier", "Reflection"],
-        thumbnail: "https://miro.medium.com/v2/resize:fit:1400/format:webp/1*Zyf7Z5XOLEM0i4JX4-x4BA.jpeg",
-        externalUrl: "https://medium.com/@ererezino/lived-it-loved-it-farewell-helicarrier-f112fd1c6302"
-      },
-      {
-        title: "It's the 12th!",
-        slug: "its-the-12th",
-        date: "2019-12-12",
-        excerpt: "One year ago today, I joined BuyCoins, and it's been the most amazing and busiest twelve months of my professional career.",
-        author: "Zino Asamaige",
-        readTime: "4 min read",
-        tags: ["Career", "BuyCoins"],
-        thumbnail: null,
-        externalUrl: "https://medium.com/buycoins/its-the-12th-e62f34e82c07"
-      },
-      {
-        title: "Trading USDT Peer-to-Peer - Now Available on BuyCoins!",
-        slug: "usdt-p2p",
-        date: "2020-11-17",
-        excerpt: "We're introducing support for USDT on our peer-to-peer exchange and wallet. You can buy or sell USDT at your preferred price.",
-        author: "Zino Asamaige",
-        readTime: "3 min read",
-        tags: ["Product", "BuyCoins", "Crypto"],
-        thumbnail: null,
-        externalUrl: "https://medium.com/buycoins/trading-usdt-peer-to-peer-now-available-on-buycoins-44b08d7fae2b"
-      }
-    ];
+    document.addEventListener('DOMContentLoaded', function() {
+      // Articles data
+      var articles = [
+        {
+          title: "Why I'm Building Accrue",
+          slug: "why-im-building-accrue",
+          date: "2026-01-15",
+          excerpt: "The story behind Accrue and why I believe cross-border payments in Africa need to be rebuilt from the ground up.",
+          tags: ["startup", "fintech"],
+          featured: true,
+          isNew: true
+        },
+        {
+          title: "Walking as Meditation",
+          slug: "walking-as-meditation",
+          date: "2025-12-20",
+          excerpt: "How I discovered that long walks through cities became my most effective form of meditation and creative thinking.",
+          tags: ["life", "health"],
+          featured: false,
+          isNew: false
+        },
+        {
+          title: "Lessons from Bologna",
+          slug: "lessons-from-bologna",
+          date: "2025-11-08",
+          excerpt: "What studying at the oldest university in the world taught me about learning, history, and perspective.",
+          tags: ["education", "travel"],
+          featured: false,
+          isNew: false
+        }
+      ];
 
-    // Helper functions
-    function esc(str) {
-      if (!str) return '';
-      return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
-    }
+      var articlesList = document.getElementById('articlesList');
+      var emptyState = document.getElementById('emptyState');
 
-    function formatDate(dateStr) {
-      const date = new Date(dateStr);
-      return date.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
-    }
-
-    // Check if article is recent (within 30 days)
-    function isRecent(dateStr) {
-      const articleDate = new Date(dateStr);
-      const now = new Date();
-      const diffDays = (now - articleDate) / (1000 * 60 * 60 * 24);
-      return diffDays <= 30;
-    }
-
-    // Get icon SVG based on article tags
-    function getArticleIcon(tags) {
-      const tagStr = (tags || []).join(' ').toLowerCase();
-
-      if (tagStr.includes('fintech') || tagStr.includes('crypto')) {
-        return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 1v22M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>';
-      }
-      if (tagStr.includes('career') || tagStr.includes('reflection')) {
-        return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>';
-      }
-      if (tagStr.includes('product')) {
-        return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>';
-      }
-      // Default article icon
-      return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><line x1="10" y1="9" x2="8" y2="9"/></svg>';
-    }
-
-    // Render articles
-    function renderArticles() {
-      const list = document.getElementById('articlesList');
-
-      if (!ARTICLES || ARTICLES.length === 0) {
-        list.innerHTML = '<div class="empty-state"><h3 class="empty-state-title">Coming soon</h3><p class="empty-state-text">I\'m working on some articles. Check back later.</p></div>';
-        return;
+      function formatDate(dateStr) {
+        var date = new Date(dateStr);
+        return date.toLocaleDateString('en-US', { 
+          year: 'numeric', 
+          month: 'long', 
+          day: 'numeric' 
+        });
       }
 
-      const sorted = [...ARTICLES].sort((a, b) => new Date(b.date) - new Date(a.date));
-      const featured = sorted.find(a => a.featured);
-      const regular = sorted.filter(a => !a.featured);
+      function renderArticles() {
+        if (articles.length === 0) {
+          emptyState.style.display = 'block';
+          return;
+        }
 
-      let html = '';
+        // Find featured article
+        var featured = articles.find(function(a) { return a.featured; });
+        var others = articles.filter(function(a) { return !a.featured; });
 
-      // Render featured article as hero
-      if (featured) {
-        const articleUrl = featured.externalUrl || `/articles/${esc(featured.slug)}/`;
-        const isExternal = !!featured.externalUrl;
-        const recent = isRecent(featured.date);
+        // Render featured article
+        if (featured) {
+          var featuredHtml = '<a href="/articles/' + featured.slug + '.html" class="featured-hero" role="listitem">' +
+            '<span class="featured-hero-badge">' +
+              '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>' +
+              'Featured' +
+            '</span>' +
+            '<h2 class="featured-hero-title">' + featured.title + '</h2>' +
+            '<p class="featured-hero-excerpt">' + featured.excerpt + '</p>' +
+            '<div class="featured-hero-meta">' +
+              '<span class="featured-hero-date">' + formatDate(featured.date) + '</span>' +
+              '<div class="featured-hero-tags">' +
+                featured.tags.map(function(tag) { return '<span class="tag">' + tag + '</span>'; }).join('') +
+              '</div>' +
+            '</div>' +
+            '<span class="featured-hero-cta">' +
+              'Read article' +
+              '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>' +
+            '</span>' +
+          '</a>';
+          articlesList.innerHTML = featuredHtml;
+        }
 
-        html += `
-          <a href="${articleUrl}" ${isExternal ? 'target="_blank" rel="noopener"' : ''} class="featured-hero">
-            <div class="featured-hero-badge">
-              <svg viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-              Featured${recent ? '<span class="new-badge">New</span>' : ''}
-            </div>
-            <h2 class="featured-hero-title">${esc(featured.title)}</h2>
-            <p class="featured-hero-excerpt">${esc(featured.excerpt)}</p>
-            <div class="featured-hero-meta">
-              <span class="featured-hero-date">${formatDate(featured.date)} · ${esc(featured.readTime || '')}</span>
-              ${featured.tags && featured.tags.length ? `
-                <div class="featured-hero-tags">
-                  ${featured.tags.map(tag => `<span class="tag">${esc(tag)}</span>`).join('')}
-                </div>
-              ` : ''}
-            </div>
-            <div class="featured-hero-cta">
-              Read article
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
-            </div>
-          </a>
-        `;
+        // Render other articles
+        others.forEach(function(article) {
+          var articleHtml = '<a href="/articles/' + article.slug + '.html" class="article-card" role="listitem">' +
+            '<div class="article-card-content">' +
+              '<div class="article-card-meta">' +
+                '<span>' + formatDate(article.date) + '</span>' +
+                (article.isNew ? '<span class="new-badge">New</span>' : '') +
+              '</div>' +
+              '<h3 class="article-card-title">' + article.title + '</h3>' +
+              '<p class="article-card-excerpt">' + article.excerpt + '</p>' +
+              '<div class="article-card-tags">' +
+                article.tags.map(function(tag) { return '<span class="tag">' + tag + '</span>'; }).join('') +
+              '</div>' +
+            '</div>' +
+            '<div class="article-card-icon">' +
+              '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">' +
+                '<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>' +
+                '<polyline points="14 2 14 8 20 8"/>' +
+                '<line x1="16" y1="13" x2="8" y2="13"/>' +
+                '<line x1="16" y1="17" x2="8" y2="17"/>' +
+                '<polyline points="10 9 9 9 8 9"/>' +
+              '</svg>' +
+            '</div>' +
+          '</a>';
+          articlesList.innerHTML += articleHtml;
+        });
       }
 
-      // Render regular articles
-      html += regular.map(article => {
-        const articleUrl = article.externalUrl || `/articles/${esc(article.slug)}/`;
-        const isExternal = !!article.externalUrl;
-        const recent = isRecent(article.date);
-
-        return `
-          <a href="${articleUrl}" ${isExternal ? 'target="_blank" rel="noopener"' : ''} class="article-card">
-            <div class="article-card-content">
-              <div class="article-card-meta">
-                <span>${formatDate(article.date)}</span>
-                ${article.readTime ? `<span>${esc(article.readTime)}</span>` : ''}
-                ${isExternal ? '<span class="external-badge">Medium</span>' : ''}
-                ${recent ? '<span class="new-badge">New</span>' : ''}
-              </div>
-              <h2 class="article-card-title">${esc(article.title)}</h2>
-              <p class="article-card-excerpt">${esc(article.excerpt)}</p>
-              ${article.tags && article.tags.length ? `
-                <div class="article-card-tags">
-                  ${article.tags.map(tag => `<span class="tag">${esc(tag)}</span>`).join('')}
-                </div>
-              ` : ''}
-            </div>
-            ${article.thumbnail ? `
-              <div class="article-card-thumbnail">
-                <img src="${esc(article.thumbnail)}" alt="" loading="lazy">
-              </div>
-            ` : `
-              <div class="article-card-icon">
-                ${getArticleIcon(article.tags)}
-              </div>
-            `}
-          </a>
-        `;
-      }).join('');
-
-      list.innerHTML = html;
-    }
-
-    // Theme Toggle
-    function setTheme(dark) {
-      document.documentElement.setAttribute('data-theme', dark ? 'dark' : 'light');
-      localStorage.setItem('theme', dark ? 'dark' : 'light');
-    }
-
-    function toggleTheme() {
-      const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
-      setTheme(!isDark);
-    }
-
-    const saved = localStorage.getItem('theme');
-    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-    setTheme(saved ? saved === 'dark' : prefersDark);
-
-    document.getElementById('themeToggle').onclick = toggleTheme;
-    document.getElementById('mobileThemeToggle').onclick = toggleTheme;
-    document.getElementById('mobileMenuThemeToggle').onclick = toggleTheme;
-
-    // Header scroll
-    window.addEventListener('scroll', () => {
-      document.getElementById('header').classList.toggle('scrolled', window.scrollY > 50);
+      renderArticles();
     });
-
-    // Mobile menu
-    const mm = document.getElementById('mobileMenu');
-    document.getElementById('mobileMenuBtn').onclick = () => mm.classList.add('open');
-    document.getElementById('mobileMenuClose').onclick = () => mm.classList.remove('open');
-    mm.querySelectorAll('a').forEach(a => a.onclick = () => mm.classList.remove('open'));
-
-    // Service Worker Registration
-    if ('serviceWorker' in navigator) {
-      window.addEventListener('load', function() {
-        navigator.serviceWorker.register('/sw.js')
-          .then(function(registration) {
-            console.log('SW registered:', registration.scope);
-          })
-          .catch(function(error) {
-            console.log('SW registration failed:', error);
-          });
-      });
-    }
-
-    // Initialize
-    renderArticles();
   </script>
 </body>
 </html>
