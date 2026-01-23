@@ -417,8 +417,14 @@
     }
 
     /* Custom Leaflet styles */
+    #map {
+      width: 100%;
+      height: 100%;
+    }
     .leaflet-container {
       font-family: var(--font-sans);
+      width: 100% !important;
+      height: 100% !important;
     }
 
     .custom-marker {
@@ -1074,38 +1080,66 @@
 
     // Initialize map
     let currentTileLayer;
-    const map = L.map('map', {
-      scrollWheelZoom: false
-    }).setView([20, 10], 2);
+    let map;
+
+    function initMap() {
+      const mapContainer = document.getElementById('map');
+      if (!mapContainer || map) return;
+
+      map = L.map('map', {
+        scrollWheelZoom: false
+      }).setView([20, 10], 2);
+
+      updateMapTiles();
+
+      // Force recalculation of map size after a short delay
+      setTimeout(() => {
+        map.invalidateSize();
+      }, 100);
+    }
 
     function updateMapTiles() {
+      if (!map) return;
       const dark = document.documentElement.getAttribute('data-theme') === 'dark';
       if (currentTileLayer) map.removeLayer(currentTileLayer);
       const style = dark ? 'dark_all' : 'light_all';
       currentTileLayer = L.tileLayer(`https://{s}.basemaps.cartocdn.com/${style}/{z}/{x}/{y}{r}.png`, {
         attribution: '©OpenStreetMap, ©CartoDB',
-        maxZoom: 19
+        maxZoom: 19,
+        subdomains: 'abcd'
       }).addTo(map);
     }
-    updateMapTiles();
 
-    // Add markers
-    CITIES.forEach(place => {
-      const isHome = place.isHome;
-      const markerIcon = L.divIcon({
-        className: `custom-marker ${isHome ? 'home' : ''}`,
-        iconSize: isHome ? [16, 16] : [12, 12],
-        iconAnchor: isHome ? [8, 8] : [6, 6],
-        popupAnchor: [0, isHome ? -10 : -8]
+    // Initialize map after DOM is ready
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initMap);
+    } else {
+      initMap();
+    }
+
+    // Add markers after map is initialized
+    function addMarkers() {
+      if (!map) return;
+      CITIES.forEach(place => {
+        const isHome = place.isHome;
+        const markerIcon = L.divIcon({
+          className: `custom-marker ${isHome ? 'home' : ''}`,
+          iconSize: isHome ? [16, 16] : [12, 12],
+          iconAnchor: isHome ? [8, 8] : [6, 6],
+          popupAnchor: [0, isHome ? -10 : -8]
+        });
+
+        const marker = L.marker([place.lat, place.lng], { icon: markerIcon }).addTo(map);
+        marker.bindPopup(`
+          <div class="popup-city">${place.city}</div>
+          <div class="popup-country">${FLAGS[place.country] || ''} ${place.country}</div>
+          ${isHome ? '<div class="popup-home-badge"><span class="location-dot"></span> Currently here</div>' : ''}
+        `);
       });
+    }
 
-      const marker = L.marker([place.lat, place.lng], { icon: markerIcon }).addTo(map);
-      marker.bindPopup(`
-        <div class="popup-city">${place.city}</div>
-        <div class="popup-country">${FLAGS[place.country] || ''} ${place.country}</div>
-        ${isHome ? '<div class="popup-home-badge"><span class="location-dot"></span> Currently here</div>' : ''}
-      `);
-    });
+    // Call addMarkers after map init
+    setTimeout(addMarkers, 150);
 
     // Page transitions
     function initPageTransitions() {
