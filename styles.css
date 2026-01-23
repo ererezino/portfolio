@@ -1220,23 +1220,24 @@ button.photo-item {
 
 .photo-item:hover .photo-item-overlay { opacity: 1; }
 
-.photo-item-caption { 
-  position: absolute; 
-  bottom: 12px; 
-  left: 12px; 
-  padding: 8px 12px; 
-  background: rgba(255, 255, 255, 0.95); 
-  backdrop-filter: blur(10px); 
-  border-radius: var(--radius-full); 
-  font-family: var(--font-mono); 
-  font-size: 10px; 
-  font-weight: 600; 
-  text-transform: uppercase; 
-  letter-spacing: 0.08em; 
-  color: #0A0A0A; 
-  opacity: 0; 
-  transform: translateY(8px); 
-  transition: all var(--duration); 
+.photo-item-caption {
+  position: absolute;
+  bottom: 12px;
+  left: 12px;
+  padding: 8px 12px;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  border-radius: var(--radius-full);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #0A0A0A;
+  opacity: 0;
+  transform: translateY(8px);
+  transition: all var(--duration);
+  z-index: 3;
 }
 
 .photo-item:hover .photo-item-caption { opacity: 1; transform: translateY(0); }
