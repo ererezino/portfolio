@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -17,7 +17,25 @@
     })();
   </script>
 
+  <!-- Meta & SEO -->
   <meta name="description" content="Get in touch with Zino Asamaige.">
+  <link rel="canonical" href="https://www.ererezino.com/contact.html" />
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Contact - Zino Asamaige" />
+  <meta property="og:description" content="Get in touch with Zino Asamaige." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://www.ererezino.com/contact.html" />
+  <meta property="og:image" content="https://www.ererezino.com/assets/og-image.jpg" />
+  <meta property="og:site_name" content="Zino Asamaige" />
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:site" content="@ererezino" />
+  <meta name="twitter:title" content="Contact - Zino Asamaige" />
+  <meta name="twitter:description" content="Get in touch with Zino Asamaige." />
+  <meta name="twitter:image" content="https://www.ererezino.com/assets/og-image.jpg" />
+
   <link rel="icon" type="image/png" href="/assets/logo.png">
 
   <!-- Security headers -->
@@ -35,257 +53,12 @@
   <link rel="preload" href="/assets/fonts/instrument-serif-v5-latin-regular.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="/assets/fonts.css">
 
+  <!-- Shared styles -->
+  <link rel="stylesheet" href="/styles.css">
+
+  <!-- Page-specific styles -->
   <style>
-    :root {
-      --bg: #FFFFFF;
-      --bg-alt: #F7F7F7;
-      --text: #0A0A0A;
-      --text-secondary: #555555;
-      --text-tertiary: #888888;
-      --border: #E8E8E8;
-      --green: #00D26A;
-      --red: #E53935;
-      --container: 1200px;
-      --transition: 0.2s ease;
-      --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-      --font-mono: 'Space Mono', monospace;
-      --font-serif: 'Instrument Serif', Georgia, serif;
-    }
-
-    [data-theme="dark"] {
-      --bg: #0A0A0A;
-      --bg-alt: #111111;
-      --text: #FFFFFF;
-      --text-secondary: #AAAAAA;
-      --text-tertiary: #666666;
-      --border: #222222;
-    }
-
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    html { scroll-behavior: smooth; }
-
-    body {
-      background: var(--bg);
-      color: var(--text);
-      font-family: var(--font-sans);
-      font-size: 15px;
-      line-height: 1.7;
-      -webkit-font-smoothing: antialiased;
-      transition: background 0.3s ease, color 0.3s ease;
-    }
-
-    a { color: inherit; text-decoration: none; }
-
-    /* Skip link for accessibility */
-    .skip-link {
-      position: absolute;
-      top: -100px;
-      left: 50%;
-      transform: translateX(-50%);
-      background: var(--text);
-      color: var(--bg);
-      padding: 12px 24px;
-      font-family: var(--font-mono);
-      font-size: 12px;
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-      z-index: 1000;
-      transition: top 0.3s ease;
-    }
-    .skip-link:focus {
-      top: 20px;
-      outline: 2px solid var(--green);
-      outline-offset: 2px;
-    }
-
-    /* Noise overlay */
-    .noise-overlay {
-      position: fixed;
-      inset: 0;
-      pointer-events: none;
-      opacity: 0.03;
-      z-index: 9999;
-      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
-    }
-    [data-theme="dark"] .noise-overlay { opacity: 0.02; }
-
-    .container {
-      max-width: var(--container);
-      margin: 0 auto;
-      padding: 0 40px;
-    }
-    @media (max-width: 768px) {
-      .container { padding: 0 20px; }
-    }
-
-    /* Header */
-    header {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      z-index: 100;
-      padding: 20px 0;
-      background: var(--bg);
-      border-bottom: 1px solid var(--border);
-      transition: background 0.3s ease, border-color 0.3s ease;
-    }
-
-    .header-inner {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      max-width: var(--container);
-      margin: 0 auto;
-      padding: 0 40px;
-    }
-    @media (max-width: 768px) {
-      .header-inner { padding: 0 20px; }
-    }
-
-    .logo {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      font-family: var(--font-mono);
-      font-size: 15px;
-      font-weight: 700;
-      transition: opacity var(--transition);
-    }
-    .logo:hover { opacity: 0.7; }
-
-    .logo-img {
-      width: 32px;
-      height: 32px;
-      border-radius: 50%;
-      object-fit: cover;
-      border: 1px solid var(--border);
-    }
-
-    .header-nav {
-      display: flex;
-      align-items: center;
-      gap: 24px;
-    }
-    .header-nav a {
-      font-family: var(--font-mono);
-      font-size: 12px;
-      color: var(--text-secondary);
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      transition: color var(--transition);
-    }
-    .header-nav a:hover { color: var(--text); }
-    .header-nav a:focus-visible {
-      outline: 2px solid var(--green);
-      outline-offset: 4px;
-    }
-
-    @media (max-width: 768px) {
-      .header-nav { display: none; }
-    }
-
-    .theme-btn {
-      width: 32px;
-      height: 32px;
-      border: 1px solid var(--border);
-      background: transparent;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      transition: border-color var(--transition), transform var(--transition);
-    }
-    .theme-btn:hover { border-color: var(--text-secondary); }
-    .theme-btn:active { transform: scale(0.95); }
-    .theme-btn:focus-visible {
-      outline: 2px solid var(--green);
-      outline-offset: 2px;
-    }
-    .theme-btn svg { width: 14px; height: 14px; color: var(--text-secondary); }
-    .theme-btn .sun { display: none; }
-    [data-theme="dark"] .theme-btn .sun { display: block; }
-    [data-theme="dark"] .theme-btn .moon { display: none; }
-
-    .mobile-menu-btn {
-      display: none;
-      width: 32px;
-      height: 32px;
-      border: 1px solid var(--border);
-      background: transparent;
-      cursor: pointer;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 4px;
-    }
-    .mobile-menu-btn span {
-      width: 14px;
-      height: 1px;
-      background: var(--text);
-      transition: transform var(--transition), opacity var(--transition);
-    }
-
-    .mobile-controls {
-      display: none;
-      align-items: center;
-      gap: 8px;
-    }
-
-    @media (max-width: 768px) {
-      .mobile-controls { display: flex; }
-      .mobile-menu-btn { display: flex; }
-    }
-
-    /* Mobile Menu */
-    .mobile-menu {
-      position: fixed;
-      inset: 0;
-      background: var(--bg);
-      z-index: 200;
-      padding: 20px;
-      display: flex;
-      flex-direction: column;
-      opacity: 0;
-      visibility: hidden;
-      transition: opacity var(--transition), visibility var(--transition);
-    }
-    .mobile-menu.open { opacity: 1; visibility: visible; }
-
-    .mobile-menu-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 48px;
-    }
-
-    .mobile-menu-close {
-      width: 32px;
-      height: 32px;
-      border: 1px solid var(--border);
-      background: transparent;
-      font-size: 20px;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: var(--text);
-    }
-
-    .mobile-menu nav {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
-    .mobile-menu nav a {
-      font-family: var(--font-serif);
-      font-size: clamp(28px, 8vw, 36px);
-      letter-spacing: -0.02em;
-      padding: 12px 0;
-      color: var(--text);
-    }
-
-    /* Page */
+    /* Ensure main has padding for fixed header */
     main { padding-top: 100px; }
 
     .content-wrapper {
@@ -298,7 +71,7 @@
       text-align: center;
       opacity: 0;
       transform: translateY(20px);
-      animation: fadeInUp 0.6s ease forwards;
+      animation: fadeInUp 0.6s var(--ease) forwards;
     }
 
     @keyframes fadeInUp {
@@ -331,7 +104,7 @@
       padding: 0 0 80px;
       opacity: 0;
       transform: translateY(20px);
-      animation: fadeInUp 0.6s ease 0.15s forwards;
+      animation: fadeInUp 0.6s var(--ease) 0.15s forwards;
     }
 
     .contact-form {
@@ -370,7 +143,7 @@
     }
 
     .form-label .required {
-      color: var(--red);
+      color: #E53935;
     }
 
     .form-input,
@@ -409,7 +182,7 @@
 
     .form-input.error,
     .form-textarea.error {
-      border-color: var(--red);
+      border-color: #E53935;
       animation: shake 0.4s ease;
     }
 
@@ -422,7 +195,7 @@
     .error-message {
       font-family: var(--font-mono);
       font-size: 11px;
-      color: var(--red);
+      color: #E53935;
       margin-top: 8px;
       display: none;
     }
@@ -484,7 +257,7 @@
     }
 
     .submit-btn:focus-visible {
-      outline: 2px solid var(--green);
+      outline: 2px solid var(--accent);
       outline-offset: 4px;
     }
 
@@ -613,7 +386,7 @@
       color: var(--text-secondary);
       padding: 14px 24px;
       border: 1px solid var(--border);
-      transition: all var(--transition);
+      transition: all var(--duration);
     }
 
     .success-link:hover {
@@ -621,7 +394,7 @@
       border-color: var(--text);
     }
     .success-link:focus-visible {
-      outline: 2px solid var(--green);
+      outline: 2px solid var(--accent);
       outline-offset: 4px;
     }
 
@@ -652,7 +425,7 @@
       transform: translateY(-2px);
     }
     .social-link:focus-visible {
-      outline: 2px solid var(--green);
+      outline: 2px solid var(--accent);
       outline-offset: 4px;
     }
 
@@ -661,59 +434,16 @@
       height: 18px;
     }
 
-    /* Footer */
-    footer {
-      padding: 32px 0;
-      border-top: 1px solid var(--border);
-    }
-
-    .footer-inner {
-      display: flex;
-      justify-content: space-between;
-      font-family: var(--font-mono);
-      font-size: 11px;
-      color: var(--text-tertiary);
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-    }
-
-    .footer-status {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .location-dot {
-      position: relative;
-      width: 8px;
-      height: 8px;
-    }
-    .location-dot::before {
-      content: '';
+    .visually-hidden {
       position: absolute;
-      inset: 0;
-      background: var(--green);
-      border-radius: 50%;
-      z-index: 1;
-    }
-    .location-dot::after {
-      content: '';
-      position: absolute;
-      inset: -4px;
-      background: var(--green);
-      border-radius: 50%;
-      opacity: 0.4;
-      animation: locationPulse 2s ease-in-out infinite;
-    }
-    @keyframes locationPulse {
-      0%, 100% { transform: scale(1); opacity: 0.4; }
-      50% { transform: scale(1.8); opacity: 0; }
-    }
-
-    /* Focus visible for all interactive elements */
-    a:focus-visible, button:focus-visible {
-      outline: 2px solid var(--green);
-      outline-offset: 2px;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
     }
   </style>
 </head>
@@ -723,28 +453,28 @@
 
   <a class="skip-link" href="#main">Skip to content</a>
 
-  <header role="banner">
+  <header id="header" role="banner">
     <div class="header-inner">
       <a href="/" class="logo" aria-label="Zino Asamaige - Home">
         <img src="/assets/logo.png" alt="" class="logo-img" width="32" height="32">
-        Zino Asamaige
+        <span class="logo-text">Zino Asamaige</span>
       </a>
       <nav class="header-nav" aria-label="Primary navigation">
-        <a href="/about.html">About</a>
-        <a href="/photos/">Photos</a>
-        <a href="/articles/">Articles</a>
-        <a href="/movement.html">Movement</a>
-        <a href="/travels.html">Travels</a>
-        <a href="/contact.html">Contact</a>
+        <a href="/about.html" class="nav-link">About</a>
+        <a href="/photos/" class="nav-link">Photos</a>
+        <a href="/articles/" class="nav-link">Articles</a>
+        <a href="/movement.html" class="nav-link">Movement</a>
+        <a href="/travels.html" class="nav-link">Travels</a>
+        <a href="/contact.html" class="nav-link">Contact</a>
         <button class="theme-btn" id="themeToggle" aria-label="Toggle dark mode" type="button">
-          <svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
-          <svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+          <svg class="moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+          <svg class="sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
         </button>
       </nav>
       <div class="mobile-controls">
         <button class="theme-btn" id="mobileThemeToggle" aria-label="Toggle dark mode" type="button">
-          <svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
-          <svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+          <svg class="moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+          <svg class="sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
         </button>
         <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Open navigation menu" aria-expanded="false" aria-controls="mobileMenu" type="button">
           <span></span><span></span><span></span>
@@ -842,27 +572,13 @@
 
   <footer role="contentinfo">
     <div class="container footer-inner">
-      <span>&copy; 2026 Zino Asamaige</span>
-      <div class="footer-status">
+      <span class="footer-copy">&copy; 2026 Zino Asamaige</span>
+      <span class="footer-status">
         <span class="location-dot" aria-hidden="true"></span>
         Lagos, Nigeria
-      </div>
+      </span>
     </div>
   </footer>
-
-  <style>
-    .visually-hidden {
-      position: absolute;
-      width: 1px;
-      height: 1px;
-      padding: 0;
-      margin: -1px;
-      overflow: hidden;
-      clip: rect(0, 0, 0, 0);
-      white-space: nowrap;
-      border: 0;
-    }
-  </style>
 
   <script>
     // Theme
@@ -960,7 +676,7 @@
       const length = messageField.value.length;
       charCount.textContent = length;
       if (length > 2000) {
-        charCount.style.color = 'var(--red)';
+        charCount.style.color = '#E53935';
       } else {
         charCount.style.color = '';
       }
@@ -1066,7 +782,7 @@
       // Create error message element
       const errorHtml = `
         <div class="error-fallback" style="text-align: center; padding: 60px 20px;">
-          <div style="width: 80px; height: 80px; margin: 0 auto 28px; background: var(--red); border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+          <div style="width: 80px; height: 80px; margin: 0 auto 28px; background: #E53935; border-radius: 50%; display: flex; align-items: center; justify-content: center;">
             <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M12 9v4M12 17h.01M12 2a10 10 0 100 20 10 10 0 000-20z"/></svg>
           </div>
           <h2 style="font-family: var(--font-serif); font-size: 32px; font-weight: 400; font-style: italic; margin-bottom: 12px;">Something went wrong</h2>
