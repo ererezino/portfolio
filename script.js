@@ -19,15 +19,15 @@ function getResponsiveImage(photo, lazy) {
 }
 
 var ARTICLES = [
-  { title: "A quick note on consistency", date: "Jan 2026", topic: "Work / life", url: "/articles.html" },
-  { title: "What I'm learning from walking", date: "Dec 2025", topic: "Movement", url: "/articles.html" }
+  { title: "A quick note on consistency", date: "Jan 2026", topic: "Work / life", url: "/articles/" },
+  { title: "What I'm learning from walking", date: "Dec 2025", topic: "Movement", url: "/articles/" }
 ];
 
 var TRAVELS = [
-  { 
-    title: "Frankfurt", 
-    meta: "Small details, big calm", 
-    url: "https://www.ererezino.com/travels",
+  {
+    title: "Frankfurt",
+    meta: "Small details, big calm",
+    url: "/travels.html",
     photo: "/assets/photos/photo-2.jpg",
     country: "Germany",
     countryCode: "DE",
@@ -36,10 +36,10 @@ var TRAVELS = [
     year: "2025",
     stampValue: "€1.60"
   },
-  { 
-    title: "Accra", 
-    meta: "Food, pace, and sunlight", 
-    url: "https://www.ererezino.com/travels",
+  {
+    title: "Accra",
+    meta: "Food, pace, and sunlight",
+    url: "/travels.html",
     photo: "/assets/photos/photo-3.jpg",
     country: "Ghana",
     countryCode: "GH",
@@ -924,45 +924,12 @@ function initKonamiCode() {
 }
 
 // =============================================================================
-// PAGE TRANSITIONS
+// PAGE TRANSITIONS (Disabled - kept for reference)
 // =============================================================================
 
 function initPageTransitions() {
-  if (prefersReducedMotion) return;
-
-  // Create transition overlay
-  var transitionOverlay = document.createElement('div');
-  transitionOverlay.className = 'page-transition';
-  transitionOverlay.innerHTML = '<div class="page-transition-inner"></div>';
-  document.body.appendChild(transitionOverlay);
-
-  // Intercept internal navigation
-  $$('a[href^="/"], a[href^="./"]').forEach(function(link) {
-    // Skip external links and hash links
-    if (link.getAttribute('target') === '_blank') return;
-    if (link.getAttribute('href').indexOf('#') === 0) return;
-
-    link.addEventListener('click', function(e) {
-      var href = link.getAttribute('href');
-
-      // Don't intercept if modifier keys pressed
-      if (e.metaKey || e.ctrlKey || e.shiftKey) return;
-
-      e.preventDefault();
-
-      transitionOverlay.classList.add('active');
-      playSound('whoosh');
-
-      setTimeout(function() {
-        window.location.href = href;
-      }, 400);
-    });
-  });
-
-  // Fade in on page load
-  window.addEventListener('pageshow', function() {
-    transitionOverlay.classList.remove('active');
-  });
+  // Page transitions disabled - they were causing a purple flash
+  return;
 }
 
 // =============================================================================
