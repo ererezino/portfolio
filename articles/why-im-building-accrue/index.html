@@ -5,13 +5,36 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Why I'm Building Accrue - Zino Asamaige</title>
 
+  <!-- Prevent FOUC -->
+  <script>
+    (function() {
+      try {
+        var saved = localStorage.getItem('theme');
+        var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        var isDark = saved ? saved === 'dark' : prefersDark;
+        document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light');
+      } catch(e) {}
+    })();
+  </script>
+
   <meta name="description" content="Africa moves a lot of money. The problem is how. Here's why we're building the rails for Africa's digital economy.">
   <meta name="author" content="Zino Asamaige">
-
   <link rel="icon" type="image/png" href="/assets/logo.png">
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet" />
+
+  <!-- Security headers -->
+  <meta http-equiv="X-Content-Type-Options" content="nosniff">
+  <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin">
+
+  <!-- PWA -->
+  <link rel="manifest" href="/manifest.json">
+  <meta name="theme-color" content="#FAFAFA" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#0A0A0A" media="(prefers-color-scheme: dark)">
+
+  <!-- Self-hosted fonts -->
+  <link rel="preload" href="/assets/fonts/inter-v20-latin-regular.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/assets/fonts/space-mono-v17-latin-regular.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/assets/fonts/instrument-serif-v5-latin-regular.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="/assets/fonts.css">
 
   <style>
     :root {
@@ -25,6 +48,9 @@
       --violet: #6D28D9;
       --container: 680px;
       --transition: 0.3s ease;
+      --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-mono: 'Space Mono', monospace;
+      --font-serif: 'Instrument Serif', Georgia, serif;
     }
 
     [data-theme="dark"] {
@@ -39,205 +65,872 @@
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: smooth; }
+
     body {
       background: var(--bg);
       color: var(--text);
-      font-family: 'Space Mono', monospace;
+      font-family: var(--font-mono);
       font-size: 14px;
       line-height: 1.7;
       -webkit-font-smoothing: antialiased;
+      transition: background 0.3s ease, color 0.3s ease;
     }
+
     a { color: inherit; text-decoration: none; }
     img { display: block; max-width: 100%; }
     .container { max-width: var(--container); margin: 0 auto; padding: 0 24px; }
 
+    /* Skip link for accessibility */
+    .skip-link {
+      position: absolute;
+      top: -100px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--text);
+      color: var(--bg);
+      padding: 12px 24px;
+      font-family: var(--font-mono);
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      z-index: 1000;
+      transition: top 0.3s ease;
+    }
+    .skip-link:focus {
+      top: 20px;
+      outline: 2px solid var(--green);
+      outline-offset: 2px;
+    }
+
+    /* Noise overlay */
+    .noise-overlay {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      opacity: 0.03;
+      z-index: 9999;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+    }
+    [data-theme="dark"] .noise-overlay { opacity: 0.02; }
+
     /* Scroll Progress */
-    .scroll-progress { position: fixed; top: 0; left: 0; height: 2px; background: var(--text); z-index: 1000; }
+    .scroll-progress {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--green), var(--violet));
+      z-index: 1001;
+      transition: width 0.1s ease-out;
+    }
 
     /* Header */
-    header { position: fixed; top: 0; left: 0; right: 0; z-index: 100; padding: 20px 0; transition: background var(--transition); }
-    header.scrolled { background: var(--bg); border-bottom: 1px solid var(--border); }
-    .header-inner { display: flex; align-items: center; justify-content: space-between; max-width: 1200px; margin: 0 auto; padding: 0 24px; }
-    .logo { display: flex; align-items: center; gap: 12px; font-size: 15px; font-weight: 700; }
-    .logo-img { width: 32px; height: 32px; border-radius: 50%; object-fit: cover; border: 1px solid var(--border); }
-    .header-nav { display: flex; align-items: center; gap: 28px; }
-    .header-nav a { font-size: 11px; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.08em; transition: color var(--transition); }
+    header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      padding: 20px 0;
+      transition: background var(--transition), border-color var(--transition);
+    }
+    header.scrolled {
+      background: var(--bg);
+      border-bottom: 1px solid var(--border);
+    }
+    .header-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-family: var(--font-mono);
+      font-size: 15px;
+      font-weight: 700;
+      transition: opacity var(--transition);
+    }
+    .logo:hover { opacity: 0.7; }
+    .logo-img {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 1px solid var(--border);
+    }
+    .header-nav {
+      display: flex;
+      align-items: center;
+      gap: 28px;
+    }
+    .header-nav a {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      transition: color var(--transition);
+    }
     .header-nav a:hover { color: var(--text); }
+    .header-nav a:focus-visible {
+      outline: 2px solid var(--green);
+      outline-offset: 4px;
+    }
     @media (max-width: 900px) { .header-nav { display: none; } }
-    .theme-btn { width: 32px; height: 32px; border: 1px solid var(--border); border-radius: 50%; background: transparent; display: flex; align-items: center; justify-content: center; cursor: pointer; }
+
+    .theme-btn {
+      width: 32px;
+      height: 32px;
+      border: 1px solid var(--border);
+      border-radius: 50%;
+      background: transparent;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: border-color var(--transition), transform var(--transition);
+    }
+    .theme-btn:hover { border-color: var(--text-secondary); }
+    .theme-btn:active { transform: scale(0.95); }
+    .theme-btn:focus-visible {
+      outline: 2px solid var(--green);
+      outline-offset: 2px;
+    }
     .theme-btn svg { width: 14px; height: 14px; color: var(--text-secondary); }
     .theme-btn .sun { display: none; }
     [data-theme="dark"] .theme-btn .sun { display: block; }
     [data-theme="dark"] .theme-btn .moon { display: none; }
+
     .mobile-controls { display: none; align-items: center; gap: 10px; }
     @media (max-width: 900px) { .mobile-controls { display: flex; } }
-    .mobile-menu-btn { width: 32px; height: 32px; border: 1px solid var(--border); border-radius: 50%; background: transparent; cursor: pointer; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; }
-    .mobile-menu-btn span { width: 12px; height: 1px; background: var(--text); }
+
+    .mobile-menu-btn {
+      width: 32px;
+      height: 32px;
+      border: 1px solid var(--border);
+      border-radius: 50%;
+      background: transparent;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+    }
+    .mobile-menu-btn span {
+      width: 12px;
+      height: 1px;
+      background: var(--text);
+      transition: transform var(--transition), opacity var(--transition);
+    }
 
     /* Mobile Menu */
-    .mobile-menu { position: fixed; inset: 0; background: var(--bg); z-index: 200; padding: 20px; display: flex; flex-direction: column; opacity: 0; visibility: hidden; transition: all var(--transition); }
+    .mobile-menu {
+      position: fixed;
+      inset: 0;
+      background: var(--bg);
+      z-index: 200;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      opacity: 0;
+      visibility: hidden;
+      transition: all var(--transition);
+    }
     .mobile-menu.open { opacity: 1; visibility: visible; }
-    .mobile-menu-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 48px; }
-    .mobile-menu-close { width: 32px; height: 32px; border: 1px solid var(--border); border-radius: 50%; background: transparent; font-size: 18px; cursor: pointer; color: var(--text); }
-    .mobile-menu nav { display: flex; flex-direction: column; gap: 20px; }
-    .mobile-menu nav a { font-size: 20px; font-weight: 700; color: var(--text); }
+    .mobile-menu-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 48px;
+    }
+    .mobile-menu-close {
+      width: 32px;
+      height: 32px;
+      border: 1px solid var(--border);
+      border-radius: 50%;
+      background: transparent;
+      font-size: 18px;
+      cursor: pointer;
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .mobile-menu nav {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    .mobile-menu nav a {
+      font-family: var(--font-mono);
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--text);
+    }
 
     /* Article Header */
-    .article-header { padding: 140px 0 60px; border-bottom: 1px solid var(--border); }
-    .article-back { display: inline-flex; align-items: center; gap: 8px; font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-tertiary); margin-bottom: 32px; }
+    .article-header {
+      padding: 140px 0 60px;
+      border-bottom: 1px solid var(--border);
+    }
+    .article-back {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-tertiary);
+      margin-bottom: 32px;
+      transition: color var(--transition);
+    }
     .article-back:hover { color: var(--text); }
+    .article-back:focus-visible {
+      outline: 2px solid var(--green);
+      outline-offset: 4px;
+    }
     .article-back svg { width: 14px; height: 14px; }
-    .article-meta { display: flex; gap: 16px; font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-tertiary); margin-bottom: 20px; }
-    .article-title { font-family: 'Instrument Serif', serif; font-size: clamp(36px, 5vw, 48px); font-weight: 400; line-height: 1.15; letter-spacing: -0.02em; margin-bottom: 20px; }
-    .article-excerpt { font-size: 16px; line-height: 1.8; color: var(--text-secondary); }
-    .article-tags { display: flex; gap: 8px; margin-top: 24px; flex-wrap: wrap; }
-    .tag { font-size: 10px; text-transform: uppercase; letter-spacing: 0.08em; padding: 6px 12px; border: 1px solid var(--border); color: var(--text-secondary); }
+    .article-meta {
+      display: flex;
+      gap: 16px;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-tertiary);
+      margin-bottom: 20px;
+    }
+    .article-title {
+      font-family: var(--font-serif);
+      font-size: clamp(36px, 5vw, 52px);
+      font-weight: 400;
+      font-style: italic;
+      line-height: 1.15;
+      letter-spacing: -0.02em;
+      margin-bottom: 20px;
+      opacity: 0;
+      transform: translateY(20px);
+      animation: fadeInUp 0.6s ease forwards;
+    }
+    @keyframes fadeInUp {
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .article-excerpt {
+      font-family: var(--font-sans);
+      font-size: 17px;
+      line-height: 1.8;
+      color: var(--text-secondary);
+      opacity: 0;
+      transform: translateY(20px);
+      animation: fadeInUp 0.6s ease 0.1s forwards;
+    }
+    .article-tags {
+      display: flex;
+      gap: 8px;
+      margin-top: 24px;
+      flex-wrap: wrap;
+      opacity: 0;
+      transform: translateY(20px);
+      animation: fadeInUp 0.6s ease 0.2s forwards;
+    }
+    .tag {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      padding: 6px 12px;
+      border: 1px solid var(--border);
+      color: var(--text-secondary);
+      transition: border-color var(--transition), color var(--transition);
+    }
+    .tag:hover {
+      border-color: var(--text);
+      color: var(--text);
+    }
 
     /* Article Content */
     .article-content { padding: 48px 0 80px; }
-    .article-body p { font-size: 15px; line-height: 1.85; color: var(--text-secondary); margin-bottom: 24px; }
-    .article-body p:first-of-type { font-size: 17px; color: var(--text); }
-    .article-body strong { color: var(--text); font-weight: 700; }
-    .article-body a { color: var(--text); border-bottom: 1px solid var(--violet); }
-    .article-body hr { border: none; height: 1px; background: var(--border); margin: 48px 0; }
-    .article-body h2 { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em; color: var(--text); margin-top: 56px; margin-bottom: 24px; }
+    .article-body p {
+      font-family: var(--font-sans);
+      font-size: 16px;
+      line-height: 1.85;
+      color: var(--text-secondary);
+      margin-bottom: 24px;
+    }
+    .article-body p:first-of-type {
+      font-size: 18px;
+      color: var(--text);
+    }
+    .article-body strong { color: var(--text); font-weight: 600; }
+    .article-body a {
+      color: var(--text);
+      border-bottom: 1px solid var(--violet);
+      transition: border-color var(--transition);
+    }
+    .article-body a:hover { border-color: var(--text); }
+    .article-body a:focus-visible {
+      outline: 2px solid var(--green);
+      outline-offset: 2px;
+    }
+    .article-body hr {
+      border: none;
+      height: 1px;
+      background: var(--border);
+      margin: 48px 0;
+    }
+    .article-body h2 {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--text);
+      margin-top: 56px;
+      margin-bottom: 24px;
+    }
 
     /* Pull Quote */
-    .pull-quote { font-size: 18px; font-weight: 700; line-height: 1.5; color: var(--text); margin: 48px 0; padding-left: 24px; border-left: 2px solid var(--text); }
+    .pull-quote {
+      font-family: var(--font-serif);
+      font-size: 22px;
+      font-style: italic;
+      line-height: 1.5;
+      color: var(--text);
+      margin: 48px 0;
+      padding-left: 24px;
+      border-left: 3px solid var(--green);
+      position: relative;
+    }
 
     /* Highlight Box */
-    .highlight-box { background: var(--bg-alt); border: 1px solid var(--border); padding: 32px; margin: 48px 0; }
-    .highlight-box p { font-size: 14px; margin-bottom: 0; }
+    .highlight-box {
+      background: var(--bg-alt);
+      border: 1px solid var(--border);
+      padding: 32px;
+      margin: 48px 0;
+      position: relative;
+      overflow: hidden;
+    }
+    .highlight-box::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 4px;
+      height: 100%;
+      background: linear-gradient(180deg, var(--green), var(--violet));
+    }
+    .highlight-box p {
+      font-size: 15px;
+      margin-bottom: 0;
+    }
     .highlight-box p + p { margin-top: 16px; }
 
-    /* Graphics */
-    .article-graphic { margin: 48px 0; background: var(--bg-alt); border: 1px solid var(--border); padding: 32px; }
-    .graphic-label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.12em; color: var(--text-tertiary); text-align: center; margin-bottom: 24px; }
+    /* Graphics - scroll animation */
+    .article-graphic {
+      margin: 48px 0;
+      background: var(--bg-alt);
+      border: 1px solid var(--border);
+      padding: 32px;
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    .article-graphic.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .graphic-label {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--text-tertiary);
+      text-align: center;
+      margin-bottom: 24px;
+    }
 
     /* Flow */
-    .flow-steps { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
-    @media (max-width: 600px) { .flow-steps { flex-direction: column; align-items: center; gap: 20px; } }
-    .flow-step { flex: 1; text-align: center; max-width: 160px; }
-    .flow-step-num { font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-tertiary); margin-bottom: 6px; }
-    .flow-step-title { font-size: 16px; font-weight: 700; margin-bottom: 10px; }
-    .flow-step-icon { width: 48px; height: 48px; margin: 0 auto 10px; border: 1px solid var(--border); border-radius: 50%; display: flex; align-items: center; justify-content: center; background: var(--bg); }
-    .flow-step-icon svg { width: 20px; height: 20px; color: var(--text); }
-    .flow-step-text { font-size: 11px; color: var(--text-secondary); line-height: 1.5; }
-    .flow-step-text strong { display: block; color: var(--text); margin-top: 4px; }
-    .flow-arrow { color: var(--text-tertiary); font-size: 16px; margin-top: 40px; }
-    @media (max-width: 600px) { .flow-arrow { transform: rotate(90deg); margin: 0; } }
-    .flow-compare { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 24px; padding-top: 24px; border-top: 1px solid var(--border); }
-    @media (max-width: 400px) { .flow-compare { grid-template-columns: 1fr; } }
-    .compare-box { padding: 16px; border: 1px solid var(--border); text-align: center; background: var(--bg); }
-    .compare-box.highlight { border-color: var(--text); }
-    .compare-label { font-size: 9px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-tertiary); margin-bottom: 4px; }
-    .compare-box.highlight .compare-label { color: var(--text); }
-    .compare-value { font-size: 13px; font-weight: 700; }
-    .compare-detail { font-size: 10px; color: var(--text-tertiary); margin-top: 2px; }
+    .flow-steps {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+    }
+    @media (max-width: 600px) {
+      .flow-steps { flex-direction: column; align-items: center; gap: 20px; }
+    }
+    .flow-step {
+      flex: 1;
+      text-align: center;
+      max-width: 160px;
+    }
+    .flow-step-num {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--text-tertiary);
+      margin-bottom: 6px;
+    }
+    .flow-step-title {
+      font-family: var(--font-mono);
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+    .flow-step-icon {
+      width: 56px;
+      height: 56px;
+      margin: 0 auto 12px;
+      border: 1px solid var(--border);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--bg);
+      transition: border-color var(--transition), transform var(--transition);
+    }
+    .flow-step:hover .flow-step-icon {
+      border-color: var(--green);
+      transform: scale(1.05);
+    }
+    .flow-step-icon svg { width: 24px; height: 24px; color: var(--text); }
+    .flow-step-text {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--text-secondary);
+      line-height: 1.5;
+    }
+    .flow-step-text strong {
+      display: block;
+      color: var(--text);
+      margin-top: 4px;
+    }
+    .flow-arrow {
+      color: var(--text-tertiary);
+      font-size: 20px;
+      margin-top: 50px;
+      opacity: 0.5;
+    }
+    @media (max-width: 600px) {
+      .flow-arrow { transform: rotate(90deg); margin: 0; }
+    }
+    .flow-compare {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-top: 24px;
+      padding-top: 24px;
+      border-top: 1px solid var(--border);
+    }
+    @media (max-width: 400px) {
+      .flow-compare { grid-template-columns: 1fr; }
+    }
+    .compare-box {
+      padding: 20px;
+      border: 1px solid var(--border);
+      text-align: center;
+      background: var(--bg);
+      transition: border-color var(--transition), transform var(--transition);
+    }
+    .compare-box:hover { transform: translateY(-2px); }
+    .compare-box.highlight {
+      border-color: var(--green);
+      box-shadow: 0 0 0 1px var(--green);
+    }
+    .compare-label {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--text-tertiary);
+      margin-bottom: 6px;
+    }
+    .compare-box.highlight .compare-label { color: var(--green); }
+    .compare-value {
+      font-family: var(--font-mono);
+      font-size: 13px;
+      font-weight: 700;
+    }
+    .compare-detail {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      color: var(--text-tertiary);
+      margin-top: 4px;
+    }
 
     /* Stats */
-    .stats-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1px; background: var(--border); }
-    .stat-box { background: var(--bg); padding: 24px 16px; text-align: center; }
-    .stat-num { font-size: 32px; font-weight: 700; letter-spacing: -0.02em; line-height: 1; margin-bottom: 6px; }
-    .stat-label { font-size: 9px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-tertiary); line-height: 1.4; }
-    .stats-footer { text-align: center; padding-top: 24px; margin-top: 24px; border-top: 1px solid var(--border); }
-    .stats-footer blockquote { font-size: 16px; font-style: italic; margin-bottom: 6px; }
-    .stats-footer cite { font-size: 10px; color: var(--text-tertiary); font-style: normal; text-transform: uppercase; letter-spacing: 0.08em; }
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1px;
+      background: var(--border);
+    }
+    .stat-box {
+      background: var(--bg);
+      padding: 28px 16px;
+      text-align: center;
+    }
+    .stat-num {
+      font-family: var(--font-mono);
+      font-size: 36px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      line-height: 1;
+      margin-bottom: 8px;
+      background: linear-gradient(135deg, var(--text), var(--text-secondary));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .stat-label {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--text-tertiary);
+      line-height: 1.4;
+    }
+    .stats-footer {
+      text-align: center;
+      padding-top: 24px;
+      margin-top: 24px;
+      border-top: 1px solid var(--border);
+    }
+    .stats-footer blockquote {
+      font-family: var(--font-serif);
+      font-size: 18px;
+      font-style: italic;
+      margin-bottom: 8px;
+    }
+    .stats-footer cite {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      color: var(--text-tertiary);
+      font-style: normal;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
 
     /* Forces */
-    .forces-list { display: flex; flex-direction: column; gap: 12px; }
-    .force-item { display: flex; gap: 16px; padding: 20px; border: 1px solid var(--border); background: var(--bg); }
-    .force-num { width: 28px; height: 28px; border: 1px solid var(--text); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; flex-shrink: 0; }
-    .force-content h3 { font-size: 15px; font-weight: 700; margin-bottom: 4px; }
-    .force-content p { font-size: 12px; color: var(--text-secondary); line-height: 1.6; margin: 0; }
+    .forces-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .force-item {
+      display: flex;
+      gap: 16px;
+      padding: 20px;
+      border: 1px solid var(--border);
+      background: var(--bg);
+      transition: border-color var(--transition), transform var(--transition);
+    }
+    .force-item:hover {
+      border-color: var(--text-secondary);
+      transform: translateX(4px);
+    }
+    .force-num {
+      width: 32px;
+      height: 32px;
+      border: 2px solid var(--text);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-mono);
+      font-size: 13px;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+    .force-content h3 {
+      font-family: var(--font-mono);
+      font-size: 15px;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+    .force-content p {
+      font-family: var(--font-sans);
+      font-size: 13px;
+      color: var(--text-secondary);
+      line-height: 1.6;
+      margin: 0;
+    }
     .forces-center { text-align: center; margin-top: 20px; }
-    .forces-badge { display: inline-block; padding: 10px 24px; border: 1px solid var(--text); font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; }
+    .forces-badge {
+      display: inline-block;
+      padding: 12px 28px;
+      border: 2px solid var(--text);
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      transition: background var(--transition), color var(--transition);
+    }
+    .forces-badge:hover {
+      background: var(--text);
+      color: var(--bg);
+    }
 
     /* Timeline */
-    .timeline { display: flex; align-items: center; justify-content: space-between; position: relative; padding: 20px 0; }
-    .timeline::before { content: ''; position: absolute; top: 50%; left: 20px; right: 20px; height: 1px; background: var(--border); }
-    @media (max-width: 500px) { .timeline { flex-wrap: wrap; gap: 16px; justify-content: center; } .timeline::before { display: none; } }
-    .timeline-point { text-align: center; position: relative; background: var(--bg-alt); padding: 0 8px; }
-    .timeline-dot { width: 10px; height: 10px; border: 1px solid var(--text); border-radius: 50%; margin: 0 auto 8px; background: var(--bg-alt); }
-    .timeline-point:first-child .timeline-dot { background: var(--text); }
-    .timeline-label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-tertiary); }
-    .timeline-point:first-child .timeline-label { color: var(--text); font-weight: 700; }
-    .timeline-caption { text-align: center; margin-top: 16px; font-size: 12px; color: var(--text-secondary); }
+    .timeline {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: relative;
+      padding: 20px 0;
+    }
+    .timeline::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 30px;
+      right: 30px;
+      height: 2px;
+      background: linear-gradient(90deg, var(--green), var(--border), var(--border), var(--border), var(--border));
+    }
+    @media (max-width: 500px) {
+      .timeline { flex-wrap: wrap; gap: 16px; justify-content: center; }
+      .timeline::before { display: none; }
+    }
+    .timeline-point {
+      text-align: center;
+      position: relative;
+      background: var(--bg-alt);
+      padding: 0 8px;
+    }
+    .timeline-dot {
+      width: 14px;
+      height: 14px;
+      border: 2px solid var(--text);
+      border-radius: 50%;
+      margin: 0 auto 10px;
+      background: var(--bg-alt);
+      transition: background var(--transition), transform var(--transition);
+    }
+    .timeline-point:hover .timeline-dot { transform: scale(1.2); }
+    .timeline-point:first-child .timeline-dot {
+      background: var(--green);
+      border-color: var(--green);
+      box-shadow: 0 0 0 4px rgba(0, 210, 106, 0.2);
+    }
+    .timeline-label {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-tertiary);
+    }
+    .timeline-point:first-child .timeline-label {
+      color: var(--text);
+      font-weight: 700;
+    }
+    .timeline-caption {
+      text-align: center;
+      margin-top: 20px;
+      font-family: var(--font-mono);
+      font-size: 12px;
+      color: var(--text-secondary);
+    }
 
     /* Article Footer */
-    .article-footer { border-top: 1px solid var(--border); padding-top: 40px; margin-top: 48px; }
-    .author-card { display: flex; gap: 16px; align-items: center; }
-    .author-avatar { width: 48px; height: 48px; border-radius: 50%; overflow: hidden; border: 1px solid var(--border); flex-shrink: 0; }
+    .article-footer {
+      border-top: 1px solid var(--border);
+      padding-top: 40px;
+      margin-top: 48px;
+    }
+    .author-card {
+      display: flex;
+      gap: 16px;
+      align-items: center;
+    }
+    .author-avatar {
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      overflow: hidden;
+      border: 2px solid var(--border);
+      flex-shrink: 0;
+      transition: border-color var(--transition);
+    }
+    .author-card:hover .author-avatar { border-color: var(--green); }
     .author-avatar img { width: 100%; height: 100%; object-fit: cover; }
-    .author-info h4 { font-size: 14px; font-weight: 700; margin-bottom: 2px; }
-    .author-info p { font-size: 12px; color: var(--text-secondary); margin: 0; }
+    .author-info h4 {
+      font-family: var(--font-mono);
+      font-size: 15px;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+    .author-info p {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      color: var(--text-secondary);
+      margin: 0;
+    }
 
     /* Footer */
-    footer { padding: 32px 0; border-top: 1px solid var(--border); margin-top: 48px; }
-    .footer-inner { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; }
-    .footer-left { font-size: 11px; color: var(--text-tertiary); text-transform: uppercase; letter-spacing: 0.08em; }
-    .footer-status { display: flex; align-items: center; gap: 8px; font-size: 11px; color: var(--text-tertiary); text-transform: uppercase; letter-spacing: 0.08em; }
-    .location-dot { width: 6px; height: 6px; background: var(--green); border-radius: 50%; }
+    footer {
+      padding: 32px 0;
+      border-top: 1px solid var(--border);
+      margin-top: 48px;
+    }
+    .footer-inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--text-tertiary);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+    .footer-status {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .location-dot {
+      position: relative;
+      width: 8px;
+      height: 8px;
+    }
+    .location-dot::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: var(--green);
+      border-radius: 50%;
+      z-index: 1;
+    }
+    .location-dot::after {
+      content: '';
+      position: absolute;
+      inset: -4px;
+      background: var(--green);
+      border-radius: 50%;
+      opacity: 0.4;
+      animation: locationPulse 2s ease-in-out infinite;
+    }
+    @keyframes locationPulse {
+      0%, 100% { transform: scale(1); opacity: 0.4; }
+      50% { transform: scale(1.8); opacity: 0; }
+    }
+
+    /* Focus visible for all interactive elements */
+    a:focus-visible, button:focus-visible {
+      outline: 2px solid var(--green);
+      outline-offset: 2px;
+    }
+
+    /* Reduced motion */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+
+    .visually-hidden {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
   </style>
 </head>
 
 <body>
-  <div class="scroll-progress" id="scrollProgress"></div>
+  <div class="noise-overlay" aria-hidden="true"></div>
+  <div class="scroll-progress" id="scrollProgress" role="progressbar" aria-label="Reading progress"></div>
 
-  <header id="header">
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header id="header" role="banner">
     <div class="header-inner">
-      <a href="/" class="logo"><img src="/assets/logo.png" alt="" class="logo-img"> Zino Asamaige</a>
-      <nav class="header-nav">
+      <a href="/" class="logo" aria-label="Zino Asamaige - Home">
+        <img src="/assets/logo.png" alt="" class="logo-img" width="32" height="32">
+        Zino Asamaige
+      </a>
+      <nav class="header-nav" aria-label="Primary navigation">
         <a href="/about.html">About</a>
-        <a href="/photos.html">Photos</a>
-        <a href="/articles.html">Articles</a>
+        <a href="/photos/">Photos</a>
+        <a href="/articles/">Articles</a>
         <a href="/movement.html">Movement</a>
         <a href="/travels.html">Travels</a>
         <a href="/contact.html">Contact</a>
-        <button class="theme-btn" id="themeToggle" aria-label="Toggle theme">
-          <svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
-          <svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+        <button class="theme-btn" id="themeToggle" aria-label="Toggle dark mode" type="button">
+          <svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+          <svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
         </button>
       </nav>
       <div class="mobile-controls">
-        <button class="theme-btn" id="mobileThemeToggle" aria-label="Toggle theme">
-          <svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
-          <svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+        <button class="theme-btn" id="mobileThemeToggle" aria-label="Toggle dark mode" type="button">
+          <svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+          <svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
         </button>
-        <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Menu"><span></span><span></span><span></span></button>
+        <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Open navigation menu" aria-expanded="false" aria-controls="mobileMenu" type="button">
+          <span></span><span></span><span></span>
+        </button>
       </div>
     </div>
   </header>
 
-  <div class="mobile-menu" id="mobileMenu">
+  <div class="mobile-menu" id="mobileMenu" aria-hidden="true" role="dialog" aria-modal="true" aria-label="Navigation menu">
     <div class="mobile-menu-header">
-      <span class="logo"><img src="/assets/logo.png" alt="" class="logo-img"> Zino</span>
-      <button class="mobile-menu-close" id="mobileMenuClose">&times;</button>
+      <span class="logo">
+        <img src="/assets/logo.png" alt="" class="logo-img" width="32" height="32">
+        Zino
+      </span>
+      <button class="mobile-menu-close" id="mobileMenuClose" aria-label="Close navigation menu" type="button">&times;</button>
     </div>
-    <nav>
+    <nav aria-label="Mobile navigation">
       <a href="/about.html">About</a>
-      <a href="/photos.html">Photos</a>
-      <a href="/articles.html">Articles</a>
+      <a href="/photos/">Photos</a>
+      <a href="/articles/">Articles</a>
       <a href="/movement.html">Movement</a>
       <a href="/travels.html">Travels</a>
       <a href="/contact.html">Contact</a>
     </nav>
   </div>
 
-  <main>
+  <main id="main" role="main">
     <article>
-      <div class="article-header">
+      <header class="article-header">
         <div class="container">
-          <a href="/articles.html" class="article-back">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+          <a href="/articles/" class="article-back">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
             Back to Articles
           </a>
-          <div class="article-meta"><span>January 2026</span><span>6 min read</span></div>
+          <div class="article-meta">
+            <time datetime="2026-01">January 2026</time>
+            <span>6 min read</span>
+          </div>
           <h1 class="article-title">Why I'm Building Accrue</h1>
           <p class="article-excerpt">Africa moves a lot of money. The problem is how. Here's why we're building the rails for Africa's digital economy.</p>
-          <div class="article-tags"><span class="tag">Fintech</span><span class="tag">Africa</span><span class="tag">Startups</span></div>
+          <div class="article-tags" role="list" aria-label="Article topics">
+            <span class="tag" role="listitem">Fintech</span>
+            <span class="tag" role="listitem">Africa</span>
+            <span class="tag" role="listitem">Startups</span>
+          </div>
         </div>
-      </div>
+      </header>
 
       <div class="article-content">
         <div class="container">
@@ -256,27 +949,27 @@
 
             <p><strong>Cashramp</strong> is infrastructure. Think M-Pesa on stablecoin rails. It's a stablecoin agent network spread across over 11 African countries. Users walk up to agents, hand over local currency, and receive stablecoin equivalents. When that money needs to cross a border, say from Ghana to Nigeria, the Ghanaian user sends money to an agent in local currency, receives stablecoins at the prevailing market rate, and another agent in Nigeria converts it to naira and deposits it into the recipient's bank account. The user never sees the complexity of cryptocurrency.</p>
 
-            <div class="article-graphic">
-              <div class="graphic-label">How Cashramp Works</div>
+            <figure class="article-graphic" aria-labelledby="graphic-cashramp">
+              <figcaption class="graphic-label" id="graphic-cashramp">How Cashramp Works</figcaption>
               <div class="flow-steps">
                 <div class="flow-step">
                   <div class="flow-step-num">Step 1</div>
                   <div class="flow-step-title">Ghana</div>
-                  <div class="flow-step-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="8" r="4"/><path d="M4 21v-2a4 4 0 0 1 4-4h8a4 4 0 0 1 4 4v2"/></svg></div>
+                  <div class="flow-step-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21v-2a4 4 0 0 1 4-4h8a4 4 0 0 1 4 4v2"/></svg></div>
                   <div class="flow-step-text">User pays local currency<strong>GHS (Cedis)</strong></div>
                 </div>
-                <div class="flow-arrow">→</div>
+                <div class="flow-arrow" aria-hidden="true">→</div>
                 <div class="flow-step">
                   <div class="flow-step-num">Step 2</div>
                   <div class="flow-step-title">Stablecoin</div>
-                  <div class="flow-step-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M12 6v12M8 10h8M8 14h8"/></svg></div>
+                  <div class="flow-step-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 6v12M8 10h8M8 14h8"/></svg></div>
                   <div class="flow-step-text">Converted at market rate<strong>User never touches crypto</strong></div>
                 </div>
-                <div class="flow-arrow">→</div>
+                <div class="flow-arrow" aria-hidden="true">→</div>
                 <div class="flow-step">
                   <div class="flow-step-num">Step 3</div>
                   <div class="flow-step-title">Nigeria</div>
-                  <div class="flow-step-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M7 15h4M7 11h10"/></svg></div>
+                  <div class="flow-step-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M7 15h4M7 11h10"/></svg></div>
                   <div class="flow-step-text">Recipient gets local currency<strong>NGN (Naira)</strong></div>
                 </div>
               </div>
@@ -284,7 +977,7 @@
                 <div class="compare-box"><div class="compare-label">Traditional</div><div class="compare-value">3-5 days · 8-10% fees</div><div class="compare-detail">Multiple intermediaries</div></div>
                 <div class="compare-box highlight"><div class="compare-label">Cashramp</div><div class="compare-value">Minutes · Low fees</div><div class="compare-detail">Direct agent network</div></div>
               </div>
-            </div>
+            </figure>
 
             <p>Both products are live today, processing transactions across over 11 countries. This isn't a pitch deck. It's a business.</p>
 
@@ -294,23 +987,23 @@
 
             <p>We've scaled to over 11 African markets. We process millions in monthly transaction volume. Our payment success rate is 98%, compared to industry averages that often struggle below 80%. Revenue has grown over 15% quarter over quarter, mostly from organic demand.</p>
 
-            <div class="article-graphic">
-              <div class="graphic-label">Four Years of Building</div>
+            <figure class="article-graphic" aria-labelledby="graphic-traction">
+              <figcaption class="graphic-label" id="graphic-traction">Four Years of Building</figcaption>
               <div class="stats-grid">
-                <div class="stat-box"><div class="stat-num">11+</div><div class="stat-label">African<br>Markets</div></div>
-                <div class="stat-box"><div class="stat-num">98%</div><div class="stat-label">Payment<br>Success Rate</div></div>
-                <div class="stat-box"><div class="stat-num">15%+</div><div class="stat-label">Quarter Over<br>Quarter Growth</div></div>
-                <div class="stat-box"><div class="stat-num">10%</div><div class="stat-label">Overhead vs<br>Legacy Players</div></div>
+                <div class="stat-box"><div class="stat-num" data-target="11">11+</div><div class="stat-label">African<br>Markets</div></div>
+                <div class="stat-box"><div class="stat-num" data-target="98">98%</div><div class="stat-label">Payment<br>Success Rate</div></div>
+                <div class="stat-box"><div class="stat-num" data-target="15">15%+</div><div class="stat-label">Quarter Over<br>Quarter Growth</div></div>
+                <div class="stat-box"><div class="stat-num" data-target="10">10%</div><div class="stat-label">Overhead vs<br>Legacy Players</div></div>
               </div>
               <div class="stats-footer">
                 <blockquote>"Western Union took decades. We did it in four years."</blockquote>
                 <cite>Organic, utility-driven growth</cite>
               </div>
-            </div>
+            </figure>
 
             <p>We've done this with a small, market-embedded team operating at roughly 10% of the overhead of legacy remittance companies. Western Union took decades to achieve continental coverage. We did it in under 24 months.</p>
 
-            <div class="pull-quote">The growth isn't hype-driven. It's utility-driven. People use Accrue because it solves real problems.</div>
+            <blockquote class="pull-quote">The growth isn't hype-driven. It's utility-driven. People use Accrue because it solves real problems.</blockquote>
 
             <p>A trader in Ghana can pay a supplier in Kenya in seconds, not days. A Nigerian freelancer can receive USD from a European client without losing a big chunk to intermediaries. A family can save for the future in stable USD, safe from local currency collapse.</p>
 
@@ -326,15 +1019,15 @@
 
             <p><strong>Third, regulatory momentum.</strong> From Nigeria to Ghana to Kenya's regulatory sandboxes and pan-African trade frameworks, governments are starting to support fintech innovation. South Africa already has a license framework for crypto businesses. Five years ago, governments saw crypto as a threat. Now they're building frameworks for it.</p>
 
-            <div class="article-graphic">
-              <div class="graphic-label">Why Now</div>
+            <figure class="article-graphic" aria-labelledby="graphic-timing">
+              <figcaption class="graphic-label" id="graphic-timing">Why Now</figcaption>
               <div class="forces-list">
                 <div class="force-item"><div class="force-num">1</div><div class="force-content"><h3>Demographics</h3><p>Median age under 20. A mobile-native generation ready to leapfrog traditional banking.</p></div></div>
                 <div class="force-item"><div class="force-num">2</div><div class="force-content"><h3>Technology</h3><p>80% smartphone penetration by 2030. M-Pesa proved Africa can leapfrog legacy infrastructure.</p></div></div>
                 <div class="force-item"><div class="force-num">3</div><div class="force-content"><h3>Regulation</h3><p>Nigeria, Ghana, Kenya sandboxes. South Africa licensed. Governments building frameworks.</p></div></div>
               </div>
               <div class="forces-center"><span class="forces-badge">Three forces converging</span></div>
-            </div>
+            </figure>
 
             <hr>
 
@@ -344,60 +1037,132 @@
 
             <p>Once you're the trusted layer for moving money, you can build everything else on top: credit, insurance, investments, business tools. Every major fintech in emerging markets followed this playbook. We're doing the same, but with stablecoins as the foundation instead of legacy banking infrastructure.</p>
 
-            <div class="article-graphic">
-              <div class="graphic-label">The Roadmap</div>
-              <div class="timeline">
-                <div class="timeline-point"><div class="timeline-dot"></div><div class="timeline-label">Payments</div></div>
-                <div class="timeline-point"><div class="timeline-dot"></div><div class="timeline-label">Savings</div></div>
-                <div class="timeline-point"><div class="timeline-dot"></div><div class="timeline-label">Credit</div></div>
-                <div class="timeline-point"><div class="timeline-dot"></div><div class="timeline-label">Insurance</div></div>
-                <div class="timeline-point"><div class="timeline-dot"></div><div class="timeline-label">Investments</div></div>
+            <figure class="article-graphic" aria-labelledby="graphic-vision">
+              <figcaption class="graphic-label" id="graphic-vision">The Roadmap</figcaption>
+              <div class="timeline" role="list" aria-label="Product roadmap">
+                <div class="timeline-point" role="listitem"><div class="timeline-dot"></div><div class="timeline-label">Payments</div></div>
+                <div class="timeline-point" role="listitem"><div class="timeline-dot"></div><div class="timeline-label">Savings</div></div>
+                <div class="timeline-point" role="listitem"><div class="timeline-dot"></div><div class="timeline-label">Credit</div></div>
+                <div class="timeline-point" role="listitem"><div class="timeline-dot"></div><div class="timeline-label">Insurance</div></div>
+                <div class="timeline-point" role="listitem"><div class="timeline-dot"></div><div class="timeline-label">Investments</div></div>
               </div>
               <div class="timeline-caption">Payments are the wedge. Everything else follows.</div>
-            </div>
+            </figure>
 
-            <div class="highlight-box">
+            <aside class="highlight-box">
               <p><strong>The vision:</strong> Make moving money between Yaounde and Kampala as easy as moving it between New York and San Francisco.</p>
               <p>That's a big goal. But every month, we get closer. And every month, more people depend on us to move their money safely.</p>
-            </div>
+            </aside>
 
             <p>That's why I'm building Accrue. Not because it's interesting. Because it matters.</p>
 
-            <div class="article-footer">
+            <footer class="article-footer">
               <div class="author-card">
-                <div class="author-avatar"><img src="/assets/logo.png" alt="Zino Asamaige"></div>
-                <div class="author-info"><h4>Zino Asamaige</h4><p>Co-Founder & COO at Accrue</p></div>
+                <div class="author-avatar"><img src="/assets/logo.png" alt="" width="56" height="56"></div>
+                <div class="author-info">
+                  <h4>Zino Asamaige</h4>
+                  <p>Co-Founder & COO at Accrue</p>
+                </div>
               </div>
-            </div>
+            </footer>
           </div>
         </div>
       </div>
     </article>
   </main>
 
-  <footer>
+  <footer role="contentinfo">
     <div class="container footer-inner">
-      <div class="footer-left">© 2026 Zino Asamaige</div>
-      <div class="footer-status"><span class="location-dot"></span> Lagos, Nigeria</div>
+      <span>&copy; 2026 Zino Asamaige</span>
+      <div class="footer-status">
+        <span class="location-dot" aria-hidden="true"></span>
+        Lagos, Nigeria
+      </div>
     </div>
   </footer>
 
   <script>
-    function setTheme(dark) { document.documentElement.setAttribute('data-theme', dark ? 'dark' : 'light'); localStorage.setItem('theme', dark ? 'dark' : 'light'); }
-    function toggleTheme() { setTheme(document.documentElement.getAttribute('data-theme') !== 'dark'); }
-    const saved = localStorage.getItem('theme');
-    setTheme(saved ? saved === 'dark' : window.matchMedia('(prefers-color-scheme: dark)').matches);
-    document.getElementById('themeToggle').onclick = toggleTheme;
-    document.getElementById('mobileThemeToggle').onclick = toggleTheme;
-    window.addEventListener('scroll', () => {
-      document.getElementById('header').classList.toggle('scrolled', window.scrollY > 50);
+    // Theme toggle
+    const toggle = document.getElementById('themeToggle');
+    const mobileToggle = document.getElementById('mobileThemeToggle');
+
+    function toggleTheme() {
+      const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+      document.documentElement.setAttribute('data-theme', isDark ? 'light' : 'dark');
+      localStorage.setItem('theme', isDark ? 'light' : 'dark');
+    }
+
+    toggle.onclick = toggleTheme;
+    mobileToggle.onclick = toggleTheme;
+
+    // Header scroll state
+    const header = document.getElementById('header');
+    const scrollProgress = document.getElementById('scrollProgress');
+
+    function updateScroll() {
+      const scrolled = window.scrollY > 50;
+      header.classList.toggle('scrolled', scrolled);
+
       const progress = (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100;
-      document.getElementById('scrollProgress').style.width = progress + '%';
-    });
+      scrollProgress.style.width = Math.min(progress, 100) + '%';
+    }
+
+    window.addEventListener('scroll', updateScroll, { passive: true });
+    updateScroll();
+
+    // Mobile menu
     const mm = document.getElementById('mobileMenu');
-    document.getElementById('mobileMenuBtn').onclick = () => mm.classList.add('open');
-    document.getElementById('mobileMenuClose').onclick = () => mm.classList.remove('open');
-    mm.querySelectorAll('a').forEach(a => a.onclick = () => mm.classList.remove('open'));
+    const menuBtn = document.getElementById('mobileMenuBtn');
+    const closeBtn = document.getElementById('mobileMenuClose');
+
+    function openMenu() {
+      mm.classList.add('open');
+      mm.setAttribute('aria-hidden', 'false');
+      menuBtn.setAttribute('aria-expanded', 'true');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeMenu() {
+      mm.classList.remove('open');
+      mm.setAttribute('aria-hidden', 'true');
+      menuBtn.setAttribute('aria-expanded', 'false');
+      document.body.style.overflow = '';
+    }
+
+    menuBtn.onclick = openMenu;
+    closeBtn.onclick = closeMenu;
+    mm.querySelectorAll('a').forEach(a => a.onclick = closeMenu);
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && mm.classList.contains('open')) {
+        closeMenu();
+      }
+    });
+
+    // Scroll animations for graphics
+    const graphics = document.querySelectorAll('.article-graphic');
+
+    const observerOptions = {
+      root: null,
+      rootMargin: '0px 0px -100px 0px',
+      threshold: 0.1
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, observerOptions);
+
+    graphics.forEach(g => observer.observe(g));
+
+    // Respect reduced motion
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      graphics.forEach(g => g.classList.add('visible'));
+    }
   </script>
 </body>
 </html>
