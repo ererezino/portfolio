@@ -136,25 +136,6 @@ svg {
    PAGE TRANSITIONS
    ============================================================================= */
 
-/* Page transitions - subtle fade instead of colored overlay */
-.page-transition {
-  position: fixed;
-  inset: 0;
-  z-index: 99999;
-  pointer-events: none;
-  background: var(--bg);
-  opacity: 0;
-  transition: opacity 0.2s ease;
-}
-
-.page-transition.active {
-  opacity: 1;
-}
-
-/* Hide the inner element - not needed for fade transition */
-.page-transition-inner {
-  display: none;
-}
 
 /* =============================================================================
    BASE RESET & TYPOGRAPHY
