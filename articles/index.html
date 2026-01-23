@@ -724,26 +724,21 @@
       color: var(--text-secondary);
     }
 
-    /* Page Transitions */
+    /* Page Transitions - subtle fade */
     .page-transition {
       position: fixed;
       inset: 0;
       z-index: 99999;
       pointer-events: none;
-      overflow: hidden;
+      background: var(--bg);
+      opacity: 0;
+      transition: opacity 0.2s ease;
+    }
+    .page-transition.active {
+      opacity: 1;
     }
     .page-transition-inner {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: var(--violet);
-      transform: translateY(100%);
-      transition: transform 0.4s cubic-bezier(0.7, 0, 0.3, 1);
-    }
-    .page-transition.active .page-transition-inner {
-      transform: translateY(0);
+      display: none;
     }
 
     @media (prefers-reduced-motion: reduce) {
@@ -829,13 +824,13 @@
     </section>
   </main>
 
-  <footer>
+  <footer role="contentinfo">
     <div class="container footer-inner">
-      <div class="footer-left">&copy; 2026 Zino Asamaige</div>
-      <div class="footer-status">
-        <span class="location-dot"></span>
+      <span class="footer-copy">&copy; 2026 Zino Asamaige</span>
+      <span class="footer-status">
+        <span class="location-dot" aria-hidden="true"></span>
         Lagos, Nigeria
-      </div>
+      </span>
     </div>
   </footer>
 
