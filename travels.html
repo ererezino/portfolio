@@ -1086,6 +1086,11 @@
       // Check if Leaflet is loaded
       if (typeof L === 'undefined') {
         console.error('Leaflet not loaded');
+        // Show fallback message
+        const mapContainer = document.getElementById('map');
+        if (mapContainer) {
+          mapContainer.innerHTML = '<div style="display:flex;align-items:center;justify-content:center;height:100%;color:var(--text-tertiary);font-family:var(--font-mono);font-size:12px;">Map loading failed. Please refresh.</div>';
+        }
         return;
       }
 
