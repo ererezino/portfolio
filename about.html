@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="light">
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>About - Zino Asamaige</title>
 
-  <!-- Prevent FOUC - Must be inline and first -->
+  <!-- Prevent FOUC -->
   <script>
     (function() {
       try {
@@ -17,42 +17,8 @@
     })();
   </script>
 
-  <!-- Critical font preloads - STANDARDIZED across all pages -->
-  <link rel="preload" href="/assets/fonts/inter-v20-latin-regular.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="preload" href="/assets/fonts/inter-v20-latin-600.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="preload" href="/assets/fonts/space-mono-v17-latin-regular.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="preload" href="/assets/fonts/instrument-serif-v5-latin-regular.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="preload" href="/assets/fonts/instrument-serif-v5-latin-italic.woff2" as="font" type="font/woff2" crossorigin>
-
-  <!-- SEO Meta Tags -->
-  <meta name="description" content="A bit about Zino Asamaige - COO at Accrue, photographer, traveler, and walker based in Lagos, Nigeria.">
-  <meta name="author" content="Zino Asamaige">
-  
-  <!-- Open Graph -->
-  <meta property="og:title" content="About - Zino Asamaige">
-  <meta property="og:description" content="A bit about Zino Asamaige - COO at Accrue, photographer, traveler, and walker based in Lagos, Nigeria.">
-  <meta property="og:type" content="website">
-  <meta property="og:url" content="https://ererezino.com/about.html">
-  <meta property="og:image" content="https://ererezino.com/assets/og-image.jpg">
-  <meta property="og:site_name" content="Zino Asamaige">
-  
-  <!-- Twitter Card -->
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:site" content="@ererezino">
-  <meta name="twitter:title" content="About - Zino Asamaige">
-  <meta name="twitter:description" content="A bit about Zino Asamaige - COO at Accrue, photographer, traveler, and walker based in Lagos, Nigeria.">
-  <meta name="twitter:image" content="https://ererezino.com/assets/og-image.jpg">
-  
-  <!-- Canonical -->
-  <link rel="canonical" href="https://ererezino.com/about.html">
-
-  <!-- Favicons -->
+  <meta name="description" content="A bit about Zino Asamaige - photographer, builder, traveler.">
   <link rel="icon" type="image/png" href="/assets/logo.png">
-  <link rel="apple-touch-icon" href="/assets/logo.png">
-  
-  <!-- Theme Colors -->
-  <meta name="theme-color" content="#FAFAFA" media="(prefers-color-scheme: light)">
-  <meta name="theme-color" content="#0A0A0A" media="(prefers-color-scheme: dark)">
 
   <!-- Security headers -->
   <meta http-equiv="X-Content-Type-Options" content="nosniff">
@@ -60,49 +26,496 @@
 
   <!-- PWA -->
   <link rel="manifest" href="/manifest.json">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="theme-color" content="#FAFAFA" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#0A0A0A" media="(prefers-color-scheme: dark)">
 
-  <!-- Stylesheets -->
+  <!-- Self-hosted fonts -->
+  <link rel="preload" href="/assets/fonts/inter-v20-latin-regular.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/assets/fonts/inter-v20-latin-500.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/assets/fonts/space-mono-v17-latin-regular.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/assets/fonts/instrument-serif-v5-latin-regular.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="/assets/fonts.css">
-  <link rel="stylesheet" href="/styles.css">
+
+  <style>
+    :root {
+      --bg: #FFFFFF;
+      --bg-alt: #F7F7F7;
+      --text: #0A0A0A;
+      --text-secondary: #555555;
+      --text-tertiary: #888888;
+      --border: #E8E8E8;
+      --green: #00D26A;
+      --container: 1200px;
+      --transition: 0.2s ease;
+      --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-mono: 'Space Mono', monospace;
+      --font-serif: 'Instrument Serif', Georgia, serif;
+    }
+
+    [data-theme="dark"] {
+      --bg: #0A0A0A;
+      --bg-alt: #111111;
+      --text: #FFFFFF;
+      --text-secondary: #AAAAAA;
+      --text-tertiary: #666666;
+      --border: #222222;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-sans);
+      font-size: 15px;
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+      transition: background 0.3s ease, color 0.3s ease;
+    }
+
+    a { color: inherit; text-decoration: none; }
+    img { display: block; max-width: 100%; }
+
+    /* Skip link for accessibility */
+    .skip-link {
+      position: absolute;
+      top: -100px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--text);
+      color: var(--bg);
+      padding: 12px 24px;
+      font-family: var(--font-mono);
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      z-index: 1000;
+      transition: top 0.3s ease;
+    }
+    .skip-link:focus {
+      top: 20px;
+      outline: 2px solid var(--green);
+      outline-offset: 2px;
+    }
+
+    /* Noise overlay */
+    .noise-overlay {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      opacity: 0.03;
+      z-index: 9999;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+    }
+    [data-theme="dark"] .noise-overlay { opacity: 0.02; }
+
+    .container {
+      max-width: var(--container);
+      margin: 0 auto;
+      padding: 0 40px;
+    }
+    @media (max-width: 768px) {
+      .container { padding: 0 20px; }
+    }
+
+    /* Header */
+    header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      padding: 20px 0;
+      background: var(--bg);
+      border-bottom: 1px solid var(--border);
+      transition: background 0.3s ease, border-color 0.3s ease;
+    }
+
+    .header-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      max-width: var(--container);
+      margin: 0 auto;
+      padding: 0 40px;
+    }
+    @media (max-width: 768px) {
+      .header-inner { padding: 0 20px; }
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-family: var(--font-mono);
+      font-size: 15px;
+      font-weight: 700;
+      transition: opacity var(--transition);
+    }
+    .logo:hover { opacity: 0.7; }
+
+    .logo-img {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 1px solid var(--border);
+    }
+
+    .header-nav {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+    }
+    .header-nav a {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      transition: color var(--transition);
+    }
+    .header-nav a:hover { color: var(--text); }
+    .header-nav a:focus-visible {
+      outline: 2px solid var(--green);
+      outline-offset: 4px;
+    }
+
+    @media (max-width: 768px) {
+      .header-nav { display: none; }
+    }
+
+    .theme-btn {
+      width: 32px;
+      height: 32px;
+      border: 1px solid var(--border);
+      background: transparent;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: border-color var(--transition), transform var(--transition);
+    }
+    .theme-btn:hover { border-color: var(--text-secondary); }
+    .theme-btn:active { transform: scale(0.95); }
+    .theme-btn:focus-visible {
+      outline: 2px solid var(--green);
+      outline-offset: 2px;
+    }
+    .theme-btn svg { width: 14px; height: 14px; color: var(--text-secondary); }
+    .theme-btn .sun { display: none; }
+    [data-theme="dark"] .theme-btn .sun { display: block; }
+    [data-theme="dark"] .theme-btn .moon { display: none; }
+
+    .mobile-menu-btn {
+      display: none;
+      width: 32px;
+      height: 32px;
+      border: 1px solid var(--border);
+      background: transparent;
+      cursor: pointer;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+    }
+    .mobile-menu-btn span {
+      width: 14px;
+      height: 1px;
+      background: var(--text);
+      transition: transform var(--transition), opacity var(--transition);
+    }
+
+    .mobile-controls {
+      display: none;
+      align-items: center;
+      gap: 8px;
+    }
+
+    @media (max-width: 768px) {
+      .mobile-controls { display: flex; }
+      .mobile-menu-btn { display: flex; }
+    }
+
+    /* Mobile Menu */
+    .mobile-menu {
+      position: fixed;
+      inset: 0;
+      background: var(--bg);
+      z-index: 200;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity var(--transition), visibility var(--transition);
+    }
+    .mobile-menu.open { opacity: 1; visibility: visible; }
+
+    .mobile-menu-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 48px;
+    }
+
+    .mobile-menu-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .mobile-menu-close {
+      width: 32px;
+      height: 32px;
+      border: 1px solid var(--border);
+      background: transparent;
+      font-size: 20px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text);
+    }
+
+    .mobile-menu nav {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .mobile-menu nav a {
+      font-family: var(--font-serif);
+      font-size: clamp(28px, 8vw, 36px);
+      letter-spacing: -0.02em;
+      padding: 12px 0;
+      color: var(--text);
+    }
+
+    /* Page */
+    main {
+      padding-top: 100px;
+    }
+
+    .page-header {
+      padding: 60px 0 48px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--text-tertiary);
+      margin-bottom: 32px;
+      transition: color var(--transition);
+    }
+    .back-link:hover { color: var(--text); }
+    .back-link:focus-visible {
+      outline: 2px solid var(--green);
+      outline-offset: 4px;
+    }
+    .back-link svg { width: 14px; height: 14px; }
+
+    .page-title {
+      font-family: var(--font-serif);
+      font-size: clamp(36px, 6vw, 56px);
+      font-weight: 400;
+      font-style: italic;
+      letter-spacing: -0.02em;
+      margin-bottom: 20px;
+      opacity: 0;
+      transform: translateY(20px);
+      animation: fadeInUp 0.6s ease forwards;
+    }
+
+    @keyframes fadeInUp {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .page-lead {
+      font-family: var(--font-sans);
+      font-size: 16px;
+      color: var(--text-secondary);
+      max-width: 600px;
+      line-height: 1.8;
+      opacity: 0;
+      transform: translateY(20px);
+      animation: fadeInUp 0.6s ease 0.1s forwards;
+    }
+
+    /* About Grid */
+    .about-section {
+      padding: 64px 0;
+    }
+
+    .about-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+    }
+    @media (max-width: 700px) {
+      .about-grid { grid-template-columns: 1fr; }
+    }
+
+    .about-card {
+      padding: 40px 32px;
+      background: var(--bg);
+      transition: background 0.3s ease, transform 0.3s ease;
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    .about-card.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .about-card:hover { background: var(--bg-alt); }
+
+    .about-card-icon {
+      width: 40px;
+      height: 40px;
+      margin-bottom: 20px;
+      color: var(--text-tertiary);
+      transition: color 0.3s ease, transform 0.3s ease;
+    }
+    .about-card:hover .about-card-icon {
+      color: var(--text);
+      transform: scale(1.1);
+    }
+
+    .about-card h3 {
+      font-family: var(--font-mono);
+      font-size: 14px;
+      font-weight: 700;
+      margin-bottom: 12px;
+      letter-spacing: -0.01em;
+      text-transform: uppercase;
+    }
+
+    .about-card p {
+      font-family: var(--font-sans);
+      font-size: 14px;
+      color: var(--text-secondary);
+      line-height: 1.7;
+    }
+
+    /* Closing note */
+    .closing-note {
+      padding: 64px 0;
+      border-top: 1px solid var(--border);
+    }
+
+    .closing-text {
+      font-family: var(--font-serif);
+      font-size: 24px;
+      line-height: 1.6;
+      color: var(--text-secondary);
+      max-width: 700px;
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    .closing-text.visible {
+      animation: fadeInUp 0.6s ease forwards;
+    }
+    .closing-text em {
+      color: var(--text);
+      font-style: italic;
+    }
+
+    /* Footer */
+    footer {
+      padding: 32px 0;
+      border-top: 1px solid var(--border);
+    }
+
+    .footer-inner {
+      display: flex;
+      justify-content: space-between;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--text-tertiary);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .footer-status {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .location-dot {
+      position: relative;
+      width: 8px;
+      height: 8px;
+    }
+    .location-dot::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: var(--green);
+      border-radius: 50%;
+      z-index: 1;
+    }
+    .location-dot::after {
+      content: '';
+      position: absolute;
+      inset: -4px;
+      background: var(--green);
+      border-radius: 50%;
+      opacity: 0.4;
+      animation: locationPulse 2s ease-in-out infinite;
+    }
+    @keyframes locationPulse {
+      0%, 100% { transform: scale(1); opacity: 0.4; }
+      50% { transform: scale(1.8); opacity: 0; }
+    }
+
+    /* Focus visible for all interactive elements */
+    a:focus-visible, button:focus-visible {
+      outline: 2px solid var(--green);
+      outline-offset: 2px;
+    }
+  </style>
 </head>
 
 <body>
-  <!-- Noise texture overlay -->
   <div class="noise-overlay" aria-hidden="true"></div>
 
-  <!-- Skip link for accessibility -->
   <a class="skip-link" href="#main">Skip to content</a>
 
-  <!-- HEADER - Consistent across all pages -->
-  <header id="header" role="banner">
+  <header role="banner">
     <div class="header-inner">
       <a href="/" class="logo" aria-label="Zino Asamaige - Home">
-        <img src="/assets/logo.png" alt="" class="logo-img" width="36" height="36" loading="eager">
-        <span class="logo-text">Zino Asamaige</span>
+        <img src="/assets/logo.png" alt="" class="logo-img" width="32" height="32">
+        Zino Asamaige
       </a>
-
       <nav class="header-nav" aria-label="Primary navigation">
-        <a href="/about.html" class="nav-link" aria-current="page">About</a>
-        <a href="/photos/" class="nav-link">Photos</a>
-        <a href="/articles/" class="nav-link">Articles</a>
-        <a href="/movement.html" class="nav-link">Movement</a>
-        <a href="/travels.html" class="nav-link">Travels</a>
-        <a href="/contact.html" class="nav-link">Contact</a>
-
+        <a href="/about.html">About</a>
+        <a href="/photos/">Photos</a>
+        <a href="/articles/">Articles</a>
+        <a href="/movement.html">Movement</a>
+        <a href="/travels.html">Travels</a>
+        <a href="/contact.html">Contact</a>
         <button class="theme-btn" id="themeToggle" aria-label="Toggle dark mode" type="button">
-          <svg class="moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
-          <svg class="sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+          <svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+          <svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
         </button>
       </nav>
-
       <div class="mobile-controls">
         <button class="theme-btn" id="mobileThemeToggle" aria-label="Toggle dark mode" type="button">
-          <svg class="moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
-          <svg class="sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+          <svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+          <svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
         </button>
-
         <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Open navigation menu" aria-expanded="false" aria-controls="mobileMenu" type="button">
           <span></span><span></span><span></span>
         </button>
@@ -110,12 +523,11 @@
     </div>
   </header>
 
-  <!-- MOBILE MENU - Consistent across all pages -->
   <div class="mobile-menu" id="mobileMenu" aria-hidden="true" role="dialog" aria-modal="true" aria-label="Navigation menu">
     <div class="mobile-menu-header">
       <a href="/" class="logo">
         <img src="/assets/logo.png" alt="" class="logo-img" width="32" height="32">
-        <span>Zino</span>
+        Zino
       </a>
       <div class="mobile-menu-actions">
         <button class="mobile-menu-close" id="mobileMenuClose" aria-label="Close navigation menu" type="button">&times;</button>
@@ -131,8 +543,7 @@
     </nav>
   </div>
 
-  <!-- MAIN CONTENT -->
-  <main id="main" class="page-main" role="main">
+  <main id="main" role="main">
     <div class="container">
       <div class="page-header">
         <a href="/" class="back-link">
@@ -236,18 +647,111 @@
     </div>
   </main>
 
-  <!-- FOOTER - Consistent across all pages -->
   <footer role="contentinfo">
     <div class="container footer-inner">
-      <span class="footer-copy">&copy; 2026 Zino Asamaige</span>
-      <span class="footer-status">
+      <span>&copy; 2026 Zino Asamaige</span>
+      <div class="footer-status">
         <span class="location-dot" aria-hidden="true"></span>
         Lagos, Nigeria
-      </span>
+      </div>
     </div>
   </footer>
 
-  <!-- Shared JavaScript -->
-  <script src="/shared.js" defer></script>
+  <style>
+    .visually-hidden {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+  </style>
+
+  <script>
+    // Theme toggle
+    const toggle = document.getElementById('themeToggle');
+    const mobileToggle = document.getElementById('mobileThemeToggle');
+
+    function toggleTheme() {
+      const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+      document.documentElement.setAttribute('data-theme', isDark ? 'light' : 'dark');
+      localStorage.setItem('theme', isDark ? 'light' : 'dark');
+    }
+    toggle.onclick = toggleTheme;
+    mobileToggle.onclick = toggleTheme;
+
+    // Mobile menu
+    const mm = document.getElementById('mobileMenu');
+    const menuBtn = document.getElementById('mobileMenuBtn');
+    const closeBtn = document.getElementById('mobileMenuClose');
+
+    function openMenu() {
+      mm.classList.add('open');
+      mm.setAttribute('aria-hidden', 'false');
+      menuBtn.setAttribute('aria-expanded', 'true');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeMenu() {
+      mm.classList.remove('open');
+      mm.setAttribute('aria-hidden', 'true');
+      menuBtn.setAttribute('aria-expanded', 'false');
+      document.body.style.overflow = '';
+    }
+
+    menuBtn.onclick = openMenu;
+    closeBtn.onclick = closeMenu;
+    mm.querySelectorAll('a').forEach(a => a.onclick = closeMenu);
+
+    // Close menu on escape
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && mm.classList.contains('open')) {
+        closeMenu();
+      }
+    });
+
+    // Scroll animations with Intersection Observer
+    const observerOptions = {
+      root: null,
+      rootMargin: '0px',
+      threshold: 0.1
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry, index) => {
+        if (entry.isIntersecting) {
+          // Stagger animation for cards
+          const delay = entry.target.classList.contains('about-card')
+            ? index * 100
+            : 0;
+
+          setTimeout(() => {
+            entry.target.classList.add('visible');
+          }, delay);
+
+          observer.unobserve(entry.target);
+        }
+      });
+    }, observerOptions);
+
+    // Observe elements for scroll animation
+    document.querySelectorAll('.about-card, .closing-text').forEach(el => {
+      observer.observe(el);
+    });
+
+    // Respect reduced motion preference
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      document.querySelectorAll('.about-card, .closing-text, .page-title, .page-lead').forEach(el => {
+        el.style.opacity = '1';
+        el.style.transform = 'none';
+        el.style.animation = 'none';
+        el.classList.add('visible');
+      });
+    }
+  </script>
 </body>
 </html>
