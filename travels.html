@@ -431,25 +431,29 @@
     }
     .leaflet-container {
       font-family: var(--font-sans);
+      border-radius: 16px;
+    }
+    @media (max-width: 768px) {
+      .leaflet-container { border-radius: 12px; }
     }
 
-    .custom-marker {
-      width: 12px;
-      height: 12px;
+    .leaflet-marker-icon.custom-marker {
+      width: 12px !important;
+      height: 12px !important;
       border-radius: 50%;
       background: var(--accent);
       border: 2px solid var(--bg);
       box-shadow: 0 2px 8px rgba(0,0,0,0.3);
       transition: transform 0.2s ease, box-shadow 0.2s ease;
     }
-    .custom-marker:hover {
+    .leaflet-marker-icon.custom-marker:hover {
       transform: scale(1.5);
       box-shadow: 0 4px 16px rgba(0,0,0,0.4);
     }
-    .custom-marker.home {
+    .leaflet-marker-icon.custom-marker.home {
       background: var(--green);
-      width: 16px;
-      height: 16px;
+      width: 16px !important;
+      height: 16px !important;
       animation: homePulse 2s ease-in-out infinite;
     }
     @keyframes homePulse {
@@ -928,7 +932,7 @@
       const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
       document.documentElement.setAttribute('data-theme', isDark ? 'light' : 'dark');
       localStorage.setItem('theme', isDark ? 'light' : 'dark');
-      updateMapTiles();
+      if (typeof updateMapTiles === 'function') updateMapTiles();
     }
     toggle.onclick = toggleTheme;
     mobileToggle.onclick = toggleTheme;
@@ -1104,22 +1108,17 @@
       if (!mapContainer || map) return;
 
       try {
-        console.log('Initializing map...');
         map = L.map('map', {
           scrollWheelZoom: false,
           zoomControl: true
         }).setView([20, 10], 2);
-        console.log('Map created:', map);
 
         updateMapTiles();
         addMarkers();
 
         // Force recalculation of map size after a short delay
         setTimeout(() => {
-          if (map) {
-            map.invalidateSize();
-            console.log('Map size invalidated');
-          }
+          if (map) map.invalidateSize();
         }, 200);
 
       } catch (err) {
