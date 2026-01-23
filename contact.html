@@ -913,7 +913,7 @@
     const messageField = document.getElementById('message');
 
     // Google Apps Script Web App URL
-    const GOOGLE_SCRIPT_URL = 'https://script.google.com/a/macros/useaccrue.com/s/AKfycbymshVKVMK5zs7Qg4IZ0x2qKU-RyfHt71s3T-ZuPet_d7EJHkoI5G_FC8tLb5KK67-Y5Q/exec';
+    const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyXjt28spJyUuDOmWVozBHIlho3LBH_QROve5-bjzANczJgAjULto0pvd_mdlnQFJzF/exec';
 
     // Auto-save to localStorage
     const AUTOSAVE_KEY = 'contact_form_draft';
@@ -1021,7 +1021,7 @@
 
       try {
         // Submit to Google Sheets via Apps Script
-        await fetch(GOOGLE_SCRIPT_URL, {
+        const response = await fetch(GOOGLE_SCRIPT_URL, {
           method: 'POST',
           mode: 'no-cors',
           headers: {
@@ -1035,6 +1035,7 @@
           })
         });
 
+        // With no-cors, we get an opaque response - assume success if no error thrown
         // Clear draft on successful submit
         clearDraft();
 
@@ -1044,13 +1045,41 @@
         successMessage.classList.add('visible');
 
       } catch (error) {
-        console.error('Error:', error);
-        alert('Something went wrong. Please try again or email me directly.');
+        console.error('Form submission error:', error);
+        // Network error or script unreachable - show fallback
+        showErrorWithFallback(name, email, message);
       } finally {
         submitBtn.classList.remove('loading');
         submitBtn.disabled = false;
       }
     });
+
+    // Show error with mailto fallback
+    function showErrorWithFallback(name, email, message) {
+      // Hide form and show error state with mailto fallback
+      form.style.display = 'none';
+      socialLinks.style.display = 'none';
+
+      // Create error message element
+      const errorHtml = `
+        <div class="error-fallback" style="text-align: center; padding: 60px 20px;">
+          <div style="width: 80px; height: 80px; margin: 0 auto 28px; background: var(--red); border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M12 9v4M12 17h.01M12 2a10 10 0 100 20 10 10 0 000-20z"/></svg>
+          </div>
+          <h2 style="font-family: var(--font-serif); font-size: 32px; font-weight: 400; font-style: italic; margin-bottom: 12px;">Something went wrong</h2>
+          <p style="font-family: var(--font-sans); font-size: 15px; color: var(--text-secondary); margin-bottom: 36px;">No worries! You can reach me directly via email instead.</p>
+          <a href="mailto:hello@zinoasamaige.com?subject=Contact from ${encodeURIComponent(name)}&body=${encodeURIComponent('From: ' + name + ' (' + email + ')\n\n' + message)}" class="submit-btn" style="display: inline-flex; text-decoration: none;">
+            <span class="btn-text">Send via Email</span>
+            <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          </a>
+          <div style="margin-top: 24px;">
+            <button onclick="location.reload()" style="font-family: var(--font-mono); font-size: 12px; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-secondary); background: none; border: none; cursor: pointer; text-decoration: underline;">Try again</button>
+          </div>
+        </div>
+      `;
+
+      successMessage.insertAdjacentHTML('beforebegin', errorHtml);
+    }
 
     // Clear errors on input
     document.getElementById('name').addEventListener('input', () => clearError('name', 'nameError'));
