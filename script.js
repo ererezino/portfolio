@@ -15,15 +15,7 @@ var PHOTOS = [
 
 // Helper to generate responsive image HTML
 function getResponsiveImage(photo, lazy) {
-  var lazyAttr = lazy ? ' loading="lazy"' : '';
-  // If WebP exists, use picture element for modern browsers
-  if (photo.srcWebp) {
-    return '<picture>' +
-      '<source srcset="' + photo.srcWebp + '" type="image/webp">' +
-      '<img src="' + photo.src + '" alt="' + (photo.alt || '') + '"' + lazyAttr + ' />' +
-    '</picture>';
-  }
-  return '<img src="' + photo.src + '" alt="' + (photo.alt || '') + '"' + lazyAttr + ' />';
+  return '<img src="' + photo.src + '" alt="' + (photo.alt || '') + '" width="400" height="400" style="width:100%;height:100%;object-fit:cover;" />';
 }
 
 var ARTICLES = [
