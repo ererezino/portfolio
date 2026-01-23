@@ -5,12 +5,12 @@
 // =============================================================================
 
 var PHOTOS = [
-  { src: "/assets/photos/photo-1.jpg", srcWebp: "/assets/photos/photo-1.webp", caption: "Lagos, 2025", alt: "Street scene in Lagos", location: "Lagos" },
-  { src: "/assets/photos/photo-2.jpg", srcWebp: "/assets/photos/photo-2.webp", caption: "Frankfurt, 2025", alt: "Frankfurt street", location: "Frankfurt" },
-  { src: "/assets/photos/photo-3.jpg", srcWebp: "/assets/photos/photo-3.webp", caption: "Accra, 2025", alt: "Accra market", location: "Accra" },
-  { src: "/assets/photos/photo-4.jpg", srcWebp: "/assets/photos/photo-4.webp", caption: "Lagos, 2025", alt: "Lagos street", location: "Lagos" },
-  { src: "/assets/photos/photo-5.jpg", srcWebp: "/assets/photos/photo-5.webp", caption: "Durham, 2024", alt: "Durham scene", location: "Durham" },
-  { src: "/assets/photos/photo-6.jpg", srcWebp: "/assets/photos/photo-6.webp", caption: "Frankfurt, 2025", alt: "Architecture in Frankfurt", location: "Frankfurt" }
+  { src: "/assets/photos/photo-1.jpg", caption: "Lagos, 2025", alt: "Street scene in Lagos", location: "Lagos" },
+  { src: "/assets/photos/photo-2.jpg", caption: "Frankfurt, 2025", alt: "Frankfurt street", location: "Frankfurt" },
+  { src: "/assets/photos/photo-3.jpg", caption: "Accra, 2025", alt: "Accra market", location: "Accra" },
+  { src: "/assets/photos/photo-4.jpg", caption: "Lagos, 2025", alt: "Lagos street", location: "Lagos" },
+  { src: "/assets/photos/photo-5.jpg", caption: "Durham, 2024", alt: "Durham scene", location: "Durham" },
+  { src: "/assets/photos/photo-6.jpg", caption: "Frankfurt, 2025", alt: "Architecture in Frankfurt", location: "Frankfurt" }
 ];
 
 // Helper to generate responsive image HTML
