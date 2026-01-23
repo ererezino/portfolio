@@ -658,8 +658,8 @@ function renderStepsSimple() {
           '<div class="steps-mini-label">Daily avg</div>' +
         '</div>' +
       '</div>' +
-      '<a href="/steps.html" class="steps-history-btn">' +
-        'See step history' +
+      '<a href="/movement.html" class="steps-history-btn">' +
+        'See movement history' +
         '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">' +
           '<path d="M5 12h14M12 5l7 7-7 7"/>' +
         '</svg>' +
