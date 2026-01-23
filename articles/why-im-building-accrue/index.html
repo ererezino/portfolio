@@ -166,14 +166,14 @@
     .header-nav {
       display: flex;
       align-items: center;
-      gap: 28px;
+      gap: 24px;
     }
     .header-nav a {
       font-family: var(--font-mono);
-      font-size: 11px;
+      font-size: 12px;
       color: var(--text-secondary);
       text-transform: uppercase;
-      letter-spacing: 0.08em;
+      letter-spacing: 0.05em;
       transition: color var(--transition);
     }
     .header-nav a:hover { color: var(--text); }
@@ -265,12 +265,13 @@
     .mobile-menu nav {
       display: flex;
       flex-direction: column;
-      gap: 20px;
+      gap: 8px;
     }
     .mobile-menu nav a {
-      font-family: var(--font-mono);
-      font-size: 20px;
-      font-weight: 700;
+      font-family: var(--font-serif);
+      font-size: clamp(28px, 8vw, 36px);
+      letter-spacing: -0.02em;
+      padding: 12px 0;
       color: var(--text);
     }
 
@@ -902,11 +903,13 @@
 
   <div class="mobile-menu" id="mobileMenu" aria-hidden="true" role="dialog" aria-modal="true" aria-label="Navigation menu">
     <div class="mobile-menu-header">
-      <span class="logo">
+      <a href="/" class="logo">
         <img src="/assets/logo.png" alt="" class="logo-img" width="32" height="32">
         Zino
-      </span>
-      <button class="mobile-menu-close" id="mobileMenuClose" aria-label="Close navigation menu" type="button">&times;</button>
+      </a>
+      <div class="mobile-menu-actions">
+        <button class="mobile-menu-close" id="mobileMenuClose" aria-label="Close navigation menu" type="button">&times;</button>
+      </div>
     </div>
     <nav aria-label="Mobile navigation">
       <a href="/about.html">About</a>
@@ -955,9 +958,9 @@
 
             <p><strong>Accrue</strong> is a mobile app. Anyone in Africa can save in USD stablecoins, send and receive payments instantly, and participate in the global economy. For millions facing volatile local currencies, stablecoins aren't speculation. They're the safest store of value available.</p>
 
-            <p><strong>Cashramp</strong> is infrastructure. Think M-Pesa on stablecoin rails. It's a stablecoin agent network spread across over 11 African countries. Users walk up to agents, hand over local currency, and receive stablecoin equivalents. When that money needs to cross a border, say from Ghana to Nigeria, the Ghanaian user sends money to an agent in local currency, receives stablecoins at the prevailing market rate, and another agent in Nigeria converts it to naira and deposits it into the recipient's bank account.</p>
+            <p><strong>Cashramp</strong> is infrastructure. Think M-Pesa on stablecoin rails. It's a stablecoin agent network spread across over 11 African countries. Users walk up to agents, hand over local currency, and receive stablecoin equivalents displayed as USD in the app. The conversion is automatic. The user sends local currency, and receives a dollar equivalent, seamlessly.</p>
 
-            <p>The user never sees the complexity of cryptocurrency. Their local currency simply gains the superpowers of programmable money: a flat $2 fee, five-minute settlement, and frictionless cross-border movement.</p>
+            <p>When that money needs to cross a border, say from Ghana to Nigeria, the Ghanaian user sends money to an agent in local currency, receives stablecoins at the prevailing market rate, and another agent in Nigeria converts it to naira and deposits it into the recipient's bank account. The user never sees the complexity of cryptocurrency. Their local currency simply gains the superpowers of programmable money: a $1 fee, one-minute settlement, and frictionless cross-border movement.</p>
 
             <figure class="article-graphic" aria-labelledby="graphic-cashramp">
               <figcaption class="graphic-label" id="graphic-cashramp">How Cashramp Works</figcaption>
@@ -966,7 +969,7 @@
                   <div class="flow-step-num">Step 1</div>
                   <div class="flow-step-title">Ghana</div>
                   <div class="flow-step-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21v-2a4 4 0 0 1 4-4h8a4 4 0 0 1 4 4v2"/></svg></div>
-                  <div class="flow-step-text">User pays local currency<strong>GHS (Cedis)</strong></div>
+                  <div class="flow-step-text">User pays local currency to agent<strong>GHS (Cedis)</strong></div>
                 </div>
                 <div class="flow-arrow" aria-hidden="true">→</div>
                 <div class="flow-step">
@@ -985,17 +988,17 @@
               </div>
               <div class="flow-compare">
                 <div class="compare-box"><div class="compare-label">Traditional</div><div class="compare-value">3-5 days · 8-10% fees</div><div class="compare-detail">Multiple intermediaries</div></div>
-                <div class="compare-box highlight"><div class="compare-label">Cashramp</div><div class="compare-value">5 min · $2 flat fee</div><div class="compare-detail">Direct agent network</div></div>
+                <div class="compare-box highlight"><div class="compare-label">Cashramp</div><div class="compare-value">1 min · $1 flat fee</div><div class="compare-detail">Cashramp agent network</div></div>
               </div>
             </figure>
 
-            <p>Both products are live today, processing transactions across over 11 countries. This isn't a pitch deck. It's a business.</p>
+            <p>Both products are live today, processing millions of transactions across over 11 African countries. You can check our <a href="https://useaccrue.com/wall-of-love">Wall of Love</a> to see what users are saying. This isn't a pitch deck. It's a business.</p>
 
             <hr>
 
             <h2>Four Years of Work</h2>
 
-            <p>We've scaled to over 11 African markets. Our payment success rate is 98%, compared to industry averages that often struggle below 80%. Revenue has grown over 15% quarter over quarter, mostly from organic demand.</p>
+            <p>We've scaled to over 11 African markets. Our payment success rate is 98%, compared to industry averages that often struggle below 80%. Revenue has grown over 15% quarter over quarter, powered mostly by word of mouth.</p>
 
             <figure class="article-graphic" aria-labelledby="graphic-traction">
               <figcaption class="graphic-label" id="graphic-traction">Four Years of Building</figcaption>
@@ -1015,7 +1018,7 @@
 
             <blockquote class="pull-quote">The growth isn't hype-driven. It's utility-driven. People use Accrue because it solves real problems.</blockquote>
 
-            <p>A trader in Ghana can pay a supplier in Kenya in five minutes, not days. A Nigerian freelancer can receive USD from a European client without losing a big chunk to intermediaries. A family can save for the future in stable USD, safe from local currency collapse.</p>
+            <p>A trader in Ghana can pay a supplier in Kenya in one minute, not days. A Nigerian freelancer can receive USD from a European client without losing a big chunk to intermediaries. A family can save for the future in stable USD, safe from local currency collapse.</p>
 
             <hr>
 
@@ -1047,7 +1050,7 @@
 
             <p>But here's why our path is different: <strong>we see what banks can't see.</strong> Traditional lenders in Africa struggle because they have no data on informal economy participants. No credit history. No bank statements. No way to underwrite.</p>
 
-            <p>Our agent network processes their cash flows every week. We know who sends money reliably. We know whose business is growing. We know who pays back the informal credit their agent already extends them. That's an underwriting advantage no bank can replicate, and no pure-digital fintech can access.</p>
+            <p>Our agent network processes their cash flows every week. We know who sends money reliably. We know whose business is growing. We know who pays back the informal credit their agent already extends them. That's an underwriting advantage that only comes from processing millions of transactions at the agent level.</p>
 
             <figure class="article-graphic" aria-labelledby="graphic-vision">
               <figcaption class="graphic-label" id="graphic-vision">The Data Advantage</figcaption>
@@ -1068,7 +1071,7 @@
               <p>That's a big goal. But every month, we get closer. And every month, more people depend on us to move their money safely.</p>
             </aside>
 
-            <p>That's why I'm building Accrue. Not because it's interesting. Because it matters.</p>
+            <p>That's why I'm building Accrue alongside Clinton & Adesuwa. Not because it's interesting. Because it matters.</p>
 
             <footer class="article-footer">
               <div class="author-card">
@@ -1087,11 +1090,11 @@
 
   <footer role="contentinfo">
     <div class="container footer-inner">
-      <span>&copy; 2026 Zino Asamaige</span>
-      <div class="footer-status">
+      <span class="footer-copy">&copy; 2026 Zino Asamaige</span>
+      <span class="footer-status">
         <span class="location-dot" aria-hidden="true"></span>
         Lagos, Nigeria
-      </div>
+      </span>
     </div>
   </footer>
 
