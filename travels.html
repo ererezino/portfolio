@@ -510,12 +510,6 @@
       border-radius: 4px;
     }
 
-    /* Recent Trips Section */
-    .recent-section {
-      padding: 64px 0;
-      border-top: 1px solid var(--border);
-    }
-
     .section-header {
       display: flex;
       justify-content: space-between;
@@ -529,85 +523,6 @@
       text-transform: uppercase;
       letter-spacing: 0.15em;
       color: var(--text-tertiary);
-    }
-
-    .recent-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 20px;
-    }
-    @media (max-width: 900px) {
-      .recent-grid { grid-template-columns: repeat(2, 1fr); }
-    }
-    @media (max-width: 600px) {
-      .recent-grid { grid-template-columns: 1fr; gap: 16px; }
-    }
-
-    .recent-trip {
-      position: relative;
-      background: var(--bg-alt);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 24px;
-      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1),
-                  box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1),
-                  border-color 0.2s ease;
-      overflow: hidden;
-    }
-    .recent-trip:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.08);
-      border-color: var(--accent);
-    }
-    [data-theme="dark"] .recent-trip:hover {
-      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
-    }
-
-    .recent-trip-year {
-      font-family: var(--font-mono);
-      font-size: 11px;
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-      color: var(--text-tertiary);
-      margin-bottom: 12px;
-    }
-
-    .recent-trip-city {
-      font-family: var(--font-sans);
-      font-size: 24px;
-      font-weight: 600;
-      letter-spacing: -0.02em;
-      margin-bottom: 4px;
-    }
-
-    .recent-trip-country {
-      font-family: var(--font-sans);
-      font-size: 14px;
-      color: var(--text-secondary);
-    }
-
-    .recent-trip-badge {
-      position: absolute;
-      top: 16px;
-      right: 16px;
-      font-family: var(--font-mono);
-      font-size: 9px;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      padding: 6px 12px;
-      background: var(--green);
-      color: #fff;
-      border-radius: 4px;
-    }
-
-    .recent-trip-flag {
-      position: absolute;
-      bottom: -20px;
-      right: -10px;
-      font-size: 80px;
-      opacity: 0.1;
-      pointer-events: none;
     }
 
     /* Cities Section */
@@ -889,13 +804,6 @@
     </div>
 
     <div class="container">
-      <section class="recent-section">
-        <div class="section-header">
-          <h2 class="section-title">Recent Trips</h2>
-        </div>
-        <div class="recent-grid" id="recentTrips"></div>
-      </section>
-
       <section class="cities-section">
         <div class="section-header">
           <h2 class="section-title">All Cities Visited</h2>
@@ -955,23 +863,23 @@
     const CITIES = [
       // Nigeria (home)
       { city: "Lagos", country: "Nigeria", region: "Africa", lat: 6.5244, lng: 3.3792, isHome: true },
-      { city: "Ogun", country: "Nigeria", region: "Africa", lat: 6.9980, lng: 3.4737 },
-      { city: "Oyo", country: "Nigeria", region: "Africa", lat: 7.8500, lng: 3.9333 },
-      { city: "Edo", country: "Nigeria", region: "Africa", lat: 6.3350, lng: 5.6037 },
-      { city: "Delta", country: "Nigeria", region: "Africa", lat: 5.7040, lng: 5.9339 },
-      { city: "Rivers", country: "Nigeria", region: "Africa", lat: 4.8156, lng: 7.0498 },
+      { city: "Abeokuta", country: "Nigeria", region: "Africa", lat: 7.1607, lng: 3.3483 },
+      { city: "Ibadan", country: "Nigeria", region: "Africa", lat: 7.3775, lng: 3.9470 },
+      { city: "Benin City", country: "Nigeria", region: "Africa", lat: 6.3350, lng: 5.6270 },
+      { city: "Asaba", country: "Nigeria", region: "Africa", lat: 6.1984, lng: 6.7286 },
+      { city: "Port Harcourt", country: "Nigeria", region: "Africa", lat: 4.8156, lng: 7.0498 },
       { city: "Kaduna", country: "Nigeria", region: "Africa", lat: 10.5264, lng: 7.4388 },
-      { city: "Plateau", country: "Nigeria", region: "Africa", lat: 9.2182, lng: 9.5175 },
+      { city: "Jos", country: "Nigeria", region: "Africa", lat: 9.8965, lng: 8.8583 },
       { city: "Abuja", country: "Nigeria", region: "Africa", lat: 9.0765, lng: 7.3986 },
-      { city: "Adamawa", country: "Nigeria", region: "Africa", lat: 9.3265, lng: 12.3984 },
-      { city: "Imo", country: "Nigeria", region: "Africa", lat: 5.4927, lng: 7.0261 },
-      { city: "Nassarawa", country: "Nigeria", region: "Africa", lat: 8.5380, lng: 8.3227 },
+      { city: "Yola", country: "Nigeria", region: "Africa", lat: 9.2035, lng: 12.4954 },
+      { city: "Owerri", country: "Nigeria", region: "Africa", lat: 5.4836, lng: 7.0333 },
+      { city: "Lafia", country: "Nigeria", region: "Africa", lat: 8.4966, lng: 8.5150 },
 
       // Rest of Africa
       { city: "Accra", country: "Ghana", region: "Africa", lat: 5.6037, lng: -0.1870 },
       { city: "Nairobi", country: "Kenya", region: "Africa", lat: -1.2921, lng: 36.8219 },
       { city: "Dakar", country: "Senegal", region: "Africa", lat: 14.7167, lng: -17.4677 },
-      { city: "Mahé", country: "Seychelles", region: "Africa", lat: -4.6796, lng: 55.4920 },
+      { city: "Victoria", country: "Seychelles", region: "Africa", lat: -4.6191, lng: 55.4513 },
       { city: "Johannesburg", country: "South Africa", region: "Africa", lat: -26.2041, lng: 28.0473 },
       { city: "Addis Ababa", country: "Ethiopia", region: "Africa", lat: 9.0320, lng: 38.7636 },
 
@@ -988,11 +896,10 @@
       { city: "Chambéry", country: "France", region: "Europe", lat: 45.5646, lng: 5.9178 },
       { city: "Annecy", country: "France", region: "Europe", lat: 45.8992, lng: 6.1294 },
       { city: "Paris", country: "France", region: "Europe", lat: 48.8566, lng: 2.3522 },
-      { city: "La Défense", country: "France", region: "Europe", lat: 48.8918, lng: 2.2362 },
       { city: "Frankfurt", country: "Germany", region: "Europe", lat: 50.1109, lng: 8.6821 },
       { city: "Vienna", country: "Austria", region: "Europe", lat: 48.2082, lng: 16.3738 },
       { city: "Budapest", country: "Hungary", region: "Europe", lat: 47.4979, lng: 19.0402 },
-      { city: "Tenerife", country: "Spain", region: "Europe", lat: 28.2916, lng: -16.6291 },
+      { city: "Santa Cruz de Tenerife", country: "Spain", region: "Europe", lat: 28.4636, lng: -16.2518 },
       { city: "Madrid", country: "Spain", region: "Europe", lat: 40.4168, lng: -3.7038 },
       { city: "Lisbon", country: "Portugal", region: "Europe", lat: 38.7223, lng: -9.1393 },
       { city: "Tivat", country: "Montenegro", region: "Europe", lat: 42.4347, lng: 18.6958 },
@@ -1003,16 +910,6 @@
       { city: "San Francisco", country: "USA", region: "Americas", lat: 37.7749, lng: -122.4194 },
       { city: "Austin", country: "USA", region: "Americas", lat: 30.2672, lng: -97.7431 },
       { city: "Durham", country: "USA", region: "Americas", lat: 35.9940, lng: -78.8986 },
-    ];
-
-    // Recent trips
-    const RECENT_TRIPS = [
-      { city: "Frankfurt", country: "Germany", year: 2025, isLatest: true },
-      { city: "Durham", country: "USA", year: 2025 },
-      { city: "Mahé", country: "Seychelles", year: 2024 },
-      { city: "Tivat", country: "Montenegro", year: 2024 },
-      { city: "Vienna", country: "Austria", year: 2024 },
-      { city: "Budapest", country: "Hungary", year: 2024 },
     ];
 
     // Calculate stats
@@ -1038,17 +935,6 @@
     animateCount(document.getElementById('countryCount'), countries.length);
     animateCount(document.getElementById('cityCount'), CITIES.length);
     animateCount(document.getElementById('continentCount'), regions.length);
-
-    // Render recent trips
-    document.getElementById('recentTrips').innerHTML = RECENT_TRIPS.map(t => `
-      <div class="recent-trip">
-        <div class="recent-trip-year">${t.year}</div>
-        <div class="recent-trip-city">${t.city}</div>
-        <div class="recent-trip-country">${t.country}</div>
-        ${t.isLatest ? '<span class="recent-trip-badge">Latest</span>' : ''}
-        <span class="recent-trip-flag">${FLAGS[t.country] || ''}</span>
-      </div>
-    `).join('');
 
     // Render continent tabs
     function renderContinentTabs() {
