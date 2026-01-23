@@ -724,23 +724,6 @@
       color: var(--text-secondary);
     }
 
-    /* Page Transitions - subtle fade */
-    .page-transition {
-      position: fixed;
-      inset: 0;
-      z-index: 99999;
-      pointer-events: none;
-      background: var(--bg);
-      opacity: 0;
-      transition: opacity 0.2s ease;
-    }
-    .page-transition.active {
-      opacity: 1;
-    }
-    .page-transition-inner {
-      display: none;
-    }
-
     @media (prefers-reduced-motion: reduce) {
       * { animation: none !important; transition: none !important; }
     }
@@ -750,11 +733,6 @@
 <body>
   <a href="#main" class="skip-link">Skip to content</a>
 
-  <!-- Page Transition -->
-  <div class="page-transition">
-    <div class="page-transition-inner"></div>
-  </div>
-
   <header id="header">
     <div class="header-inner">
       <a href="/" class="logo">
@@ -763,7 +741,7 @@
       </a>
       <nav class="header-nav">
         <a href="/about.html">About</a>
-        <a href="/photos.html">Photos</a>
+        <a href="/photos/">Photos</a>
         <a href="/articles/">Articles</a>
         <a href="/movement.html">Movement</a>
         <a href="/travels.html">Travels</a>
@@ -787,22 +765,18 @@
 
   <div class="mobile-menu" id="mobileMenu">
     <div class="mobile-menu-header">
-      <span class="logo">
+      <a href="/" class="logo">
         <img src="/assets/logo.png" alt="" class="logo-img">
         Zino
-      </span>
+      </a>
       <div class="mobile-menu-actions">
-        <button class="theme-btn" id="mobileMenuThemeToggle" aria-label="Toggle theme">
-          <svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
-          <svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
-        </button>
-        <button class="mobile-menu-close" id="mobileMenuClose">&times;</button>
+        <button class="mobile-menu-close" id="mobileMenuClose" aria-label="Close menu">&times;</button>
       </div>
     </div>
     <nav>
       <a href="/about.html">About</a>
-      <a href="/photos.html">Photos</a>
-      <a href="/articles.html">Articles</a>
+      <a href="/photos/">Photos</a>
+      <a href="/articles/">Articles</a>
       <a href="/movement.html">Movement</a>
       <a href="/travels.html">Travels</a>
       <a href="/contact.html">Contact</a>
@@ -1033,35 +1007,6 @@
     document.getElementById('mobileMenuClose').onclick = () => mm.classList.remove('open');
     mm.querySelectorAll('a').forEach(a => a.onclick = () => mm.classList.remove('open'));
 
-    // Page Transitions
-    function initPageTransitions() {
-      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-
-      var transitionOverlay = document.querySelector('.page-transition');
-      if (!transitionOverlay) return;
-
-      document.querySelectorAll('a[href^="/"], a[href^="./"]').forEach(function(link) {
-        if (link.getAttribute('target') === '_blank') return;
-        if (link.getAttribute('href').indexOf('#') === 0) return;
-
-        link.addEventListener('click', function(e) {
-          var href = link.getAttribute('href');
-          if (e.metaKey || e.ctrlKey || e.shiftKey) return;
-
-          e.preventDefault();
-          transitionOverlay.classList.add('active');
-
-          setTimeout(function() {
-            window.location.href = href;
-          }, 400);
-        });
-      });
-
-      window.addEventListener('pageshow', function() {
-        transitionOverlay.classList.remove('active');
-      });
-    }
-
     // Service Worker Registration
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', function() {
@@ -1077,7 +1022,6 @@
 
     // Initialize
     renderArticles();
-    initPageTransitions();
   </script>
 </body>
 </html>
