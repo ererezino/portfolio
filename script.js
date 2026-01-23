@@ -5,13 +5,26 @@
 // =============================================================================
 
 var PHOTOS = [
-  { src: "/assets/photos/photo-1.jpg", caption: "Lagos, 2025", alt: "Street scene in Lagos", location: "Lagos" },
-  { src: "/assets/photos/photo-2.jpg", caption: "Frankfurt, 2025", alt: "Frankfurt street", location: "Frankfurt" },
-  { src: "/assets/photos/photo-3.jpg", caption: "Accra, 2025", alt: "Accra market", location: "Accra" },
-  { src: "/assets/photos/photo-4.jpg", caption: "Lagos, 2025", alt: "Lagos street", location: "Lagos" },
-  { src: "/assets/photos/photo-5.jpg", caption: "Durham, 2024", alt: "Durham scene", location: "Durham" },
-  { src: "/assets/photos/photo-6.jpg", caption: "Frankfurt, 2025", alt: "Architecture in Frankfurt", location: "Frankfurt" }
+  { src: "/assets/photos/photo-1.jpg", srcWebp: "/assets/photos/photo-1.webp", caption: "Lagos, 2025", alt: "Street scene in Lagos", location: "Lagos" },
+  { src: "/assets/photos/photo-2.jpg", srcWebp: "/assets/photos/photo-2.webp", caption: "Frankfurt, 2025", alt: "Frankfurt street", location: "Frankfurt" },
+  { src: "/assets/photos/photo-3.jpg", srcWebp: "/assets/photos/photo-3.webp", caption: "Accra, 2025", alt: "Accra market", location: "Accra" },
+  { src: "/assets/photos/photo-4.jpg", srcWebp: "/assets/photos/photo-4.webp", caption: "Lagos, 2025", alt: "Lagos street", location: "Lagos" },
+  { src: "/assets/photos/photo-5.jpg", srcWebp: "/assets/photos/photo-5.webp", caption: "Durham, 2024", alt: "Durham scene", location: "Durham" },
+  { src: "/assets/photos/photo-6.jpg", srcWebp: "/assets/photos/photo-6.webp", caption: "Frankfurt, 2025", alt: "Architecture in Frankfurt", location: "Frankfurt" }
 ];
+
+// Helper to generate responsive image HTML
+function getResponsiveImage(photo, lazy) {
+  var lazyAttr = lazy ? ' loading="lazy"' : '';
+  // If WebP exists, use picture element for modern browsers
+  if (photo.srcWebp) {
+    return '<picture>' +
+      '<source srcset="' + photo.srcWebp + '" type="image/webp">' +
+      '<img src="' + photo.src + '" alt="' + (photo.alt || '') + '"' + lazyAttr + ' />' +
+    '</picture>';
+  }
+  return '<img src="' + photo.src + '" alt="' + (photo.alt || '') + '"' + lazyAttr + ' />';
+}
 
 var ARTICLES = [
   { title: "A quick note on consistency", date: "Jan 2026", topic: "Work / life", url: "/articles.html" },
@@ -555,11 +568,11 @@ function renderPhotoGrid() {
   var html = '';
 
   displayPhotos.forEach(function(photo, i) {
-    html += '<div class="photo-item" data-index="' + i + '" tabindex="0" role="listitem">' +
-      '<img src="' + photo.src + '" alt="' + photo.alt + '" loading="lazy" />' +
+    html += '<button type="button" class="photo-item" data-index="' + i + '" role="listitem" aria-label="View photo: ' + photo.alt + '">' +
+      getResponsiveImage(photo, true) +
       '<div class="photo-item-overlay"></div>' +
       '<span class="photo-item-caption">' + photo.caption + '</span>' +
-    '</div>';
+    '</button>';
   });
 
   container.innerHTML = html;
@@ -783,8 +796,346 @@ function initScrollAnimations() {
 }
 
 // =============================================================================
+// MAGNETIC BUTTON EFFECT
+// =============================================================================
+
+function initMagneticButtons() {
+  if (prefersReducedMotion) return;
+
+  var magneticElements = $$('[data-magnetic]');
+
+  magneticElements.forEach(function(el) {
+    var strength = 0.3;
+    var boundingRect;
+
+    el.addEventListener('mouseenter', function() {
+      boundingRect = el.getBoundingClientRect();
+    });
+
+    el.addEventListener('mousemove', function(e) {
+      if (!boundingRect) return;
+
+      var centerX = boundingRect.left + boundingRect.width / 2;
+      var centerY = boundingRect.top + boundingRect.height / 2;
+      var deltaX = (e.clientX - centerX) * strength;
+      var deltaY = (e.clientY - centerY) * strength;
+
+      el.style.transform = 'translate(' + deltaX + 'px, ' + deltaY + 'px)';
+    });
+
+    el.addEventListener('mouseleave', function() {
+      el.style.transform = '';
+      el.style.transition = 'transform 0.3s cubic-bezier(0.16, 1, 0.3, 1)';
+      setTimeout(function() {
+        el.style.transition = '';
+      }, 300);
+    });
+  });
+}
+
+// =============================================================================
+// TILT EFFECT FOR CARDS
+// =============================================================================
+
+function initTiltEffect() {
+  if (prefersReducedMotion) return;
+
+  var tiltElements = $$('[data-tilt]');
+
+  tiltElements.forEach(function(el) {
+    var maxTilt = 8;
+    var perspective = 1000;
+    var scale = 1.02;
+
+    el.style.transformStyle = 'preserve-3d';
+
+    el.addEventListener('mouseenter', function() {
+      el.style.transition = 'transform 0.1s ease-out';
+    });
+
+    el.addEventListener('mousemove', function(e) {
+      var rect = el.getBoundingClientRect();
+      var centerX = rect.left + rect.width / 2;
+      var centerY = rect.top + rect.height / 2;
+      var mouseX = e.clientX - centerX;
+      var mouseY = e.clientY - centerY;
+
+      var rotateX = (mouseY / (rect.height / 2)) * -maxTilt;
+      var rotateY = (mouseX / (rect.width / 2)) * maxTilt;
+
+      el.style.transform = 'perspective(' + perspective + 'px) rotateX(' + rotateX + 'deg) rotateY(' + rotateY + 'deg) scale3d(' + scale + ', ' + scale + ', ' + scale + ')';
+    });
+
+    el.addEventListener('mouseleave', function() {
+      el.style.transition = 'transform 0.5s cubic-bezier(0.16, 1, 0.3, 1)';
+      el.style.transform = 'perspective(' + perspective + 'px) rotateX(0) rotateY(0) scale3d(1, 1, 1)';
+    });
+  });
+}
+
+// =============================================================================
+// KONAMI CODE EASTER EGG
+// =============================================================================
+
+function initKonamiCode() {
+  var konamiCode = [38, 38, 40, 40, 37, 39, 37, 39, 66, 65]; // up up down down left right left right b a
+  var konamiIndex = 0;
+
+  document.addEventListener('keydown', function(e) {
+    if (e.keyCode === konamiCode[konamiIndex]) {
+      konamiIndex++;
+
+      if (konamiIndex === konamiCode.length) {
+        activateEasterEgg();
+        konamiIndex = 0;
+      }
+    } else {
+      konamiIndex = 0;
+    }
+  });
+
+  function activateEasterEgg() {
+    var overlay = document.createElement('div');
+    overlay.className = 'easter-egg-overlay';
+    overlay.innerHTML =
+      '<div class="easter-egg-content">' +
+        '<div class="easter-egg-emoji">🎉</div>' +
+        '<div class="easter-egg-text">You found me!</div>' +
+        '<p style="margin-top: 16px; font-family: var(--font-mono); font-size: 14px; opacity: 0.8;">Thanks for exploring. Here\'s a virtual high five! ✋</p>' +
+      '</div>';
+
+    document.body.appendChild(overlay);
+
+    setTimeout(function() {
+      overlay.classList.add('active');
+    }, 10);
+
+    overlay.addEventListener('click', function() {
+      overlay.classList.remove('active');
+      setTimeout(function() {
+        overlay.remove();
+      }, 500);
+    });
+
+    document.addEventListener('keydown', function closeOnEscape(e) {
+      if (e.key === 'Escape') {
+        overlay.classList.remove('active');
+        setTimeout(function() {
+          overlay.remove();
+        }, 500);
+        document.removeEventListener('keydown', closeOnEscape);
+      }
+    });
+
+    playSound('whoosh');
+  }
+}
+
+// =============================================================================
+// PAGE TRANSITIONS
+// =============================================================================
+
+function initPageTransitions() {
+  if (prefersReducedMotion) return;
+
+  // Create transition overlay
+  var transitionOverlay = document.createElement('div');
+  transitionOverlay.className = 'page-transition';
+  transitionOverlay.innerHTML = '<div class="page-transition-inner"></div>';
+  document.body.appendChild(transitionOverlay);
+
+  // Intercept internal navigation
+  $$('a[href^="/"], a[href^="./"]').forEach(function(link) {
+    // Skip external links and hash links
+    if (link.getAttribute('target') === '_blank') return;
+    if (link.getAttribute('href').indexOf('#') === 0) return;
+
+    link.addEventListener('click', function(e) {
+      var href = link.getAttribute('href');
+
+      // Don't intercept if modifier keys pressed
+      if (e.metaKey || e.ctrlKey || e.shiftKey) return;
+
+      e.preventDefault();
+
+      transitionOverlay.classList.add('active');
+      playSound('whoosh');
+
+      setTimeout(function() {
+        window.location.href = href;
+      }, 400);
+    });
+  });
+
+  // Fade in on page load
+  window.addEventListener('pageshow', function() {
+    transitionOverlay.classList.remove('active');
+  });
+}
+
+// =============================================================================
+// ENHANCED SCROLL INDICATOR
+// =============================================================================
+
+function initScrollIndicator() {
+  var indicator = $('.scroll-indicator');
+  if (!indicator) return;
+
+  var handleScroll = throttle(function() {
+    var scrollY = window.pageYOffset || document.documentElement.scrollTop;
+    var opacity = Math.max(0, 1 - (scrollY / 300));
+    indicator.style.opacity = opacity;
+
+    if (scrollY > 300) {
+      indicator.style.pointerEvents = 'none';
+    } else {
+      indicator.style.pointerEvents = '';
+    }
+  }, 16);
+
+  window.addEventListener('scroll', handleScroll, { passive: true });
+}
+
+// =============================================================================
+// SIGNATURE HERO INTERACTION - Parallax text reveal
+// =============================================================================
+
+function initHeroParallax() {
+  if (prefersReducedMotion) return;
+
+  var heroContent = $('.hero-content');
+  var heroVisual = $('.hero-visual');
+  var heroTitle = $('.hero-title');
+
+  if (!heroContent || !heroVisual) return;
+
+  var handleScroll = throttle(function() {
+    var scrollY = window.pageYOffset || document.documentElement.scrollTop;
+    var windowHeight = window.innerHeight;
+
+    if (scrollY > windowHeight) return;
+
+    var progress = scrollY / (windowHeight * 0.5);
+
+    // Parallax effect on hero elements
+    if (heroTitle) {
+      heroTitle.style.transform = 'translateY(' + (scrollY * 0.15) + 'px)';
+      heroTitle.style.opacity = Math.max(0, 1 - progress * 0.8);
+    }
+
+    if (heroVisual) {
+      heroVisual.style.transform = 'translateY(' + (scrollY * 0.08) + 'px) scale(' + (1 - progress * 0.05) + ')';
+    }
+  }, 16);
+
+  window.addEventListener('scroll', handleScroll, { passive: true });
+}
+
+// =============================================================================
+// TEXT SCRAMBLE EFFECT FOR HERO
+// =============================================================================
+
+function TextScramble(el) {
+  this.el = el;
+  this.chars = '!<>-_\\/[]{}—=+*^?#________';
+  this.update = this.update.bind(this);
+}
+
+TextScramble.prototype.setText = function(newText) {
+  var self = this;
+  var oldText = this.el.innerText;
+  var length = Math.max(oldText.length, newText.length);
+  var promise = new Promise(function(resolve) { self.resolve = resolve; });
+  this.queue = [];
+
+  for (var i = 0; i < length; i++) {
+    var from = oldText[i] || '';
+    var to = newText[i] || '';
+    var start = Math.floor(Math.random() * 40);
+    var end = start + Math.floor(Math.random() * 40);
+    this.queue.push({ from: from, to: to, start: start, end: end });
+  }
+
+  cancelAnimationFrame(this.frameRequest);
+  this.frame = 0;
+  this.update();
+  return promise;
+};
+
+TextScramble.prototype.update = function() {
+  var output = '';
+  var complete = 0;
+  var self = this;
+
+  for (var i = 0; i < this.queue.length; i++) {
+    var item = this.queue[i];
+    var from = item.from;
+    var to = item.to;
+    var start = item.start;
+    var end = item.end;
+    var char = item.char;
+
+    if (this.frame >= end) {
+      complete++;
+      output += to;
+    } else if (this.frame >= start) {
+      if (!char || Math.random() < 0.28) {
+        char = this.chars[Math.floor(Math.random() * this.chars.length)];
+        item.char = char;
+      }
+      output += '<span class="scramble-char">' + char + '</span>';
+    } else {
+      output += from;
+    }
+  }
+
+  this.el.innerHTML = output;
+
+  if (complete === this.queue.length) {
+    this.resolve();
+  } else {
+    this.frameRequest = requestAnimationFrame(this.update);
+    this.frame++;
+  }
+};
+
+function initTextScramble() {
+  if (prefersReducedMotion) return;
+
+  var greetingEl = $('#heroGreeting');
+  if (!greetingEl || !greetingEl.textContent) return;
+
+  var phrases = ['Good morning', 'Good afternoon', 'Good evening', 'Good night'];
+  var currentGreeting = greetingEl.textContent;
+
+  // Only scramble on first load
+  if (greetingEl.dataset.scrambled) return;
+  greetingEl.dataset.scrambled = 'true';
+
+  var fx = new TextScramble(greetingEl);
+  greetingEl.textContent = '';
+
+  setTimeout(function() {
+    fx.setText(currentGreeting);
+  }, 800);
+}
+
+// =============================================================================
 // INIT
 // =============================================================================
+
+// Register service worker for offline support
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', function() {
+    navigator.serviceWorker.register('/sw.js')
+      .then(function(registration) {
+        console.log('SW registered:', registration.scope);
+      })
+      .catch(function(error) {
+        console.log('SW registration failed:', error);
+      });
+  });
+}
 
 document.addEventListener('DOMContentLoaded', function() {
   initPageLoader();
@@ -814,4 +1165,11 @@ document.addEventListener('DOMContentLoaded', function() {
 
   initHeroAnimations();
   initScrollAnimations();
+  initMagneticButtons();
+  initTiltEffect();
+  initKonamiCode();
+  initPageTransitions();
+  initScrollIndicator();
+  initHeroParallax();
+  initTextScramble();
 });
