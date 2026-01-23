@@ -136,27 +136,24 @@ svg {
    PAGE TRANSITIONS
    ============================================================================= */
 
+/* Page transitions - subtle fade instead of colored overlay */
 .page-transition {
   position: fixed;
   inset: 0;
   z-index: 99999;
   pointer-events: none;
-  overflow: hidden;
+  background: var(--bg);
+  opacity: 0;
+  transition: opacity 0.2s ease;
 }
 
+.page-transition.active {
+  opacity: 1;
+}
+
+/* Hide the inner element - not needed for fade transition */
 .page-transition-inner {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: var(--accent);
-  transform: translateY(100%);
-  transition: transform 0.4s cubic-bezier(0.7, 0, 0.3, 1);
-}
-
-.page-transition.active .page-transition-inner {
-  transform: translateY(0);
+  display: none;
 }
 
 /* =============================================================================
@@ -195,6 +192,7 @@ html, body {
 
 a { color: inherit; text-decoration: none; }
 img { display: block; max-width: 100%; height: auto; }
+svg { max-width: 100%; max-height: 100%; }
 button { font: inherit; color: inherit; background: none; border: none; cursor: pointer; }
 
 ::selection {
@@ -599,11 +597,17 @@ header.scrolled .logo-img { width: 32px; height: 32px; }
 
 .mobile-menu.open { opacity: 1; visibility: visible; }
 
-.mobile-menu-header { 
-  display: flex; 
-  justify-content: space-between; 
-  align-items: center; 
-  margin-bottom: 60px; 
+.mobile-menu-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 60px;
+}
+
+.mobile-menu-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
 }
 
 .mobile-menu-close { 
@@ -1211,20 +1215,24 @@ button.photo-item {
   position: absolute;
   top: 0;
   left: 0;
+  right: 0;
+  bottom: 0;
   width: 100% !important;
   height: 100% !important;
   object-fit: cover;
   transition: transform 0.6s var(--ease);
   background: var(--bg-subtle);
   display: block !important;
+  z-index: 1;
 }
 
 .photo-item:hover img { transform: scale(1.05); }
 
-.photo-item-overlay { 
-  position: absolute; 
-  inset: 0; 
-  background: linear-gradient(to top, rgba(0,0,0,0.5) 0%, transparent 50%); 
+.photo-item-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0,0,0,0.5) 0%, transparent 50%);
+  z-index: 2; 
   opacity: 0; 
   transition: opacity var(--duration); 
 }
