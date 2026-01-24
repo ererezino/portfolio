@@ -69,6 +69,7 @@ svg {
   --bg: #FAFAFA;
   --bg-elevated: #FFFFFF;
   --bg-subtle: #F5F5F5;
+  --bg-alt: #EFEFEF;
   --text: #0A0A0A;
   --text-secondary: #4A4A4A;
   --text-tertiary: #595959; /* Improved from #737373 for AAA compliance (7:1 ratio) */
@@ -119,6 +120,7 @@ svg {
   --bg: #0A0A0A;
   --bg-elevated: #141414;
   --bg-subtle: #1A1A1A;
+  --bg-alt: #1F1F1F;
   --text: #FAFAFA;
   --text-secondary: #B3B3B3;
   --text-tertiary: #9A9A9A; /* Improved from #808080 for AAA compliance */
@@ -133,9 +135,44 @@ svg {
 }
 
 /* =============================================================================
-   PAGE TRANSITIONS
+   PAGE TRANSITIONS (View Transitions API)
    ============================================================================= */
 
+@view-transition {
+  navigation: auto;
+}
+
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 0.3s;
+  animation-timing-function: ease-out;
+}
+
+::view-transition-old(root) {
+  animation-name: fade-out;
+}
+
+::view-transition-new(root) {
+  animation-name: fade-in;
+}
+
+@keyframes fade-out {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* Respect reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation: none;
+  }
+}
 
 /* =============================================================================
    BASE RESET & TYPOGRAPHY

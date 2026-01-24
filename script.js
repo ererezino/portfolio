@@ -5,12 +5,12 @@
 // =============================================================================
 
 var PHOTOS = [
-  { src: "/assets/photos/photo-1.jpg", caption: "Lagos, 2025", alt: "Street scene in Lagos", location: "Lagos" },
-  { src: "/assets/photos/photo-2.jpg", caption: "Frankfurt, 2025", alt: "Frankfurt street", location: "Frankfurt" },
-  { src: "/assets/photos/photo-3.jpg", caption: "Accra, 2025", alt: "Accra market", location: "Accra" },
-  { src: "/assets/photos/photo-4.jpg", caption: "Lagos, 2025", alt: "Lagos street", location: "Lagos" },
-  { src: "/assets/photos/photo-5.jpg", caption: "Durham, 2024", alt: "Durham scene", location: "Durham" },
-  { src: "/assets/photos/photo-6.jpg", caption: "Frankfurt, 2025", alt: "Architecture in Frankfurt", location: "Frankfurt" }
+  { src: "/assets/photos/photo-1.jpg", caption: "Morning light", alt: "Morning light in Lagos", location: "Lagos", year: 2025 },
+  { src: "/assets/photos/photo-2.jpg", caption: "City streets", alt: "Frankfurt street scene", location: "Frankfurt", year: 2025 },
+  { src: "/assets/photos/photo-3.jpg", caption: "Market day", alt: "Accra market", location: "Accra", year: 2025 },
+  { src: "/assets/photos/photo-4.jpg", caption: "Urban life", alt: "Lagos street life", location: "Lagos", year: 2025 },
+  { src: "/assets/photos/photo-5.jpg", caption: "Cathedral view", alt: "Durham Cathedral", location: "Durham", year: 2024 },
+  { src: "/assets/photos/photo-6.jpg", caption: "Architecture", alt: "Frankfurt architecture", location: "Frankfurt", year: 2025 }
 ];
 
 // Helper to generate responsive image HTML
@@ -981,8 +981,25 @@ function initKonamiCode() {
 // =============================================================================
 
 function initPageTransitions() {
-  // Page transitions disabled - they were causing a purple flash
-  return;
+  // Use View Transitions API for smooth page transitions
+  if (!document.startViewTransition) return;
+
+  // Handle internal link clicks
+  document.addEventListener('click', function(e) {
+    var link = e.target.closest('a');
+    if (!link) return;
+
+    // Only handle internal links
+    var href = link.getAttribute('href');
+    if (!href || href.startsWith('#') || href.startsWith('mailto:') || href.startsWith('http')) return;
+    if (link.target === '_blank') return;
+
+    e.preventDefault();
+
+    document.startViewTransition(function() {
+      window.location.href = href;
+    });
+  });
 }
 
 // =============================================================================
