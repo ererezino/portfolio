@@ -34,9 +34,18 @@ const SHEET_NAME = 'Sheet1';
 // Handle POST requests from the contact form
 function doPost(e) {
   try {
-    // Parse the incoming JSON data
-    const data = JSON.parse(e.postData.contents);
-    
+    // Handle both FormData (e.parameter) and JSON (e.postData.contents)
+    let data;
+    if (e.parameter && e.parameter.name) {
+      // FormData submission
+      data = e.parameter;
+    } else if (e.postData && e.postData.contents) {
+      // JSON submission
+      data = JSON.parse(e.postData.contents);
+    } else {
+      throw new Error('No data received');
+    }
+
     // Get the spreadsheet and sheet
     const ss = SpreadsheetApp.getActiveSpreadsheet();
     let sheet = ss.getSheetByName(SHEET_NAME);
