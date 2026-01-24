@@ -40,6 +40,34 @@
   <meta name="twitter:description" content="Thoughts on building, creating, and living." />
   <meta name="twitter:image" content="https://www.ererezino.com/assets/og-image.jpg" />
 
+  <!-- JSON-LD Structured Data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Blog",
+    "name": "Articles - Zino Asamaige",
+    "description": "Thoughts on building, creating, and living.",
+    "url": "https://www.ererezino.com/articles/",
+    "author": {
+      "@type": "Person",
+      "name": "Zino Asamaige",
+      "url": "https://www.ererezino.com"
+    },
+    "blogPost": [
+      {
+        "@type": "BlogPosting",
+        "headline": "Why I'm Building Accrue",
+        "url": "https://www.ererezino.com/articles/why-im-building-accrue/",
+        "datePublished": "2026-01-20",
+        "author": {
+          "@type": "Person",
+          "name": "Zino Asamaige"
+        }
+      }
+    ]
+  }
+  </script>
+
   <!-- Theme -->
   <meta name="theme-color" content="#FAFAFA" media="(prefers-color-scheme: light)">
   <meta name="theme-color" content="#0A0A0A" media="(prefers-color-scheme: dark)">
@@ -61,6 +89,12 @@
   <style>
     /* Ensure main has padding for fixed header */
     main { padding-top: 80px; }
+
+    /* Prevent horizontal scroll on mobile */
+    html, body {
+      overflow-x: hidden;
+      max-width: 100vw;
+    }
 
     /* Page Header */
     .page-header {
@@ -128,6 +162,11 @@
       }
       .articles-article-card:hover {
         transform: none;
+        margin: 0;
+        padding-left: 0;
+        padding-right: 0;
+        box-shadow: none;
+        background: transparent;
       }
     }
 
@@ -682,23 +721,35 @@
     var mmClose = document.getElementById('mobileMenuClose');
 
     function openMobileMenu() {
+      if (!mm) return;
       mm.classList.add('open');
       mm.setAttribute('aria-hidden', 'false');
-      mmBtn.setAttribute('aria-expanded', 'true');
+      if (mmBtn) mmBtn.setAttribute('aria-expanded', 'true');
       document.body.style.overflow = 'hidden';
     }
 
     function closeMobileMenu() {
+      if (!mm) return;
       mm.classList.remove('open');
       mm.setAttribute('aria-hidden', 'true');
-      mmBtn.setAttribute('aria-expanded', 'false');
+      if (mmBtn) mmBtn.setAttribute('aria-expanded', 'false');
       document.body.style.overflow = '';
     }
 
-    mmBtn.onclick = openMobileMenu;
-    mmClose.onclick = closeMobileMenu;
-    mm.querySelectorAll('a').forEach(function(a) {
-      a.onclick = closeMobileMenu;
+    if (mmBtn) mmBtn.onclick = openMobileMenu;
+    if (mmClose) mmClose.onclick = closeMobileMenu;
+    if (mm) {
+      var links = mm.querySelectorAll('a');
+      for (var i = 0; i < links.length; i++) {
+        links[i].onclick = closeMobileMenu;
+      }
+    }
+
+    // Escape key to close menu
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape' && mm && mm.classList.contains('open')) {
+        closeMobileMenu();
+      }
     });
 
     // Service Worker Registration
