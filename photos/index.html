@@ -39,6 +39,23 @@
   <meta name="twitter:description" content="Photography by Zino Asamaige - travel and street photography." />
   <meta name="twitter:image" content="https://www.ererezino.com/assets/og-image.jpg" />
 
+  <meta name="author" content="Zino Asamaige" />
+
+  <!-- JSON-LD Structured Data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "ImageGallery",
+    "name": "Photography by Zino Asamaige",
+    "description": "Travel and street photography exploring place, memory, and belonging.",
+    "author": {
+      "@type": "Person",
+      "name": "Zino Asamaige",
+      "url": "https://www.ererezino.com"
+    }
+  }
+  </script>
+
   <!-- Theme -->
   <meta name="theme-color" content="#FAFAFA" media="(prefers-color-scheme: light)">
   <meta name="theme-color" content="#0A0A0A" media="(prefers-color-scheme: dark)">
@@ -193,6 +210,39 @@
       margin-left: 6px;
     }
 
+    /* Skeleton loading */
+    .skeleton {
+      background: linear-gradient(90deg, var(--bg-alt) 0%, var(--bg-subtle) 50%, var(--bg-alt) 100%);
+      background-size: 200% 100%;
+      animation: skeleton-shimmer 1.5s ease-in-out infinite;
+    }
+    @keyframes skeleton-shimmer {
+      0% { background-position: 200% 0; }
+      100% { background-position: -200% 0; }
+    }
+    .photo-skeleton {
+      border-radius: 8px;
+      min-height: 200px;
+    }
+    .photo-skeleton.tall { min-height: 400px; }
+    .photo-skeleton.wide { min-height: 150px; }
+    @media (max-width: 600px) {
+      .photo-skeleton,
+      .photo-skeleton.tall,
+      .photo-skeleton.wide {
+        min-height: 180px;
+      }
+    }
+
+    /* Image loading transition */
+    .photo-item img {
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+    .photo-item img.loaded {
+      opacity: 1;
+    }
+
     /* Masonry Grid */
     .photos-grid {
       display: grid;
@@ -212,15 +262,39 @@
       overflow: hidden;
       border-radius: 8px;
       background: var(--bg-alt);
-      transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1),
-                  box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      /* Reset button styles */
+      border: none;
+      padding: 0;
+      font: inherit;
+      color: inherit;
+      text-align: left;
+      width: 100%;
+      display: block;
+      -webkit-tap-highlight-color: transparent;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
     }
     .photo-item:hover {
-      transform: translateY(-8px);
-      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+      transform: translateY(-4px);
+      box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
     }
     [data-theme="dark"] .photo-item:hover {
-      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+      box-shadow: 0 12px 24px rgba(0, 0, 0, 0.4);
+    }
+    .photo-item:active {
+      transform: scale(0.98) translateY(0);
+    }
+    .photo-item:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 4px;
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .photo-item {
+        transition: none;
+      }
+      .photo-item:hover {
+        transform: none;
+        box-shadow: none;
+      }
     }
 
     /* Masonry sizes */
@@ -239,10 +313,6 @@
       width: 100%;
       height: 100%;
       object-fit: cover;
-      transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-    }
-    .photo-item:hover img {
-      transform: scale(1.05);
     }
 
     /* Default aspect ratio */
@@ -569,23 +639,35 @@
     var mmClose = document.getElementById('mobileMenuClose');
 
     function openMobileMenu() {
+      if (!mm) return;
       mm.classList.add('open');
       mm.setAttribute('aria-hidden', 'false');
-      mmBtn.setAttribute('aria-expanded', 'true');
+      if (mmBtn) mmBtn.setAttribute('aria-expanded', 'true');
       document.body.style.overflow = 'hidden';
     }
 
     function closeMobileMenu() {
+      if (!mm) return;
       mm.classList.remove('open');
       mm.setAttribute('aria-hidden', 'true');
-      mmBtn.setAttribute('aria-expanded', 'false');
+      if (mmBtn) mmBtn.setAttribute('aria-expanded', 'false');
       document.body.style.overflow = '';
     }
 
-    mmBtn.onclick = openMobileMenu;
-    mmClose.onclick = closeMobileMenu;
-    mm.querySelectorAll('a').forEach(function(a) {
-      a.onclick = closeMobileMenu;
+    if (mmBtn) mmBtn.onclick = openMobileMenu;
+    if (mmClose) mmClose.onclick = closeMobileMenu;
+    if (mm) {
+      var links = mm.querySelectorAll('a');
+      for (var i = 0; i < links.length; i++) {
+        links[i].onclick = closeMobileMenu;
+      }
+    }
+
+    // Escape key to close menu
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape' && mm && mm.classList.contains('open')) {
+        closeMobileMenu();
+      }
     });
 
     // Header scroll
@@ -609,7 +691,9 @@
 
     // Set hero image (use first photo)
     if (PHOTOS.length > 0) {
-      document.getElementById('heroImage').src = PHOTOS[0].src;
+      var heroImg = document.getElementById('heroImage');
+      heroImg.src = PHOTOS[0].src;
+      heroImg.alt = PHOTOS[0].caption + ' - ' + PHOTOS[0].location;
     }
 
     // Update stats
@@ -640,7 +724,7 @@
       });
     }
 
-    // Render photo grid
+    // Render photo grid with skeleton loading
     function renderGrid() {
       var filtered = currentFilter === 'all'
         ? PHOTOS
@@ -649,8 +733,8 @@
       document.getElementById('photosGrid').innerHTML = filtered.map(function(p, i) {
         var layoutClass = p.layout === 'tall' ? 'tall' : p.layout === 'wide' ? 'wide' : '';
         var idx = PHOTOS.indexOf(p);
-        return '<div class="photo-item ' + layoutClass + '" onclick="openLb(' + idx + ')">' +
-          '<img src="' + p.src + '" alt="' + p.caption + '" loading="lazy">' +
+        return '<button type="button" class="photo-item skeleton ' + layoutClass + '" onclick="openLb(' + idx + ')" aria-label="View photo: ' + p.caption + '">' +
+          '<img src="' + p.src + '" alt="' + p.caption + '" loading="lazy" onload="this.classList.add(\'loaded\'); this.parentElement.classList.remove(\'skeleton\');">' +
           '<div class="photo-overlay">' +
             '<div class="photo-location">' +
               '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>' +
@@ -658,7 +742,7 @@
             '</div>' +
             '<div class="photo-caption">' + p.caption + '</div>' +
           '</div>' +
-        '</div>';
+        '</button>';
       }).join('');
     }
 
@@ -679,6 +763,7 @@
 
     function updateLightbox() {
       lbImg.src = PHOTOS[idx].src;
+      lbImg.alt = PHOTOS[idx].caption + ' - ' + PHOTOS[idx].location;
       lbCap.textContent = PHOTOS[idx].caption + ' — ' + PHOTOS[idx].location + ', ' + PHOTOS[idx].year;
       lbCounter.textContent = (idx + 1) + ' / ' + PHOTOS.length;
     }
