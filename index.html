@@ -58,6 +58,29 @@
   <meta name="twitter:description" content="Photos, walks, and short notes. Based in Lagos." />
   <meta name="twitter:image" content="https://www.ererezino.com/assets/og-image.jpg" />
 
+  <!-- JSON-LD Structured Data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "name": "Zino Asamaige",
+    "url": "https://www.ererezino.com",
+    "image": "https://www.ererezino.com/assets/portrait.jpg",
+    "jobTitle": "Co-Founder & COO",
+    "worksFor": {
+      "@type": "Organization",
+      "name": "Accrue",
+      "url": "https://accrue.money"
+    },
+    "sameAs": [
+      "https://twitter.com/ererezino",
+      "https://linkedin.com/in/zinoasamaige",
+      "https://medium.com/@ererezino"
+    ],
+    "knowsAbout": ["Fintech", "Cross-border Payments", "Stablecoins", "Photography", "Travel"]
+  }
+  </script>
+
   <!-- Theme -->
   <meta name="theme-color" content="#FAFAFA" media="(prefers-color-scheme: light)">
   <meta name="theme-color" content="#0A0A0A" media="(prefers-color-scheme: dark)">
@@ -87,27 +110,6 @@
 </head>
 
 <body>
-  <!-- Page loading overlay - Cinematic Portrait Reveal -->
-  <div class="page-loader" id="pageLoader" aria-hidden="true">
-    <div class="loader-content">
-      <div class="loader-portrait">
-        <img src="/assets/portrait.jpg" alt="" class="loader-portrait-img" />
-      </div>
-      <div class="loader-text">
-        <span class="loader-name">Zino Asamaige</span>
-      </div>
-    </div>
-    <div class="loader-progress"></div>
-  </div>
-
-  <!-- Custom cursor (desktop only, hidden by default) -->
-  <div class="cursor" id="cursor" aria-hidden="true"></div>
-  <div class="cursor-trail" id="cursorTrail" aria-hidden="true"></div>
-  <div class="cursor-label" id="cursorLabel" aria-hidden="true"></div>
-
-  <!-- Noise texture overlay -->
-  <div class="noise-overlay" aria-hidden="true"></div>
-
   <!-- Sound toggle -->
   <button class="sound-toggle" id="soundToggle" aria-label="Toggle sound effects" title="Toggle sounds">
     <svg class="sound-on" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">

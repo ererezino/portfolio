@@ -1,0 +1,10 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://www.ererezino.com/sitemap.xml
+
+# Block API routes from indexing
+Disallow: /api/
+
+# Block search/filter pages if any
+Disallow: /*?*
