@@ -38,6 +38,32 @@
   <meta name="twitter:description" content="Africa moves a lot of money. The problem is how. Here's why we're building the rails for Africa's digital economy." />
   <meta name="twitter:image" content="https://www.ererezino.com/articles/why-im-building-accrue/team.png" />
 
+  <!-- JSON-LD Structured Data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "Why I'm Building Accrue",
+    "description": "Africa moves a lot of money. The problem is how. Here's why we're building the rails for Africa's digital economy.",
+    "image": "https://www.ererezino.com/articles/why-im-building-accrue/team.png",
+    "datePublished": "2026-01-20",
+    "dateModified": "2026-01-20",
+    "author": {
+      "@type": "Person",
+      "name": "Zino Asamaige",
+      "url": "https://www.ererezino.com"
+    },
+    "publisher": {
+      "@type": "Person",
+      "name": "Zino Asamaige"
+    },
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": "https://www.ererezino.com/articles/why-im-building-accrue/"
+    }
+  }
+  </script>
+
   <link rel="icon" type="image/png" href="/assets/logo.png">
 
   <!-- Security headers -->
@@ -120,17 +146,6 @@
       outline: 2px solid var(--green);
       outline-offset: 2px;
     }
-
-    /* Noise overlay */
-    .noise-overlay {
-      position: fixed;
-      inset: 0;
-      pointer-events: none;
-      opacity: 0.03;
-      z-index: 9999;
-      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
-    }
-    [data-theme="dark"] .noise-overlay { opacity: 0.02; }
 
     /* Scroll Progress */
     .scroll-progress {
@@ -885,7 +900,6 @@
 </head>
 
 <body>
-  <div class="noise-overlay" aria-hidden="true"></div>
   <div class="scroll-progress" id="scrollProgress" role="progressbar" aria-label="Reading progress"></div>
 
   <a class="skip-link" href="#main">Skip to content</a>
@@ -977,7 +991,7 @@
 
             <p><strong>Accrue</strong> is a mobile app. Anyone in Africa can save in USD stablecoins, send and receive payments instantly, and participate in the global economy. For millions facing volatile local currencies, stablecoins aren't speculation. They're the safest store of value available.</p>
 
-            <p><strong>Cashramp</strong> is infrastructure. Think M-Pesa on stablecoin rails. It's a stablecoin agent network spread across over 11 African countries. Users walk up to agents, hand over local currency, and receive stablecoin equivalents displayed as USD in the app. The conversion is automatic. The user sends local currency, and receives a dollar equivalent, seamlessly.</p>
+            <p><strong>Cashramp</strong> is infrastructure. Think M-Pesa on stablecoin rails. It's a stablecoin agent network spread across over 11 African countries. Users sends local currency to agent via their preferred payment method, and receive stablecoin equivalents displayed as USD in the app. The conversion is automatic. The user sends local currency, and receives a dollar equivalent, seamlessly.</p>
 
             <p>When that money needs to cross a border, say from Ghana to Nigeria, the Ghanaian user sends money to an agent in local currency, receives stablecoins at the prevailing market rate, and another agent in Nigeria converts it to naira and deposits it into the recipient's bank account. The user never sees the complexity of cryptocurrency. Their local currency simply gains the superpowers of programmable money: a $1 fee, one-minute settlement, and frictionless cross-border movement.</p>
 
@@ -1094,7 +1108,7 @@
 
             <footer class="article-footer">
               <div class="author-card">
-                <div class="author-avatar"><img src="/assets/logo.png" alt="" width="56" height="56"></div>
+                <div class="author-avatar"><img src="/assets/logo.png" alt="Zino Asamaige" width="56" height="56"></div>
                 <div class="author-info">
                   <h4>Zino Asamaige</h4>
                   <p>Co-Founder & COO at Accrue</p>
