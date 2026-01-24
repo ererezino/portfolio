@@ -243,17 +243,50 @@
       opacity: 1;
     }
 
+    /* Staggered fade-in animation */
+    .photo-item {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    .photo-item.fade-in {
+      animation: photoFadeIn 0.5s ease forwards;
+    }
+    @keyframes photoFadeIn {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .photo-item {
+        opacity: 1;
+        transform: none;
+      }
+      .photo-item.fade-in {
+        animation: none;
+      }
+    }
+
     /* Masonry Grid */
     .photos-grid {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      grid-auto-rows: 250px;
+      grid-auto-flow: dense;
       gap: 16px;
     }
     @media (max-width: 1100px) {
-      .photos-grid { grid-template-columns: repeat(2, 1fr); }
+      .photos-grid {
+        grid-template-columns: repeat(2, 1fr);
+        grid-auto-rows: 220px;
+      }
     }
     @media (max-width: 600px) {
-      .photos-grid { grid-template-columns: 1fr; gap: 12px; }
+      .photos-grid {
+        grid-template-columns: 1fr;
+        grid-auto-rows: auto;
+        gap: 12px;
+      }
     }
 
     .photo-item {
@@ -677,12 +710,12 @@
 
     // Photos data with locations and layout hints
     var PHOTOS = [
-      { src: "/assets/photos/photo-1.jpg", caption: "Morning light", location: "Frankfurt", year: 2025, layout: "tall" },
+      { src: "/assets/photos/photo-1.jpg", caption: "Morning light", location: "Lagos", year: 2025, layout: "tall" },
       { src: "/assets/photos/photo-2.jpg", caption: "City streets", location: "Frankfurt", year: 2025, layout: "normal" },
-      { src: "/assets/photos/photo-3.jpg", caption: "Architecture", location: "Frankfurt", year: 2025, layout: "wide" },
-      { src: "/assets/photos/photo-4.jpg", caption: "Urban life", location: "Frankfurt", year: 2025, layout: "normal" },
-      // Add more photos with locations like:
-      // { src: "/assets/photos/photo-5.jpg", caption: "Sunset", location: "Lagos", year: 2024, layout: "tall" },
+      { src: "/assets/photos/photo-3.jpg", caption: "Market day", location: "Accra", year: 2025, layout: "wide" },
+      { src: "/assets/photos/photo-4.jpg", caption: "Urban life", location: "Lagos", year: 2025, layout: "normal" },
+      { src: "/assets/photos/photo-5.jpg", caption: "Cathedral view", location: "Durham", year: 2024, layout: "tall" },
+      { src: "/assets/photos/photo-6.jpg", caption: "Architecture", location: "Frankfurt", year: 2025, layout: "wide" }
     ];
 
     // Get unique locations
@@ -744,6 +777,14 @@
           '</div>' +
         '</button>';
       }).join('');
+
+      // Staggered fade-in animation
+      setTimeout(function() {
+        document.querySelectorAll('.photo-item').forEach(function(item, i) {
+          item.style.animationDelay = (i * 50) + 'ms';
+          item.classList.add('fade-in');
+        });
+      }, 100);
     }
 
     // Lightbox
