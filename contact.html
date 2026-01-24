@@ -115,6 +115,7 @@
 
     .form-group {
       position: relative;
+      margin-top: 8px;
     }
 
     .form-label {
@@ -301,20 +302,6 @@
 
     @keyframes spin {
       to { transform: rotate(360deg); }
-    }
-
-    /* Auto-save indicator */
-    .autosave-indicator {
-      font-family: var(--font-mono);
-      font-size: 10px;
-      color: var(--text-tertiary);
-      text-align: center;
-      margin-top: 16px;
-      opacity: 0;
-      transition: opacity 0.3s ease;
-    }
-    .autosave-indicator.visible {
-      opacity: 1;
     }
 
     /* Success State */
@@ -539,7 +526,6 @@
               <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg>
             </button>
 
-            <div class="autosave-indicator" id="autosaveIndicator">Draft saved</div>
           </form>
 
           <div class="success-message" id="successMessage" role="alert">
@@ -627,49 +613,11 @@
     const submitBtn = document.getElementById('submitBtn');
     const successMessage = document.getElementById('successMessage');
     const socialLinks = document.getElementById('socialLinks');
-    const autosaveIndicator = document.getElementById('autosaveIndicator');
     const charCount = document.getElementById('charCount');
     const messageField = document.getElementById('message');
 
     // Google Apps Script Web App URL
     const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyXjt28spJyUuDOmWVozBHIlho3LBH_QROve5-bjzANczJgAjULto0pvd_mdlnQFJzF/exec';
-
-    // Auto-save to localStorage
-    const AUTOSAVE_KEY = 'contact_form_draft';
-    let autosaveTimeout;
-
-    function loadDraft() {
-      try {
-        const draft = JSON.parse(localStorage.getItem(AUTOSAVE_KEY) || '{}');
-        if (draft.name) document.getElementById('name').value = draft.name;
-        if (draft.email) document.getElementById('email').value = draft.email;
-        if (draft.message) {
-          messageField.value = draft.message;
-          charCount.textContent = draft.message.length;
-        }
-      } catch (e) {}
-    }
-
-    function saveDraft() {
-      clearTimeout(autosaveTimeout);
-      autosaveTimeout = setTimeout(() => {
-        const draft = {
-          name: document.getElementById('name').value,
-          email: document.getElementById('email').value,
-          message: messageField.value
-        };
-        localStorage.setItem(AUTOSAVE_KEY, JSON.stringify(draft));
-        autosaveIndicator.classList.add('visible');
-        setTimeout(() => autosaveIndicator.classList.remove('visible'), 2000);
-      }, 1000);
-    }
-
-    function clearDraft() {
-      localStorage.removeItem(AUTOSAVE_KEY);
-    }
-
-    // Load draft on page load
-    loadDraft();
 
     // Character count
     messageField.addEventListener('input', () => {
@@ -680,12 +628,7 @@
       } else {
         charCount.style.color = '';
       }
-      saveDraft();
     });
-
-    // Auto-save on input
-    document.getElementById('name').addEventListener('input', saveDraft);
-    document.getElementById('email').addEventListener('input', saveDraft);
 
     function validateEmail(email) {
       return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
@@ -739,25 +682,20 @@
       submitBtn.disabled = true;
 
       try {
-        // Submit to Google Sheets via Apps Script
-        const response = await fetch(GOOGLE_SCRIPT_URL, {
+        // Submit to Google Sheets via Apps Script using FormData
+        const formData = new FormData();
+        formData.append('name', name);
+        formData.append('email', email);
+        formData.append('message', message);
+        formData.append('timestamp', new Date().toISOString());
+
+        await fetch(GOOGLE_SCRIPT_URL, {
           method: 'POST',
           mode: 'no-cors',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            name,
-            email,
-            message,
-            timestamp: new Date().toISOString()
-          })
+          body: formData
         });
 
         // With no-cors, we get an opaque response - assume success if no error thrown
-        // Clear draft on successful submit
-        clearDraft();
-
         // Show success
         form.style.display = 'none';
         socialLinks.style.display = 'none';
