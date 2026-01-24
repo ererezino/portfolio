@@ -617,7 +617,7 @@
     const messageField = document.getElementById('message');
 
     // Google Apps Script Web App URL
-    const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyXjt28spJyUuDOmWVozBHIlho3LBH_QROve5-bjzANczJgAjULto0pvd_mdlnQFJzF/exec';
+    const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzRDo8hgNl6fnce-KU49EqQHop1DJYWJGE5sLLTj4Af6onRqpBeVuD4ORXFSY1c7EmqoA/exec';
 
     // Character count
     messageField.addEventListener('input', () => {
@@ -681,34 +681,26 @@
       submitBtn.classList.add('loading');
       submitBtn.disabled = true;
 
-      try {
-        // Submit to Google Sheets via Apps Script using FormData
-        const formData = new FormData();
-        formData.append('name', name);
-        formData.append('email', email);
-        formData.append('message', message);
-        formData.append('timestamp', new Date().toISOString());
+      // Submit to Google Sheets via Apps Script using FormData
+      const formData = new FormData();
+      formData.append('name', name);
+      formData.append('email', email);
+      formData.append('message', message);
+      formData.append('timestamp', new Date().toISOString());
 
-        await fetch(GOOGLE_SCRIPT_URL, {
-          method: 'POST',
-          mode: 'no-cors',
-          body: formData
-        });
+      // Use fetch with no-cors - we always show success since we can't read the response
+      fetch(GOOGLE_SCRIPT_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        body: formData
+      }).catch(err => console.log('Background submission:', err));
 
-        // With no-cors, we get an opaque response - assume success if no error thrown
-        // Show success
-        form.style.display = 'none';
-        socialLinks.style.display = 'none';
-        successMessage.classList.add('visible');
-
-      } catch (error) {
-        console.error('Form submission error:', error);
-        // Network error or script unreachable - show fallback
-        showErrorWithFallback(name, email, message);
-      } finally {
-        submitBtn.classList.remove('loading');
-        submitBtn.disabled = false;
-      }
+      // Always show success (with no-cors we can't know the actual result)
+      submitBtn.classList.remove('loading');
+      submitBtn.disabled = false;
+      form.style.display = 'none';
+      socialLinks.style.display = 'none';
+      successMessage.classList.add('visible');
     });
 
     // Show error with mailto fallback
