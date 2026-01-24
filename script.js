@@ -150,17 +150,21 @@ function initPageLoader() {
   var loader = $('#pageLoader');
   if (!loader) return;
 
+  // Wait for the watercolor reveal animation to complete (2s animation + 0.5s buffer)
+  var animationDuration = 2500;
+
   window.addEventListener('load', function() {
     setTimeout(function() {
       loader.classList.add('hidden');
       document.body.style.overflow = '';
-    }, 300);
+    }, animationDuration);
   });
 
+  // Fallback timeout in case load event doesn't fire
   setTimeout(function() {
     loader.classList.add('hidden');
     document.body.style.overflow = '';
-  }, 3000);
+  }, 5000);
 }
 
 // =============================================================================
