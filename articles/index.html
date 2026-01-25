@@ -225,6 +225,8 @@
     .articles-sidebar {
       position: sticky;
       top: 100px;
+      padding-left: 32px;
+      border-left: 1px solid var(--border);
     }
 
     @media (max-width: 1024px) {
@@ -232,6 +234,8 @@
         position: static;
         margin-top: 48px;
         padding-top: 48px;
+        padding-left: 0;
+        border-left: none;
         border-top: 1px solid var(--border);
       }
     }
@@ -516,14 +520,14 @@
     }
     .featured-hero-image {
       width: 40%;
-      min-height: 280px;
       flex-shrink: 0;
       overflow: hidden;
+      display: flex;
+      align-items: center;
     }
     .featured-hero-image img {
       width: 100%;
-      height: 100%;
-      object-fit: cover;
+      height: auto;
       transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
     }
     .featured-hero:hover .featured-hero-image img {
@@ -1109,8 +1113,8 @@
         authorInitials: "AO",
         source: "Medium",
         url: "https://medium.com/@adesuwaomoruyi/notes-from-raising-accrues-1-58m-seed-round-817205faab12",
-        image: "", // Add Medium article image URL
-        date: "2022-06-01", // Update with actual date
+        image: "https://miro.medium.com/v2/resize:fit:1200/1*4D28dV-UK4i0YwoXh1LX9g.png",
+        date: "2025-11-05",
         excerpt: "Lessons learned from raising our seed round - the pitches, the rejections, the wins, and everything in between.",
         tags: ["Fundraising", "Startups", "Lessons"]
       },
@@ -1120,8 +1124,8 @@
         authorInitials: "AO",
         source: "Medium",
         url: "https://medium.com/@adesuwaomoruyi/when-we-realized-our-startup-idea-wasnt-going-to-work-100d45d2d280",
-        image: "", // Add Medium article image URL
-        date: "2022-01-01", // Update with actual date
+        image: "https://miro.medium.com/v2/resize:fit:1200/1*xw86UFPzKtmm02RlvK1Eug.png",
+        date: "2022-01-01",
         excerpt: "The pivot story - how we realized our original idea wasn't working and what we did about it.",
         tags: ["Startups", "Pivot", "Lessons"]
       }
