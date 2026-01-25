@@ -1222,7 +1222,14 @@ button.photo-item {
    ============================================================================= */
 
 .article-grid { display: grid; grid-template-columns: 1fr; gap: var(--grid-gap); }
-@media (min-width: 768px) { .article-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (min-width: 768px) {
+  .article-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .article-grid.has-featured {
+    grid-template-columns: 1fr;
+  }
+}
 
 .article-card { 
   display: flex; 
@@ -1332,6 +1339,81 @@ button.photo-item {
   .article-card-featured .article-card-content {
     padding: clamp(20px, 3vw, 24px);
   }
+}
+
+/* Secondary articles row (when featured exists) */
+.article-secondary-row {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--grid-gap);
+  grid-column: 1 / -1;
+}
+
+@media (min-width: 600px) {
+  .article-secondary-row {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* Article card with thumbnail */
+.article-card-thumb {
+  display: flex;
+  flex-direction: column;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  transition: all var(--duration) var(--ease);
+}
+
+.article-card-thumb:hover {
+  transform: translateY(-4px);
+  border-color: var(--accent);
+  box-shadow: var(--shadow-md);
+}
+
+.article-card-thumb .article-card-image {
+  width: 100%;
+  height: 160px;
+  overflow: hidden;
+}
+
+.article-card-thumb .article-card-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.4s var(--ease);
+}
+
+.article-card-thumb:hover .article-card-image img {
+  transform: scale(1.05);
+}
+
+.article-card-thumb .article-card-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: clamp(16px, 3vw, 20px);
+  flex: 1;
+}
+
+.article-card-thumb .article-card-title {
+  font-family: var(--font-serif);
+  font-size: clamp(18px, 2.5vw, 22px);
+  letter-spacing: -0.015em;
+  line-height: 1.3;
+}
+
+.article-card-thumb .article-card-excerpt {
+  margin-top: 8px;
+  font-family: var(--font-sans);
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--text-secondary);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
 /* =============================================================================
