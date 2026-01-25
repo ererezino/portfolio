@@ -17,13 +17,13 @@
     })();
   </script>
 
-  <meta name="description" content="Africa moves a lot of money. The problem is how. Here's why we're building the rails for Africa's digital economy.">
+  <meta name="description" content="Four years of building, breaking, and rebuilding the rails for Africa's digital economy.">
   <meta name="author" content="Zino Asamaige">
   <link rel="canonical" href="https://www.ererezino.com/articles/why-im-building-accrue/" />
 
   <!-- Open Graph -->
   <meta property="og:title" content="Why I'm Building Accrue - Zino Asamaige" />
-  <meta property="og:description" content="Africa moves a lot of money. The problem is how. Here's why we're building the rails for Africa's digital economy." />
+  <meta property="og:description" content="Four years of building, breaking, and rebuilding the rails for Africa's digital economy." />
   <meta property="og:type" content="article" />
   <meta property="og:url" content="https://www.ererezino.com/articles/why-im-building-accrue/" />
   <meta property="og:image" content="https://www.ererezino.com/articles/why-im-building-accrue/team.png" />
@@ -35,7 +35,7 @@
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:site" content="@ererezino" />
   <meta name="twitter:title" content="Why I'm Building Accrue" />
-  <meta name="twitter:description" content="Africa moves a lot of money. The problem is how. Here's why we're building the rails for Africa's digital economy." />
+  <meta name="twitter:description" content="Four years of building, breaking, and rebuilding the rails for Africa's digital economy." />
   <meta name="twitter:image" content="https://www.ererezino.com/articles/why-im-building-accrue/team.png" />
 
   <!-- JSON-LD Structured Data -->
@@ -44,10 +44,10 @@
     "@context": "https://schema.org",
     "@type": "Article",
     "headline": "Why I'm Building Accrue",
-    "description": "Africa moves a lot of money. The problem is how. Here's why we're building the rails for Africa's digital economy.",
+    "description": "Four years of building, breaking, and rebuilding the rails for Africa's digital economy.",
     "image": "https://www.ererezino.com/articles/why-im-building-accrue/team.png",
-    "datePublished": "2026-01-20",
-    "dateModified": "2026-01-20",
+    "datePublished": "2026-01-26",
+    "dateModified": "2026-01-26",
     "author": {
       "@type": "Person",
       "name": "Zino Asamaige",
@@ -500,6 +500,69 @@
       margin-bottom: 24px;
     }
 
+    /* Journey Timeline */
+    .journey-timeline {
+      position: relative;
+      padding-left: 24px;
+    }
+    .journey-timeline::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 8px;
+      bottom: 8px;
+      width: 2px;
+      background: linear-gradient(180deg, var(--green), var(--border) 30%, var(--border) 70%, var(--green));
+    }
+    .journey-item {
+      position: relative;
+      padding-bottom: 24px;
+    }
+    .journey-item:last-child {
+      padding-bottom: 0;
+    }
+    .journey-item::before {
+      content: '';
+      position: absolute;
+      left: -28px;
+      top: 6px;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--bg-alt);
+      border: 2px solid var(--border);
+    }
+    .journey-item:first-child::before,
+    .journey-item:last-child::before {
+      background: var(--green);
+      border-color: var(--green);
+    }
+    .journey-year {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-tertiary);
+      margin-bottom: 4px;
+    }
+    .journey-item:first-child .journey-year,
+    .journey-item:last-child .journey-year {
+      color: var(--green);
+    }
+    .journey-title {
+      font-family: var(--font-mono);
+      font-size: 14px;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+    .journey-desc {
+      font-family: var(--font-sans);
+      font-size: 13px;
+      color: var(--text-secondary);
+      line-height: 1.5;
+    }
+
     /* Flow */
     .flow-steps {
       display: flex;
@@ -661,6 +724,43 @@
       font-style: normal;
       text-transform: uppercase;
       letter-spacing: 0.08em;
+    }
+
+    /* Market Stats */
+    .market-stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+    @media (max-width: 500px) {
+      .market-stats { grid-template-columns: 1fr; }
+    }
+    .market-stat {
+      text-align: center;
+      padding: 20px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+    }
+    .market-stat-num {
+      font-family: var(--font-mono);
+      font-size: 28px;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 4px;
+    }
+    .market-stat-label {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-tertiary);
+    }
+    .market-note {
+      text-align: center;
+      margin-top: 16px;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--text-secondary);
     }
 
     /* Forces */
@@ -963,11 +1063,11 @@
             Back to Articles
           </a>
           <div class="article-meta">
-            <time datetime="2026-01">January 2026</time>
-            <span>6 min read</span>
+            <time datetime="2026-01-26">January 26, 2026</time>
+            <span>8 min read</span>
           </div>
           <h1 class="article-title">Why I'm Building Accrue</h1>
-          <p class="article-excerpt">Africa moves a lot of money. The problem is how. Here's why we're building the rails for Africa's digital economy.</p>
+          <p class="article-excerpt">Four years of building, breaking, and rebuilding the rails for Africa's digital economy.</p>
           <div class="article-tags" role="list" aria-label="Article topics">
             <span class="tag" role="listitem">Fintech</span>
             <span class="tag" role="listitem">Africa</span>
@@ -979,79 +1079,137 @@
       <div class="article-content">
         <div class="container">
           <div class="article-body">
-            <p>Cross-border payments on the continent hit $329 billion in 2025. Remittances alone account for nearly $100 billion annually, making up over 5% of GDP in many countries. But here's the thing: 75% of that money moves through informal channels. Cash in envelopes. Bus drivers carrying bundles across borders. Family networks.</p>
+            <p>Four years ago today, I wrote a post called <a href="/articles/accrues-big-day/">"Accrue's Big Day!"</a> We had just launched out of private beta with a thousand users and $150k AUM. The problem we were solving was simple: make it easy for anyone to invest using dollar-cost averaging. Pick an asset, set an amount, and let the app handle the rest.</p>
 
-            <p>Why? Because formal transfers cost 8% on average, the highest rate in the world. Add currency conversion losses, and you're looking at $5 billion a year vanishing into the friction of moving money.</p>
+            <p>For a while, it worked. Then the bear market hit and everything stopped. Signups dried up, deposits vanished, and we pivoted to dollar savings thinking stability would be enough. It wasn't. We were running out of runway and making hard decisions just to survive.</p>
 
-            <p>That's the problem we're solving.</p>
+            <p>Then a user in Ghana used one of our features to send money to her aunt in Nigeria. That wasn't what we built it for, but it made us pay attention. We followed that thread, and within seven months, cross-border payments went from less than 5% of our revenue to over 70%. <a href="https://medium.com/@adesuwaomoruyi/when-we-realized-our-startup-idea-wasnt-going-to-work-100d45d2d280" target="_blank" rel="noopener">Adesuwa wrote about this journey in detail</a>, but the short version is: we almost didn't make it, and our users showed us what to build next.</p>
+
+            <figure class="article-graphic" aria-labelledby="graphic-journey">
+              <figcaption class="graphic-label" id="graphic-journey">The Four-Year Journey</figcaption>
+              <div class="journey-timeline">
+                <div class="journey-item">
+                  <div class="journey-year">Jan 2022</div>
+                  <div class="journey-title">Launch Day</div>
+                  <div class="journey-desc">1,000 users, $150k AUM. Dollar-cost averaging for everyone.</div>
+                </div>
+                <div class="journey-item">
+                  <div class="journey-year">2022-2023</div>
+                  <div class="journey-title">Bear Market</div>
+                  <div class="journey-desc">Signups dried up. Pivoted to dollar savings. Running out of runway.</div>
+                </div>
+                <div class="journey-item">
+                  <div class="journey-year">Mid 2023</div>
+                  <div class="journey-title">The Discovery</div>
+                  <div class="journey-desc">A user in Ghana sent money to her aunt in Nigeria. We paid attention.</div>
+                </div>
+                <div class="journey-item">
+                  <div class="journey-year">7 Months Later</div>
+                  <div class="journey-title">The Pivot</div>
+                  <div class="journey-desc">Cross-border payments: 5% → 70% of revenue.</div>
+                </div>
+                <div class="journey-item">
+                  <div class="journey-year">Jan 2026</div>
+                  <div class="journey-title">Today</div>
+                  <div class="journey-desc">Building the rails for how Africa moves money.</div>
+                </div>
+              </div>
+            </figure>
+
+            <hr>
+
+            <h2>Africa Moves a Lot of Money. The Problem is How.</h2>
+
+            <p>Remittances to Africa hit nearly $100 billion in 2024, according to the World Bank. Factor in B2B trade and other cross-border flows, and Oui Capital estimates the total market at $329 billion. But 75% of that money moves through informal channels. Cash in envelopes. Bus drivers carrying bundles across borders. Family networks.</p>
+
+            <figure class="article-graphic" aria-labelledby="graphic-market">
+              <figcaption class="graphic-label" id="graphic-market">The Market Opportunity</figcaption>
+              <div class="market-stats">
+                <div class="market-stat">
+                  <div class="market-stat-num">$329B</div>
+                  <div class="market-stat-label">Total Cross-Border</div>
+                </div>
+                <div class="market-stat">
+                  <div class="market-stat-num">$100B</div>
+                  <div class="market-stat-label">Remittances Alone</div>
+                </div>
+                <div class="market-stat">
+                  <div class="market-stat-num">75%</div>
+                  <div class="market-stat-label">Informal Channels</div>
+                </div>
+              </div>
+              <div class="market-note">Source: World Bank, Oui Capital estimates (2024)</div>
+            </figure>
+
+            <p>Why? Because formal transfers cost 8% on average, the highest rate in the world. And even when people use traditional channels, it means taking time off work to sit in a Western Union or bank queue. Add currency conversion losses, and you're looking at billions of dollars lost yearly to fees and friction.</p>
+
+            <p>That's the problem we're solving now.</p>
 
             <hr>
 
             <h2>What We Built</h2>
 
-            <p><strong>Accrue</strong> is a mobile app. Anyone in Africa can save in USD stablecoins, send and receive payments instantly, and participate in the global economy. For millions facing volatile local currencies, stablecoins aren't speculation. They're the safest store of value available.</p>
+            <p><strong>Accrue</strong> is a mobile app. Anyone in Africa can save in USD stablecoins and send and receive payments instantly. For millions facing volatile local currencies, stablecoins aren't speculation. They're the safest store of value available. And for those wondering why not just buy dollars from a bank: across much of the continent, you can't. Dollar shortages have become endemic in countries like Nigeria, Kenya, Egypt, Ghana, and Zambia. People trying to access foreign currency face liquidity constraints, long queues, and outright rejections. Stablecoins are how they access dollars when the banking system can't provide them.</p>
 
-            <p><strong>Cashramp</strong> is infrastructure. Think M-Pesa on stablecoin rails. It's a stablecoin agent network spread across over 11 African countries. Users sends local currency to agent via their preferred payment method, and receive stablecoin equivalents displayed as USD in the app. The conversion is automatic. The user sends local currency, and receives a dollar equivalent, seamlessly.</p>
+            <p>And yes, you can still DCA into your favorite assets. That feature that started the company is still there. It's just part of something bigger now.</p>
 
-            <p>When that money needs to cross a border, say from Ghana to Nigeria, the Ghanaian user sends money to an agent in local currency, receives stablecoins at the prevailing market rate, and another agent in Nigeria converts it to naira and deposits it into the recipient's bank account. The user never sees the complexity of cryptocurrency. Their local currency simply gains the superpowers of programmable money: a $1 fee, one-minute settlement, and frictionless cross-border movement.</p>
+            <p><strong>Cashramp</strong> is infrastructure. Think M-Pesa on stablecoin rails. It's a stablecoin agent network across over a dozen African countries. A user sends local currency to an agent via their preferred payment method, and receives stablecoin equivalents displayed as USD in the app. The conversion is automatic. The user never touches crypto. Their local currency simply gains the superpowers of programmable money.</p>
+
+            <p>Cashramp is the engine that powers Accrue. It's how Accrue users deposit and withdraw in local currency. It's how they send money to loved ones in other countries. To us, Accrue is a proof of concept, a way to show potential Cashramp customers what can be built on a continent-wide agent network.</p>
 
             <figure class="article-graphic" aria-labelledby="graphic-cashramp">
-              <figcaption class="graphic-label" id="graphic-cashramp">How Cashramp Works</figcaption>
+              <figcaption class="graphic-label" id="graphic-cashramp">How a Cross-Border Transfer Works</figcaption>
               <div class="flow-steps">
                 <div class="flow-step">
                   <div class="flow-step-num">Step 1</div>
                   <div class="flow-step-title">Ghana</div>
                   <div class="flow-step-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21v-2a4 4 0 0 1 4-4h8a4 4 0 0 1 4 4v2"/></svg></div>
-                  <div class="flow-step-text">User pays local currency to agent<strong>GHS (Cedis)</strong></div>
+                  <div class="flow-step-text">User sends cedis to agent<strong>GHS (Cedis)</strong></div>
                 </div>
                 <div class="flow-arrow" aria-hidden="true">→</div>
                 <div class="flow-step">
                   <div class="flow-step-num">Step 2</div>
                   <div class="flow-step-title">Stablecoin</div>
                   <div class="flow-step-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 6v12M8 10h8M8 14h8"/></svg></div>
-                  <div class="flow-step-text">Converted at market rate<strong>User never touches crypto</strong></div>
+                  <div class="flow-step-text">Receives USD at market rate<strong>User never touches crypto</strong></div>
                 </div>
                 <div class="flow-arrow" aria-hidden="true">→</div>
                 <div class="flow-step">
                   <div class="flow-step-num">Step 3</div>
                   <div class="flow-step-title">Nigeria</div>
                   <div class="flow-step-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M7 15h4M7 11h10"/></svg></div>
-                  <div class="flow-step-text">Recipient gets local currency<strong>NGN (Naira)</strong></div>
+                  <div class="flow-step-text">Agent deposits to recipient<strong>NGN (Naira)</strong></div>
                 </div>
               </div>
               <div class="flow-compare">
-                <div class="compare-box"><div class="compare-label">Traditional</div><div class="compare-value">3-5 days · 8-10% fees</div><div class="compare-detail">Multiple intermediaries</div></div>
-                <div class="compare-box highlight"><div class="compare-label">Cashramp</div><div class="compare-value">1 min · $1 flat fee</div><div class="compare-detail">Cashramp agent network</div></div>
+                <div class="compare-box"><div class="compare-label">Traditional</div><div class="compare-value">3-5 days · 8% fees</div><div class="compare-detail">Multiple intermediaries</div></div>
+                <div class="compare-box highlight"><div class="compare-label">Cashramp</div><div class="compare-value">1 min · 1% (max $2)</div><div class="compare-detail">Direct agent network</div></div>
               </div>
             </figure>
-
-            <p>Both products are live today, processing millions of transactions across over 11 African countries. You can check our <a href="https://useaccrue.com/wall-of-love">Wall of Love</a> to see what real users have to say about our products.</p>
 
             <hr>
 
             <h2>Four Years of Work</h2>
 
-            <p>We're live in over 11 African markets. Our payment success rate is 98%, revenue has grown steadily quarter over quarter, mostly from organic demand.</p>
+            <p>Our payment success rate is 98%. Revenue has grown steadily quarter over quarter, mostly from organic demand. Over half of cross-border users come back at least three more times.</p>
 
             <figure class="article-graphic" aria-labelledby="graphic-traction">
-              <figcaption class="graphic-label" id="graphic-traction">Four Years of Building</figcaption>
+              <figcaption class="graphic-label" id="graphic-traction">Traction</figcaption>
               <div class="stats-grid">
-                <div class="stat-box"><div class="stat-num" data-target="11">11+</div><div class="stat-label">African<br>Markets</div></div>
-                <div class="stat-box"><div class="stat-num" data-target="98">98%</div><div class="stat-label">Payment<br>Success Rate</div></div>
-                <div class="stat-box"><div class="stat-num" data-target="15">15%+</div><div class="stat-label">QoQ Revenue<br>Growth</div></div>
-                <div class="stat-box"><div class="stat-num" data-target="15">15x</div><div class="stat-label">Avg. User<br>Return Rate</div></div>
+                <div class="stat-box"><div class="stat-num">98%</div><div class="stat-label">Payment<br>Success Rate</div></div>
+                <div class="stat-box"><div class="stat-num">12+</div><div class="stat-label">African<br>Countries</div></div>
+                <div class="stat-box"><div class="stat-num">3x+</div><div class="stat-label">User Return<br>Rate</div></div>
+                <div class="stat-box"><div class="stat-num">QoQ</div><div class="stat-label">Revenue<br>Growth</div></div>
               </div>
               <div class="stats-footer">
-                <blockquote>"Over half of cross-border users come back at least three more times."</blockquote>
-                <cite>Utility-driven, organic growth</cite>
+                <blockquote>"The growth isn't hype-driven. It's utility-driven."</blockquote>
+                <cite>Organic demand from real users</cite>
               </div>
             </figure>
 
-            <p>We've done this with a small, focused market-embedded team, agents with smartphones and a protocol (Cashramp Infrastructure) that handles the rest.</p>
+            <p>We've done this with a small, focused team embedded in the markets we serve. Agents with smartphones and a protocol that handles the rest.</p>
 
-            <blockquote class="pull-quote">The growth isn't hype-driven. It's utility-driven. People use Accrue because it solves real problems.</blockquote>
-
-            <p>A trader in Ghana can pay a supplier in Kenya in one minute, not days. A family can save for the future in stable USD, safe from local currency collapse. A tourist can move across Africa without having to worry about changing currency at every border.</p>
+            <blockquote class="pull-quote">A trader in Senegal can pay a supplier in Cote d'Ivoire in one minute, not days. A family can save for the future in stablecoins, safe from local currency collapse. A tourist can move across Africa without worrying about changing currency at every border.</blockquote>
 
             <hr>
 
@@ -1059,19 +1217,21 @@
 
             <p>The conventional answer is demographics, smartphones, and regulation. Those matter, but they're table stakes. Everyone sees them.</p>
 
-            <p>Here's what we saw: <strong>the informal economy was already solving this problem, just inefficiently.</strong> Hawala networks, bus drivers, family connections, WhatsApp P2P group chats - they work because they're built on trust and local presence, not banking infrastructure. The insight wasn't "Africa needs better payments." It was "the agent model already exists. It just needs better rails."</p>
+            <p>Here's what we saw: <strong>the informal economy was already solving this problem, just inefficiently.</strong> Hawala networks, bus drivers, family connections, WhatsApp P2P group chats. They work because they're built on trust and local presence, not banking infrastructure.</p>
 
-            <p>Stablecoins gave us those rails. Not because crypto is magic, but because it lets us settle across borders without correspondent banks, without forex desks, without the infrastructure that makes traditional remittance expensive. We're not disrupting informal networks. We're upgrading them.</p>
+            <p>The insight wasn't "Africa needs better payments." It was "the agent model already exists. It just needs better rails."</p>
 
-            <figure class="article-graphic" aria-labelledby="graphic-timing">
-              <figcaption class="graphic-label" id="graphic-timing">The Insight</figcaption>
+            <figure class="article-graphic" aria-labelledby="graphic-insight">
+              <figcaption class="graphic-label" id="graphic-insight">The Insight</figcaption>
               <div class="forces-list">
-                <div class="force-item"><div class="force-num">1</div><div class="force-content"><h3>Informal networks already work</h3><p>Hawala, bus drivers, family connections - built on trust and local presence, not banking infrastructure.</p></div></div>
+                <div class="force-item"><div class="force-num">1</div><div class="force-content"><h3>Informal networks already work</h3><p>Hawala, bus drivers, family connections, built on trust and local presence, not banking infrastructure.</p></div></div>
                 <div class="force-item"><div class="force-num">2</div><div class="force-content"><h3>They just need better rails</h3><p>Stablecoins let us settle across borders without correspondent banks or forex desks.</p></div></div>
                 <div class="force-item"><div class="force-num">3</div><div class="force-content"><h3>Regulators want visibility</h3><p>A compliant network that brings informal flows into the light is something governments actually want.</p></div></div>
               </div>
               <div class="forces-center"><span class="forces-badge">Upgrade, don't disrupt</span></div>
             </figure>
+
+            <p>Stablecoins gave us those rails. Not because crypto is magic, but because it lets us settle across borders without correspondent banks, without forex desks, without the infrastructure that makes traditional remittance expensive. We're not disrupting informal networks. We're upgrading them.</p>
 
             <p>The regulatory shift matters too, but not in the way most people think. The real change isn't that governments are "embracing crypto." It's that they're tired of watching billions flow through channels they can't see. A compliant stablecoin network that brings informal flows into the light is something regulators actually want.</p>
 
@@ -1079,17 +1239,19 @@
 
             <h2>The Longer View</h2>
 
-            <p>Payments are the wedge. The real opportunity is broader.</p>
+            <p>Payments are just the beginning. The real opportunity is intra-African trade.</p>
 
-            <p>But here's why our path is different: <strong>we see what banks can't see.</strong> Traditional lenders in Africa struggle because they have no data on informal economy participants. No credit history. No bank statements. No way to underwrite.</p>
+            <p>African countries trade far more with Europe, China, and the US than with each other. Intra-African trade hovers around 15-18% of total trade, compared to roughly 60% for Europe and 40% for Asia. The reasons are structural. Colonial infrastructure built to extract resources rather than connect economies. 54 countries with different regulations, standards, and currencies. Payment systems that until recently made it nearly impossible to settle cross-border transactions in local currencies. A buyer in one African country paying a supplier in another typically had to convert to USD and back again, with fees at each step.</p>
 
-            <p>Our agent network processes their cash flows every week. We know who sends money reliably. We know whose business is growing. We know who pays back the informal credit their agent already extends them. That's an underwriting advantage banks cannot easily replicate, and difficult for pure-digital fintechs to access.</p>
+            <p>African SMEs have always needed to do business with one another, but the infrastructure has made it nearly impossible. So businesses source locally even when better options exist across the border, or they route payments through Europe or the US, adding days and costs to simple transactions.</p>
+
+            <p>The internet connected African businesses. Stablecoins let them actually pay each other.</p>
 
             <figure class="article-graphic" aria-labelledby="graphic-vision">
-              <figcaption class="graphic-label" id="graphic-vision">The Data Advantage</figcaption>
+              <figcaption class="graphic-label" id="graphic-vision">The Vision: Infrastructure for an Ecosystem</figcaption>
               <div class="timeline" role="list" aria-label="Product roadmap">
                 <div class="timeline-point" role="listitem"><div class="timeline-dot"></div><div class="timeline-label">Payments</div></div>
-                <div class="timeline-point" role="listitem"><div class="timeline-dot"></div><div class="timeline-label">Cash Flow Data</div></div>
+                <div class="timeline-point" role="listitem"><div class="timeline-dot"></div><div class="timeline-label">B2B Trade</div></div>
                 <div class="timeline-point" role="listitem"><div class="timeline-dot"></div><div class="timeline-label">Credit</div></div>
                 <div class="timeline-point" role="listitem"><div class="timeline-dot"></div><div class="timeline-label">Insurance</div></div>
                 <div class="timeline-point" role="listitem"><div class="timeline-dot"></div><div class="timeline-label">Investments</div></div>
@@ -1097,14 +1259,14 @@
               <div class="timeline-caption">Each step builds the trust and data for the next.</div>
             </figure>
 
-            <p>Credit comes first. Then insurance. Then investments. Not because it's the standard fintech playbook, but because each one requires the trust and data that the previous one builds.</p>
+            <p>That's where we're headed. Not just an app for consumers, but rails that any business can build on. Opera is already doing this with MiniPay, using Cashramp's infrastructure to serve users across Africa. We want more of that. Payment apps, neobanks, remittance services, e-commerce platforms. Any product that needs to move money across African borders should be able to plug into our network and go live in days, not years.</p>
+
+            <p>The agent network we've built isn't just for Accrue. It's infrastructure that can power an ecosystem. That's the longer view: not competing with every payments company on the continent, but becoming the rails they all run on.</p>
 
             <aside class="highlight-box">
-              <p><strong>The vision:</strong> Make moving money between Yaounde and Kampala as easy as moving it between New York and San Francisco.</p>
-              <p>That's a big goal. But every month, we get closer. And every month, more people depend on us to move their money safely.</p>
+              <p><strong>Four years ago,</strong> I wrote that we started Accrue to solve a problem we had with investing. That was true then. But we kept listening, kept following the data, kept adjusting until something clicked.</p>
+              <p>Four years later, we're building the rails for how Africa moves money. And we're just getting started.</p>
             </aside>
-
-            <p>That's why I'm building Accrue alongside Clinton & Adesuwa. Not because it's interesting. Because it matters.</p>
 
             <footer class="article-footer">
               <div class="author-card">
