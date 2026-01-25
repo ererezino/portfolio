@@ -194,14 +194,140 @@
       display: block;
     }
 
-    /* Articles List */
+    /* Articles Layout with Sidebar */
     .articles-section {
       padding: 60px 0 100px;
+    }
+
+    .articles-layout {
+      display: grid;
+      grid-template-columns: 1fr 280px;
+      gap: 48px;
+      align-items: start;
+    }
+
+    @media (max-width: 1024px) {
+      .articles-layout {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .articles-main {
+      min-width: 0;
     }
 
     .articles-list {
       display: flex;
       flex-direction: column;
+    }
+
+    /* Sidebar */
+    .articles-sidebar {
+      position: sticky;
+      top: 100px;
+    }
+
+    @media (max-width: 1024px) {
+      .articles-sidebar {
+        position: static;
+        margin-top: 48px;
+        padding-top: 48px;
+        border-top: 1px solid var(--border);
+      }
+    }
+
+    .sidebar-header {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--accent);
+      margin-bottom: 24px;
+    }
+
+    .sidebar-image {
+      width: 100%;
+      height: 140px;
+      border-radius: 8px;
+      overflow: hidden;
+      margin-bottom: 24px;
+    }
+
+    .sidebar-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .sidebar-item {
+      display: block;
+      padding: 16px 0;
+      border-bottom: 1px solid var(--border);
+      transition: opacity 0.2s ease;
+    }
+
+    .sidebar-item:first-of-type {
+      padding-top: 0;
+    }
+
+    .sidebar-item:last-of-type {
+      border-bottom: none;
+    }
+
+    .sidebar-item:hover {
+      opacity: 0.7;
+    }
+
+    .sidebar-quote {
+      color: var(--accent);
+      font-family: Georgia, serif;
+      font-size: 24px;
+      line-height: 1;
+      margin-right: 4px;
+    }
+
+    .sidebar-title {
+      font-family: var(--font-sans);
+      font-size: 15px;
+      font-weight: 600;
+      line-height: 1.4;
+      margin-bottom: 8px;
+      display: inline;
+    }
+
+    .sidebar-author {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 8px;
+    }
+
+    .sidebar-avatar {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-mono);
+      font-size: 9px;
+      font-weight: 600;
+      color: var(--text-secondary);
+      overflow: hidden;
+    }
+
+    .sidebar-avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .sidebar-author-name {
+      font-family: var(--font-sans);
+      font-size: 13px;
+      color: var(--text-secondary);
     }
 
     .articles-article-card {
@@ -835,18 +961,20 @@
 
     <section class="articles-section">
       <div class="container">
-        <div class="articles-list" id="articlesList"></div>
-        <div class="pagination" id="pagination"></div>
-      </div>
-    </section>
+        <div class="articles-layout">
+          <div class="articles-main">
+            <div class="articles-list" id="articlesList"></div>
+            <div class="pagination" id="pagination"></div>
+          </div>
 
-    <section class="recommended-section">
-      <div class="container">
-        <div class="recommended-header">
-          <h2 class="recommended-title">Recommended Reading</h2>
-          <p class="recommended-description">Articles from my co-founders and others I find insightful.</p>
+          <aside class="articles-sidebar">
+            <h2 class="sidebar-header">Recommended Reading</h2>
+            <div class="sidebar-image">
+              <img src="/articles/why-im-building-accrue/team.png" alt="" loading="lazy">
+            </div>
+            <div id="sidebarContent"></div>
+          </aside>
         </div>
-        <div class="recommended-grid" id="recommendedGrid"></div>
       </div>
     </section>
   </main>
@@ -1150,33 +1278,28 @@
       document.querySelector('.articles-section').scrollIntoView({ behavior: 'smooth' });
     }
 
-    // Render recommended reading
+    // Render recommended reading sidebar (FT.com style)
     function renderRecommended() {
-      var grid = document.getElementById('recommendedGrid');
-      if (!RECOMMENDED || RECOMMENDED.length === 0) {
-        grid.parentElement.style.display = 'none';
+      var sidebar = document.getElementById('sidebarContent');
+      if (!sidebar || !RECOMMENDED || RECOMMENDED.length === 0) {
+        if (sidebar) sidebar.parentElement.style.display = 'none';
         return;
       }
 
       var html = RECOMMENDED.map(function(item) {
-        return '<a href="' + esc(item.url) + '" target="_blank" rel="noopener" class="recommended-card">' +
-          '<div class="recommended-card-author">' +
-            '<div class="recommended-card-avatar">' + esc(item.authorInitials) + '</div>' +
-            '<div class="recommended-card-author-info">' +
-              '<div class="recommended-card-author-name">' + esc(item.author) + '</div>' +
-              '<div class="recommended-card-source">' + esc(item.source) + '</div>' +
-            '</div>' +
+        return '<a href="' + esc(item.url) + '" target="_blank" rel="noopener" class="sidebar-item">' +
+          '<div>' +
+            '<span class="sidebar-quote">"</span>' +
+            '<span class="sidebar-title">' + esc(item.title) + '</span>' +
           '</div>' +
-          '<h3 class="recommended-card-title">' + esc(item.title) + '</h3>' +
-          '<p class="recommended-card-excerpt">' + esc(item.excerpt) + '</p>' +
-          '<div class="recommended-card-footer">' +
-            (item.tags && item.tags.length ? '<div class="recommended-card-tags">' + item.tags.map(function(tag) { return '<span class="tag">' + esc(tag) + '</span>'; }).join('') + '</div>' : '<div></div>') +
-            '<span class="recommended-card-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg></span>' +
+          '<div class="sidebar-author">' +
+            '<div class="sidebar-avatar">' + esc(item.authorInitials) + '</div>' +
+            '<span class="sidebar-author-name">' + esc(item.author) + '</span>' +
           '</div>' +
         '</a>';
       }).join('');
 
-      grid.innerHTML = html;
+      sidebar.innerHTML = html;
     }
 
     // Search functionality
