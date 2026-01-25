@@ -1168,68 +1168,63 @@
       font-weight: 600;
     }
 
-    /* Slim Author Card */
+    /* Author Card - Medium Style */
     .author-card {
       display: flex;
       gap: 16px;
-      align-items: center;
-      padding: 24px;
-      background: var(--bg-alt);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      margin: 48px 0;
+      align-items: flex-start;
+      padding: 24px 0;
+      border-top: 1px solid var(--border);
+      margin: 48px 0 0 0;
     }
     .author-avatar {
       flex-shrink: 0;
     }
     .author-avatar img {
-      width: 56px;
-      height: 56px;
+      width: 72px;
+      height: 72px;
       border-radius: 50%;
       object-fit: cover;
-      border: 2px solid var(--border);
     }
     .author-info {
       flex: 1;
       min-width: 0;
     }
-    .author-name-row {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      flex-wrap: wrap;
+    .author-written-by {
+      font-family: var(--font-sans);
+      font-size: 12px;
+      color: var(--text-tertiary);
+      margin: 0 0 4px 0;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
     }
     .author-info h4 {
       font-family: var(--font-sans);
-      font-size: 15px;
-      font-weight: 600;
-      margin: 0;
+      font-size: 18px;
+      font-weight: 700;
+      margin: 0 0 8px 0;
+      color: var(--text);
     }
-    .author-role {
-      font-family: var(--font-mono);
-      font-size: 11px;
-      color: var(--text-tertiary);
-      margin: 0;
-    }
-    .author-tagline {
+    .author-bio {
       font-family: var(--font-sans);
-      font-size: 13px;
+      font-size: 14px;
       color: var(--text-secondary);
       line-height: 1.5;
-      margin-top: 6px;
-      margin-bottom: 0;
+      margin: 0;
     }
     .author-social {
       display: flex;
       gap: 8px;
       flex-shrink: 0;
+      align-self: flex-start;
+      margin-top: 4px;
     }
     .author-social a {
       display: flex;
       align-items: center;
       justify-content: center;
-      width: 32px;
-      height: 32px;
+      width: 36px;
+      height: 36px;
       border-radius: 50%;
       color: var(--text-tertiary);
       transition: color 0.2s ease;
@@ -1238,21 +1233,25 @@
       color: var(--text);
     }
     .author-social svg {
-      width: 18px;
-      height: 18px;
+      width: 20px;
+      height: 20px;
     }
     @media (max-width: 500px) {
       .author-card {
-        flex-direction: column;
-        text-align: center;
-        gap: 12px;
+        flex-wrap: wrap;
       }
-      .author-name-row {
-        justify-content: center;
+      .author-avatar {
+        order: 1;
       }
       .author-social {
-        justify-content: center;
+        order: 2;
+        margin-left: auto;
         margin-top: 8px;
+      }
+      .author-info {
+        order: 3;
+        width: 100%;
+        margin-top: 12px;
       }
     }
 
@@ -1592,13 +1591,11 @@
 
             <footer class="article-footer">
               <div class="author-card">
-                <div class="author-avatar"><img src="/articles/assets/profile-image.png" alt="Zino Asamaige" width="56" height="56"></div>
+                <div class="author-avatar"><img src="/articles/assets/profile-image.png" alt="Zino Asamaige" width="72" height="72"></div>
                 <div class="author-info">
-                  <div class="author-name-row">
-                    <h4>Zino Asamaige</h4>
-                    <p class="author-role">Co-Founder & COO at Accrue</p>
-                  </div>
-                  <p class="author-tagline">Building infrastructure for African commerce. Walking long distances. Taking photographs.</p>
+                  <p class="author-written-by">Written by</p>
+                  <h4>Zino Asamaige</h4>
+                  <p class="author-bio">Co-founder & COO at Accrue. Writing about lessons, stories, and reflections from building a fintech company in Africa.</p>
                 </div>
                 <div class="author-social">
                   <a href="https://twitter.com/ererezino" target="_blank" rel="noopener noreferrer" aria-label="Twitter">
