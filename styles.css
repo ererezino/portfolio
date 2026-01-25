@@ -2081,7 +2081,7 @@ footer {
 }
 
 .footer-privacy {
-  font-family: var(--font-sans);
+  font-family: var(--font-mono);
   font-size: 12px;
   color: var(--text-tertiary);
   max-width: 480px;
