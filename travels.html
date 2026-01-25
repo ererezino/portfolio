@@ -544,15 +544,6 @@
       </div>
     </div>
 
-    <div class="container">
-      <section class="cities-section">
-        <div class="section-header">
-          <h2 class="section-title">All Cities Visited</h2>
-        </div>
-        <div class="continent-tabs" id="continentTabs"></div>
-        <div class="cities-grid" id="citiesGrid"></div>
-      </section>
-    </div>
   </main>
 
   <footer role="contentinfo">
@@ -714,7 +705,6 @@
       if (countries.indexOf(c.country) === -1) countries.push(c.country);
       if (regions.indexOf(c.region) === -1) regions.push(c.region);
     });
-    var currentRegion = 'all';
 
     // Animate count up
     function animateCount(el, target) {
@@ -734,44 +724,6 @@
     animateCount(document.getElementById('countryCount'), countries.length);
     animateCount(document.getElementById('cityCount'), CITIES.length);
     animateCount(document.getElementById('continentCount'), regions.length);
-
-    // Render continent tabs
-    function renderContinentTabs() {
-      var tabsContainer = document.getElementById('continentTabs');
-      var html = '<button class="continent-tab active" data-region="all">All<span class="continent-tab-count">' + CITIES.length + '</span></button>';
-
-      var regionOrder = ['Africa', 'Middle East', 'Europe', 'Americas'];
-      regionOrder.forEach(function(region) {
-        var count = CITIES.filter(function(c) { return c.region === region; }).length;
-        html += '<button class="continent-tab" data-region="' + region + '">' + region + '<span class="continent-tab-count">' + count + '</span></button>';
-      });
-
-      tabsContainer.innerHTML = html;
-
-      tabsContainer.querySelectorAll('.continent-tab').forEach(function(tab) {
-        tab.onclick = function() {
-          currentRegion = tab.dataset.region;
-          tabsContainer.querySelectorAll('.continent-tab').forEach(function(t) { t.classList.remove('active'); });
-          tab.classList.add('active');
-          renderCitiesGrid();
-        };
-      });
-    }
-
-    // Render cities grid
-    function renderCitiesGrid() {
-      var filtered = currentRegion === 'all'
-        ? CITIES
-        : CITIES.filter(function(c) { return c.region === currentRegion; });
-
-      document.getElementById('citiesGrid').innerHTML = filtered.map(function(c) {
-        return '<div class="city-item ' + (c.isHome ? 'home' : '') + '">' +
-          '<div class="city-name">' + c.city + '</div>' +
-          '<div class="city-country">' + (FLAGS[c.country] || '') + ' ' + c.country + '</div>' +
-          (c.isHome ? '<div class="city-home-badge"><span class="location-dot"></span> Currently here</div>' : '') +
-        '</div>';
-      }).join('');
-    }
 
     // Initialize map
     var currentTileLayer;
@@ -911,8 +863,6 @@
     }
 
     // Initialize
-    renderContinentTabs();
-    renderCitiesGrid();
     generateMapSummary();
   </script>
 </body>
