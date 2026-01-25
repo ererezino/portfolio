@@ -121,6 +121,79 @@
       line-height: 1.6;
     }
 
+    /* Search Bar */
+    .search-container {
+      margin-top: 32px;
+    }
+    .search-input-wrapper {
+      position: relative;
+      max-width: 400px;
+    }
+    .search-input {
+      width: 100%;
+      padding: 14px 16px 14px 48px;
+      font-family: var(--font-sans);
+      font-size: 15px;
+      background: var(--bg-subtle);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: var(--text);
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+    .search-input:focus {
+      outline: none;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px var(--accent-subtle);
+    }
+    .search-input::placeholder {
+      color: var(--text-tertiary);
+    }
+    .search-icon {
+      position: absolute;
+      left: 16px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 18px;
+      height: 18px;
+      color: var(--text-tertiary);
+      pointer-events: none;
+    }
+    .search-clear {
+      position: absolute;
+      right: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 24px;
+      height: 24px;
+      border: none;
+      background: var(--border);
+      border-radius: 50%;
+      color: var(--text-secondary);
+      cursor: pointer;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      transition: background 0.2s ease;
+    }
+    .search-clear:hover {
+      background: var(--text-tertiary);
+      color: var(--bg);
+    }
+    .search-clear.visible {
+      display: flex;
+    }
+    .search-results-info {
+      margin-top: 12px;
+      font-family: var(--font-mono);
+      font-size: 12px;
+      color: var(--text-tertiary);
+      display: none;
+    }
+    .search-results-info.visible {
+      display: block;
+    }
+
     /* Articles List */
     .articles-section {
       padding: 60px 0 100px;
@@ -491,6 +564,193 @@
       color: var(--text-secondary);
     }
 
+    /* Pagination */
+    .pagination {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 48px;
+      padding-top: 32px;
+      border-top: 1px solid var(--border);
+    }
+    .pagination-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 40px;
+      height: 40px;
+      padding: 0 12px;
+      font-family: var(--font-mono);
+      font-size: 13px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .pagination-btn:hover:not(:disabled) {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+    .pagination-btn:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+    .pagination-btn.active {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: #fff;
+    }
+    .pagination-btn svg {
+      width: 16px;
+      height: 16px;
+    }
+    .pagination-info {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      color: var(--text-tertiary);
+      margin: 0 8px;
+    }
+
+    /* Recommended Reading Section */
+    .recommended-section {
+      padding: 60px 0 100px;
+      border-top: 1px solid var(--border);
+      margin-top: 40px;
+    }
+    .recommended-header {
+      margin-bottom: 32px;
+    }
+    .recommended-title {
+      font-family: var(--font-serif);
+      font-size: clamp(28px, 4vw, 36px);
+      font-weight: 400;
+      font-style: italic;
+      margin-bottom: 8px;
+    }
+    .recommended-description {
+      font-family: var(--font-sans);
+      font-size: 15px;
+      color: var(--text-secondary);
+    }
+    .recommended-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 24px;
+    }
+    @media (max-width: 768px) {
+      .recommended-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+    .recommended-card {
+      display: flex;
+      flex-direction: column;
+      padding: 24px;
+      background: var(--bg-subtle);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      transition: all 0.3s ease;
+    }
+    .recommended-card:hover {
+      border-color: var(--accent);
+      transform: translateY(-4px);
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.08);
+    }
+    [data-theme="dark"] .recommended-card:hover {
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
+    }
+    .recommended-card-author {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+    .recommended-card-avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-mono);
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-secondary);
+      overflow: hidden;
+    }
+    .recommended-card-avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .recommended-card-author-info {
+      flex: 1;
+    }
+    .recommended-card-author-name {
+      font-family: var(--font-sans);
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 2px;
+    }
+    .recommended-card-source {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--text-tertiary);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .recommended-card-title {
+      font-family: var(--font-sans);
+      font-size: 17px;
+      font-weight: 600;
+      line-height: 1.4;
+      margin-bottom: 8px;
+      transition: color 0.2s ease;
+    }
+    .recommended-card:hover .recommended-card-title {
+      color: var(--accent);
+    }
+    .recommended-card-excerpt {
+      font-family: var(--font-sans);
+      font-size: 14px;
+      color: var(--text-secondary);
+      line-height: 1.6;
+      flex: 1;
+    }
+    .recommended-card-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 16px;
+      padding-top: 16px;
+      border-top: 1px solid var(--border);
+    }
+    .recommended-card-tags {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+    .recommended-card-tags .tag {
+      font-size: 9px;
+      padding: 3px 8px;
+    }
+    .recommended-card-arrow {
+      color: var(--text-tertiary);
+      transition: transform 0.2s ease, color 0.2s ease;
+    }
+    .recommended-card:hover .recommended-card-arrow {
+      color: var(--accent);
+      transform: translate(4px, -4px);
+    }
+    .recommended-card-arrow svg {
+      width: 18px;
+      height: 18px;
+    }
+
     @media (prefers-reduced-motion: reduce) {
       * { animation: none !important; transition: none !important; }
     }
@@ -559,12 +819,34 @@
       <div class="container">
         <h1 class="page-title">Articles</h1>
         <p class="page-description">Thoughts on building, creating, and living.</p>
+
+        <div class="search-container">
+          <div class="search-input-wrapper">
+            <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+            </svg>
+            <input type="text" class="search-input" id="searchInput" placeholder="Search articles..." aria-label="Search articles">
+            <button class="search-clear" id="searchClear" aria-label="Clear search">&times;</button>
+          </div>
+          <p class="search-results-info" id="searchResultsInfo"></p>
+        </div>
       </div>
     </div>
 
     <section class="articles-section">
       <div class="container">
         <div class="articles-list" id="articlesList"></div>
+        <div class="pagination" id="pagination"></div>
+      </div>
+    </section>
+
+    <section class="recommended-section">
+      <div class="container">
+        <div class="recommended-header">
+          <h2 class="recommended-title">Recommended Reading</h2>
+          <p class="recommended-description">Articles from my co-founders and others I find insightful.</p>
+        </div>
+        <div class="recommended-grid" id="recommendedGrid"></div>
       </div>
     </section>
   </main>
@@ -615,17 +897,6 @@
         featured: true
       },
       {
-        title: "Lived It, Loved It: Farewell Helicarrier",
-        slug: "farewell-helicarrier",
-        date: "2022-10-01",
-        excerpt: "Today's my last day at Helicarrier. I joined in 2018, and I'm incredibly proud of how much growth has happened since then. I'm leaving to continue growing Accrue.",
-        author: "Zino Asamaige",
-        readTime: "3 min read",
-        tags: ["Career", "Helicarrier", "Reflection"],
-        thumbnail: "https://miro.medium.com/v2/resize:fit:1400/format:webp/1*Zyf7Z5XOLEM0i4JX4-x4BA.jpeg",
-        externalUrl: "https://medium.com/@ererezino/lived-it-loved-it-farewell-helicarrier-f112fd1c6302"
-      },
-      {
         title: "Accrue's Big Day!",
         slug: "accrues-big-day",
         date: "2022-01-26",
@@ -636,15 +907,15 @@
         thumbnail: "/articles/accrues-big-day/image.png"
       },
       {
-        title: "It's the 12th!",
-        slug: "its-the-12th",
-        date: "2019-12-12",
-        excerpt: "One year ago today, I joined BuyCoins, and it's been the most amazing and busiest twelve months of my professional career.",
+        title: "Lived It, Loved It: Farewell Helicarrier",
+        slug: "farewell-helicarrier",
+        date: "2022-01-01",
+        excerpt: "Today's my last day at Helicarrier. I joined in 2018, and I'm incredibly proud of how much growth has happened since then. I'm leaving to continue growing Accrue.",
         author: "Zino Asamaige",
-        readTime: "4 min read",
-        tags: ["Career", "BuyCoins"],
-        thumbnail: null,
-        externalUrl: "https://medium.com/buycoins/its-the-12th-e62f34e82c07"
+        readTime: "3 min read",
+        tags: ["Career", "Helicarrier", "Reflection"],
+        thumbnail: "https://miro.medium.com/v2/resize:fit:1400/format:webp/1*Zyf7Z5XOLEM0i4JX4-x4BA.jpeg",
+        externalUrl: "https://medium.com/@ererezino/lived-it-loved-it-farewell-helicarrier-f112fd1c6302"
       },
       {
         title: "Trading USDT Peer-to-Peer - Now Available on BuyCoins!",
@@ -656,8 +927,64 @@
         tags: ["Product", "BuyCoins", "Crypto"],
         thumbnail: null,
         externalUrl: "https://medium.com/buycoins/trading-usdt-peer-to-peer-now-available-on-buycoins-44b08d7fae2b"
+      },
+      {
+        title: "It's the 12th!",
+        slug: "its-the-12th",
+        date: "2019-12-12",
+        excerpt: "One year ago today, I joined BuyCoins, and it's been the most amazing and busiest twelve months of my professional career.",
+        author: "Zino Asamaige",
+        readTime: "4 min read",
+        tags: ["Career", "BuyCoins"],
+        thumbnail: null,
+        externalUrl: "https://medium.com/buycoins/its-the-12th-e62f34e82c07"
       }
     ];
+
+    // Recommended Reading Data
+    var RECOMMENDED = [
+      {
+        title: "Stablecoin Agents Will Onboard Billions of Africans to the Global Economy",
+        author: "Clinton Mbah",
+        authorInitials: "CM",
+        source: "clintonmbah.com",
+        url: "https://www.clintonmbah.com/posts/stablecoin_agents_will_onboard_billions_of_africans_to_the_global_economy.html",
+        excerpt: "How a network of local agents using stablecoins can bring financial services to millions who have been excluded from the formal banking system.",
+        tags: ["Fintech", "Africa", "Stablecoins"]
+      },
+      {
+        title: "The Accrue Master Plan",
+        author: "Clinton Mbah",
+        authorInitials: "CM",
+        source: "clintonmbah.com",
+        url: "https://www.clintonmbah.com/posts/the_accrue_master_plan.html",
+        excerpt: "Our vision for building the financial infrastructure that Africa deserves, starting with cross-border payments and expanding into savings, credit, and more.",
+        tags: ["Accrue", "Vision", "Startups"]
+      },
+      {
+        title: "Notes from Raising Accrue's $1.58M Seed Round",
+        author: "Adesuwa Omoruyi",
+        authorInitials: "AO",
+        source: "Medium",
+        url: "https://medium.com/@adesuwaomoruyi/notes-from-raising-accrues-1-58m-seed-round-817205faab12",
+        excerpt: "Lessons learned from raising our seed round - the pitches, the rejections, the wins, and everything in between.",
+        tags: ["Fundraising", "Startups", "Lessons"]
+      },
+      {
+        title: "When We Realized Our Startup Idea Wasn't Going to Work",
+        author: "Adesuwa Omoruyi",
+        authorInitials: "AO",
+        source: "Medium",
+        url: "https://medium.com/@adesuwaomoruyi/when-we-realized-our-startup-idea-wasnt-going-to-work-100d45d2d280",
+        excerpt: "The pivot story - how we realized our original idea wasn't working and what we did about it.",
+        tags: ["Startups", "Pivot", "Lessons"]
+      }
+    ];
+
+    // State
+    var currentPage = 1;
+    var articlesPerPage = 6;
+    var searchQuery = '';
 
     // Helper functions
     function esc(str) {
@@ -670,7 +997,6 @@
       return date.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
     }
 
-    // Check if article is recent (within 30 days)
     function isRecent(dateStr) {
       var articleDate = new Date(dateStr);
       var now = new Date();
@@ -678,10 +1004,8 @@
       return diffDays <= 30;
     }
 
-    // Get icon SVG based on article tags
     function getArticleIcon(tags) {
       var tagStr = (tags || []).join(' ').toLowerCase();
-
       if (tagStr.indexOf('fintech') !== -1 || tagStr.indexOf('crypto') !== -1) {
         return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 1v22M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>';
       }
@@ -691,27 +1015,55 @@
       if (tagStr.indexOf('product') !== -1) {
         return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>';
       }
-      // Default article icon
       return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><line x1="10" y1="9" x2="8" y2="9"/></svg>';
+    }
+
+    // Search filter
+    function filterArticles(articles, query) {
+      if (!query) return articles;
+      var q = query.toLowerCase();
+      return articles.filter(function(a) {
+        return a.title.toLowerCase().indexOf(q) !== -1 ||
+               a.excerpt.toLowerCase().indexOf(q) !== -1 ||
+               (a.tags && a.tags.some(function(t) { return t.toLowerCase().indexOf(q) !== -1; }));
+      });
     }
 
     // Render articles
     function renderArticles() {
       var list = document.getElementById('articlesList');
+      var paginationEl = document.getElementById('pagination');
+      var searchInfo = document.getElementById('searchResultsInfo');
 
       if (!ARTICLES || ARTICLES.length === 0) {
         list.innerHTML = '<div class="empty-state"><h3 class="empty-state-title">Coming soon</h3><p class="empty-state-text">I\'m working on some articles. Check back later.</p></div>';
+        paginationEl.innerHTML = '';
         return;
       }
 
       var sorted = ARTICLES.slice().sort(function(a, b) { return new Date(b.date) - new Date(a.date); });
-      var featured = sorted.find(function(a) { return a.featured; });
-      var regular = sorted.filter(function(a) { return !a.featured; });
+      var filtered = filterArticles(sorted, searchQuery);
+
+      // Show search results info
+      if (searchQuery) {
+        searchInfo.textContent = filtered.length + ' result' + (filtered.length !== 1 ? 's' : '') + ' for "' + searchQuery + '"';
+        searchInfo.classList.add('visible');
+      } else {
+        searchInfo.classList.remove('visible');
+      }
+
+      var featured = searchQuery ? null : filtered.find(function(a) { return a.featured; });
+      var regular = searchQuery ? filtered : filtered.filter(function(a) { return !a.featured; });
+
+      // Pagination
+      var totalPages = Math.ceil(regular.length / articlesPerPage);
+      var startIndex = (currentPage - 1) * articlesPerPage;
+      var paginatedArticles = regular.slice(startIndex, startIndex + articlesPerPage);
 
       var html = '';
 
-      // Render featured article as hero
-      if (featured) {
+      // Render featured article as hero (only on page 1 without search)
+      if (featured && currentPage === 1 && !searchQuery) {
         var articleUrl = featured.externalUrl || '/articles/' + esc(featured.slug) + '/';
         var isExternal = !!featured.externalUrl;
         var recent = isRecent(featured.date);
@@ -738,31 +1090,121 @@
       }
 
       // Render regular articles
-      html += regular.map(function(article) {
-        var articleUrl = article.externalUrl || '/articles/' + esc(article.slug) + '/';
-        var isExternal = !!article.externalUrl;
-        var recent = isRecent(article.date);
+      if (paginatedArticles.length === 0 && searchQuery) {
+        html += '<div class="empty-state"><h3 class="empty-state-title">No results found</h3><p class="empty-state-text">Try a different search term.</p></div>';
+      } else {
+        html += paginatedArticles.map(function(article) {
+          var articleUrl = article.externalUrl || '/articles/' + esc(article.slug) + '/';
+          var isExternal = !!article.externalUrl;
+          var recent = isRecent(article.date);
 
-        return '<a href="' + articleUrl + '" ' + (isExternal ? 'target="_blank" rel="noopener"' : '') + ' class="articles-article-card">' +
-          '<div class="articles-article-card-content">' +
-            '<div class="articles-article-card-meta">' +
-              '<span>' + formatDate(article.date) + '</span>' +
-              (article.readTime ? '<span>' + esc(article.readTime) + '</span>' : '') +
-              (isExternal ? '<span class="external-badge">Medium</span>' : '') +
-              (recent ? '<span class="new-badge">New</span>' : '') +
+          return '<a href="' + articleUrl + '" ' + (isExternal ? 'target="_blank" rel="noopener"' : '') + ' class="articles-article-card">' +
+            '<div class="articles-article-card-content">' +
+              '<div class="articles-article-card-meta">' +
+                '<span>' + formatDate(article.date) + '</span>' +
+                (article.readTime ? '<span>' + esc(article.readTime) + '</span>' : '') +
+                (isExternal ? '<span class="external-badge">Medium</span>' : '') +
+                (recent ? '<span class="new-badge">New</span>' : '') +
+              '</div>' +
+              '<h2 class="articles-article-card-title">' + esc(article.title) + '</h2>' +
+              '<p class="articles-article-card-excerpt">' + esc(article.excerpt) + '</p>' +
+              (article.tags && article.tags.length ? '<div class="articles-article-card-tags">' + article.tags.map(function(tag) { return '<span class="tag">' + esc(tag) + '</span>'; }).join('') + '</div>' : '') +
             '</div>' +
-            '<h2 class="articles-article-card-title">' + esc(article.title) + '</h2>' +
-            '<p class="articles-article-card-excerpt">' + esc(article.excerpt) + '</p>' +
-            (article.tags && article.tags.length ? '<div class="articles-article-card-tags">' + article.tags.map(function(tag) { return '<span class="tag">' + esc(tag) + '</span>'; }).join('') + '</div>' : '') +
+            (article.thumbnail
+              ? '<div class="articles-article-card-thumbnail"><img src="' + esc(article.thumbnail) + '" alt="" width="200" height="200" loading="lazy"></div>'
+              : '<div class="articles-article-card-icon">' + getArticleIcon(article.tags) + '</div>') +
+          '</a>';
+        }).join('');
+      }
+
+      list.innerHTML = html;
+
+      // Render pagination
+      if (totalPages > 1 && !searchQuery) {
+        var paginationHtml = '';
+        paginationHtml += '<button class="pagination-btn" onclick="goToPage(' + (currentPage - 1) + ')" ' + (currentPage === 1 ? 'disabled' : '') + '>' +
+          '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg>' +
+        '</button>';
+
+        for (var i = 1; i <= totalPages; i++) {
+          if (i === 1 || i === totalPages || (i >= currentPage - 1 && i <= currentPage + 1)) {
+            paginationHtml += '<button class="pagination-btn' + (i === currentPage ? ' active' : '') + '" onclick="goToPage(' + i + ')">' + i + '</button>';
+          } else if (i === currentPage - 2 || i === currentPage + 2) {
+            paginationHtml += '<span class="pagination-info">...</span>';
+          }
+        }
+
+        paginationHtml += '<button class="pagination-btn" onclick="goToPage(' + (currentPage + 1) + ')" ' + (currentPage === totalPages ? 'disabled' : '') + '>' +
+          '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>' +
+        '</button>';
+
+        paginationEl.innerHTML = paginationHtml;
+      } else {
+        paginationEl.innerHTML = '';
+      }
+    }
+
+    function goToPage(page) {
+      currentPage = page;
+      renderArticles();
+      document.querySelector('.articles-section').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    // Render recommended reading
+    function renderRecommended() {
+      var grid = document.getElementById('recommendedGrid');
+      if (!RECOMMENDED || RECOMMENDED.length === 0) {
+        grid.parentElement.style.display = 'none';
+        return;
+      }
+
+      var html = RECOMMENDED.map(function(item) {
+        return '<a href="' + esc(item.url) + '" target="_blank" rel="noopener" class="recommended-card">' +
+          '<div class="recommended-card-author">' +
+            '<div class="recommended-card-avatar">' + esc(item.authorInitials) + '</div>' +
+            '<div class="recommended-card-author-info">' +
+              '<div class="recommended-card-author-name">' + esc(item.author) + '</div>' +
+              '<div class="recommended-card-source">' + esc(item.source) + '</div>' +
+            '</div>' +
           '</div>' +
-          (article.thumbnail
-            ? '<div class="articles-article-card-thumbnail"><img src="' + esc(article.thumbnail) + '" alt="" width="200" height="200" loading="lazy"></div>'
-            : '<div class="articles-article-card-icon">' + getArticleIcon(article.tags) + '</div>') +
+          '<h3 class="recommended-card-title">' + esc(item.title) + '</h3>' +
+          '<p class="recommended-card-excerpt">' + esc(item.excerpt) + '</p>' +
+          '<div class="recommended-card-footer">' +
+            (item.tags && item.tags.length ? '<div class="recommended-card-tags">' + item.tags.map(function(tag) { return '<span class="tag">' + esc(tag) + '</span>'; }).join('') + '</div>' : '<div></div>') +
+            '<span class="recommended-card-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg></span>' +
+          '</div>' +
         '</a>';
       }).join('');
 
-      list.innerHTML = html;
+      grid.innerHTML = html;
     }
+
+    // Search functionality
+    var searchInput = document.getElementById('searchInput');
+    var searchClear = document.getElementById('searchClear');
+    var searchTimeout;
+
+    searchInput.addEventListener('input', function() {
+      clearTimeout(searchTimeout);
+      var value = searchInput.value.trim();
+
+      searchClear.classList.toggle('visible', value.length > 0);
+
+      searchTimeout = setTimeout(function() {
+        searchQuery = value;
+        currentPage = 1;
+        renderArticles();
+      }, 300);
+    });
+
+    searchClear.addEventListener('click', function() {
+      searchInput.value = '';
+      searchQuery = '';
+      currentPage = 1;
+      searchClear.classList.remove('visible');
+      renderArticles();
+      searchInput.focus();
+    });
 
     // Theme Toggle
     function setTheme(dark) {
@@ -813,7 +1255,6 @@
       }
     }
 
-    // Escape key to close menu
     document.addEventListener('keydown', function(e) {
       if (e.key === 'Escape' && mm && mm.classList.contains('open')) {
         closeMobileMenu();
@@ -829,6 +1270,7 @@
 
     // Initialize
     renderArticles();
+    renderRecommended();
   </script>
 </body>
 </html>
