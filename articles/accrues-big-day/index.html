@@ -1269,6 +1269,27 @@
     setupShareButton(shareBtnTop, shareDropdownTop);
     setupShareButton(shareBtnBottom, shareDropdownBottom);
 
+    // Dynamically reposition open dropdowns on scroll
+    function updateDropdownPosition(dropdown) {
+      if (!dropdown.classList.contains('open')) return;
+      const btn = dropdown.previousElementSibling;
+      if (!btn) return;
+
+      const btnRect = btn.getBoundingClientRect();
+      const spaceAbove = btnRect.top;
+      const dropdownHeight = 320;
+
+      if (spaceAbove < dropdownHeight) {
+        dropdown.classList.add('open-below');
+      } else {
+        dropdown.classList.remove('open-below');
+      }
+    }
+
+    window.addEventListener('scroll', function() {
+      document.querySelectorAll('.share-dropdown.open').forEach(updateDropdownPosition);
+    }, { passive: true });
+
     // Close dropdown when clicking outside
     document.addEventListener('click', function(e) {
       document.querySelectorAll('.share-dropdown.open').forEach(dropdown => {
