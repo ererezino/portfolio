@@ -283,21 +283,13 @@
       opacity: 0.7;
     }
 
-    .sidebar-quote {
-      color: var(--accent);
-      font-family: Georgia, serif;
-      font-size: 24px;
-      line-height: 1;
-      margin-right: 4px;
-    }
-
     .sidebar-title {
       font-family: var(--font-sans);
       font-size: 15px;
       font-weight: 600;
       line-height: 1.4;
-      margin-bottom: 8px;
-      display: inline;
+      margin: 0 0 8px 0;
+      color: var(--text);
     }
 
     .sidebar-author {
@@ -1312,10 +1304,7 @@
 
         return '<a href="' + esc(item.url) + '" target="_blank" rel="noopener" class="sidebar-item">' +
           imageHtml +
-          '<div>' +
-            '<span class="sidebar-quote">"</span>' +
-            '<span class="sidebar-title">' + esc(item.title) + '</span>' +
-          '</div>' +
+          '<h3 class="sidebar-title">' + esc(item.title) + '</h3>' +
           '<div class="sidebar-meta">' +
             '<div class="sidebar-author">' +
               '<div class="sidebar-avatar">' + esc(item.authorInitials) + '</div>' +
