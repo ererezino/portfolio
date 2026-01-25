@@ -1050,6 +1050,61 @@
       color: var(--text-secondary);
     }
 
+    /* Recommended Reading */
+    .recommended-section {
+      margin-top: 64px;
+      padding-top: 48px;
+      border-top: 1px solid var(--border);
+    }
+    .recommended-title {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--text-tertiary);
+      margin-bottom: 24px;
+    }
+    .recommended-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+    }
+    @media (max-width: 600px) {
+      .recommended-grid { grid-template-columns: 1fr; }
+    }
+    .recommended-card {
+      border: 1px solid var(--border);
+      padding: 20px;
+      transition: all var(--transition);
+    }
+    .recommended-card:hover {
+      border-color: var(--text-secondary);
+      transform: translateY(-2px);
+    }
+    .recommended-card-meta {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-tertiary);
+      margin-bottom: 8px;
+    }
+    .recommended-card-title {
+      font-family: var(--font-serif);
+      font-size: 18px;
+      line-height: 1.3;
+      margin-bottom: 8px;
+    }
+    .recommended-card-author {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--text-secondary);
+    }
+    .recommended-card-author span {
+      color: var(--green);
+    }
+
     /* Article Footer */
     .article-footer {
       border-top: 1px solid var(--border);
@@ -1594,6 +1649,14 @@
                 </div>
               </div>
             </footer>
+
+            <!-- Recommended Reading -->
+            <section class="recommended-section">
+              <h3 class="recommended-title">Recommended Reading</h3>
+              <div class="recommended-grid" id="recommendedGrid">
+                <!-- Populated by JavaScript -->
+              </div>
+            </section>
           </div>
         </div>
       </div>
@@ -1713,6 +1776,56 @@
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
       graphics.forEach(g => g.classList.add('visible'));
     }
+
+    // Recommended Reading - Curated list excluding current article
+    const RECOMMENDED_ARTICLES = [
+      {
+        title: "Why I Walk",
+        url: "/articles/why-i-walk/",
+        date: "Jan 2026",
+        author: "Zino Asamaige"
+      },
+      {
+        title: "Accrue's Big Day!",
+        url: "/articles/accrues-big-day/",
+        date: "Jan 2022",
+        author: "Zino Asamaige"
+      },
+      {
+        title: "Stablecoin Agents Will Onboard Billions",
+        url: "https://www.clintonmbah.com/posts/stablecoin_agents_will_onboard_billions_of_africans_to_the_global_economy.html",
+        date: "2025",
+        author: "Clinton Mbah",
+        external: true
+      },
+      {
+        title: "When We Realized Our Startup Idea Wasn't Going to Work",
+        url: "https://medium.com/@adesuwaomoruyi/when-we-realized-our-startup-idea-wasnt-going-to-work-100d45d2d280",
+        date: "2024",
+        author: "Adesuwa Omoruyi",
+        external: true
+      }
+    ];
+
+    const currentSlug = 'why-im-building-accrue';
+    const filtered = RECOMMENDED_ARTICLES.filter(a => !a.url.includes(currentSlug)).slice(0, 4);
+    const grid = document.getElementById('recommendedGrid');
+
+    filtered.forEach(article => {
+      const card = document.createElement('a');
+      card.href = article.url;
+      card.className = 'recommended-card';
+      if (article.external) {
+        card.target = '_blank';
+        card.rel = 'noopener noreferrer';
+      }
+      card.innerHTML = `
+        <div class="recommended-card-meta">${article.date}${article.external ? ' &middot; External' : ''}</div>
+        <div class="recommended-card-title">${article.title}</div>
+        <div class="recommended-card-author">by <span>${article.author}</span></div>
+      `;
+      grid.appendChild(card);
+    });
   </script>
 </body>
 </html>
