@@ -707,7 +707,7 @@
             (article.tags && article.tags.length ? '<div class="articles-article-card-tags">' + article.tags.map(function(tag) { return '<span class="tag">' + esc(tag) + '</span>'; }).join('') + '</div>' : '') +
           '</div>' +
           (article.thumbnail
-            ? '<div class="articles-article-card-thumbnail"><img src="' + esc(article.thumbnail) + '" alt="" loading="lazy"></div>'
+            ? '<div class="articles-article-card-thumbnail"><img src="' + esc(article.thumbnail) + '" alt="" width="200" height="200" loading="lazy"></div>'
             : '<div class="articles-article-card-icon">' + getArticleIcon(article.tags) + '</div>') +
         '</a>';
       }).join('');
