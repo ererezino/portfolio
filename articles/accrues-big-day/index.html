@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Accrue's Big Day! - Zino Asamaige</title>
+  <title>Why I'm Building Accrue - Zino Asamaige</title>
 
   <!-- Prevent FOUC -->
   <script>
@@ -17,37 +17,38 @@
     })();
   </script>
 
-  <meta name="description" content="Today's a big day for everyone on the Accrue team. We're officially coming out of private beta and launching to the general public!">
+  <meta name="description" content="The agent model already exists. It just needs better rails.">
   <meta name="author" content="Zino Asamaige">
-  <link rel="canonical" href="https://www.ererezino.com/articles/accrues-big-day/" />
+  <link rel="canonical" href="https://www.ererezino.com/articles/why-im-building-accrue/?v=2" />
 
   <!-- Open Graph -->
-  <meta property="og:title" content="Accrue's Big Day! - Zino Asamaige" />
-  <meta property="og:description" content="Today's a big day for everyone on the Accrue team. We're officially coming out of private beta and launching to the general public!" />
+  <meta property="og:title" content="Why I'm Building Accrue - Zino Asamaige" />
+  <meta property="og:description" content="The agent model already exists. It just needs better rails." />
   <meta property="og:type" content="article" />
-  <meta property="og:url" content="https://www.ererezino.com/articles/accrues-big-day/" />
-  <meta property="og:image" content="https://www.ererezino.com/articles/accrues-big-day/image.png" />
-  <meta property="og:image:width" content="1200" />
-  <meta property="og:image:height" content="800" />
+  <meta property="og:url" content="https://www.ererezino.com/articles/why-im-building-accrue/?v=2" />
+  <meta property="og:image" content="https://www.ererezino.com/articles/why-im-building-accrue/team.png" />
+  <meta property="og:image:width" content="1343" />
+  <meta property="og:image:height" content="822" />
   <meta property="og:site_name" content="Zino Asamaige" />
 
   <!-- Twitter Card -->
+  <!-- Note: Create team-social.png at 1200x630 pixels for optimal Twitter/social display -->
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:site" content="@ererezino" />
-  <meta name="twitter:title" content="Accrue's Big Day!" />
-  <meta name="twitter:description" content="Today's a big day for everyone on the Accrue team. We're officially coming out of private beta and launching to the general public!" />
-  <meta name="twitter:image" content="https://www.ererezino.com/articles/accrues-big-day/image.png" />
+  <meta name="twitter:title" content="Why I'm Building Accrue" />
+  <meta name="twitter:description" content="The agent model already exists. It just needs better rails." />
+  <meta name="twitter:image" content="https://www.ererezino.com/articles/why-im-building-accrue/og-image-2025.png" />
 
   <!-- JSON-LD Structured Data -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
     "@type": "Article",
-    "headline": "Accrue's Big Day!",
-    "description": "Today's a big day for everyone on the Accrue team. We're officially coming out of private beta and launching to the general public!",
-    "image": "https://www.ererezino.com/articles/accrues-big-day/image.png",
-    "datePublished": "2022-01-26",
-    "dateModified": "2022-01-26",
+    "headline": "Why I'm Building Accrue",
+    "description": "The agent model already exists. It just needs better rails.",
+    "image": "https://www.ererezino.com/articles/why-im-building-accrue/team.png",
+    "datePublished": "2026-01-26",
+    "dateModified": "2026-01-26",
     "author": {
       "@type": "Person",
       "name": "Zino Asamaige",
@@ -59,7 +60,7 @@
     },
     "mainEntityOfPage": {
       "@type": "WebPage",
-      "@id": "https://www.ererezino.com/articles/accrues-big-day/"
+      "@id": "https://www.ererezino.com/articles/why-im-building-accrue/"
     }
   }
   </script>
@@ -433,26 +434,882 @@
       background: var(--border);
       margin: 48px 0;
     }
-
-    /* Article Image */
-    .article-image {
-      margin: 32px 0;
-      border-radius: 8px;
-      overflow: hidden;
-      border: 1px solid var(--border);
-    }
-    .article-image img {
-      width: 100%;
-      height: auto;
-    }
-    .article-image figcaption {
+    .article-body h2 {
       font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--text);
+      margin-top: 56px;
+      margin-bottom: 24px;
+      scroll-margin-top: 100px;
+    }
+
+    /* Hero Image */
+    .article-hero {
+      width: 100%;
+      max-height: 500px;
+      overflow: hidden;
+      margin-bottom: 0;
+      opacity: 0;
+      animation: fadeInUp 0.6s ease 0.3s forwards;
+    }
+    .article-hero img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center 30%;
+    }
+
+    /* Sticky Table of Contents */
+    .toc-wrapper {
+      position: fixed;
+      left: max(20px, calc((100vw - 720px) / 2 - 220px));
+      top: 140px;
+      width: 180px;
+      z-index: 50;
+      opacity: 0;
+      transform: translateX(-10px);
+      transition: opacity 0.3s ease, transform 0.3s ease;
+      pointer-events: none;
+      /* Background for readability over hero image */
+      background: var(--bg);
+      padding: 16px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    }
+    [data-theme="dark"] .toc-wrapper {
+      background: rgba(10, 10, 10, 0.9);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    }
+    .toc-wrapper.visible {
+      opacity: 1;
+      transform: translateX(0);
+      pointer-events: auto;
+    }
+    .toc-label {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--text-tertiary);
+      margin-bottom: 12px;
+    }
+    .toc-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    .toc-item {
+      margin-bottom: 8px;
+    }
+    .toc-link {
+      font-family: var(--font-sans);
       font-size: 12px;
       color: var(--text-tertiary);
-      text-align: center;
-      padding: 12px 16px;
-      background: var(--bg-alt);
+      text-decoration: none;
+      display: block;
+      padding: 4px 0 4px 12px;
+      border-left: 2px solid transparent;
+      transition: color 0.2s ease, border-color 0.2s ease;
+      line-height: 1.4;
+    }
+    .toc-link:hover {
+      color: var(--text);
+    }
+    .toc-link.active {
+      color: var(--text);
+      border-left-color: var(--green);
+    }
+    @media (max-width: 1100px) {
+      .toc-wrapper {
+        display: none;
+      }
+    }
+
+    /* Reading Progress Enhancement */
+    .reading-progress-info {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 8px 16px;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--text-tertiary);
+      z-index: 100;
+      opacity: 0;
+      transform: translateY(10px);
+      transition: opacity 0.3s ease, transform 0.3s ease;
+      pointer-events: none;
+    }
+    .reading-progress-info.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .reading-progress-info span {
+      color: var(--text);
+      font-weight: 600;
+    }
+
+    /* Author Card - Medium Style */
+    .author-card {
+      display: flex;
+      gap: 16px;
+      align-items: flex-start;
+      padding: 24px 0;
       border-top: 1px solid var(--border);
+      margin: 48px 0 0 0;
+    }
+    .author-avatar {
+      flex-shrink: 0;
+    }
+    .author-avatar img {
+      width: 72px;
+      height: 72px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+    .author-info {
+      flex: 1;
+      min-width: 0;
+    }
+    .author-written-by {
+      font-family: var(--font-sans);
+      font-size: 12px;
+      color: var(--text-tertiary);
+      margin: 0 0 4px 0;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .author-info h4 {
+      font-family: var(--font-sans);
+      font-size: 18px;
+      font-weight: 700;
+      margin: 0 0 8px 0;
+      color: var(--text);
+    }
+    .author-bio {
+      font-family: var(--font-sans);
+      font-size: 14px;
+      color: var(--text-secondary);
+      line-height: 1.5;
+      margin: 0;
+    }
+    .author-social {
+      display: flex;
+      gap: 8px;
+      flex-shrink: 0;
+      align-self: flex-start;
+      margin-top: 4px;
+    }
+    .author-social a {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      color: var(--text-tertiary);
+      transition: color 0.2s ease;
+    }
+    .author-social a:hover {
+      color: var(--text);
+    }
+    .author-social svg {
+      width: 20px;
+      height: 20px;
+    }
+    @media (max-width: 500px) {
+      .author-card {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+      }
+      .author-avatar img {
+        width: 56px;
+        height: 56px;
+      }
+      .author-info h4 {
+        font-size: 16px;
+      }
+      .author-social {
+        margin-top: 12px;
+      }
+    }
+
+    /* Pull Quote */
+    .pull-quote {
+      font-family: var(--font-serif);
+      font-size: 22px;
+      font-style: italic;
+      line-height: 1.5;
+      color: var(--text);
+      margin: 48px 0;
+      padding-left: 24px;
+      border-left: 3px solid var(--green);
+      position: relative;
+    }
+
+    /* Highlight Box */
+    .highlight-box {
+      background: var(--bg-alt);
+      border: 1px solid var(--border);
+      padding: 32px;
+      margin: 48px 0;
+      position: relative;
+      overflow: hidden;
+    }
+    .highlight-box::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 4px;
+      height: 100%;
+      background: linear-gradient(180deg, var(--green), var(--violet));
+    }
+    .highlight-box p {
+      font-size: 15px;
+      margin-bottom: 0;
+    }
+    .highlight-box p + p { margin-top: 16px; }
+
+    /* Graphics - scroll animation */
+    .article-graphic {
+      margin: 48px 0;
+      background: var(--bg-alt);
+      border: 1px solid var(--border);
+      padding: 32px;
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    .article-graphic.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .graphic-label {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--text-tertiary);
+      text-align: center;
+      margin-bottom: 24px;
+    }
+
+    /* Journey Timeline */
+    .journey-timeline {
+      position: relative;
+      padding-left: 24px;
+    }
+    .journey-timeline::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 8px;
+      bottom: 8px;
+      width: 2px;
+      background: linear-gradient(180deg, var(--green), var(--border) 30%, var(--border) 70%, var(--green));
+    }
+    .journey-item {
+      position: relative;
+      padding-bottom: 24px;
+    }
+    .journey-item:last-child {
+      padding-bottom: 0;
+    }
+    .journey-item::before {
+      content: '';
+      position: absolute;
+      left: -28px;
+      top: 6px;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--bg-alt);
+      border: 2px solid var(--border);
+    }
+    .journey-item:first-child::before,
+    .journey-item:last-child::before {
+      background: var(--green);
+      border-color: var(--green);
+    }
+    .journey-year {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-tertiary);
+      margin-bottom: 4px;
+    }
+    .journey-item:first-child .journey-year,
+    .journey-item:last-child .journey-year {
+      color: var(--green);
+    }
+    .journey-title {
+      font-family: var(--font-mono);
+      font-size: 14px;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+    .journey-desc {
+      font-family: var(--font-sans);
+      font-size: 13px;
+      color: var(--text-secondary);
+      line-height: 1.5;
+    }
+
+    /* Flow */
+    .flow-steps {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+    }
+    @media (max-width: 600px) {
+      .flow-steps { flex-direction: column; align-items: center; gap: 20px; }
+    }
+    .flow-step {
+      flex: 1;
+      text-align: center;
+      max-width: 160px;
+    }
+    .flow-step-num {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--text-tertiary);
+      margin-bottom: 6px;
+    }
+    .flow-step-title {
+      font-family: var(--font-mono);
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+    .flow-step-icon {
+      width: 56px;
+      height: 56px;
+      margin: 0 auto 12px;
+      border: 1px solid var(--border);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--bg);
+      transition: border-color var(--transition), transform var(--transition);
+    }
+    .flow-step:hover .flow-step-icon {
+      border-color: var(--green);
+      transform: scale(1.05);
+    }
+    .flow-step-icon svg { width: 24px; height: 24px; color: var(--text); }
+    .flow-step-text {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--text-secondary);
+      line-height: 1.5;
+    }
+    .flow-step-text strong {
+      display: block;
+      color: var(--text);
+      margin-top: 4px;
+    }
+    .flow-arrow {
+      color: var(--text-tertiary);
+      font-size: 20px;
+      margin-top: 50px;
+      opacity: 0.5;
+    }
+    @media (max-width: 600px) {
+      .flow-arrow { transform: rotate(90deg); margin: 0; }
+    }
+    .flow-compare {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-top: 24px;
+      padding-top: 24px;
+      border-top: 1px solid var(--border);
+    }
+    @media (max-width: 400px) {
+      .flow-compare { grid-template-columns: 1fr; }
+    }
+    .compare-box {
+      padding: 20px;
+      border: 1px solid var(--border);
+      text-align: center;
+      background: var(--bg);
+      transition: border-color var(--transition), transform var(--transition);
+    }
+    .compare-box:hover { transform: translateY(-2px); }
+    .compare-box.highlight {
+      border-color: var(--green);
+      box-shadow: 0 0 0 1px var(--green);
+    }
+    .compare-label {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--text-tertiary);
+      margin-bottom: 6px;
+    }
+    .compare-box.highlight .compare-label { color: var(--green); }
+    .compare-value {
+      font-family: var(--font-mono);
+      font-size: 13px;
+      font-weight: 700;
+    }
+    .compare-detail {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      color: var(--text-tertiary);
+      margin-top: 4px;
+    }
+
+    /* Stats */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1px;
+      background: var(--border);
+    }
+    .stat-box {
+      background: var(--bg);
+      padding: 28px 16px;
+      text-align: center;
+    }
+    .stat-num {
+      font-family: var(--font-mono);
+      font-size: 36px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      line-height: 1;
+      margin-bottom: 8px;
+      background: linear-gradient(135deg, var(--text), var(--text-secondary));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .stat-label {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--text-tertiary);
+      line-height: 1.4;
+    }
+    .stats-footer {
+      text-align: center;
+      padding-top: 24px;
+      margin-top: 24px;
+      border-top: 1px solid var(--border);
+    }
+    .stats-footer blockquote {
+      font-family: var(--font-serif);
+      font-size: 18px;
+      font-style: italic;
+      margin-bottom: 8px;
+    }
+    .stats-footer cite {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      color: var(--text-tertiary);
+      font-style: normal;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    /* Market Stats */
+    .market-stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+    @media (max-width: 500px) {
+      .market-stats { grid-template-columns: 1fr; }
+    }
+    .market-stat {
+      text-align: center;
+      padding: 20px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+    }
+    .market-stat-num {
+      font-family: var(--font-mono);
+      font-size: 28px;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 4px;
+    }
+    .market-stat-label {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-tertiary);
+    }
+    .market-note {
+      text-align: center;
+      margin-top: 16px;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--text-secondary);
+    }
+
+    /* Forces */
+    .forces-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .force-item {
+      display: flex;
+      gap: 16px;
+      padding: 20px;
+      border: 1px solid var(--border);
+      background: var(--bg);
+      transition: border-color var(--transition), transform var(--transition);
+    }
+    .force-item:hover {
+      border-color: var(--text-secondary);
+      transform: translateX(4px);
+    }
+    .force-num {
+      width: 32px;
+      height: 32px;
+      border: 2px solid var(--text);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-mono);
+      font-size: 13px;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+    .force-content h3 {
+      font-family: var(--font-mono);
+      font-size: 15px;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+    .force-content p {
+      font-family: var(--font-sans);
+      font-size: 13px;
+      color: var(--text-secondary);
+      line-height: 1.6;
+      margin: 0;
+    }
+    .forces-center { text-align: center; margin-top: 20px; }
+    .forces-badge {
+      display: inline-block;
+      padding: 12px 28px;
+      border: 2px solid var(--text);
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      transition: background var(--transition), color var(--transition);
+    }
+    .forces-badge:hover {
+      background: var(--text);
+      color: var(--bg);
+    }
+
+    /* Timeline */
+    .timeline {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: relative;
+      padding: 20px 0;
+    }
+    .timeline::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 30px;
+      right: 30px;
+      height: 2px;
+      background: linear-gradient(90deg, var(--green), var(--border), var(--border), var(--border), var(--border));
+    }
+    @media (max-width: 500px) {
+      .timeline { flex-wrap: wrap; gap: 16px; justify-content: center; }
+      .timeline::before { display: none; }
+    }
+    .timeline-point {
+      text-align: center;
+      position: relative;
+      background: var(--bg-alt);
+      padding: 0 8px;
+    }
+    .timeline-dot {
+      width: 14px;
+      height: 14px;
+      border: 2px solid var(--text);
+      border-radius: 50%;
+      margin: 0 auto 10px;
+      background: var(--bg-alt);
+      transition: background var(--transition), transform var(--transition);
+    }
+    .timeline-point:hover .timeline-dot { transform: scale(1.2); }
+    .timeline-point:first-child .timeline-dot {
+      background: var(--green);
+      border-color: var(--green);
+      box-shadow: 0 0 0 4px rgba(0, 210, 106, 0.2);
+    }
+    .timeline-label {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-tertiary);
+    }
+    .timeline-point:first-child .timeline-label {
+      color: var(--text);
+      font-weight: 700;
+    }
+    .timeline-caption {
+      text-align: center;
+      margin-top: 20px;
+      font-family: var(--font-mono);
+      font-size: 12px;
+      color: var(--text-secondary);
+    }
+
+    /* Longer View - Trade Comparison */
+    .trade-comparison {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+    @media (max-width: 500px) {
+      .trade-comparison { grid-template-columns: 1fr; }
+    }
+    .trade-region {
+      text-align: center;
+      padding: 24px 16px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      transition: border-color var(--transition), transform var(--transition);
+    }
+    .trade-region:hover {
+      border-color: var(--text-secondary);
+      transform: translateY(-2px);
+    }
+    .trade-region.highlight {
+      border-color: var(--green);
+      border-width: 2px;
+    }
+    .trade-region-name {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--text-tertiary);
+      margin-bottom: 8px;
+    }
+    .trade-region.highlight .trade-region-name {
+      color: var(--green);
+    }
+    .trade-region-percent {
+      font-family: var(--font-mono);
+      font-size: 36px;
+      font-weight: 700;
+      color: var(--text);
+      line-height: 1;
+      margin-bottom: 4px;
+    }
+    .trade-region.highlight .trade-region-percent {
+      color: var(--green);
+    }
+    .trade-region-label {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      color: var(--text-tertiary);
+    }
+    .trade-divider {
+      text-align: center;
+      padding: 20px 0;
+      position: relative;
+    }
+    .trade-divider::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 50%;
+      height: 1px;
+      background: var(--border);
+    }
+    .trade-divider-text {
+      display: inline-block;
+      background: var(--bg-alt);
+      padding: 8px 16px;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--text-secondary);
+      position: relative;
+    }
+    .infra-vision {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .infra-layer {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 16px 20px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      transition: all var(--transition);
+    }
+    .infra-layer:hover {
+      border-color: var(--text-secondary);
+      transform: translateX(4px);
+    }
+    .infra-layer.active {
+      border-color: var(--green);
+      border-width: 2px;
+      background: rgba(0, 210, 106, 0.05);
+    }
+    .infra-icon {
+      width: 40px;
+      height: 40px;
+      border: 2px solid var(--border);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .infra-layer.active .infra-icon {
+      border-color: var(--green);
+      background: var(--green);
+    }
+    .infra-icon svg {
+      width: 20px;
+      height: 20px;
+      color: var(--text-tertiary);
+    }
+    .infra-layer.active .infra-icon svg {
+      color: var(--bg);
+    }
+    .infra-content {
+      flex: 1;
+    }
+    .infra-title {
+      font-family: var(--font-mono);
+      font-size: 13px;
+      font-weight: 700;
+      margin-bottom: 2px;
+    }
+    .infra-layer.active .infra-title {
+      color: var(--green);
+    }
+    .infra-desc {
+      font-family: var(--font-sans);
+      font-size: 12px;
+      color: var(--text-tertiary);
+    }
+    .infra-status {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      padding: 4px 10px;
+      border: 1px solid var(--border);
+      color: var(--text-tertiary);
+    }
+    .infra-layer.active .infra-status {
+      border-color: var(--green);
+      color: var(--green);
+      background: rgba(0, 210, 106, 0.1);
+    }
+    .infra-footer {
+      text-align: center;
+      margin-top: 20px;
+      padding-top: 20px;
+      border-top: 1px solid var(--border);
+    }
+    .infra-footer-text {
+      font-family: var(--font-serif);
+      font-size: 16px;
+      font-style: italic;
+      color: var(--text-secondary);
+    }
+
+    /* Recommended Reading */
+    .recommended-section {
+      margin-top: 64px;
+      padding-top: 48px;
+      border-top: 1px solid var(--border);
+    }
+    .recommended-title {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--text-tertiary);
+      margin-bottom: 24px;
+    }
+    .recommended-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+    }
+    @media (max-width: 600px) {
+      .recommended-grid { grid-template-columns: 1fr; }
+    }
+    .recommended-card {
+      border: 1px solid var(--border);
+      padding: 20px;
+      transition: all var(--transition);
+    }
+    .recommended-card:hover {
+      border-color: var(--text-secondary);
+      transform: translateY(-2px);
+    }
+    .recommended-card-meta {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-tertiary);
+      margin-bottom: 8px;
+    }
+    .recommended-card-title {
+      font-family: var(--font-serif);
+      font-size: 18px;
+      line-height: 1.3;
+      margin-bottom: 8px;
+    }
+    .recommended-card-author {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--text-secondary);
+    }
+    .recommended-card-author span {
+      color: var(--green);
     }
 
     /* Share Button */
@@ -572,67 +1429,15 @@
     .share-dropdown .instagram-icon { color: #E4405F; }
     .share-dropdown .copy-icon { color: var(--text-secondary); }
 
-    /* Recommended Reading */
-    .recommended-section {
-      margin-top: 64px;
-      padding-top: 48px;
-      border-top: 1px solid var(--border);
-    }
-    .recommended-title {
-      font-family: var(--font-mono);
-      font-size: 11px;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-      color: var(--text-tertiary);
-      margin-bottom: 24px;
-    }
-    .recommended-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 20px;
-    }
-    @media (max-width: 600px) {
-      .recommended-grid { grid-template-columns: 1fr; }
-    }
-    .recommended-card {
-      border: 1px solid var(--border);
-      padding: 20px;
-      transition: all var(--transition);
-    }
-    .recommended-card:hover {
-      border-color: var(--text-secondary);
-      transform: translateY(-2px);
-    }
-    .recommended-card-meta {
-      font-family: var(--font-mono);
-      font-size: 10px;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      color: var(--text-tertiary);
-      margin-bottom: 8px;
-    }
-    .recommended-card-title {
-      font-family: var(--font-serif);
-      font-size: 18px;
-      line-height: 1.3;
-      margin-bottom: 8px;
-    }
-    .recommended-card-author {
-      font-family: var(--font-mono);
-      font-size: 11px;
-      color: var(--text-secondary);
-    }
-    .recommended-card-author span {
-      color: var(--green);
-    }
-
     /* Footer */
     footer[role="contentinfo"] {
       padding: 64px 0 48px;
       border-top: 1px solid var(--border);
       background: var(--bg-alt);
       margin-top: 48px;
+    }
+    footer[role="contentinfo"] .container {
+      max-width: 1200px;
     }
     .footer-inner {
       display: flex;
@@ -827,135 +1632,6 @@
       border: 0;
     }
 
-    /* Hero Image */
-    .article-hero {
-      width: 100%;
-      max-height: 500px;
-      overflow: hidden;
-      margin-bottom: 0;
-      opacity: 0;
-      animation: fadeInUp 0.6s ease 0.3s forwards;
-    }
-    .article-hero img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      object-position: center 30%;
-    }
-
-    /* Reading Progress Enhancement */
-    .reading-progress-info {
-      position: fixed;
-      bottom: 24px;
-      right: 24px;
-      background: var(--bg);
-      border: 1px solid var(--border);
-      border-radius: 20px;
-      padding: 8px 16px;
-      font-family: var(--font-mono);
-      font-size: 11px;
-      color: var(--text-tertiary);
-      z-index: 100;
-      opacity: 0;
-      transform: translateY(10px);
-      transition: opacity 0.3s ease, transform 0.3s ease;
-      pointer-events: none;
-    }
-    .reading-progress-info.visible {
-      opacity: 1;
-      transform: translateY(0);
-    }
-    .reading-progress-info span {
-      color: var(--text);
-      font-weight: 600;
-    }
-
-    /* Author Card - Medium Style */
-    .author-card {
-      display: flex;
-      gap: 16px;
-      align-items: flex-start;
-      padding: 24px 0;
-      border-top: 1px solid var(--border);
-      margin: 48px 0 0 0;
-    }
-    .author-avatar {
-      flex-shrink: 0;
-    }
-    .author-avatar img {
-      width: 72px;
-      height: 72px;
-      border-radius: 50%;
-      object-fit: cover;
-    }
-    .author-info {
-      flex: 1;
-      min-width: 0;
-    }
-    .author-written-by {
-      font-family: var(--font-sans);
-      font-size: 12px;
-      color: var(--text-tertiary);
-      margin: 0 0 4px 0;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-    }
-    .author-info h4 {
-      font-family: var(--font-sans);
-      font-size: 18px;
-      font-weight: 700;
-      margin: 0 0 8px 0;
-      color: var(--text);
-    }
-    .author-bio {
-      font-family: var(--font-sans);
-      font-size: 14px;
-      color: var(--text-secondary);
-      line-height: 1.5;
-      margin: 0;
-    }
-    .author-social {
-      display: flex;
-      gap: 8px;
-      flex-shrink: 0;
-      align-self: flex-start;
-      margin-top: 4px;
-    }
-    .author-social a {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      width: 36px;
-      height: 36px;
-      border-radius: 50%;
-      color: var(--text-tertiary);
-      transition: color 0.2s ease;
-    }
-    .author-social a:hover {
-      color: var(--text);
-    }
-    .author-social svg {
-      width: 20px;
-      height: 20px;
-    }
-    @media (max-width: 500px) {
-      .author-card {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 12px;
-      }
-      .author-avatar img {
-        width: 56px;
-        height: 56px;
-      }
-      .author-info h4 {
-        font-size: 16px;
-      }
-      .author-social {
-        margin-top: 12px;
-      }
-    }
-
     /* Text Selection Share Popup */
     .selection-share-popup {
       position: absolute;
@@ -1031,11 +1707,6 @@
     </button>
   </div>
 
-  <!-- Reading Progress Info -->
-  <div class="reading-progress-info" id="readingProgressInfo">
-    <span id="readingPercent">0%</span> read
-  </div>
-
   <div class="scroll-progress" id="scrollProgress" role="progressbar" aria-label="Reading progress"></div>
 
   <a class="skip-link" href="#main">Skip to content</a>
@@ -1099,16 +1770,16 @@
             Back to Articles
           </a>
           <div class="article-meta">
-            <time datetime="2022-01-26">January 26, 2022</time>
-            <span>2 min read</span>
+            <time datetime="2026-01-26">January 26, 2026</time>
+            <span>8 min read</span>
           </div>
-          <h1 class="article-title">Accrue's Big Day!</h1>
-          <p class="article-excerpt">Everyone can now get the app on Android and iOS.</p>
+          <h1 class="article-title">Why I'm Building Accrue</h1>
+          <p class="article-excerpt">The agent model already exists. It just needs better rails.</p>
           <div class="article-tags-row">
             <div class="article-tags" role="list" aria-label="Article topics">
-              <span class="tag" role="listitem">Accrue</span>
+              <span class="tag" role="listitem">Fintech</span>
+              <span class="tag" role="listitem">Africa</span>
               <span class="tag" role="listitem">Startups</span>
-              <span class="tag" role="listitem">Launch</span>
             </div>
             <div class="share-container">
               <button class="share-btn" id="shareBtnTop" aria-expanded="false" aria-haspopup="true" aria-label="Share this article">
@@ -1150,33 +1821,241 @@
         </div>
       </header>
 
+      <!-- Hero Image -->
+      <div class="article-hero">
+        <img src="team.png" alt="The Accrue team - Adesuwa, Clinton, and Zino" loading="eager">
+      </div>
+
+      <!-- Sticky Table of Contents -->
+      <nav class="toc-wrapper" id="tocWrapper" aria-label="Table of contents">
+        <div class="toc-label">Contents</div>
+        <ul class="toc-list">
+          <li class="toc-item"><a href="#section-problem" class="toc-link">The Problem</a></li>
+          <li class="toc-item"><a href="#section-work" class="toc-link">Four Years of Work</a></li>
+          <li class="toc-item"><a href="#section-why-now" class="toc-link">Why Now</a></li>
+          <li class="toc-item"><a href="#section-vision" class="toc-link">The Longer View</a></li>
+        </ul>
+      </nav>
+
+      <!-- Reading Progress Info -->
+      <div class="reading-progress-info" id="readingProgressInfo">
+        <span id="readingPercent">0%</span> read
+      </div>
+
       <div class="article-content">
         <div class="container">
           <div class="article-body">
-            <p>Today's a big day for everyone on the <a href="https://useaccrue.com">Accrue</a> team. We're officially coming out of private beta and launching to the general public!</p>
+            <p>Four years ago today, I wrote a post called <a href="/articles/accrues-big-day/">"Accrue's Big Day!"</a> We had just launched out of private beta with a thousand users and $150k AUM. The problem we were solving was simple: make it easy for anyone to invest using dollar-cost averaging. Pick an asset, set an amount, and let the app handle the rest.</p>
 
-            <p>We started Accrue to solve a problem we had with investing and it's been amazing to see it grow from our personal problem solver to having over a thousand users and a current AUM of ~ $150k within a few months (in private beta).</p>
+            <p>For a while, it worked. Then the bear market hit and everything stopped. Signups dried up, deposits vanished, and we pivoted to dollar savings thinking stability would be enough. It wasn't. We were running out of runway and making hard decisions just to survive.</p>
 
-            <p>All of this time has been spent building and listening to users, and I'm incredibly proud of the effort of the entire team.</p>
+            <p>Then a user in Ghana used one of our features to send money to her aunt in Nigeria. That wasn't what we built it for, but it made us pay attention. We followed that thread, and within seven months, cross-border payments went from less than 5% of our revenue to over 70%. <a href="https://medium.com/@adesuwaomoruyi/when-we-realized-our-startup-idea-wasnt-going-to-work-100d45d2d280" target="_blank" rel="noopener">Adesuwa wrote about this journey in detail</a>, but the short version is: we almost didn't make it, and our users showed us what to build next.</p>
 
-            <figure class="article-image">
-              <img src="image.png" alt="The Accrue team: Zainab, Zino, Susu, and Clinton" width="1200" height="800" loading="lazy">
-              <figcaption>L-R: Zainab, Zino, Susu, Clinton</figcaption>
+            <figure class="article-graphic" aria-labelledby="graphic-journey">
+              <figcaption class="graphic-label" id="graphic-journey">The Four-Year Journey</figcaption>
+              <div class="journey-timeline">
+                <div class="journey-item">
+                  <div class="journey-year">Jan 2022</div>
+                  <div class="journey-title">Launch Day</div>
+                  <div class="journey-desc">1,000 users, $150k AUM. Dollar-cost averaging for everyone.</div>
+                </div>
+                <div class="journey-item">
+                  <div class="journey-year">2022-2023</div>
+                  <div class="journey-title">Bear Market</div>
+                  <div class="journey-desc">Signups dried up. Pivoted to dollar savings. Running out of runway.</div>
+                </div>
+                <div class="journey-item">
+                  <div class="journey-year">Mid 2023</div>
+                  <div class="journey-title">The Discovery</div>
+                  <div class="journey-desc">A user in Ghana sent money to her aunt in Nigeria. We paid attention.</div>
+                </div>
+                <div class="journey-item">
+                  <div class="journey-year">7 Months Later</div>
+                  <div class="journey-title">The Pivot</div>
+                  <div class="journey-desc">Cross-border payments: 5% → 70% of revenue.</div>
+                </div>
+                <div class="journey-item">
+                  <div class="journey-year">Jan 2026</div>
+                  <div class="journey-title">Today</div>
+                  <div class="journey-desc">Building the rails for how Africa moves money.</div>
+                </div>
+              </div>
             </figure>
 
-            <p>Our private beta was immensely successful, and we're thankful to all of our users, whose valuable feedback has brought us to this point.</p>
+            <hr>
 
-            <p>When you're new to investing, it's extremely difficult to time the market / not give in to FOMO while figuring out the best time to buy an asset. Accrue allows you to invest in your favourite assets for as low as $1 using dollar-cost averaging (DCA).</p>
+            <h2 id="section-problem">Africa Moves a Lot of Money. The Problem is How.</h2>
 
-            <p>With dollar-cost averaging, you mitigate the risk of price volatility & emotional investing by spreading your purchases across pre-defined intervals. This means that instead of constantly searching for (and missing) the dip with a lump sum purchase, your purchases will be spread out on a daily (or weekly/bi-weekly/monthly) basis. All of this done regardless of the changes in the price of the asset you choose to purchase.</p>
+            <p>Remittances to Africa hit nearly $100 billion in 2024, according to the World Bank. Factor in B2B trade and other cross-border flows, and Oui Capital estimates the total market at $329 billion. But 75% of that money moves through informal channels. Cash in envelopes. Bus drivers carrying bundles across borders. Family networks.</p>
 
-            <p>Accrue allows you to do this with over 100 assets, and if you don't find your preferred asset listed, kindly tweet at us or send us an email, and we'll work on listing that asset ASAP.</p>
+            <figure class="article-graphic" aria-labelledby="graphic-market">
+              <figcaption class="graphic-label" id="graphic-market">The Market Opportunity</figcaption>
+              <div class="market-stats">
+                <div class="market-stat">
+                  <div class="market-stat-num">$329B</div>
+                  <div class="market-stat-label">Total Cross-Border</div>
+                </div>
+                <div class="market-stat">
+                  <div class="market-stat-num">$100B</div>
+                  <div class="market-stat-label">Remittances Alone</div>
+                </div>
+                <div class="market-stat">
+                  <div class="market-stat-num">75%</div>
+                  <div class="market-stat-label">Informal Channels</div>
+                </div>
+              </div>
+              <div class="market-note">Source: World Bank, Oui Capital estimates (2024)</div>
+            </figure>
 
-            <p>Over the next few months, we're going to be working on several features to make Accrue your one-stop shop for all of your investment needs. We also have plans to open up to other countries in a few weeks.</p>
+            <p>Why? Because formal transfers cost 8% on average, the highest rate in the world. And even when people use traditional channels, it means taking time off work to sit in a Western Union or bank queue. Add currency conversion losses, and you're looking at billions of dollars lost yearly to fees and friction.</p>
 
-            <p>We're in exciting times, and we can't wait for you to see all that we have planned.</p>
+            <p>That's the problem we're solving now.</p>
 
-            <p><strong>Thank you so much for using Accrue!</strong></p>
+            <p><strong>Accrue</strong> is a mobile app. Anyone in Africa can save in USD stablecoins and send and receive payments instantly. For millions facing volatile local currencies, stablecoins aren't speculation. They're the safest store of value available. And for those wondering why not just buy dollars from a bank: across much of the continent, you can't. Dollar shortages have become endemic in countries like Nigeria, Kenya, Egypt, Ghana, and Zambia. People trying to access foreign currency face liquidity constraints, long queues, and outright rejections. Stablecoins are how they access dollars when the banking system can't provide them.</p>
+
+            <p>And yes, you can still DCA into your favorite assets. That feature that started the company is still there. It's just part of something bigger now.</p>
+
+            <p><strong>Cashramp</strong> is infrastructure. Think M-Pesa on stablecoin rails. It's a stablecoin agent network across over a dozen African countries. A user sends local currency to an agent via their preferred payment method, and receives stablecoin equivalents displayed as USD in the app. The conversion is automatic. The user never touches crypto. Their local currency simply gains the superpowers of programmable money.</p>
+
+            <p>Cashramp is the engine that powers Accrue. It's how Accrue users deposit and withdraw in local currency. It's how they send money to loved ones in other countries. To us, Accrue is a proof of concept, a way to show potential Cashramp customers what can be built on a continent-wide agent network.</p>
+
+            <p>When that money needs to cross a border, say from Ghana to Nigeria, the Ghanaian user sends cedis to a Cashramp agent, receives USD (stablecoins) at the prevailing market rate, and another agent in Nigeria converts it to naira and deposits it into the recipient's bank account. A 1% fee, capped at $2. One-minute settlement. Frictionless.</p>
+
+            <figure class="article-graphic" aria-labelledby="graphic-cashramp">
+              <figcaption class="graphic-label" id="graphic-cashramp">How a Cross-Border Transfer Works</figcaption>
+              <div class="flow-steps">
+                <div class="flow-step">
+                  <div class="flow-step-num">Step 1</div>
+                  <div class="flow-step-title">Ghana</div>
+                  <div class="flow-step-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21v-2a4 4 0 0 1 4-4h8a4 4 0 0 1 4 4v2"/></svg></div>
+                  <div class="flow-step-text">User sends cedis to agent<strong>GHS (Cedis)</strong></div>
+                </div>
+                <div class="flow-arrow" aria-hidden="true">→</div>
+                <div class="flow-step">
+                  <div class="flow-step-num">Step 2</div>
+                  <div class="flow-step-title">Stablecoin</div>
+                  <div class="flow-step-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 6v12M8 10h8M8 14h8"/></svg></div>
+                  <div class="flow-step-text">Receives USD at market rate<strong>User never touches crypto</strong></div>
+                </div>
+                <div class="flow-arrow" aria-hidden="true">→</div>
+                <div class="flow-step">
+                  <div class="flow-step-num">Step 3</div>
+                  <div class="flow-step-title">Nigeria</div>
+                  <div class="flow-step-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M7 15h4M7 11h10"/></svg></div>
+                  <div class="flow-step-text">Agent deposits to recipient<strong>NGN (Naira)</strong></div>
+                </div>
+              </div>
+              <div class="flow-compare">
+                <div class="compare-box"><div class="compare-label">Traditional</div><div class="compare-value">3-5 days · 8% fees</div><div class="compare-detail">Multiple intermediaries</div></div>
+                <div class="compare-box highlight"><div class="compare-label">Cashramp</div><div class="compare-value">1 min · 1% (max $2)</div><div class="compare-detail">Cashramp agent network</div></div>
+              </div>
+            </figure>
+
+            <hr>
+
+            <h2 id="section-work">Four Years of Work</h2>
+
+            <p>Our payment success rate is 98%. Revenue has grown steadily quarter over quarter, mostly from organic demand. Over half of cross-border users come back at least three more times.</p>
+
+            <figure class="article-graphic" aria-labelledby="graphic-traction">
+              <figcaption class="graphic-label" id="graphic-traction">Traction</figcaption>
+              <div class="stats-grid">
+                <div class="stat-box"><div class="stat-num">98%</div><div class="stat-label">Payment<br>Success Rate</div></div>
+                <div class="stat-box"><div class="stat-num">12+</div><div class="stat-label">African<br>Countries</div></div>
+                <div class="stat-box"><div class="stat-num">3x+</div><div class="stat-label">User Return<br>Rate</div></div>
+                <div class="stat-box"><div class="stat-num">QoQ</div><div class="stat-label">Revenue<br>Growth</div></div>
+              </div>
+              <div class="stats-footer">
+                <blockquote>"The growth isn't hype-driven. It's utility-driven."</blockquote>
+                <cite>Organic demand from real users</cite>
+              </div>
+            </figure>
+
+            <p>We've done this with a small, focused team embedded in the markets we serve. Agents with smartphones and a protocol that handles the rest.</p>
+
+            <p>The growth isn't hype-driven. It's utility-driven. People use Accrue & Cashramp because they solve real problems. A trader in Senegal can pay a supplier in Côte d'Ivoire in one minute, not days. A family can save for the future in stablecoins, safe from local currency collapse. A tourist can move across Africa without worrying about changing currency at every border.</p>
+
+            <hr>
+
+            <h2 id="section-why-now">Why Now</h2>
+
+            <p>The conventional answer is demographics, smartphones, and regulation. Those matter, but they're table stakes. Everyone sees them.</p>
+
+            <p>Here's what we saw: <strong>the informal economy was already solving this problem, just inefficiently.</strong> Hawala networks, bus drivers, family connections, WhatsApp P2P group chats. They work because they're built on trust and local presence, not banking infrastructure.</p>
+
+            <p>The insight wasn't "Africa needs better payments." It was "the agent model already exists. It just needs better rails."</p>
+
+            <figure class="article-graphic" aria-labelledby="graphic-insight">
+              <figcaption class="graphic-label" id="graphic-insight">The Insight</figcaption>
+              <div class="forces-list">
+                <div class="force-item"><div class="force-num">1</div><div class="force-content"><h3>Informal networks already work</h3><p>Hawala, bus drivers, family connections, built on trust and local presence, not banking infrastructure.</p></div></div>
+                <div class="force-item"><div class="force-num">2</div><div class="force-content"><h3>They just need better rails</h3><p>Stablecoins let us settle across borders without correspondent banks or forex desks.</p></div></div>
+                <div class="force-item"><div class="force-num">3</div><div class="force-content"><h3>Regulators want visibility</h3><p>A compliant network that brings informal flows into the light is something governments actually want.</p></div></div>
+              </div>
+              <div class="forces-center"><span class="forces-badge">Upgrade, Not Disrupt</span></div>
+            </figure>
+
+            <p>Stablecoins gave us those rails. Not because crypto is magic, but because it lets us settle across borders without correspondent banks, without forex desks, without the infrastructure that makes traditional remittance expensive. We're not disrupting informal networks. We're upgrading them.</p>
+
+            <p>The regulatory shift matters too, but not in the way most people think. The real change isn't that governments are "embracing crypto." It's that they're tired of watching billions flow through channels they can't see. A compliant stablecoin network that brings informal flows into the light is something regulators actually want.</p>
+
+            <hr>
+
+            <h2 id="section-vision">The Longer View</h2>
+
+            <p>Payments are just the beginning. The real opportunity is intra-African trade.</p>
+
+            <p>African countries trade far more with Europe, China, and the US than with each other. Intra-African trade hovers around 15-18% of total trade, compared to roughly 60% for Europe and 40% for Asia. The reasons are structural. Colonial infrastructure built to extract resources rather than connect economies. 54 countries with different regulations, standards, and currencies. Payment systems that until recently made it nearly impossible to settle cross-border transactions in local currencies. A buyer in one African country paying a supplier in another typically had to convert to USD and back again, with fees at each step.</p>
+
+            <p>African SMEs have always needed to do business with one another, but the infrastructure has made it nearly impossible. So businesses source locally even when better options exist across the border, or they route payments through Europe or the US, adding days and costs to simple transactions.</p>
+
+            <p>The internet connected African businesses. Stablecoins let them actually pay each other.</p>
+
+            <figure class="article-graphic" aria-labelledby="graphic-vision">
+              <figcaption class="graphic-label" id="graphic-vision">The Opportunity: Intra-African Trade</figcaption>
+              <div class="trade-comparison">
+                <div class="trade-region">
+                  <div class="trade-region-name">Europe</div>
+                  <div class="trade-region-percent">~60%</div>
+                  <div class="trade-region-label">Intra-regional trade</div>
+                </div>
+                <div class="trade-region">
+                  <div class="trade-region-name">Asia</div>
+                  <div class="trade-region-percent">~40%</div>
+                  <div class="trade-region-label">Intra-regional trade</div>
+                </div>
+                <div class="trade-region highlight">
+                  <div class="trade-region-name">Africa</div>
+                  <div class="trade-region-percent">15-18%</div>
+                  <div class="trade-region-label">Intra-regional trade</div>
+                </div>
+              </div>
+              <div class="trade-divider"><span class="trade-divider-text">The Vision: Rails for the Ecosystem</span></div>
+              <div class="infra-vision">
+                <div class="infra-layer active">
+                  <div class="infra-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div>
+                  <div class="infra-content"><div class="infra-title">Cross-Border Payments</div><div class="infra-desc">Stablecoin rails for instant settlement</div></div>
+                </div>
+                <div class="infra-layer">
+                  <div class="infra-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 3v4M8 3v4M2 11h20"/></svg></div>
+                  <div class="infra-content"><div class="infra-title">B2B Trade Settlement</div><div class="infra-desc">SME payments across borders in local currency</div></div>
+                </div>
+                <div class="infra-layer">
+                  <div class="infra-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg></div>
+                  <div class="infra-content"><div class="infra-title">Platform API</div><div class="infra-desc">Any product can plug in and go live in days</div></div>
+                </div>
+              </div>
+              <div class="infra-footer"><span class="infra-footer-text">Not competing with every payments company. Becoming the rails they run on.</span></div>
+            </figure>
+
+            <p>That's where we're headed. Not just an app for consumers, but rails that any business can build on. Opera is already doing this with MiniPay, using Cashramp's infrastructure to serve users across Africa. We want more of that. Payment apps, neobanks, remittance services, e-commerce platforms. Any product that needs to move money across African borders should be able to plug into our network and go live in days, not years.</p>
+
+            <p>The agent network we've built isn't just for Accrue. It's infrastructure that can power an ecosystem. That's the longer view: not competing with every payments company on the continent, but becoming the rails they all run on.</p>
+
+            <aside class="highlight-box">
+              <p><strong>Four years ago,</strong> I wrote that we started Accrue to solve a problem we had with investing. That was true then. But we kept listening, kept following the data, kept adjusting until something clicked.</p>
+              <p>Four years later, we're building the rails for how Africa moves money. And we're just getting started.</p>
+            </aside>
 
             <!-- Share button below article -->
             <div class="share-row-bottom">
@@ -1339,18 +2218,43 @@
       }
     });
 
+    // Scroll animations for graphics
+    const graphics = document.querySelectorAll('.article-graphic');
+
+    const observerOptions = {
+      root: null,
+      rootMargin: '0px 0px -100px 0px',
+      threshold: 0.1
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, observerOptions);
+
+    graphics.forEach(g => observer.observe(g));
+
+    // Respect reduced motion
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      graphics.forEach(g => g.classList.add('visible'));
+    }
+
     // Recommended Reading - Curated list excluding current article
     const RECOMMENDED_ARTICLES = [
-      {
-        title: "Why I'm Building Accrue",
-        url: "/articles/why-im-building-accrue/",
-        date: "Jan 2026",
-        author: "Zino Asamaige"
-      },
       {
         title: "Why I Walk",
         url: "/articles/why-i-walk/",
         date: "Jan 2026",
+        author: "Zino Asamaige"
+      },
+      {
+        title: "Accrue's Big Day!",
+        url: "/articles/accrues-big-day/",
+        date: "Jan 2022",
         author: "Zino Asamaige"
       },
       {
@@ -1369,7 +2273,7 @@
       }
     ];
 
-    const currentSlug = 'accrues-big-day';
+    const currentSlug = 'why-im-building-accrue';
     const filtered = RECOMMENDED_ARTICLES.filter(a => !a.url.includes(currentSlug)).slice(0, 4);
     const grid = document.getElementById('recommendedGrid');
 
@@ -1396,7 +2300,7 @@
     const shareDropdownBottom = document.getElementById('shareDropdownBottom');
     const pageUrl = encodeURIComponent(window.location.href);
     const pageTitle = encodeURIComponent(document.title);
-    const pageText = encodeURIComponent("Accrue's Big Day! - We're officially launching to the general public!");
+    const pageText = encodeURIComponent("Why I'm Building Accrue");
 
     // Set up share links for all dropdowns (using class selectors)
     document.querySelectorAll('.shareTwitter').forEach(el => {
@@ -1415,7 +2319,7 @@
       el.href = `https://www.threads.net/intent/post?text=${pageText}%20${decodeURIComponent(pageUrl)}`;
     });
 
-    // Toggle function for share buttons
+    // Toggle function for share buttons with dynamic positioning
     function setupShareButton(btn, dropdown) {
       btn.addEventListener('click', function(e) {
         e.stopPropagation();
@@ -1428,12 +2332,13 @@
         });
         const isOpen = dropdown.classList.contains('open');
 
-        // Determine dropdown direction based on available space
         if (!isOpen) {
+          // Determine if we should open above or below
           const btnRect = btn.getBoundingClientRect();
           const spaceAbove = btnRect.top;
-          const dropdownHeight = 320;
+          const dropdownHeight = 320; // Approximate dropdown height
 
+          // If not enough space above, open below
           if (spaceAbove < dropdownHeight) {
             dropdown.classList.add('open-below');
           } else {
@@ -1475,7 +2380,7 @@
       document.querySelectorAll('.share-dropdown.open').forEach(dropdown => {
         const btn = dropdown.previousElementSibling;
         if (!dropdown.contains(e.target) && e.target !== btn) {
-          dropdown.classList.remove('open', 'open-below');
+          dropdown.classList.remove('open');
           btn?.setAttribute('aria-expanded', 'false');
         }
       });
@@ -1486,7 +2391,7 @@
       if (e.key === 'Escape') {
         document.querySelectorAll('.share-dropdown.open').forEach(dropdown => {
           const btn = dropdown.previousElementSibling;
-          dropdown.classList.remove('open', 'open-below');
+          dropdown.classList.remove('open');
           btn?.setAttribute('aria-expanded', 'false');
           btn?.focus();
         });
@@ -1508,32 +2413,67 @@
       });
     }
 
-    // Reading Progress
+    // Sticky TOC and Reading Progress
     (function() {
+      const tocWrapper = document.getElementById('tocWrapper');
+      const tocLinks = document.querySelectorAll('.toc-link');
+      const sections = document.querySelectorAll('.article-body h2[id]');
       const progressInfo = document.getElementById('readingProgressInfo');
       const percentEl = document.getElementById('readingPercent');
       const articleBody = document.querySelector('.article-body');
 
-      if (!articleBody || !progressInfo) return;
+      if (!tocWrapper || !articleBody) return;
 
       const articleStart = articleBody.offsetTop;
       const articleHeight = articleBody.offsetHeight;
 
-      function updateProgress() {
-        // Show/hide progress based on scroll position
+      function updateTOC() {
+        const scrollPos = window.scrollY + 150;
+
+        // Show/hide TOC based on scroll position
         if (window.scrollY > 300 && window.scrollY < articleStart + articleHeight - 400) {
+          tocWrapper.classList.add('visible');
           progressInfo.classList.add('visible');
         } else {
+          tocWrapper.classList.remove('visible');
           progressInfo.classList.remove('visible');
         }
 
         // Update reading progress percentage
         const progress = Math.min(100, Math.max(0, Math.round(((window.scrollY - articleStart + 300) / articleHeight) * 100)));
         percentEl.textContent = progress + '%';
+
+        // Highlight current section in TOC
+        let currentSection = null;
+        sections.forEach(section => {
+          if (section.offsetTop <= scrollPos) {
+            currentSection = section.id;
+          }
+        });
+
+        tocLinks.forEach(link => {
+          if (link.getAttribute('href') === '#' + currentSection) {
+            link.classList.add('active');
+          } else {
+            link.classList.remove('active');
+          }
+        });
       }
 
-      window.addEventListener('scroll', updateProgress, { passive: true });
-      updateProgress();
+      window.addEventListener('scroll', updateTOC, { passive: true });
+      updateTOC();
+
+      // Smooth scroll for TOC links
+      tocLinks.forEach(link => {
+        link.addEventListener('click', function(e) {
+          e.preventDefault();
+          const targetId = this.getAttribute('href').substring(1);
+          const target = document.getElementById(targetId);
+          if (target) {
+            target.scrollIntoView({ behavior: 'smooth' });
+          }
+        });
+      });
     })();
 
     // Text Selection Share Popup
