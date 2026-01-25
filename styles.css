@@ -1944,7 +1944,7 @@ footer {
 
 .footer-nav {
   display: flex;
-  gap: 8px;
+  gap: 6px;
   flex-wrap: wrap;
 }
 
@@ -1955,16 +1955,17 @@ footer {
   text-transform: uppercase;
   letter-spacing: 0.08em;
   color: var(--text-secondary);
-  padding: 10px 16px;
+  padding: 10px 18px;
   border-radius: var(--radius-full);
-  border: 1px solid transparent;
+  border: 1px solid var(--border);
+  background: var(--bg-elevated);
   transition: all var(--duration) var(--ease);
 }
 
 .footer-nav a:hover {
-  color: var(--text);
-  background: var(--bg-elevated);
-  border-color: var(--border);
+  color: var(--bg);
+  background: var(--text);
+  border-color: var(--text);
 }
 
 .footer-nav a:active {
@@ -1975,7 +1976,7 @@ footer {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 24px;
+  gap: 80px;
   flex-wrap: wrap;
   padding-top: 24px;
   border-top: 1px solid var(--border);
@@ -1995,7 +1996,7 @@ footer {
 
 .footer-social {
   display: flex;
-  gap: 12px;
+  gap: 16px;
 }
 
 .footer-social-link {
