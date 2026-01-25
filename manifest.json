@@ -1,0 +1,28 @@
+{
+  "name": "Zino Asamaige",
+  "short_name": "Zino",
+  "description": "Co-founder building Accrue and Cashramp. Photographer, traveler, and walker based in Lagos, Nigeria.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#FAFAFA",
+  "theme_color": "#D97706",
+  "orientation": "portrait-primary",
+  "scope": "/",
+  "icons": [
+    {
+      "src": "/assets/logo.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/assets/logo.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "categories": ["portfolio", "photography", "personal"],
+  "lang": "en",
+  "dir": "ltr"
+}
