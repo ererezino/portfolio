@@ -80,7 +80,6 @@
   <link rel="preload" href="/assets/fonts/space-mono-v17-latin-regular.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="/assets/fonts/instrument-serif-v5-latin-regular.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="/assets/fonts.css">
-  <link rel="stylesheet" href="/styles.css">
 
   <style>
     :root {
@@ -148,6 +147,188 @@
       background: var(--green);
       z-index: 1001;
       transition: width 0.1s linear;
+    }
+
+    /* Header - matches main site */
+    header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      padding: 16px 0;
+      transition: all var(--transition);
+    }
+    header.scrolled {
+      background: rgba(250, 250, 250, 0.8);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      padding: 12px 0;
+    }
+    [data-theme="dark"] header.scrolled {
+      background: rgba(10, 10, 10, 0.8);
+    }
+    @media (max-width: 768px) {
+      header.scrolled { padding: 8px 0; }
+    }
+    .header-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 clamp(16px, 4vw, 48px);
+    }
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-family: var(--font-mono);
+      font-size: 14px;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+    }
+    .logo-img {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid var(--border);
+      transition: border-color var(--transition), transform var(--transition);
+    }
+    header.scrolled .logo-img { width: 32px; height: 32px; }
+    @media (max-width: 768px) {
+      header.scrolled .logo-img { width: 28px; height: 28px; }
+    }
+    .logo:hover .logo-img {
+      border-color: var(--green);
+    }
+    .logo-text { transition: opacity var(--transition); }
+    @media (max-width: 500px) {
+      .logo-text { display: none; }
+    }
+    .header-nav {
+      display: none;
+      align-items: center;
+      gap: 32px;
+    }
+    @media (min-width: 900px) { .header-nav { display: flex; } }
+    .nav-link {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--text-secondary);
+      padding: 8px 0;
+      position: relative;
+      transition: color var(--transition);
+    }
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 1.5px;
+      background: var(--green);
+      transform: scaleX(0);
+      transform-origin: right;
+      transition: transform var(--transition);
+    }
+    .nav-link:hover { color: var(--text); }
+    .nav-link:hover::after { transform: scaleX(1); transform-origin: left; }
+    .nav-link[aria-current="page"] { color: var(--text); }
+    .nav-link[aria-current="page"]::after { transform: scaleX(1); }
+
+    .theme-btn {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      border: 1px solid var(--border);
+      background: transparent;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all var(--transition);
+    }
+    .theme-btn:hover { border-color: var(--text); transform: scale(1.05); }
+    .theme-btn:active { transform: scale(0.95); }
+    .theme-btn svg { width: 18px; height: 18px; color: var(--text-secondary); }
+    .theme-btn .sun { display: none; }
+    [data-theme="dark"] .theme-btn .sun { display: block; }
+    [data-theme="dark"] .theme-btn .moon { display: none; }
+
+    .mobile-controls { display: flex; align-items: center; gap: 12px; }
+    @media (min-width: 900px) { .mobile-controls { display: none; } }
+
+    .mobile-menu-btn {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      border: 1px solid var(--border);
+      background: transparent;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+      transition: all var(--transition);
+    }
+    .mobile-menu-btn:hover { border-color: var(--text); }
+    .mobile-menu-btn span {
+      width: 16px;
+      height: 1.5px;
+      background: var(--text-secondary);
+      transition: all var(--transition);
+    }
+
+    /* Mobile Menu */
+    .mobile-menu {
+      position: fixed;
+      inset: 0;
+      background: var(--bg);
+      z-index: 200;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      opacity: 0;
+      visibility: hidden;
+      transition: all var(--transition);
+    }
+    .mobile-menu.open { opacity: 1; visibility: visible; }
+    .mobile-menu-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 48px;
+    }
+    .mobile-menu-close {
+      width: 40px;
+      height: 40px;
+      border: 1px solid var(--border);
+      border-radius: 50%;
+      background: transparent;
+      font-size: 24px;
+      cursor: pointer;
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .mobile-menu nav {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .mobile-menu nav a {
+      font-family: var(--font-serif);
+      font-size: clamp(28px, 8vw, 36px);
+      letter-spacing: -0.02em;
+      padding: 12px 0;
+      color: var(--text);
     }
 
     /* Article Header */
@@ -1127,31 +1308,27 @@
 
   <header id="header" role="banner">
     <div class="header-inner">
-      <a href="/" class="logo" data-magnetic aria-label="Zino Asamaige - Home">
-        <img src="/assets/logo.png" alt="" class="logo-img" width="36" height="36" fetchpriority="high" />
+      <a href="/" class="logo" aria-label="Zino Asamaige - Home">
+        <img src="/assets/logo.png" alt="" class="logo-img" width="36" height="36">
         <span class="logo-text">Zino Asamaige</span>
       </a>
-
       <nav class="header-nav" aria-label="Primary navigation">
         <a href="/about.html" class="nav-link">About</a>
         <a href="/photos/" class="nav-link">Photos</a>
-        <a href="/articles/" class="nav-link">Articles</a>
+        <a href="/articles/" class="nav-link" aria-current="page">Articles</a>
         <a href="/movement.html" class="nav-link">Movement</a>
         <a href="/travels.html" class="nav-link">Travels</a>
         <a href="/contact.html" class="nav-link">Contact</a>
-
-        <button class="theme-btn" id="themeToggle" aria-label="Toggle dark mode" data-magnetic data-sound="click" type="button">
+        <button class="theme-btn" id="themeToggle" aria-label="Toggle dark mode" type="button">
           <svg class="moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
           <svg class="sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
         </button>
       </nav>
-
       <div class="mobile-controls">
-        <button class="theme-btn" id="mobileThemeToggle" aria-label="Toggle dark mode" data-sound="click" type="button">
-          <svg class="moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
-          <svg class="sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+        <button class="theme-btn" id="mobileThemeToggle" aria-label="Toggle dark mode" type="button">
+          <svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+          <svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
         </button>
-
         <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Open navigation menu" aria-expanded="false" aria-controls="mobileMenu" type="button">
           <span></span><span></span><span></span>
         </button>
@@ -1826,6 +2003,5 @@
     })();
 
   </script>
-  <script src="/script.js" defer></script>
 </body>
 </html>
