@@ -885,6 +885,172 @@
       color: var(--text-secondary);
     }
 
+    /* Longer View - Trade Comparison */
+    .trade-comparison {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+    @media (max-width: 500px) {
+      .trade-comparison { grid-template-columns: 1fr; }
+    }
+    .trade-region {
+      text-align: center;
+      padding: 24px 16px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      transition: border-color var(--transition), transform var(--transition);
+    }
+    .trade-region:hover {
+      border-color: var(--text-secondary);
+      transform: translateY(-2px);
+    }
+    .trade-region.highlight {
+      border-color: var(--green);
+      border-width: 2px;
+    }
+    .trade-region-name {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--text-tertiary);
+      margin-bottom: 8px;
+    }
+    .trade-region.highlight .trade-region-name {
+      color: var(--green);
+    }
+    .trade-region-percent {
+      font-family: var(--font-mono);
+      font-size: 36px;
+      font-weight: 700;
+      color: var(--text);
+      line-height: 1;
+      margin-bottom: 4px;
+    }
+    .trade-region.highlight .trade-region-percent {
+      color: var(--green);
+    }
+    .trade-region-label {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      color: var(--text-tertiary);
+    }
+    .trade-divider {
+      text-align: center;
+      padding: 20px 0;
+      position: relative;
+    }
+    .trade-divider::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 50%;
+      height: 1px;
+      background: var(--border);
+    }
+    .trade-divider-text {
+      display: inline-block;
+      background: var(--bg-alt);
+      padding: 8px 16px;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--text-secondary);
+      position: relative;
+    }
+    .infra-vision {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .infra-layer {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 16px 20px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      transition: all var(--transition);
+    }
+    .infra-layer:hover {
+      border-color: var(--text-secondary);
+      transform: translateX(4px);
+    }
+    .infra-layer.active {
+      border-color: var(--green);
+      border-width: 2px;
+      background: rgba(0, 210, 106, 0.05);
+    }
+    .infra-icon {
+      width: 40px;
+      height: 40px;
+      border: 2px solid var(--border);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .infra-layer.active .infra-icon {
+      border-color: var(--green);
+      background: var(--green);
+    }
+    .infra-icon svg {
+      width: 20px;
+      height: 20px;
+      color: var(--text-tertiary);
+    }
+    .infra-layer.active .infra-icon svg {
+      color: var(--bg);
+    }
+    .infra-content {
+      flex: 1;
+    }
+    .infra-title {
+      font-family: var(--font-mono);
+      font-size: 13px;
+      font-weight: 700;
+      margin-bottom: 2px;
+    }
+    .infra-layer.active .infra-title {
+      color: var(--green);
+    }
+    .infra-desc {
+      font-family: var(--font-sans);
+      font-size: 12px;
+      color: var(--text-tertiary);
+    }
+    .infra-status {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      padding: 4px 10px;
+      border: 1px solid var(--border);
+      color: var(--text-tertiary);
+    }
+    .infra-layer.active .infra-status {
+      border-color: var(--green);
+      color: var(--green);
+      background: rgba(0, 210, 106, 0.1);
+    }
+    .infra-footer {
+      text-align: center;
+      margin-top: 20px;
+      padding-top: 20px;
+      border-top: 1px solid var(--border);
+    }
+    .infra-footer-text {
+      font-family: var(--font-serif);
+      font-size: 16px;
+      font-style: italic;
+      color: var(--text-secondary);
+    }
+
     /* Article Footer */
     .article-footer {
       border-top: 1px solid var(--border);
@@ -1157,6 +1323,10 @@
 
             <p>Cashramp is the engine that powers Accrue. It's how Accrue users deposit and withdraw in local currency. It's how they send money to loved ones in other countries. To us, Accrue is a proof of concept, a way to show potential Cashramp customers what can be built on a continent-wide agent network.</p>
 
+            <p>When that money needs to cross a border, say from Ghana to Nigeria, the Ghanaian user sends cedis to a Cashramp agent, receives USD (stablecoins) at the prevailing market rate, and another agent in Nigeria converts it to naira and deposits it into the recipient's bank account. A 1% fee, capped at $2. One-minute settlement. Frictionless.</p>
+
+            <p><a href="https://www.clintonmbah.com/posts/stablecoin_agents_will_onboard_billions_of_africans_to_the_global_economy.html" target="_blank" rel="noopener">Clinton wrote about how this agent network works in detail</a>, from the economics that make it sustainable to why we believe stablecoin agents will onboard billions of Africans to the global economy.</p>
+
             <figure class="article-graphic" aria-labelledby="graphic-cashramp">
               <figcaption class="graphic-label" id="graphic-cashramp">How a Cross-Border Transfer Works</figcaption>
               <div class="flow-steps">
@@ -1183,7 +1353,7 @@
               </div>
               <div class="flow-compare">
                 <div class="compare-box"><div class="compare-label">Traditional</div><div class="compare-value">3-5 days · 8% fees</div><div class="compare-detail">Multiple intermediaries</div></div>
-                <div class="compare-box highlight"><div class="compare-label">Cashramp</div><div class="compare-value">1 min · 1% (max $2)</div><div class="compare-detail">Direct agent network</div></div>
+                <div class="compare-box highlight"><div class="compare-label">Cashramp</div><div class="compare-value">1 min · 1% (max $2)</div><div class="compare-detail">Cashramp agent network</div></div>
               </div>
             </figure>
 
@@ -1248,15 +1418,43 @@
             <p>The internet connected African businesses. Stablecoins let them actually pay each other.</p>
 
             <figure class="article-graphic" aria-labelledby="graphic-vision">
-              <figcaption class="graphic-label" id="graphic-vision">The Vision: Infrastructure for an Ecosystem</figcaption>
-              <div class="timeline" role="list" aria-label="Product roadmap">
-                <div class="timeline-point" role="listitem"><div class="timeline-dot"></div><div class="timeline-label">Payments</div></div>
-                <div class="timeline-point" role="listitem"><div class="timeline-dot"></div><div class="timeline-label">B2B Trade</div></div>
-                <div class="timeline-point" role="listitem"><div class="timeline-dot"></div><div class="timeline-label">Credit</div></div>
-                <div class="timeline-point" role="listitem"><div class="timeline-dot"></div><div class="timeline-label">Insurance</div></div>
-                <div class="timeline-point" role="listitem"><div class="timeline-dot"></div><div class="timeline-label">Investments</div></div>
+              <figcaption class="graphic-label" id="graphic-vision">The Opportunity: Intra-African Trade</figcaption>
+              <div class="trade-comparison">
+                <div class="trade-region">
+                  <div class="trade-region-name">Europe</div>
+                  <div class="trade-region-percent">~60%</div>
+                  <div class="trade-region-label">Intra-regional trade</div>
+                </div>
+                <div class="trade-region">
+                  <div class="trade-region-name">Asia</div>
+                  <div class="trade-region-percent">~40%</div>
+                  <div class="trade-region-label">Intra-regional trade</div>
+                </div>
+                <div class="trade-region highlight">
+                  <div class="trade-region-name">Africa</div>
+                  <div class="trade-region-percent">15-18%</div>
+                  <div class="trade-region-label">Intra-regional trade</div>
+                </div>
               </div>
-              <div class="timeline-caption">Each step builds the trust and data for the next.</div>
+              <div class="trade-divider"><span class="trade-divider-text">The Vision: Rails for the Ecosystem</span></div>
+              <div class="infra-vision">
+                <div class="infra-layer active">
+                  <div class="infra-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div>
+                  <div class="infra-content"><div class="infra-title">Cross-Border Payments</div><div class="infra-desc">Stablecoin rails for instant settlement</div></div>
+                  <div class="infra-status">Live</div>
+                </div>
+                <div class="infra-layer">
+                  <div class="infra-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 3v4M8 3v4M2 11h20"/></svg></div>
+                  <div class="infra-content"><div class="infra-title">B2B Trade Settlement</div><div class="infra-desc">SME payments across borders in local currency</div></div>
+                  <div class="infra-status">Next</div>
+                </div>
+                <div class="infra-layer">
+                  <div class="infra-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg></div>
+                  <div class="infra-content"><div class="infra-title">Platform API</div><div class="infra-desc">Any product can plug in and go live in days</div></div>
+                  <div class="infra-status">Building</div>
+                </div>
+              </div>
+              <div class="infra-footer"><span class="infra-footer-text">Not competing with every payments company. Becoming the rails they run on.</span></div>
             </figure>
 
             <p>That's where we're headed. Not just an app for consumers, but rails that any business can build on. Opera is already doing this with MiniPay, using Cashramp's infrastructure to serve users across Africa. We want more of that. Payment apps, neobanks, remittance services, e-commerce platforms. Any product that needs to move money across African borders should be able to plug into our network and go live in days, not years.</p>
