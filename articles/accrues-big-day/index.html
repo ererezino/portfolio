@@ -975,18 +975,18 @@
     }
     @media (max-width: 500px) {
       .author-card {
-        flex-wrap: wrap;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
       }
-      .author-avatar {
-        order: 1;
+      .author-avatar img {
+        width: 56px;
+        height: 56px;
+      }
+      .author-info h4 {
+        font-size: 16px;
       }
       .author-social {
-        order: 2;
-        margin-left: auto;
-      }
-      .author-info {
-        order: 3;
-        width: 100%;
         margin-top: 12px;
       }
     }
@@ -1259,7 +1259,7 @@
                 <div class="author-info">
                   <p class="author-written-by">Written by</p>
                   <h4>Zino Asamaige</h4>
-                  <p class="author-bio">Co-founder & COO at Accrue. Writing about lessons, stories, and reflections from building a fintech company in Africa.</p>
+                  <p class="author-bio">Co-founder & COO at Accrue. Building infrastructure for African commerce. Walking long distances. Taking photographs.</p>
                 </div>
                 <div class="author-social">
                   <a href="https://twitter.com/ererezino" target="_blank" rel="noopener noreferrer" aria-label="Twitter">
