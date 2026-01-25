@@ -558,93 +558,49 @@ function renderArticles() {
   if (!container) return;
 
   var html = '';
-  var featuredArticle = null;
-  var secondaryArticles = [];
 
-  // Separate featured and secondary articles
+  // Render all articles with uniform card design
   ARTICLES.forEach(function(article) {
-    if (article.featured && article.image) {
-      featuredArticle = article;
-    } else {
-      secondaryArticles.push(article);
-    }
-  });
-
-  // Add has-featured class if we have a featured article
-  if (featuredArticle) {
-    container.classList.add('has-featured');
-  }
-
-  // Render featured article
-  if (featuredArticle) {
-    html += '<a href="' + featuredArticle.url + '" class="article-card article-card-featured" role="listitem">' +
-      '<div class="article-card-image">' +
-        '<img src="' + featuredArticle.image + '" alt="" loading="lazy" />' +
-      '</div>' +
-      '<div class="article-card-content">' +
-        '<div>' +
-          '<div class="article-card-topic">' + featuredArticle.topic + '</div>' +
-          '<h3 class="article-card-title">' + featuredArticle.title + '</h3>' +
-          (featuredArticle.excerpt ? '<p class="article-card-excerpt">' + featuredArticle.excerpt + '</p>' : '') +
+    if (article.image) {
+      // Card with image - uniform design for all
+      html += '<a href="' + article.url + '" class="article-card-image-card" role="listitem">' +
+        '<div class="article-card-image">' +
+          '<img src="' + article.image + '" alt="" loading="lazy" />' +
         '</div>' +
-        '<div class="article-card-footer">' +
-          '<span class="article-card-date">' + featuredArticle.date + '</span>' +
-          '<span class="article-card-arrow" aria-hidden="true">' +
-            '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">' +
-              '<path d="M7 17L17 7M17 7H7M17 7v10"/>' +
-            '</svg>' +
-          '</span>' +
-        '</div>' +
-      '</div>' +
-    '</a>';
-  }
-
-  // Render secondary articles in a row
-  if (secondaryArticles.length > 0) {
-    html += '<div class="article-secondary-row">';
-    secondaryArticles.forEach(function(article) {
-      if (article.image) {
-        // Card with thumbnail
-        html += '<a href="' + article.url + '" class="article-card-thumb" role="listitem">' +
-          '<div class="article-card-image">' +
-            '<img src="' + article.image + '" alt="" loading="lazy" />' +
-          '</div>' +
-          '<div class="article-card-content">' +
-            '<div>' +
-              '<div class="article-card-topic">' + article.topic + '</div>' +
-              '<h3 class="article-card-title">' + article.title + '</h3>' +
-              (article.excerpt ? '<p class="article-card-excerpt">' + article.excerpt + '</p>' : '') +
-            '</div>' +
-            '<div class="article-card-footer">' +
-              '<span class="article-card-date">' + article.date + '</span>' +
-              '<span class="article-card-arrow" aria-hidden="true">' +
-                '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">' +
-                  '<path d="M7 17L17 7M17 7H7M17 7v10"/>' +
-                '</svg>' +
-              '</span>' +
-            '</div>' +
-          '</div>' +
-        '</a>';
-      } else {
-        // Standard card without image
-        html += '<a href="' + article.url + '" class="article-card" role="listitem" data-tilt>' +
+        '<div class="article-card-content">' +
           '<div>' +
             '<div class="article-card-topic">' + article.topic + '</div>' +
             '<h3 class="article-card-title">' + article.title + '</h3>' +
+            (article.excerpt ? '<p class="article-card-excerpt">' + article.excerpt + '</p>' : '') +
           '</div>' +
           '<div class="article-card-footer">' +
             '<span class="article-card-date">' + article.date + '</span>' +
             '<span class="article-card-arrow" aria-hidden="true">' +
-              '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">' +
+              '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">' +
                 '<path d="M7 17L17 7M17 7H7M17 7v10"/>' +
               '</svg>' +
             '</span>' +
           '</div>' +
-        '</a>';
-      }
-    });
-    html += '</div>';
-  }
+        '</div>' +
+      '</a>';
+    } else {
+      // Standard card without image
+      html += '<a href="' + article.url + '" class="article-card" role="listitem" data-tilt>' +
+        '<div>' +
+          '<div class="article-card-topic">' + article.topic + '</div>' +
+          '<h3 class="article-card-title">' + article.title + '</h3>' +
+        '</div>' +
+        '<div class="article-card-footer">' +
+          '<span class="article-card-date">' + article.date + '</span>' +
+          '<span class="article-card-arrow" aria-hidden="true">' +
+            '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">' +
+              '<path d="M7 17L17 7M17 7H7M17 7v10"/>' +
+            '</svg>' +
+          '</span>' +
+        '</div>' +
+      '</a>';
+    }
+  });
 
   container.innerHTML = html;
 }
