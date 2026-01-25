@@ -243,46 +243,6 @@ button { font: inherit; color: inherit; background: none; border: none; cursor: 
 /* Noise overlay removed - adds nothing meaningful */
 
 /* =============================================================================
-   SOUND TOGGLE
-   ============================================================================= */
-
-.sound-toggle {
-  position: fixed;
-  bottom: 20px;
-  left: 20px;
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  background: var(--bg-elevated);
-  border: 1px solid var(--border);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 90;
-  transition: all var(--duration) var(--ease);
-  opacity: 0.7;
-}
-
-.sound-toggle:hover {
-  opacity: 1;
-  border-color: var(--text);
-}
-
-.sound-toggle svg {
-  width: 18px;
-  height: 18px;
-  color: var(--text-secondary);
-}
-
-.sound-toggle .sound-off { display: none; }
-.sound-toggle.muted .sound-on { display: none; }
-.sound-toggle.muted .sound-off { display: block; }
-
-@media (max-width: 768px) {
-  .sound-toggle { display: none; }
-}
-
-/* =============================================================================
    ACCESSIBILITY
    ============================================================================= */
 
@@ -1847,68 +1807,6 @@ button.photo-item {
 }
 
 /* =============================================================================
-   NOW PLAYING
-   ============================================================================= */
-
-.now-playing {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 16px 20px;
-  background: var(--bg-elevated);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-lg);
-  margin-bottom: clamp(16px, 3vw, 24px);
-}
-
-.now-playing-indicator {
-  display: flex;
-  align-items: flex-end;
-  gap: 2px;
-  height: 16px;
-}
-
-.now-playing-bar {
-  width: 3px;
-  background: var(--green);
-  border-radius: 1px;
-  animation: soundBar 0.5s ease-in-out infinite alternate;
-}
-
-.now-playing-bar:nth-child(1) { height: 60%; animation-delay: 0s; }
-.now-playing-bar:nth-child(2) { height: 100%; animation-delay: 0.2s; }
-.now-playing-bar:nth-child(3) { height: 40%; animation-delay: 0.4s; }
-
-@keyframes soundBar {
-  0% { transform: scaleY(0.3); }
-  100% { transform: scaleY(1); }
-}
-
-.now-playing.paused .now-playing-bar {
-  animation: none;
-  height: 40%;
-}
-
-.now-playing-label {
-  font-family: var(--font-mono);
-  font-size: 10px;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  color: var(--text-tertiary);
-}
-
-.now-playing-track {
-  font-size: 14px;
-  font-weight: 500;
-  color: var(--text);
-  flex: 1;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-/* =============================================================================
    INTO GRID (What I'm into)
    ============================================================================= */
 
@@ -2016,7 +1914,7 @@ button.photo-item {
    ============================================================================= */
 
 footer {
-  padding: 48px 0 32px;
+  padding: 64px 0 40px;
   border-top: 1px solid var(--border);
   background: var(--bg-subtle);
 }
@@ -2024,14 +1922,14 @@ footer {
 .footer-inner {
   display: flex;
   flex-direction: column;
-  gap: 24px;
+  gap: 32px;
 }
 
 .footer-main {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 24px;
+  gap: 32px;
   flex-wrap: wrap;
 }
 
@@ -2046,22 +1944,31 @@ footer {
 
 .footer-nav {
   display: flex;
-  gap: 24px;
+  gap: 8px;
   flex-wrap: wrap;
 }
 
 .footer-nav a {
   font-family: var(--font-mono);
   font-size: 11px;
-  font-weight: 500;
+  font-weight: 600;
   text-transform: uppercase;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.08em;
   color: var(--text-secondary);
-  transition: color var(--duration);
+  padding: 10px 16px;
+  border-radius: var(--radius-full);
+  border: 1px solid transparent;
+  transition: all var(--duration) var(--ease);
 }
 
 .footer-nav a:hover {
   color: var(--text);
+  background: var(--bg-elevated);
+  border-color: var(--border);
+}
+
+.footer-nav a:active {
+  transform: scale(0.97);
 }
 
 .footer-meta {
@@ -2092,36 +1999,57 @@ footer {
 }
 
 .footer-social-link {
-  width: 36px;
-  height: 36px;
+  width: 40px;
+  height: 40px;
   display: flex;
   align-items: center;
   justify-content: center;
   border: 1px solid var(--border);
   border-radius: 50%;
   color: var(--text-tertiary);
-  transition: all var(--duration);
+  background: var(--bg-elevated);
+  transition: all var(--duration) var(--ease);
 }
 
 .footer-social-link:hover {
-  color: var(--text);
+  color: var(--bg);
+  background: var(--text);
   border-color: var(--text);
-  transform: translateY(-2px);
+  transform: translateY(-3px);
+}
+
+.footer-social-link:active {
+  transform: translateY(-1px) scale(0.97);
 }
 
 .footer-social-link svg {
-  width: 16px;
-  height: 16px;
+  width: 18px;
+  height: 18px;
 }
 
 @media (max-width: 600px) {
+  footer {
+    padding: 48px 0 32px;
+  }
+
   .footer-main,
   .footer-meta {
     flex-direction: column;
-    align-items: flex-start;
+    align-items: center;
+    text-align: center;
   }
 
   .footer-nav {
+    justify-content: center;
+    gap: 6px;
+  }
+
+  .footer-nav a {
+    padding: 8px 14px;
+    font-size: 10px;
+  }
+
+  .footer-social {
     gap: 16px;
   }
 }

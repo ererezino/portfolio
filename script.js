@@ -172,8 +172,7 @@ function toggleTheme() {
   document.documentElement.setAttribute('data-theme', next);
   storage.set('theme', next);
   updateThemeColorMeta(next);
-  playSound('click');
-}
+  }
 
 function updateThemeColorMeta(theme) {
   var meta = document.querySelector('meta[name="theme-color"]');
@@ -238,82 +237,6 @@ function initTimeGreeting() {
 }
 
 // =============================================================================
-// SOUND EFFECTS
-// =============================================================================
-
-var soundEnabled = false;
-var sounds = {};
-
-function initSounds() {
-  var toggle = $('#soundToggle');
-  if (!toggle) return;
-
-  soundEnabled = storage.get('soundEnabled') === 'true';
-  toggle.classList.toggle('muted', !soundEnabled);
-
-  toggle.addEventListener('click', function() {
-    soundEnabled = !soundEnabled;
-    storage.set('soundEnabled', soundEnabled);
-    toggle.classList.toggle('muted', !soundEnabled);
-    
-    if (soundEnabled) {
-      playSound('click');
-    }
-  });
-
-  document.addEventListener('click', initAudioContext, { once: true });
-}
-
-function initAudioContext() {
-  if (sounds.context) return;
-  
-  try {
-    var AudioContext = window.AudioContext || window.webkitAudioContext;
-    if (AudioContext) {
-      sounds.context = new AudioContext();
-    }
-  } catch (e) {}
-}
-
-function playSound(type) {
-  if (!soundEnabled || !sounds.context || prefersReducedMotion) return;
-
-  try {
-    var ctx = sounds.context;
-    var oscillator = ctx.createOscillator();
-    var gainNode = ctx.createGain();
-
-    oscillator.connect(gainNode);
-    gainNode.connect(ctx.destination);
-
-    if (type === 'click') {
-      oscillator.frequency.value = 800;
-      oscillator.type = 'sine';
-      gainNode.gain.value = 0.1;
-      gainNode.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.1);
-      oscillator.start(ctx.currentTime);
-      oscillator.stop(ctx.currentTime + 0.1);
-    } else if (type === 'whoosh') {
-      oscillator.frequency.value = 400;
-      oscillator.frequency.exponentialRampToValueAtTime(100, ctx.currentTime + 0.2);
-      oscillator.type = 'sine';
-      gainNode.gain.value = 0.05;
-      gainNode.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.2);
-      oscillator.start(ctx.currentTime);
-      oscillator.stop(ctx.currentTime + 0.2);
-    }
-  } catch(e) {}
-}
-
-function bindSounds() {
-  $$('[data-sound]').forEach(function(el) {
-    el.addEventListener('click', function() {
-      playSound(el.dataset.sound);
-    });
-  });
-}
-
-// =============================================================================
 // HEADER
 // =============================================================================
 
@@ -332,8 +255,7 @@ function initHeader() {
   if (backToTop) {
     backToTop.addEventListener('click', function() {
       window.scrollTo(0, 0);
-      playSound('whoosh');
-    });
+          });
   }
 }
 
@@ -458,8 +380,7 @@ function initLightbox() {
     document.body.style.overflow = 'hidden';
 
     focusTrap.activate();
-    playSound('whoosh');
-  }
+      }
 
   function close() {
     lightbox.classList.remove('active');
@@ -481,8 +402,7 @@ function initLightbox() {
     }
     if (caption) caption.textContent = PHOTOS[currentPhotoIndex].caption;
     if (counter) counter.textContent = (currentPhotoIndex + 1) + ' / ' + PHOTOS.length;
-    playSound('whoosh');
-  }
+      }
 
   var closeBtn = $('.lightbox-close', lightbox);
   var prevBtn = $('.lightbox-prev', lightbox);
@@ -582,8 +502,7 @@ PhotoStack.prototype.updatePositions = function() {
 PhotoStack.prototype.next = function() { 
   this.currentIndex = (this.currentIndex + 1) % this.photos.length; 
   this.updatePositions();
-  playSound('whoosh');
-};
+  };
 
 PhotoStack.prototype.bindEvents = function() {
   var self = this;
@@ -972,8 +891,7 @@ function initKonamiCode() {
       }
     });
 
-    playSound('whoosh');
-  }
+      }
 }
 
 // =============================================================================
@@ -1177,8 +1095,6 @@ document.addEventListener('DOMContentLoaded', function() {
   if (mobileThemeToggle) mobileThemeToggle.addEventListener('click', toggleTheme);
   
   initTimeGreeting();
-  initSounds();
-  bindSounds();
   initHeader();
   initMobileMenu();
   initLightbox();
