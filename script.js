@@ -640,7 +640,7 @@ function renderArticles() {
 
   var html = '';
   ARTICLES.forEach(function(article) {
-    html += '<a href="' + article.url + '" class="article-card" role="listitem">' +
+    html += '<a href="' + article.url + '" class="article-card" role="listitem" data-tilt>' +
       '<div>' +
         '<div class="article-card-topic">' + article.topic + '</div>' +
         '<h3 class="article-card-title">' + article.title + '</h3>' +
@@ -718,7 +718,7 @@ function renderTravels() {
 
   var html = '';
   TRAVELS.forEach(function(travel) {
-    html += '<a href="' + travel.url + '" class="travel-postcard" role="listitem">' +
+    html += '<a href="' + travel.url + '" class="travel-postcard" role="listitem" data-tilt>' +
       '<div class="travel-postcard-frame">' +
         '<div class="travel-postcard-photo">' +
           '<div class="travel-postcard-bg" style="background-image: url(\'' + travel.photo + '\')"></div>' +

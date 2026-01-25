@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Zino Asamaige</title>
+    <description>Thoughts on building, creating, and living. Co-founder of Accrue and Cashramp.</description>
+    <link>https://www.ererezino.com</link>
+    <atom:link href="https://www.ererezino.com/feed.xml" rel="self" type="application/rss+xml"/>
+    <language>en-us</language>
+    <lastBuildDate>Mon, 20 Jan 2026 00:00:00 +0000</lastBuildDate>
+    <managingEditor>hello@ererezino.com (Zino Asamaige)</managingEditor>
+    <webMaster>hello@ererezino.com (Zino Asamaige)</webMaster>
+    <image>
+      <url>https://www.ererezino.com/assets/logo.png</url>
+      <title>Zino Asamaige</title>
+      <link>https://www.ererezino.com</link>
+    </image>
+
+    <item>
+      <title>Why I'm Building Accrue</title>
+      <link>https://www.ererezino.com/articles/why-im-building-accrue/</link>
+      <guid isPermaLink="true">https://www.ererezino.com/articles/why-im-building-accrue/</guid>
+      <pubDate>Mon, 20 Jan 2026 00:00:00 +0000</pubDate>
+      <author>hello@ererezino.com (Zino Asamaige)</author>
+      <description>Africa moves a lot of money. The problem is how. Cross-border payments hit $329 billion in 2025, but 75% moves through informal channels.</description>
+      <category>Fintech</category>
+      <category>Africa</category>
+      <category>Startups</category>
+    </item>
+
+    <item>
+      <title>Lived It, Loved It: Farewell Helicarrier</title>
+      <link>https://medium.com/@ererezino/lived-it-loved-it-farewell-helicarrier-f112fd1c6302</link>
+      <guid isPermaLink="true">https://medium.com/@ererezino/lived-it-loved-it-farewell-helicarrier-f112fd1c6302</guid>
+      <pubDate>Sat, 01 Oct 2022 00:00:00 +0000</pubDate>
+      <author>hello@ererezino.com (Zino Asamaige)</author>
+      <description>Today's my last day at Helicarrier. I joined in 2018, and I'm incredibly proud of how much growth has happened since then. I'm leaving to continue growing Accrue.</description>
+      <category>Career</category>
+      <category>Helicarrier</category>
+      <category>Reflection</category>
+    </item>
+
+    <item>
+      <title>Trading USDT Peer-to-Peer - Now Available on BuyCoins!</title>
+      <link>https://medium.com/buycoins/trading-usdt-peer-to-peer-now-available-on-buycoins-44b08d7fae2b</link>
+      <guid isPermaLink="true">https://medium.com/buycoins/trading-usdt-peer-to-peer-now-available-on-buycoins-44b08d7fae2b</guid>
+      <pubDate>Tue, 17 Nov 2020 00:00:00 +0000</pubDate>
+      <author>hello@ererezino.com (Zino Asamaige)</author>
+      <description>We're introducing support for USDT on our peer-to-peer exchange and wallet. You can buy or sell USDT at your preferred price.</description>
+      <category>Product</category>
+      <category>BuyCoins</category>
+      <category>Crypto</category>
+    </item>
+
+    <item>
+      <title>It's the 12th!</title>
+      <link>https://medium.com/buycoins/its-the-12th-e62f34e82c07</link>
+      <guid isPermaLink="true">https://medium.com/buycoins/its-the-12th-e62f34e82c07</guid>
+      <pubDate>Thu, 12 Dec 2019 00:00:00 +0000</pubDate>
+      <author>hello@ererezino.com (Zino Asamaige)</author>
+      <description>One year ago today, I joined BuyCoins, and it's been the most amazing and busiest twelve months of my professional career.</description>
+      <category>Career</category>
+      <category>BuyCoins</category>
+    </item>
+  </channel>
+</rss>
