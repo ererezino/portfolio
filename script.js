@@ -19,7 +19,7 @@ function getResponsiveImage(photo, lazy) {
 }
 
 var ARTICLES = [
-  { title: "A quick note on consistency", date: "Jan 2026", topic: "Work / life", url: "/articles/" },
+  { title: "Why I'm Building Accrue", date: "Jan 2026", topic: "Startups", url: "/articles/why-im-building-accrue/", image: "/articles/why-im-building-accrue/team.png", featured: true },
   { title: "What I'm learning from walking", date: "Dec 2025", topic: "Movement", url: "/articles/" }
 ];
 
@@ -559,20 +559,44 @@ function renderArticles() {
 
   var html = '';
   ARTICLES.forEach(function(article) {
-    html += '<a href="' + article.url + '" class="article-card" role="listitem" data-tilt>' +
-      '<div>' +
-        '<div class="article-card-topic">' + article.topic + '</div>' +
-        '<h3 class="article-card-title">' + article.title + '</h3>' +
-      '</div>' +
-      '<div class="article-card-footer">' +
-        '<span class="article-card-date">' + article.date + '</span>' +
-        '<span class="article-card-arrow" aria-hidden="true">' +
-          '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">' +
-            '<path d="M7 17L17 7M17 7H7M17 7v10"/>' +
-          '</svg>' +
-        '</span>' +
-      '</div>' +
-    '</a>';
+    if (article.featured && article.image) {
+      // Featured article with image
+      html += '<a href="' + article.url + '" class="article-card article-card-featured" role="listitem">' +
+        '<div class="article-card-image">' +
+          '<img src="' + article.image + '" alt="" loading="lazy" />' +
+        '</div>' +
+        '<div class="article-card-content">' +
+          '<div>' +
+            '<div class="article-card-topic">' + article.topic + '</div>' +
+            '<h3 class="article-card-title">' + article.title + '</h3>' +
+          '</div>' +
+          '<div class="article-card-footer">' +
+            '<span class="article-card-date">' + article.date + '</span>' +
+            '<span class="article-card-arrow" aria-hidden="true">' +
+              '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">' +
+                '<path d="M7 17L17 7M17 7H7M17 7v10"/>' +
+              '</svg>' +
+            '</span>' +
+          '</div>' +
+        '</div>' +
+      '</a>';
+    } else {
+      // Standard article card
+      html += '<a href="' + article.url + '" class="article-card" role="listitem" data-tilt>' +
+        '<div>' +
+          '<div class="article-card-topic">' + article.topic + '</div>' +
+          '<h3 class="article-card-title">' + article.title + '</h3>' +
+        '</div>' +
+        '<div class="article-card-footer">' +
+          '<span class="article-card-date">' + article.date + '</span>' +
+          '<span class="article-card-arrow" aria-hidden="true">' +
+            '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">' +
+              '<path d="M7 17L17 7M17 7H7M17 7v10"/>' +
+            '</svg>' +
+          '</span>' +
+        '</div>' +
+      '</a>';
+    }
   });
 
   container.innerHTML = html;
