@@ -706,6 +706,27 @@
       outline: 2px solid var(--green);
       outline-offset: 2px;
     }
+
+    /* Chart text summary */
+    .chart-text-summary {
+      margin-top: 32px;
+      padding: 24px;
+      background: var(--bg-alt);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      font-family: var(--font-sans);
+      font-size: 14px;
+      line-height: 1.7;
+      color: var(--text-secondary);
+    }
+    .chart-text-summary strong {
+      color: var(--text);
+      font-weight: 600;
+    }
+    .chart-text-summary .summary-highlight {
+      color: var(--green);
+      font-weight: 600;
+    }
   </style>
 </head>
 
@@ -861,6 +882,12 @@
             <span>0</span>
           </div>
         </div>
+        <!-- Screen reader text summary of chart data -->
+        <div class="chart-summary visually-hidden" id="chartSummary" aria-live="polite">
+          Monthly step data summary will be announced when data loads.
+        </div>
+        <!-- Visible summary for all users -->
+        <div class="chart-text-summary" id="chartTextSummary"></div>
       </section>
 
       <section class="months-section" aria-labelledby="months-label">
@@ -878,6 +905,10 @@
         <a href="/articles/">Articles</a>
         <a href="/contact.html">Contact</a>
       </nav>
+      <a href="mailto:hello@ererezino.com" class="footer-email">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+        hello@ererezino.com
+      </a>
       <div class="footer-social">
         <a href="https://x.com/ererezino" target="_blank" rel="noopener noreferrer" class="footer-social-link" aria-label="Follow on X (Twitter)">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
@@ -893,6 +924,7 @@
         </span>
         <span class="footer-copy">&copy; 2026 Zino Asamaige</span>
       </div>
+      <p class="footer-privacy">This site doesn't use cookies or track your data. Contact form messages are sent via email and stored securely.</p>
     </div>
   </footer>
 
@@ -1125,6 +1157,73 @@
       monthsGrid.appendChild(card);
       monthObserver.observe(card);
     });
+
+    // Generate accessible chart summary for screen readers and visible summary
+    function generateChartSummary() {
+      const summaryEl = document.getElementById('chartSummary');
+      const textSummaryEl = document.getElementById('chartTextSummary');
+
+      const current = currentMonth;
+      const pctOfGoal = Math.round((current.steps / MONTHLY_GOAL) * 100);
+      const remaining = Math.max(0, MONTHLY_GOAL - current.steps);
+      const daysInMonth = new Date(current.year, new Date(Date.parse(current.month + ' 1, 2000')).getMonth() + 1, 0).getDate();
+      const today = new Date();
+      const currentDay = today.getDate();
+      const daysRemaining = Math.max(0, daysInMonth - currentDay);
+
+      // Find best and worst months from 2025
+      const months2025 = MONTHS.filter(m => m.year === 2025 && !m.isCurrent);
+      const bestMonth = months2025.reduce((best, m) => m.steps > best.steps ? m : best, months2025[0]);
+      const worstMonth = months2025.reduce((worst, m) => m.steps < worst.steps ? m : worst, months2025[0]);
+      const monthsMetGoal = months2025.filter(m => m.steps >= MONTHLY_GOAL).length;
+
+      // Screen reader summary (plain text)
+      if (summaryEl) {
+        let summary = `Movement statistics summary. `;
+        summary += `Current month: ${current.month} ${current.year}. `;
+        summary += `Steps so far: ${fmt(current.steps)}, which is ${pctOfGoal}% of the ${fmt(MONTHLY_GOAL)} monthly goal. `;
+        summary += `Distance covered: ${current.km} kilometers. `;
+        summary += `Daily average: ${fmt(current.avgStepsPerDay)} steps. `;
+
+        if (remaining > 0) {
+          summary += `${fmt(remaining)} steps remaining to reach the monthly goal with ${daysRemaining} days left in the month. `;
+        } else {
+          summary += `Monthly goal achieved! `;
+        }
+
+        summary += `2025 Year in Review: `;
+        summary += `Total steps: ${fmt(yearTotalSteps)}. `;
+        summary += `Total distance: ${yearTotalKm} kilometers. `;
+        summary += `Average per day: ${fmt(yearAvgPerDay)} steps. `;
+        summary += `${monthsMetGoal} out of 12 months met the ${fmt(MONTHLY_GOAL)} step goal. `;
+        summary += `Best month: ${bestMonth.month} with ${fmt(bestMonth.steps)} steps. `;
+        summary += `Lowest month: ${worstMonth.month} with ${fmt(worstMonth.steps)} steps.`;
+
+        summaryEl.textContent = summary;
+      }
+
+      // Visible text summary with formatting
+      if (textSummaryEl) {
+        let statusText = '';
+        if (remaining > 0) {
+          statusText = `<strong>${fmt(remaining)}</strong> steps remaining to reach the goal with <strong>${daysRemaining} days</strong> left.`;
+        } else {
+          statusText = `<span class="summary-highlight">Monthly goal achieved!</span>`;
+        }
+
+        textSummaryEl.innerHTML = `
+          In <strong>${current.month} ${current.year}</strong>, I've walked <strong>${fmt(current.steps)} steps</strong>
+          (<span class="summary-highlight">${pctOfGoal}%</span> of my ${fmt(MONTHLY_GOAL)} monthly goal),
+          covering <strong>${current.km} km</strong> with a daily average of <strong>${fmt(current.avgStepsPerDay)} steps</strong>.
+          ${statusText}
+          <br><br>
+          <strong>2025 highlights:</strong> Best month was <strong>${bestMonth.month}</strong> with ${fmt(bestMonth.steps)} steps.
+          <strong>${monthsMetGoal}/12</strong> months met the goal. Total distance: <strong>${yearTotalKm} km</strong>.
+        `;
+      }
+    }
+
+    generateChartSummary();
 
     // Respect reduced motion
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
