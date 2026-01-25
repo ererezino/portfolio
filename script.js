@@ -19,7 +19,7 @@ function getResponsiveImage(photo, lazy) {
 }
 
 var ARTICLES = [
-  { title: "Why I'm Building Accrue", date: "Jan 2026", topic: "Startups", url: "/articles/why-im-building-accrue/", image: "/articles/why-im-building-accrue/team.png", featured: true },
+  { title: "Why I'm Building Accrue", date: "Jan 2026", topic: "Startups", url: "/articles/why-im-building-accrue/", image: "/articles/why-im-building-accrue/team.png", featured: true, excerpt: "Millions of people move money across borders every day through informal networks. We're building the infrastructure they deserve." },
   { title: "What I'm learning from walking", date: "Dec 2025", topic: "Movement", url: "/articles/" }
 ];
 
@@ -569,6 +569,7 @@ function renderArticles() {
           '<div>' +
             '<div class="article-card-topic">' + article.topic + '</div>' +
             '<h3 class="article-card-title">' + article.title + '</h3>' +
+            (article.excerpt ? '<p class="article-card-excerpt">' + article.excerpt + '</p>' : '') +
           '</div>' +
           '<div class="article-card-footer">' +
             '<span class="article-card-date">' + article.date + '</span>' +

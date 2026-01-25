@@ -1310,6 +1310,14 @@ button.photo-item {
   font-size: clamp(24px, 3.5vw, 32px);
 }
 
+.article-card-excerpt {
+  margin-top: 16px;
+  font-family: var(--font-sans);
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--text-secondary);
+}
+
 @media (max-width: 768px) {
   .article-card-featured {
     flex-direction: column;
