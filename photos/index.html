@@ -606,7 +606,7 @@
   <main id="main" role="main">
     <!-- Hero with featured photo -->
     <section class="hero-section" id="heroSection">
-      <img src="" alt="" class="hero-image" id="heroImage">
+      <img src="" alt="" class="hero-image" id="heroImage" width="1200" height="800">
       <div class="hero-overlay"></div>
       <div class="hero-content">
         <a href="/" class="hero-back-link">
@@ -785,7 +785,7 @@
         var layoutClass = p.layout === 'tall' ? 'tall' : p.layout === 'wide' ? 'wide' : '';
         var idx = PHOTOS.indexOf(p);
         return '<button type="button" class="photo-item skeleton ' + layoutClass + '" onclick="openLb(' + idx + ')" aria-label="View photo: ' + p.caption + '">' +
-          '<img src="' + p.src + '" alt="' + p.caption + '" loading="lazy" onload="this.classList.add(\'loaded\'); this.parentElement.classList.remove(\'skeleton\');">' +
+          '<img src="' + p.src + '" alt="' + p.caption + '" width="400" height="400" loading="lazy" onload="this.classList.add(\'loaded\'); this.parentElement.classList.remove(\'skeleton\');">' +
           '<div class="photo-overlay">' +
             '<div class="photo-location">' +
               '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>' +
