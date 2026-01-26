@@ -196,154 +196,164 @@
     .logo-img {
       width: 36px;
       height: 36px;
-      border-radius: 6px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid var(--border);
+      transition: border-color var(--transition), transform var(--transition);
     }
-    .logo-text {
-      transition: opacity 0.3s ease;
+    header.scrolled .logo-img { width: 32px; height: 32px; }
+    @media (max-width: 768px) {
+      header.scrolled .logo-img { width: 28px; height: 28px; }
     }
+    .logo:hover .logo-img {
+      border-color: var(--green);
+    }
+    .logo-text { transition: opacity var(--transition); }
     @media (max-width: 500px) {
       .logo-text { display: none; }
     }
-
-    /* Header Nav */
     .header-nav {
-      display: flex;
+      display: none;
       align-items: center;
       gap: 32px;
     }
+    @media (min-width: 900px) { .header-nav { display: flex; } }
     .nav-link {
       font-family: var(--font-mono);
-      font-size: 11px;
+      font-size: 12px;
+      font-weight: 500;
       text-transform: uppercase;
       letter-spacing: 0.1em;
       color: var(--text-secondary);
+      padding: 8px 0;
+      position: relative;
       transition: color var(--transition);
     }
-    .nav-link:hover { color: var(--text); }
-    @media (max-width: 768px) {
-      .header-nav { display: none; }
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 1.5px;
+      background: var(--green);
+      transform: scaleX(0);
+      transform-origin: right;
+      transition: transform var(--transition);
     }
+    .nav-link:hover { color: var(--text); }
+    .nav-link:hover::after { transform: scaleX(1); transform-origin: left; }
+    .nav-link[aria-current="page"] { color: var(--text); }
+    .nav-link[aria-current="page"]::after { transform: scaleX(1); }
 
-    /* Theme Toggle */
     .theme-btn {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      border: 1px solid var(--border);
+      background: transparent;
+      cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
-      width: 40px;
-      height: 40px;
-      border: 1px solid var(--border);
-      border-radius: 50%;
-      background: transparent;
-      cursor: pointer;
-      color: var(--text-secondary);
       transition: all var(--transition);
     }
-    .theme-btn:hover {
-      color: var(--text);
-      border-color: var(--text);
-    }
-    .theme-btn .moon { display: block; }
+    .theme-btn:hover { border-color: var(--text); transform: scale(1.05); }
+    .theme-btn:active { transform: scale(0.95); }
+    .theme-btn svg { width: 18px; height: 18px; color: var(--text-secondary); }
     .theme-btn .sun { display: none; }
-    [data-theme="dark"] .theme-btn .moon { display: none; }
     [data-theme="dark"] .theme-btn .sun { display: block; }
+    [data-theme="dark"] .theme-btn .moon { display: none; }
 
-    /* Mobile Controls */
-    .mobile-controls {
-      display: none;
-      align-items: center;
-      gap: 12px;
-    }
-    @media (max-width: 768px) {
-      .mobile-controls { display: flex; }
-    }
+    .mobile-controls { display: flex; align-items: center; gap: 12px; }
+    @media (min-width: 900px) { .mobile-controls { display: none; } }
+
     .mobile-menu-btn {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
       width: 40px;
       height: 40px;
-      gap: 5px;
-      border: 1px solid var(--border);
       border-radius: 50%;
+      border: 1px solid var(--border);
       background: transparent;
       cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
       transition: all var(--transition);
     }
     .mobile-menu-btn:hover { border-color: var(--text); }
     .mobile-menu-btn span {
       width: 16px;
-      height: 2px;
-      background: var(--text);
+      height: 1.5px;
+      background: var(--text-secondary);
       transition: all var(--transition);
     }
 
     /* Mobile Menu */
     .mobile-menu {
       position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
+      inset: 0;
       background: var(--bg);
       z-index: 200;
+      padding: 20px;
       display: flex;
       flex-direction: column;
       opacity: 0;
       visibility: hidden;
-      transition: opacity 0.3s ease, visibility 0.3s ease;
+      transition: all var(--transition);
     }
-    .mobile-menu.open {
-      opacity: 1;
-      visibility: visible;
-    }
+    .mobile-menu.open { opacity: 1; visibility: visible; }
     .mobile-menu-header {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 16px clamp(16px, 4vw, 48px);
+      padding-bottom: 20px;
       border-bottom: 1px solid var(--border);
     }
     .mobile-menu-close {
       width: 40px;
       height: 40px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      border: 1px solid var(--border);
       border-radius: 50%;
+      border: 1px solid var(--border);
       background: transparent;
       font-size: 24px;
       cursor: pointer;
       color: var(--text);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all var(--transition);
+    }
+    .mobile-menu-close:hover {
+      border-color: var(--text);
+      background: var(--text);
+      color: var(--bg);
     }
     .mobile-menu nav {
       flex: 1;
       display: flex;
       flex-direction: column;
-      padding: 32px clamp(16px, 4vw, 48px);
-      gap: 0;
+      padding-top: 20px;
     }
     .mobile-menu nav a {
       font-family: var(--font-mono);
       font-size: 14px;
       text-transform: uppercase;
       letter-spacing: 0.1em;
-      padding: 20px 0;
+      padding: 16px 0;
       border-bottom: 1px solid var(--border);
+      transition: color var(--transition);
     }
-
-    /* Article Layout */
-    main {
-      padding-top: 120px;
-      padding-bottom: 80px;
-    }
+    .mobile-menu nav a:hover { color: var(--green); }
 
     /* Article Header */
     .article-header {
-      margin-bottom: 48px;
+      padding: 140px 0 60px;
       border-bottom: 1px solid var(--border);
-      padding-bottom: 48px;
+      position: relative;
+      z-index: 2;
+      background: var(--bg);
     }
     .article-back {
       display: inline-flex;
@@ -352,41 +362,60 @@
       font-family: var(--font-mono);
       font-size: 11px;
       text-transform: uppercase;
-      letter-spacing: 0.1em;
+      letter-spacing: 0.08em;
       color: var(--text-tertiary);
       margin-bottom: 32px;
       transition: color var(--transition);
     }
     .article-back:hover { color: var(--text); }
+    .article-back:focus-visible {
+      outline: 2px solid var(--green);
+      outline-offset: 4px;
+    }
     .article-back svg { width: 14px; height: 14px; }
     .article-meta {
       display: flex;
       gap: 16px;
       font-family: var(--font-mono);
       font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
       color: var(--text-tertiary);
-      margin-bottom: 16px;
+      margin-bottom: 20px;
     }
     .article-title {
       font-family: var(--font-serif);
-      font-size: clamp(32px, 6vw, 48px);
+      font-size: clamp(36px, 5vw, 52px);
       font-weight: 400;
       font-style: italic;
+      line-height: 1.15;
       letter-spacing: -0.02em;
-      line-height: 1.1;
-      margin-bottom: 16px;
+      margin-bottom: 20px;
+      opacity: 0;
+      transform: translateY(20px);
+      animation: fadeInUp 0.6s ease forwards;
+    }
+    @keyframes fadeInUp {
+      to { opacity: 1; transform: translateY(0); }
     }
     .article-excerpt {
       font-family: var(--font-sans);
-      font-size: 18px;
+      font-size: 17px;
+      line-height: 1.8;
       color: var(--text-secondary);
-      line-height: 1.6;
-      max-width: 540px;
+      opacity: 0;
+      transform: translateY(20px);
+      animation: fadeInUp 0.6s ease 0.1s forwards;
     }
     .article-tags-row {
       display: flex;
       align-items: center;
       justify-content: space-between;
+      gap: 16px;
+      margin-top: 24px;
+      opacity: 0;
+      transform: translateY(20px);
+      animation: fadeInUp 0.6s ease 0.2s forwards;
       margin-top: 24px;
       gap: 16px;
     }
@@ -409,6 +438,14 @@
     .tag:hover {
       border-color: var(--text);
       color: var(--text);
+    }
+
+    /* Article Content */
+    .article-content {
+      padding: 48px 0 80px;
+      position: relative;
+      z-index: 1;
+      background: var(--bg);
     }
 
     /* Share Button */
@@ -1245,8 +1282,8 @@
       </nav>
       <div class="mobile-controls">
         <button class="theme-btn" id="mobileThemeToggle" aria-label="Toggle dark mode" type="button">
-          <svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
-          <svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+          <svg class="moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+          <svg class="sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
         </button>
         <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Open navigation menu" aria-expanded="false" aria-controls="mobileMenu" type="button">
           <span></span><span></span><span></span>
@@ -1670,10 +1707,6 @@
             <p>This is not a problem that will be solved by governments alone, or by private sector actors alone. It requires both. Policy frameworks that enable innovation. Companies willing to build infrastructure in markets that larger players ignore. Patient capital that understands the compounding returns of reduced friction.</p>
 
             <p>The prize is substantial. Estimates suggest that fully implementing AfCFTA could increase intra-African trade by over 50% within a decade. That translates to hundreds of billions of dollars in additional commerce, millions of jobs, and a fundamental restructuring of how African economies relate to each other and to the world.</p>
-
-            <hr>
-
-            <p><em>Z is Co-Founder and COO of Accrue, a cross-border payments infrastructure company building the financial rails for intra-African commerce.</em></p>
 
             <!-- Share button below article -->
             <div class="share-row-bottom">
