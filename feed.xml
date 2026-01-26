@@ -7,8 +7,6 @@
     <atom:link href="https://www.ererezino.com/feed.xml" rel="self" type="application/rss+xml"/>
     <language>en-us</language>
     <lastBuildDate>Mon, 20 Jan 2026 00:00:00 +0000</lastBuildDate>
-    <managingEditor>hello@ererezino.com (Zino Asamaige)</managingEditor>
-    <webMaster>hello@ererezino.com (Zino Asamaige)</webMaster>
     <image>
       <url>https://www.ererezino.com/assets/logo.png</url>
       <title>Zino Asamaige</title>
@@ -20,7 +18,7 @@
       <link>https://www.ererezino.com/articles/why-im-building-accrue/</link>
       <guid isPermaLink="true">https://www.ererezino.com/articles/why-im-building-accrue/</guid>
       <pubDate>Mon, 20 Jan 2026 00:00:00 +0000</pubDate>
-      <author>hello@ererezino.com (Zino Asamaige)</author>
+      <dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Zino Asamaige</dc:creator>
       <description>Africa moves a lot of money. The problem is how. Cross-border payments hit $329 billion in 2025, but 75% moves through informal channels.</description>
       <category>Fintech</category>
       <category>Africa</category>
@@ -32,7 +30,7 @@
       <link>https://medium.com/@ererezino/lived-it-loved-it-farewell-helicarrier-f112fd1c6302</link>
       <guid isPermaLink="true">https://medium.com/@ererezino/lived-it-loved-it-farewell-helicarrier-f112fd1c6302</guid>
       <pubDate>Sat, 01 Oct 2022 00:00:00 +0000</pubDate>
-      <author>hello@ererezino.com (Zino Asamaige)</author>
+      <dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Zino Asamaige</dc:creator>
       <description>Today's my last day at Helicarrier. I joined in 2018, and I'm incredibly proud of how much growth has happened since then. I'm leaving to continue growing Accrue.</description>
       <category>Career</category>
       <category>Helicarrier</category>
@@ -44,7 +42,7 @@
       <link>https://medium.com/buycoins/trading-usdt-peer-to-peer-now-available-on-buycoins-44b08d7fae2b</link>
       <guid isPermaLink="true">https://medium.com/buycoins/trading-usdt-peer-to-peer-now-available-on-buycoins-44b08d7fae2b</guid>
       <pubDate>Tue, 17 Nov 2020 00:00:00 +0000</pubDate>
-      <author>hello@ererezino.com (Zino Asamaige)</author>
+      <dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Zino Asamaige</dc:creator>
       <description>We're introducing support for USDT on our peer-to-peer exchange and wallet. You can buy or sell USDT at your preferred price.</description>
       <category>Product</category>
       <category>BuyCoins</category>
@@ -56,7 +54,7 @@
       <link>https://medium.com/buycoins/its-the-12th-e62f34e82c07</link>
       <guid isPermaLink="true">https://medium.com/buycoins/its-the-12th-e62f34e82c07</guid>
       <pubDate>Thu, 12 Dec 2019 00:00:00 +0000</pubDate>
-      <author>hello@ererezino.com (Zino Asamaige)</author>
+      <dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Zino Asamaige</dc:creator>
       <description>One year ago today, I joined BuyCoins, and it's been the most amazing and busiest twelve months of my professional career.</description>
       <category>Career</category>
       <category>BuyCoins</category>
