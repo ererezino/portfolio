@@ -723,7 +723,7 @@
       clearError('message', 'messageError');
     }
 
-    form.addEventListener('submit', (e) => {
+    form.addEventListener('submit', function(e) {
       clearAllErrors();
 
       const name = document.getElementById('name').value.trim();
@@ -749,12 +749,14 @@
 
       if (hasError) {
         e.preventDefault();
-        return;
+        return false;
       }
 
-      // Show loading state - form will submit normally to Web3Forms
+      // Show loading state
       submitBtn.classList.add('loading');
-      // Don't disable the button - it prevents form submission in some browsers
+
+      // Let the form submit naturally
+      return true;
     });
 
     // Clear errors on input
