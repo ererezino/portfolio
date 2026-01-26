@@ -677,6 +677,10 @@
     function setTheme(dark) {
       document.documentElement.setAttribute('data-theme', dark ? 'dark' : 'light');
       localStorage.setItem('theme', dark ? 'dark' : 'light');
+      // Force repaint on mobile
+      document.body.style.transform = 'translateZ(0)';
+      
+      requestAnimationFrame(function() { document.body.style.transform = ''; });
     }
 
     function toggleTheme() {
