@@ -149,6 +149,19 @@
       animation: fadeInUp 0.6s var(--ease) 0.1s forwards;
     }
 
+    .page-lead a,
+    .about-card p a {
+      color: var(--text);
+      text-decoration: underline;
+      text-underline-offset: 3px;
+      transition: color 0.2s ease;
+    }
+
+    .page-lead a:hover,
+    .about-card p a:hover {
+      color: var(--green);
+    }
+
     /* About Grid */
     .about-section {
       padding: 64px 0;
