@@ -2207,6 +2207,10 @@
       const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
       document.documentElement.setAttribute('data-theme', isDark ? 'light' : 'dark');
       localStorage.setItem('theme', isDark ? 'light' : 'dark');
+      // Force repaint on mobile
+      document.body.style.transform = 'translateZ(0)';
+      
+      requestAnimationFrame(function() { document.body.style.transform = ''; });
     }
 
     toggle.onclick = toggleTheme;
