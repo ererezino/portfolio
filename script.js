@@ -176,10 +176,11 @@ function toggleTheme() {
   storage.set('theme', next);
   updateThemeColorMeta(next);
 
-  // Force full repaint on mobile browsers
-  document.body.style.display = 'none';
-  document.body.offsetHeight;
-  document.body.style.display = '';
+  // Force repaint on mobile browsers without flash
+  document.body.style.transform = 'translateZ(0)';
+  requestAnimationFrame(function() {
+    document.body.style.transform = '';
+  });
 }
 
 function updateThemeColorMeta(theme) {

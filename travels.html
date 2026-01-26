@@ -587,9 +587,9 @@
       localStorage.setItem('theme', dark ? 'dark' : 'light');
       if (typeof updateMapTiles === 'function') updateMapTiles();
       // Force repaint on mobile
-      document.body.style.display = 'none';
-      document.body.offsetHeight;
-      document.body.style.display = '';
+      document.body.style.transform = 'translateZ(0)';
+      
+      requestAnimationFrame(function() { document.body.style.transform = ''; });
     }
 
     function toggleTheme() {
