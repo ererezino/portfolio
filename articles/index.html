@@ -84,7 +84,7 @@
   <link rel="stylesheet" href="/assets/fonts.css">
 
   <!-- Shared styles -->
-  <link rel="stylesheet" href="/styles.css">
+  <link rel="stylesheet" href="/styles.css?v=20260125c">
 
   <!-- Page-specific styles -->
   <style>
@@ -1568,6 +1568,10 @@
     function setTheme(dark) {
       document.documentElement.setAttribute('data-theme', dark ? 'dark' : 'light');
       localStorage.setItem('theme', dark ? 'dark' : 'light');
+      // Force repaint on mobile
+      document.body.style.transform = 'translateZ(0)';
+      
+      requestAnimationFrame(function() { document.body.style.transform = ''; });
     }
 
     function toggleTheme() {
