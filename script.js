@@ -167,12 +167,26 @@ function initTheme() {
 }
 
 function toggleTheme() {
-  var current = document.documentElement.getAttribute('data-theme');
+  var html = document.documentElement;
+  var current = html.getAttribute('data-theme');
   var next = current === 'dark' ? 'light' : 'dark';
-  document.documentElement.setAttribute('data-theme', next);
+
+  // Add transition class for smooth theme change
+  html.classList.add('theme-transition');
+
+  // Change theme
+  html.setAttribute('data-theme', next);
   storage.set('theme', next);
   updateThemeColorMeta(next);
-  }
+
+  // Force repaint to ensure all elements update
+  document.body.offsetHeight;
+
+  // Remove transition class after animation completes
+  setTimeout(function() {
+    html.classList.remove('theme-transition');
+  }, 350);
+}
 
 function updateThemeColorMeta(theme) {
   var meta = document.querySelector('meta[name="theme-color"]');
