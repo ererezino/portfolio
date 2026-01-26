@@ -171,21 +171,15 @@ function toggleTheme() {
   var current = html.getAttribute('data-theme');
   var next = current === 'dark' ? 'light' : 'dark';
 
-  // Add transition class for smooth theme change
-  html.classList.add('theme-transition');
-
   // Change theme
   html.setAttribute('data-theme', next);
   storage.set('theme', next);
   updateThemeColorMeta(next);
 
-  // Force repaint to ensure all elements update
+  // Force full repaint on mobile browsers
+  document.body.style.display = 'none';
   document.body.offsetHeight;
-
-  // Remove transition class after animation completes
-  setTimeout(function() {
-    html.classList.remove('theme-transition');
-  }, 350);
+  document.body.style.display = '';
 }
 
 function updateThemeColorMeta(theme) {
@@ -452,6 +446,11 @@ function PhotoStack(container, photos) {
 
 PhotoStack.prototype.render = function() {
   var self = this;
+
+  // Create photo-stack wrapper
+  var stack = document.createElement('div');
+  stack.className = 'photo-stack';
+
   var track = document.createElement('div');
   track.className = 'photo-stack-track';
 
@@ -461,12 +460,12 @@ PhotoStack.prototype.render = function() {
     card.className = 'stack-card';
     card.dataset.index = i;
     card.setAttribute('aria-label', 'View photo: ' + photo.caption);
-    
+
     var dotsHTML = '';
     for (var j = 0; j < self.photos.length; j++) {
       dotsHTML += '<span' + (j === 0 ? ' class="active"' : '') + '></span>';
     }
-    
+
     card.innerHTML =
       '<img src="' + photo.src + '" alt="' + photo.alt + '" draggable="false" width="400" height="500" style="width:100%;height:100%;object-fit:cover;" />' +
       '<div class="stack-card-footer">' +
@@ -480,8 +479,10 @@ PhotoStack.prototype.render = function() {
   hint.className = 'stack-hint';
   hint.innerHTML = '<span>Swipe or tap to browse</span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>';
 
+  stack.appendChild(track);
+
   this.container.innerHTML = '';
-  this.container.appendChild(track);
+  this.container.appendChild(stack);
   this.container.appendChild(hint);
   this.cards = $$('.stack-card', track);
   this.updatePositions();
