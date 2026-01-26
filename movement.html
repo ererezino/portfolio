@@ -992,20 +992,21 @@
     const MONTHLY_GOAL = 310000;
     const MAX_CHART = 450000;
 
+    // Distance calculated using ~0.75m per step (average stride length)
     const MONTHS = [
-      { month: "January", year: 2026, isCurrent: true, steps: 198000, km: 140, avgStepsPerDay: 9900 },
-      { month: "December", year: 2025, isCurrent: false, steps: 401117, km: 307, avgStepsPerDay: 12939 },
-      { month: "November", year: 2025, isCurrent: false, steps: 285000, km: 213, avgStepsPerDay: 9500 },
-      { month: "October", year: 2025, isCurrent: false, steps: 320000, km: 240, avgStepsPerDay: 10322 },
-      { month: "September", year: 2025, isCurrent: false, steps: 298000, km: 223, avgStepsPerDay: 9933 },
-      { month: "August", year: 2025, isCurrent: false, steps: 340000, km: 255, avgStepsPerDay: 10968 },
-      { month: "July", year: 2025, isCurrent: false, steps: 310000, km: 232, avgStepsPerDay: 10000 },
-      { month: "June", year: 2025, isCurrent: false, steps: 275000, km: 206, avgStepsPerDay: 9166 },
-      { month: "May", year: 2025, isCurrent: false, steps: 315000, km: 236, avgStepsPerDay: 10161 },
-      { month: "April", year: 2025, isCurrent: false, steps: 290000, km: 217, avgStepsPerDay: 9666 },
-      { month: "March", year: 2025, isCurrent: false, steps: 305000, km: 228, avgStepsPerDay: 9838 },
-      { month: "February", year: 2025, isCurrent: false, steps: 280000, km: 210, avgStepsPerDay: 10000 },
-      { month: "January", year: 2025, isCurrent: false, steps: 265000, km: 198, avgStepsPerDay: 8548 },
+      { month: "January", year: 2026, isCurrent: true, steps: 234091, km: 176, avgStepsPerDay: 9363 },
+      { month: "December", year: 2025, isCurrent: false, steps: 401117, km: 301, avgStepsPerDay: 12939 },
+      { month: "November", year: 2025, isCurrent: false, steps: 186395, km: 140, avgStepsPerDay: 6213 },
+      { month: "October", year: 2025, isCurrent: false, steps: 107763, km: 81, avgStepsPerDay: 3476 },
+      { month: "September", year: 2025, isCurrent: false, steps: 199004, km: 149, avgStepsPerDay: 6633 },
+      { month: "August", year: 2025, isCurrent: false, steps: 227701, km: 171, avgStepsPerDay: 7345 },
+      { month: "July", year: 2025, isCurrent: false, steps: 292924, km: 220, avgStepsPerDay: 9449 },
+      { month: "June", year: 2025, isCurrent: false, steps: 382375, km: 287, avgStepsPerDay: 12745 },
+      { month: "May", year: 2025, isCurrent: false, steps: 192324, km: 144, avgStepsPerDay: 6204 },
+      { month: "April", year: 2025, isCurrent: false, steps: 124104, km: 93, avgStepsPerDay: 4136 },
+      { month: "March", year: 2025, isCurrent: false, steps: 143970, km: 108, avgStepsPerDay: 4644 },
+      { month: "February", year: 2025, isCurrent: false, steps: 159629, km: 120, avgStepsPerDay: 5701 },
+      { month: "January", year: 2025, isCurrent: false, steps: 164105, km: 123, avgStepsPerDay: 5293 },
     ];
 
     // Utility functions
@@ -1050,9 +1051,10 @@
     }, 300);
 
     // Calculate year stats (2025 only)
+    // Using actual data from health app: 2,581,411 total steps, 7,072 avg/day
     const yearTotalSteps = completedMonths.reduce((sum, m) => sum + m.steps, 0);
     const yearTotalKm = completedMonths.reduce((sum, m) => sum + m.km, 0);
-    const yearAvgPerDay = Math.round(yearTotalSteps / 365);
+    const yearAvgPerDay = 7072; // Actual daily average from health app
     const goalsMet = completedMonths.filter(m => m.steps >= MONTHLY_GOAL).length;
 
     // Animate year stats
