@@ -20,7 +20,7 @@ function getResponsiveImage(photo, lazy) {
 
 var ARTICLES = [
   { title: "Why I'm Building Accrue", date: "Jan 2026", topic: "Startups", url: "/articles/why-im-building-accrue/", image: "/articles/why-im-building-accrue/team.png", featured: true, excerpt: "The agent model already exists. It just needs better rails." },
-  { title: "Why I Walk", date: "Jan 2026", topic: "Life", url: "/articles/why-i-walk/", image: "/articles/why-i-walk/image.jpg", excerpt: "It started as medicine. It became something more." }
+  { title: "On Walking", date: "Jan 2026", topic: "Life", url: "/articles/on-walking/", image: "/articles/on-walking/image.jpg", excerpt: "Moving through the world at five kilometers per hour." }
 ];
 
 var TRAVELS = [
