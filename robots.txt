@@ -6,5 +6,5 @@ Sitemap: https://www.ererezino.com/sitemap.xml
 # Block API routes from indexing
 Disallow: /api/
 
-# Block search/filter pages if any
-Disallow: /*?*
+# Allow social media crawlers to access pages with query params
+# (needed for OG image fetching)
