@@ -68,16 +68,16 @@ var STEPS_DATA = {
   currentMonth: {
     name: "January",
     year: 2026,
-    steps: 198000,
-    distance: 140,
-    avgDaily: 9900
+    steps: 234091,
+    distance: 176,
+    avgDaily: 9363
   },
   lastMonth: {
     name: "December",
     year: 2025,
-    steps: 287000,
-    distance: 203,
-    avgDaily: 9258
+    steps: 401117,
+    distance: 301,
+    avgDaily: 12939
   }
 };
 
