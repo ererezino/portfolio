@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Message Sent - Zino Asamaige</title>
+
+  <!-- Prevent FOUC -->
+  <script>
+    (function() {
+      try {
+        var saved = localStorage.getItem('theme');
+        var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        var isDark = saved ? saved === 'dark' : prefersDark;
+        document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light');
+      } catch(e) {}
+    })();
+  </script>
+
+  <meta name="robots" content="noindex">
+  <link rel="icon" type="image/png" href="/assets/logo.png">
+
+  <meta name="theme-color" content="#FAFAFA" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#0A0A0A" media="(prefers-color-scheme: dark)">
+
+  <!-- Self-hosted fonts -->
+  <link rel="preload" href="/assets/fonts/inter-v20-latin-regular.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/assets/fonts/space-mono-v17-latin-regular.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/assets/fonts/instrument-serif-v5-latin-regular.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="/assets/fonts.css?v=20260125f">
+
+  <!-- Shared styles -->
+  <link rel="stylesheet" href="/styles.css?v=20260125f">
+
+  <style>
+    main { padding-top: 100px; }
+
+    .success-wrapper {
+      max-width: 560px;
+      margin: 0 auto;
+      text-align: center;
+      padding: 60px 20px;
+      opacity: 0;
+      transform: translateY(20px);
+      animation: fadeInUp 0.6s ease forwards;
+    }
+
+    @keyframes fadeInUp {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .success-icon {
+      width: 80px;
+      height: 80px;
+      margin: 0 auto 28px;
+      background: var(--green);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      animation: successPop 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    @keyframes successPop {
+      0% { transform: scale(0); }
+      70% { transform: scale(1.1); }
+      100% { transform: scale(1); }
+    }
+
+    .success-icon svg {
+      width: 40px;
+      height: 40px;
+      color: #fff;
+      animation: checkDraw 0.3s ease 0.3s forwards;
+      stroke-dasharray: 40;
+      stroke-dashoffset: 40;
+    }
+
+    @keyframes checkDraw {
+      to { stroke-dashoffset: 0; }
+    }
+
+    .success-title {
+      font-family: var(--font-serif);
+      font-size: 32px;
+      font-weight: 400;
+      font-style: italic;
+      margin-bottom: 12px;
+    }
+
+    .success-text {
+      font-family: var(--font-sans);
+      font-size: 15px;
+      color: var(--text-secondary);
+      margin-bottom: 36px;
+      line-height: 1.7;
+    }
+
+    .success-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-family: var(--font-mono);
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-secondary);
+      padding: 14px 24px;
+      border: 1px solid var(--border);
+      transition: all 0.3s ease;
+    }
+
+    .success-link:hover {
+      color: var(--text);
+      border-color: var(--text);
+    }
+
+    .success-link:focus-visible {
+      outline: 2px solid var(--green);
+      outline-offset: 4px;
+    }
+  </style>
+</head>
+
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header id="header" role="banner">
+    <div class="header-inner">
+      <a href="/" class="logo" aria-label="Zino Asamaige - Home">
+        <img src="/assets/logo.png" alt="" class="logo-img" width="32" height="32">
+        <span class="logo-text">Zino Asamaige</span>
+      </a>
+      <nav class="header-nav" aria-label="Primary navigation">
+        <a href="/about.html" class="nav-link">About</a>
+        <a href="/photos/" class="nav-link">Photos</a>
+        <a href="/articles/" class="nav-link">Articles</a>
+        <a href="/movement.html" class="nav-link">Movement</a>
+        <a href="/travels.html" class="nav-link">Travels</a>
+        <a href="/contact.html" class="nav-link">Contact</a>
+        <button class="theme-btn" id="themeToggle" aria-label="Toggle dark mode" type="button">
+          <svg class="moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+          <svg class="sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+        </button>
+      </nav>
+      <div class="mobile-controls">
+        <button class="theme-btn" id="mobileThemeToggle" aria-label="Toggle dark mode" type="button">
+          <svg class="moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+          <svg class="sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+        </button>
+        <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Open navigation menu" aria-expanded="false" aria-controls="mobileMenu" type="button">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <div class="mobile-menu" id="mobileMenu" aria-hidden="true" role="dialog" aria-modal="true" aria-label="Navigation menu">
+    <div class="mobile-menu-header">
+      <a href="/" class="logo">
+        <img src="/assets/logo.png" alt="" class="logo-img" width="32" height="32">
+        Zino
+      </a>
+      <div class="mobile-menu-actions">
+        <button class="mobile-menu-close" id="mobileMenuClose" aria-label="Close navigation menu" type="button">&times;</button>
+      </div>
+    </div>
+    <nav aria-label="Mobile navigation">
+      <a href="/about.html">About</a>
+      <a href="/photos/">Photos</a>
+      <a href="/articles/">Articles</a>
+      <a href="/movement.html">Movement</a>
+      <a href="/travels.html">Travels</a>
+      <a href="/contact.html">Contact</a>
+    </nav>
+  </div>
+
+  <main id="main" role="main">
+    <div class="container">
+      <div class="success-wrapper" role="alert">
+        <div class="success-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+        </div>
+        <h1 class="success-title">Message sent!</h1>
+        <p class="success-text">Thanks for reaching out. I'll get back to you as soon as I can.</p>
+        <a href="/" class="success-link">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+          Back to home
+        </a>
+      </div>
+    </div>
+  </main>
+
+  <footer role="contentinfo">
+    <div class="container footer-inner">
+      <nav class="footer-nav" aria-label="Footer navigation">
+        <a href="/about.html">About</a>
+        <a href="/photos/">Photos</a>
+        <a href="/articles/">Articles</a>
+        <a href="/contact.html">Contact</a>
+      </nav>
+      <a href="mailto:hello@ererezino.com" class="footer-email">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+        hello@ererezino.com
+      </a>
+      <div class="footer-meta">
+        <span class="footer-status">
+          <span class="location-dot" aria-hidden="true"></span>
+          Lagos, Nigeria
+        </span>
+        <span class="footer-copy">&copy; 2026 Zino Asamaige</span>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Theme
+    function toggleTheme() {
+      const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+      document.documentElement.setAttribute('data-theme', isDark ? 'light' : 'dark');
+      localStorage.setItem('theme', isDark ? 'light' : 'dark');
+      document.body.style.transform = 'translateZ(0)';
+      requestAnimationFrame(function() { document.body.style.transform = ''; });
+    }
+    document.getElementById('themeToggle').onclick = toggleTheme;
+    document.getElementById('mobileThemeToggle').onclick = toggleTheme;
+
+    // Mobile menu
+    const mm = document.getElementById('mobileMenu');
+    const menuBtn = document.getElementById('mobileMenuBtn');
+    const closeBtn = document.getElementById('mobileMenuClose');
+
+    function openMenu() {
+      mm.classList.add('open');
+      mm.setAttribute('aria-hidden', 'false');
+      menuBtn.setAttribute('aria-expanded', 'true');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeMenu() {
+      mm.classList.remove('open');
+      mm.setAttribute('aria-hidden', 'true');
+      menuBtn.setAttribute('aria-expanded', 'false');
+      document.body.style.overflow = '';
+    }
+
+    menuBtn.onclick = openMenu;
+    closeBtn.onclick = closeMenu;
+    mm.querySelectorAll('a').forEach(a => a.onclick = closeMenu);
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && mm.classList.contains('open')) {
+        closeMenu();
+      }
+    });
+  </script>
+</body>
+</html>
