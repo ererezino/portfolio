@@ -68,537 +68,280 @@
 
   <!-- Self-hosted fonts -->
   <link rel="preload" href="/assets/fonts/inter-v20-latin-regular.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="preload" href="/assets/fonts/inter-v20-latin-600.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="/assets/fonts/space-mono-v17-latin-regular.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="/assets/fonts/instrument-serif-v5-latin-regular.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="/assets/fonts.css?v=20260125g">
+  <link rel="stylesheet" href="/assets/fonts.css?v=20260127">
 
   <!-- Shared styles -->
-  <link rel="stylesheet" href="/styles.css?v=20260125g">
+  <link rel="stylesheet" href="/styles.css?v=20260127">
 
   <!-- Page-specific styles -->
   <style>
-    /* Photos page specific styles */
-    main { padding-top: 80px; }
-
-    /* Hero Section */
-    .hero-section {
-      position: relative;
-      height: 70vh;
-      min-height: 500px;
-      max-height: 800px;
-      overflow: hidden;
-      margin-bottom: 48px;
-    }
-    .hero-image {
-      position: absolute;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-    .hero-overlay {
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(to bottom,
-        rgba(0,0,0,0) 0%,
-        rgba(0,0,0,0.2) 50%,
-        rgba(0,0,0,0.7) 100%);
-    }
-    .hero-content {
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      padding: 60px 40px;
-      color: #fff;
-    }
-    @media (max-width: 768px) {
-      .hero-content { padding: 40px 20px; }
-      .hero-section { height: 60vh; min-height: 400px; }
+    main {
+      padding-top: 100px;
+      padding-bottom: 80px;
     }
 
-    .hero-back-link {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      font-family: var(--font-mono);
-      font-size: 11px;
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-      color: rgba(255,255,255,0.7);
-      margin-bottom: 24px;
-      transition: color 0.2s ease;
+    /* Page Header */
+    .photos-header {
+      text-align: center;
+      margin-bottom: 64px;
     }
-    .hero-back-link:hover { color: #fff; }
-    .hero-back-link svg { width: 14px; height: 14px; }
 
-    .hero-title {
+    .photos-title {
       font-family: var(--font-serif);
-      font-size: clamp(48px, 8vw, 80px);
+      font-size: clamp(42px, 8vw, 72px);
       font-weight: 400;
       font-style: italic;
       letter-spacing: -0.02em;
-      line-height: 1;
       margin-bottom: 16px;
     }
 
-    .hero-lead {
+    .photos-lead {
       font-family: var(--font-sans);
-      font-size: 17px;
-      color: rgba(255,255,255,0.8);
-      max-width: 500px;
-      line-height: 1.6;
-    }
-
-    .hero-meta {
-      display: flex;
-      align-items: center;
-      gap: 24px;
-      margin-top: 24px;
-      font-family: var(--font-mono);
-      font-size: 11px;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      color: rgba(255,255,255,0.6);
-    }
-    .hero-meta span {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-    .hero-meta svg {
-      width: 14px;
-      height: 14px;
-    }
-
-    /* Filter Tabs */
-    .filter-section {
-      padding: 0 0 32px;
-      border-bottom: 1px solid var(--border);
-      margin-bottom: 48px;
-    }
-
-    .filter-tabs {
-      display: flex;
-      gap: 8px;
-      flex-wrap: wrap;
-    }
-
-    .filter-tab {
-      font-family: var(--font-mono);
-      font-size: 11px;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      padding: 10px 20px;
-      border: 1px solid var(--border);
-      background: transparent;
+      font-size: 16px;
       color: var(--text-secondary);
-      cursor: pointer;
-      transition: all 0.2s ease;
-    }
-    .filter-tab:hover {
-      border-color: var(--text-secondary);
-      color: var(--text);
-    }
-    .filter-tab.active {
-      background: var(--text);
-      color: var(--bg);
-      border-color: var(--text);
-    }
-
-    .filter-count {
-      font-size: 10px;
-      opacity: 0.6;
-      margin-left: 6px;
-    }
-
-    /* Skeleton loading */
-    .skeleton {
-      background: linear-gradient(90deg, var(--bg-alt) 0%, var(--bg-subtle) 50%, var(--bg-alt) 100%);
-      background-size: 200% 100%;
-      animation: skeleton-shimmer 1.5s ease-in-out infinite;
-    }
-    @keyframes skeleton-shimmer {
-      0% { background-position: 200% 0; }
-      100% { background-position: -200% 0; }
-    }
-    .photo-skeleton {
-      border-radius: 8px;
-      min-height: 200px;
-    }
-    .photo-skeleton.tall { min-height: 400px; }
-    .photo-skeleton.wide { min-height: 150px; }
-    @media (max-width: 600px) {
-      .photo-skeleton,
-      .photo-skeleton.tall,
-      .photo-skeleton.wide {
-        min-height: 180px;
-      }
-    }
-
-    /* Image loading transition */
-    .photo-item img {
-      opacity: 0;
-      transition: opacity 0.3s ease;
-    }
-    .photo-item img.loaded {
-      opacity: 1;
-    }
-
-    /* Staggered fade-in animation */
-    .photo-item {
-      opacity: 0;
-      transform: translateY(20px);
-    }
-    .photo-item.fade-in {
-      animation: photoFadeIn 0.5s ease forwards;
-    }
-    @keyframes photoFadeIn {
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-    @media (prefers-reduced-motion: reduce) {
-      .photo-item {
-        opacity: 1;
-        transform: none;
-      }
-      .photo-item.fade-in {
-        animation: none;
-      }
+      max-width: 400px;
+      margin: 0 auto;
     }
 
     /* Masonry Grid */
     .photos-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-      grid-auto-rows: 250px;
-      grid-auto-flow: dense;
-      gap: 16px;
+      columns: 3;
+      column-gap: 16px;
     }
-    @media (max-width: 1100px) {
+
+    @media (max-width: 1000px) {
       .photos-grid {
-        grid-template-columns: repeat(2, 1fr);
-        grid-auto-rows: 220px;
-      }
-    }
-    @media (max-width: 600px) {
-      .photos-grid {
-        grid-template-columns: 1fr;
-        grid-auto-rows: auto;
-        gap: 12px;
+        columns: 2;
       }
     }
 
-    .photo-item {
-      position: relative;
-      cursor: pointer;
-      overflow: hidden;
-      border-radius: 8px;
-      background: var(--bg-alt);
-      /* Reset button styles */
-      border: none;
-      padding: 0;
-      font: inherit;
-      color: inherit;
-      text-align: left;
-      width: 100%;
-      display: block;
-      -webkit-tap-highlight-color: transparent;
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    @media (max-width: 600px) {
+      .photos-grid {
+        columns: 1;
+        column-gap: 12px;
+      }
+      .photos-header {
+        margin-bottom: 48px;
+      }
     }
+
+    /* Photo Item */
+    .photo-item {
+      break-inside: avoid;
+      margin-bottom: 16px;
+      border-radius: 8px;
+      overflow: hidden;
+      cursor: pointer;
+      position: relative;
+      background: var(--bg-elevated);
+      transition: transform 0.3s var(--ease), box-shadow 0.3s var(--ease);
+    }
+
+    @media (max-width: 600px) {
+      .photo-item {
+        margin-bottom: 12px;
+      }
+    }
+
     .photo-item:hover {
       transform: translateY(-4px);
-      box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
     }
+
     [data-theme="dark"] .photo-item:hover {
-      box-shadow: 0 12px 24px rgba(0, 0, 0, 0.4);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
     }
-    .photo-item:active {
-      transform: scale(0.98) translateY(0);
-    }
+
     .photo-item:focus-visible {
       outline: 2px solid var(--accent);
       outline-offset: 4px;
     }
-    @media (prefers-reduced-motion: reduce) {
-      .photo-item {
-        transition: none;
-      }
-      .photo-item:hover {
-        transform: none;
-        box-shadow: none;
-      }
-    }
-
-    /* Masonry sizes */
-    .photo-item.tall {
-      grid-row: span 2;
-    }
-    .photo-item.wide {
-      grid-column: span 2;
-    }
-    @media (max-width: 600px) {
-      .photo-item.wide { grid-column: span 1; }
-      .photo-item.tall { grid-row: span 1; }
-    }
 
     .photo-item img {
+      display: block;
       width: 100%;
-      height: 100%;
-      object-fit: cover;
+      height: auto;
+      opacity: 0;
+      transition: opacity 0.4s ease;
     }
 
-    /* Default aspect ratio */
-    .photo-item:not(.tall):not(.wide) img {
-      aspect-ratio: 1;
-    }
-    .photo-item.tall img {
-      aspect-ratio: 2/3;
-    }
-    .photo-item.wide img {
-      aspect-ratio: 16/9;
-    }
-    @media (max-width: 600px) {
-      .photo-item img,
-      .photo-item.tall img,
-      .photo-item.wide img {
-        aspect-ratio: 4/3;
-      }
+    .photo-item img.loaded {
+      opacity: 1;
     }
 
-    .photo-overlay {
+    /* Skeleton Loading */
+    .photo-item.skeleton::before {
+      content: '';
       position: absolute;
       inset: 0;
-      background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, transparent 60%);
-      display: flex;
-      flex-direction: column;
-      align-items: flex-start;
-      justify-content: flex-end;
-      padding: 24px;
-      opacity: 0;
-      transition: opacity 0.3s ease;
-    }
-    .photo-item:hover .photo-overlay { opacity: 1; }
-
-    .photo-location {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      font-family: var(--font-mono);
-      font-size: 10px;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      color: rgba(255,255,255,0.7);
-      margin-bottom: 4px;
-    }
-    .photo-location svg {
-      width: 12px;
-      height: 12px;
-    }
-
-    .photo-caption {
-      font-family: var(--font-sans);
-      font-size: 14px;
-      font-weight: 500;
-      color: #fff;
-    }
-
-    /* Enhanced Lightbox */
-    .photos-lightbox {
-      position: fixed;
-      inset: 0;
-      background: rgba(0, 0, 0, 0.97);
-      z-index: 1000;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      opacity: 0;
-      visibility: hidden;
-      transition: all 0.3s ease;
-    }
-    .photos-lightbox.active { opacity: 1; visibility: visible; }
-
-    .photos-lightbox-content {
-      position: relative;
-      max-width: 90vw;
-      max-height: 85vh;
-    }
-
-    .photos-lightbox img {
-      max-width: 90vw;
-      max-height: 85vh;
-      object-fit: contain;
-      border-radius: 4px;
-      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
-    }
-
-    .photos-lightbox-close {
-      position: absolute;
-      top: 20px;
-      right: 20px;
-      width: 48px;
-      height: 48px;
-      border: 1px solid rgba(255,255,255,0.2);
-      border-radius: 50%;
-      background: rgba(0,0,0,0.5);
-      backdrop-filter: blur(10px);
-      color: #fff;
-      font-size: 24px;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: all 0.2s ease;
-    }
-    .photos-lightbox-close:hover {
-      background: rgba(255,255,255,0.1);
-      border-color: rgba(255,255,255,0.4);
-    }
-
-    .photos-lightbox-info {
-      position: absolute;
-      bottom: 20px;
-      left: 50%;
-      transform: translateX(-50%);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .photos-lightbox-caption {
-      font-family: var(--font-sans);
-      font-size: 15px;
-      color: #fff;
-      font-weight: 500;
-    }
-
-    .photos-lightbox-counter {
-      font-family: var(--font-mono);
-      font-size: 11px;
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-      color: rgba(255,255,255,0.5);
-    }
-
-    .photos-lightbox-nav {
-      position: absolute;
-      top: 50%;
-      transform: translateY(-50%);
-      width: 56px;
-      height: 56px;
-      border: 1px solid rgba(255,255,255,0.2);
-      border-radius: 50%;
-      background: rgba(0,0,0,0.5);
-      backdrop-filter: blur(10px);
-      color: #fff;
-      font-size: 24px;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: all 0.2s ease;
-    }
-    .photos-lightbox-nav:hover {
-      background: rgba(255,255,255,0.1);
-      border-color: rgba(255,255,255,0.4);
-    }
-    .photos-lightbox-prev { left: 20px; }
-    .photos-lightbox-next { right: 20px; }
-
-    @media (max-width: 768px) {
-      .photos-lightbox-nav {
-        width: 44px;
-        height: 44px;
-        font-size: 20px;
-      }
-      .photos-lightbox-prev { left: 10px; }
-      .photos-lightbox-next { right: 10px; }
-    }
-
-    /* Loading state */
-    .photo-item.loading {
-      background: linear-gradient(90deg, var(--bg-subtle) 0%, var(--border) 50%, var(--bg-subtle) 100%);
+      background: linear-gradient(
+        90deg,
+        var(--bg-elevated) 0%,
+        var(--bg-alt) 50%,
+        var(--bg-elevated) 100%
+      );
       background-size: 200% 100%;
       animation: shimmer 1.5s infinite;
     }
+
     @keyframes shimmer {
       0% { background-position: 200% 0; }
       100% { background-position: -200% 0; }
     }
 
-    @media (prefers-reduced-motion: reduce) {
-      * { animation: none !important; transition: none !important; }
+    /* Placeholder for aspect ratio before load */
+    .photo-item.skeleton {
+      min-height: 200px;
     }
 
-    /* Work in Progress Section */
-    .wip-section {
-      min-height: calc(100vh - 200px);
+    /* Lightbox */
+    .lightbox {
+      position: fixed;
+      inset: 0;
+      z-index: 1000;
+      background: rgba(0, 0, 0, 0.95);
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: 120px 24px 80px;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.3s ease, visibility 0.3s ease;
     }
 
-    .wip-content {
-      text-align: center;
-      max-width: 480px;
+    .lightbox.active {
+      opacity: 1;
+      visibility: visible;
     }
 
-    .wip-icon {
-      display: inline-flex;
+    .lightbox-image {
+      max-width: 90vw;
+      max-height: 90vh;
+      object-fit: contain;
+      border-radius: 4px;
+      opacity: 0;
+      transform: scale(0.95);
+      transition: opacity 0.3s ease, transform 0.3s ease;
+    }
+
+    .lightbox.active .lightbox-image {
+      opacity: 1;
+      transform: scale(1);
+    }
+
+    .lightbox-close {
+      position: absolute;
+      top: 24px;
+      right: 24px;
+      width: 48px;
+      height: 48px;
+      border: none;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
       align-items: center;
       justify-content: center;
-      width: 120px;
-      height: 120px;
+      transition: background 0.2s ease, transform 0.2s ease;
+    }
+
+    .lightbox-close:hover {
+      background: rgba(255, 255, 255, 0.2);
+      transform: scale(1.1);
+    }
+
+    .lightbox-close svg {
+      width: 24px;
+      height: 24px;
+      color: white;
+    }
+
+    /* Navigation Arrows */
+    .lightbox-nav {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 56px;
+      height: 56px;
+      border: none;
+      background: rgba(255, 255, 255, 0.1);
       border-radius: 50%;
-      background: var(--bg-elevated);
-      border: 1px solid var(--border);
-      margin-bottom: 32px;
-      color: var(--text-secondary);
-    }
-
-    .wip-title {
-      font-family: var(--font-serif);
-      font-size: clamp(36px, 6vw, 48px);
-      font-weight: 400;
-      font-style: italic;
-      letter-spacing: -0.02em;
-      color: var(--text-primary);
-      margin-bottom: 16px;
-    }
-
-    .wip-description {
-      font-family: var(--font-sans);
-      font-size: 17px;
-      line-height: 1.7;
-      color: var(--text-secondary);
-      margin-bottom: 40px;
-    }
-
-    .wip-back-link {
-      display: inline-flex;
+      cursor: pointer;
+      display: flex;
       align-items: center;
-      gap: 8px;
-      font-family: var(--font-mono);
-      font-size: 12px;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      color: var(--text-tertiary);
-      transition: color 0.2s ease;
+      justify-content: center;
+      transition: background 0.2s ease, transform 0.2s ease;
     }
 
-    .wip-back-link:hover {
-      color: var(--text-primary);
+    .lightbox-nav:hover {
+      background: rgba(255, 255, 255, 0.2);
+    }
+
+    .lightbox-nav:active {
+      transform: translateY(-50%) scale(0.95);
+    }
+
+    .lightbox-nav svg {
+      width: 24px;
+      height: 24px;
+      color: white;
+    }
+
+    .lightbox-prev {
+      left: 24px;
+    }
+
+    .lightbox-next {
+      right: 24px;
+    }
+
+    @media (max-width: 768px) {
+      .lightbox-nav {
+        display: none;
+      }
+      .lightbox-close {
+        top: 16px;
+        right: 16px;
+        width: 40px;
+        height: 40px;
+      }
+      .lightbox-close svg {
+        width: 20px;
+        height: 20px;
+      }
+    }
+
+    /* Reduced motion */
+    @media (prefers-reduced-motion: reduce) {
+      .photo-item,
+      .photo-item img,
+      .lightbox,
+      .lightbox-image {
+        transition: none;
+      }
+      @keyframes shimmer {
+        0%, 100% { background-position: 0 0; }
+      }
+    }
+
+    /* Accessibility */
+    .visually-hidden {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
     }
   </style>
 </head>
 
 <body>
-  <a href="#main" class="skip-link">Skip to content</a>
+  <a class="skip-link" href="#main">Skip to content</a>
 
   <header id="header" role="banner">
     <div class="header-inner">
@@ -606,7 +349,6 @@
         <img src="/assets/logo.png" alt="" class="logo-img" width="32" height="32">
         <span class="logo-text">Zino Asamaige</span>
       </a>
-
       <nav class="header-nav" aria-label="Primary navigation">
         <a href="/about.html" class="nav-link">About</a>
         <a href="/photos/" class="nav-link" aria-current="page">Photos</a>
@@ -614,19 +356,16 @@
         <a href="/movement.html" class="nav-link">Movement</a>
         <a href="/travels.html" class="nav-link">Travels</a>
         <a href="/contact.html" class="nav-link">Contact</a>
-
         <button class="theme-btn" id="themeToggle" aria-label="Toggle dark mode" type="button">
           <svg class="moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
           <svg class="sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
         </button>
       </nav>
-
       <div class="mobile-controls">
         <button class="theme-btn" id="mobileThemeToggle" aria-label="Toggle dark mode" type="button">
           <svg class="moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
           <svg class="sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
         </button>
-
         <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Open navigation menu" aria-expanded="false" aria-controls="mobileMenu" type="button">
           <span></span><span></span><span></span>
         </button>
@@ -654,74 +393,28 @@
     </nav>
   </div>
 
-  <div class="photos-lightbox" id="lightbox" role="dialog" aria-modal="true" aria-hidden="true" aria-label="Photo viewer">
-    <button class="photos-lightbox-close" aria-label="Close photo viewer">&times;</button>
-    <button class="photos-lightbox-nav photos-lightbox-prev" aria-label="Previous photo">&#8249;</button>
-    <button class="photos-lightbox-nav photos-lightbox-next" aria-label="Next photo">&#8250;</button>
-    <div class="photos-lightbox-content">
-      <img src="" alt="" id="lightboxImg">
-    </div>
-    <div class="photos-lightbox-info">
-      <div class="photos-lightbox-caption" id="lightboxCaption"></div>
-      <div class="photos-lightbox-counter" id="lightboxCounter"></div>
-    </div>
+  <!-- Lightbox -->
+  <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Photo viewer">
+    <button class="lightbox-close" id="lightboxClose" aria-label="Close photo viewer">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
+    </button>
+    <button class="lightbox-nav lightbox-prev" id="lightboxPrev" aria-label="Previous photo">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg>
+    </button>
+    <img class="lightbox-image" id="lightboxImage" src="" alt="">
+    <button class="lightbox-nav lightbox-next" id="lightboxNext" aria-label="Next photo">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+    </button>
   </div>
 
   <main id="main" role="main">
-    <!-- Work in Progress -->
-    <section class="wip-section">
-      <div class="wip-content">
-        <div class="wip-icon">
-          <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-            <rect x="3" y="3" width="18" height="18" rx="2"/>
-            <circle cx="8.5" cy="8.5" r="1.5"/>
-            <path d="M21 15l-5-5L5 21"/>
-          </svg>
-        </div>
-        <h1 class="wip-title">Coming Soon</h1>
-        <p class="wip-description">My photo gallery is currently being curated. Check back soon for travel and street photography.</p>
-        <a href="/" class="wip-back-link">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
-          Back to home
-        </a>
-      </div>
-    </section>
+    <div class="container">
+      <header class="photos-header">
+        <h1 class="photos-title">Photos</h1>
+        <p class="photos-lead">Street and travel photography.</p>
+      </header>
 
-    <!-- Hidden: Hero with featured photo (WIP) -->
-    <section class="hero-section" id="heroSection" style="display: none;">
-      <img src="" alt="" class="hero-image" id="heroImage" width="1200" height="800">
-      <div class="hero-overlay"></div>
-      <div class="hero-content">
-        <a href="/" class="hero-back-link">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
-          Back to home
-        </a>
-        <h1 class="hero-title">Photography</h1>
-        <p class="hero-lead">Exploring place, memory, and belonging through travel and street photography. Mostly shot on iPhone.</p>
-        <div class="hero-meta">
-          <span>
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
-            <span id="photoCount">0</span> Photos
-          </span>
-          <span>
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-            <span id="locationCount">0</span> Locations
-          </span>
-        </div>
-      </div>
-    </section>
-
-    <!-- Hidden: Photo gallery (WIP) -->
-    <div class="container" style="display: none;">
-      <!-- Filter tabs -->
-      <section class="filter-section">
-        <div class="filter-tabs" id="filterTabs"></div>
-      </section>
-
-      <!-- Photo grid -->
-      <section class="photos-section">
-        <div class="photos-grid" id="photosGrid"></div>
-      </section>
+      <div class="photos-grid" id="photosGrid"></div>
     </div>
   </main>
 
@@ -748,64 +441,48 @@
         </span>
         <span class="footer-copy">&copy; 2026 Zino Asamaige</span>
       </div>
-      <p class="footer-privacy">This site doesn't use cookies or track your data. Contact form messages are sent via email and stored securely.</p>
+      <p class="footer-privacy">This site doesn't use cookies or track your data.</p>
     </div>
   </footer>
 
   <script>
-    // Theme
-    function setTheme(dark) {
-      document.documentElement.setAttribute('data-theme', dark ? 'dark' : 'light');
-      localStorage.setItem('theme', dark ? 'dark' : 'light');
-      // Force repaint on mobile
-      document.body.style.transform = 'translateZ(0)';
-      
-      requestAnimationFrame(function() { document.body.style.transform = ''; });
-    }
-
+    // Theme toggle
     function toggleTheme() {
       var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
-      setTheme(!isDark);
+      document.documentElement.setAttribute('data-theme', isDark ? 'light' : 'dark');
+      localStorage.setItem('theme', isDark ? 'light' : 'dark');
     }
-
     document.getElementById('themeToggle').onclick = toggleTheme;
     document.getElementById('mobileThemeToggle').onclick = toggleTheme;
 
     // Mobile menu
-    var mm = document.getElementById('mobileMenu');
-    var mmBtn = document.getElementById('mobileMenuBtn');
-    var mmClose = document.getElementById('mobileMenuClose');
+    var mobileMenu = document.getElementById('mobileMenu');
+    var menuBtn = document.getElementById('mobileMenuBtn');
+    var closeBtn = document.getElementById('mobileMenuClose');
 
-    function openMobileMenu() {
-      if (!mm) return;
-      mm.classList.add('open');
-      mm.setAttribute('aria-hidden', 'false');
-      if (mmBtn) mmBtn.setAttribute('aria-expanded', 'true');
+    function openMenu() {
+      mobileMenu.classList.add('active');
+      mobileMenu.setAttribute('aria-hidden', 'false');
+      menuBtn.setAttribute('aria-expanded', 'true');
       document.body.style.overflow = 'hidden';
     }
 
-    function closeMobileMenu() {
-      if (!mm) return;
-      mm.classList.remove('open');
-      mm.setAttribute('aria-hidden', 'true');
-      if (mmBtn) mmBtn.setAttribute('aria-expanded', 'false');
+    function closeMenu() {
+      mobileMenu.classList.remove('active');
+      mobileMenu.setAttribute('aria-hidden', 'true');
+      menuBtn.setAttribute('aria-expanded', 'false');
       document.body.style.overflow = '';
     }
 
-    if (mmBtn) mmBtn.onclick = openMobileMenu;
-    if (mmClose) mmClose.onclick = closeMobileMenu;
-    if (mm) {
-      var links = mm.querySelectorAll('a');
-      for (var i = 0; i < links.length; i++) {
-        links[i].onclick = closeMobileMenu;
-      }
-    }
+    menuBtn.onclick = openMenu;
+    closeBtn.onclick = closeMenu;
 
-    // Escape key to close menu
+    mobileMenu.addEventListener('click', function(e) {
+      if (e.target === mobileMenu || e.target.tagName === 'A') closeMenu();
+    });
+
     document.addEventListener('keydown', function(e) {
-      if (e.key === 'Escape' && mm && mm.classList.contains('open')) {
-        closeMobileMenu();
-      }
+      if (e.key === 'Escape' && mobileMenu.classList.contains('active')) closeMenu();
     });
 
     // Header scroll
@@ -813,180 +490,124 @@
       document.getElementById('header').classList.toggle('scrolled', window.scrollY > 50);
     });
 
-    // Photos data with locations and layout hints
+    // Photos data
     var PHOTOS = [
-      { src: "/assets/photos/photo-1.jpg", caption: "Morning light", location: "Lagos", year: 2025, layout: "tall" },
-      { src: "/assets/photos/photo-2.jpg", caption: "City streets", location: "Frankfurt", year: 2025, layout: "normal" },
-      { src: "/assets/photos/photo-3.jpg", caption: "Market day", location: "Accra", year: 2025, layout: "wide" },
-      { src: "/assets/photos/photo-4.jpg", caption: "Urban life", location: "Lagos", year: 2025, layout: "normal" },
-      { src: "/assets/photos/photo-5.jpg", caption: "Cathedral view", location: "Durham", year: 2024, layout: "tall" },
-      { src: "/assets/photos/photo-6.jpg", caption: "Architecture", location: "Frankfurt", year: 2025, layout: "wide" },
-      { src: "/assets/photos/photo-7.jpg", caption: "Untitled", location: "Unknown", year: 2025, layout: "normal" },
-      { src: "/assets/photos/photo-8.jpg", caption: "Untitled", location: "Unknown", year: 2025, layout: "tall" },
-      { src: "/assets/photos/photo-9.jpg", caption: "Untitled", location: "Unknown", year: 2025, layout: "normal" },
-      { src: "/assets/photos/photo-10.jpg", caption: "Untitled", location: "Unknown", year: 2025, layout: "wide" },
-      { src: "/assets/photos/photo-33.jpeg", caption: "Untitled", location: "Unknown", year: 2025, layout: "normal" },
-      { src: "/assets/photos/photo-34.jpeg", caption: "Untitled", location: "Unknown", year: 2025, layout: "tall" },
-      { src: "/assets/photos/photo-35.jpeg", caption: "Untitled", location: "Unknown", year: 2025, layout: "wide" },
-      { src: "/assets/photos/photo-36.jpeg", caption: "Untitled", location: "Unknown", year: 2025, layout: "normal" },
-      { src: "/assets/photos/photo-37.jpeg", caption: "Untitled", location: "Unknown", year: 2025, layout: "tall" },
-      { src: "/assets/photos/photo-38.jpeg", caption: "Untitled", location: "Unknown", year: 2025, layout: "normal" },
-      { src: "/assets/photos/photo-39.jpeg", caption: "Untitled", location: "Unknown", year: 2025, layout: "wide" },
-      { src: "/assets/photos/photo-40.jpeg", caption: "Untitled", location: "Unknown", year: 2022, layout: "normal" },
-      { src: "/assets/photos/photo-41.jpeg", caption: "Untitled", location: "Unknown", year: 2025, layout: "tall" },
-      { src: "/assets/photos/photo-42.jpeg", caption: "Untitled", location: "Unknown", year: 2023, layout: "wide" },
-      { src: "/assets/photos/photo-43.jpeg", caption: "Untitled", location: "Unknown", year: 2023, layout: "tall" },
-      { src: "/assets/photos/photo-44.jpeg", caption: "Untitled", location: "Unknown", year: 2022, layout: "normal" },
-      { src: "/assets/photos/photo-45.jpeg", caption: "Untitled", location: "Unknown", year: 2022, layout: "normal" },
-      { src: "/assets/photos/photo-46.jpeg", caption: "Untitled", location: "Unknown", year: 2022, layout: "wide" },
-      { src: "/assets/photos/photo-47.jpeg", caption: "Untitled", location: "Unknown", year: 2024, layout: "normal" },
-      { src: "/assets/photos/photo-48.jpeg", caption: "Untitled", location: "Unknown", year: 2024, layout: "tall" },
-      { src: "/assets/photos/photo-49.jpeg", caption: "Untitled", location: "Unknown", year: 2017, layout: "normal" },
-      { src: "/assets/photos/photo-50.jpeg", caption: "Untitled", location: "Unknown", year: 2024, layout: "wide" },
-      { src: "/assets/photos/photo-51.jpeg", caption: "Untitled", location: "Unknown", year: 2025, layout: "tall" },
-      { src: "/assets/photos/photo-52.jpeg", caption: "Untitled", location: "Unknown", year: 2018, layout: "normal" },
-      { src: "/assets/photos/photo-53.png", caption: "Untitled", location: "Unknown", year: 2025, layout: "wide" },
-      { src: "/assets/photos/photo-54.png", caption: "Untitled", location: "Unknown", year: 2025, layout: "normal" },
-      { src: "/assets/photos/photo-55.png", caption: "Untitled", location: "Unknown", year: 2025, layout: "tall" }
+      { src: "/assets/photos/photo-1.jpg", alt: "Morning light in Lagos" },
+      { src: "/assets/photos/photo-2.jpg", alt: "City streets in Frankfurt" },
+      { src: "/assets/photos/photo-3.jpg", alt: "Market day in Accra" },
+      { src: "/assets/photos/photo-4.jpg", alt: "Urban life in Lagos" },
+      { src: "/assets/photos/photo-5.jpg", alt: "Cathedral view in Durham" },
+      { src: "/assets/photos/photo-6.jpg", alt: "Architecture in Frankfurt" },
+      { src: "/assets/photos/photo-7.jpg", alt: "Street photography" },
+      { src: "/assets/photos/photo-8.jpg", alt: "Street photography" },
+      { src: "/assets/photos/photo-9.jpg", alt: "Street photography" },
+      { src: "/assets/photos/photo-10.jpg", alt: "Street photography" },
+      { src: "/assets/photos/photo-33.jpeg", alt: "Travel photography" },
+      { src: "/assets/photos/photo-34.jpeg", alt: "Travel photography" },
+      { src: "/assets/photos/photo-35.jpeg", alt: "Travel photography" },
+      { src: "/assets/photos/photo-36.jpeg", alt: "Travel photography" },
+      { src: "/assets/photos/photo-37.jpeg", alt: "Travel photography" },
+      { src: "/assets/photos/photo-38.jpeg", alt: "Travel photography" },
+      { src: "/assets/photos/photo-39.jpeg", alt: "Travel photography" },
+      { src: "/assets/photos/photo-40.jpeg", alt: "Travel photography" },
+      { src: "/assets/photos/photo-41.jpeg", alt: "Travel photography" },
+      { src: "/assets/photos/photo-42.jpeg", alt: "Travel photography" },
+      { src: "/assets/photos/photo-43.jpeg", alt: "Travel photography" },
+      { src: "/assets/photos/photo-44.jpeg", alt: "Travel photography" },
+      { src: "/assets/photos/photo-45.jpeg", alt: "Travel photography" },
+      { src: "/assets/photos/photo-46.jpeg", alt: "Travel photography" },
+      { src: "/assets/photos/photo-47.jpeg", alt: "Travel photography" },
+      { src: "/assets/photos/photo-48.jpeg", alt: "Travel photography" },
+      { src: "/assets/photos/photo-49.jpeg", alt: "Travel photography" },
+      { src: "/assets/photos/photo-50.jpeg", alt: "Travel photography" },
+      { src: "/assets/photos/photo-51.jpeg", alt: "Travel photography" },
+      { src: "/assets/photos/photo-52.jpeg", alt: "Travel photography" },
+      { src: "/assets/photos/photo-53.png", alt: "Travel photography" },
+      { src: "/assets/photos/photo-54.png", alt: "Travel photography" },
+      { src: "/assets/photos/photo-55.png", alt: "Travel photography" }
     ];
 
-    // Get unique locations
-    var locations = PHOTOS.map(function(p) { return p.location; }).filter(function(v, i, a) { return a.indexOf(v) === i; });
-    var currentFilter = 'all';
+    var currentIndex = 0;
 
-    // Set hero image (use first photo)
-    if (PHOTOS.length > 0) {
-      var heroImg = document.getElementById('heroImage');
-      heroImg.src = PHOTOS[0].src;
-      heroImg.alt = PHOTOS[0].caption + ' - ' + PHOTOS[0].location;
-    }
-
-    // Update stats
-    document.getElementById('photoCount').textContent = PHOTOS.length;
-    document.getElementById('locationCount').textContent = locations.length;
-
-    // Render filter tabs
-    function renderFilters() {
-      var tabsContainer = document.getElementById('filterTabs');
-
-      var html = '<button class="filter-tab active" data-filter="all">All<span class="filter-count">' + PHOTOS.length + '</span></button>';
-
-      locations.forEach(function(loc) {
-        var count = PHOTOS.filter(function(p) { return p.location === loc; }).length;
-        html += '<button class="filter-tab" data-filter="' + loc + '">' + loc + '<span class="filter-count">' + count + '</span></button>';
-      });
-
-      tabsContainer.innerHTML = html;
+    // Render photo grid
+    function renderGrid() {
+      var grid = document.getElementById('photosGrid');
+      grid.innerHTML = PHOTOS.map(function(photo, i) {
+        return '<button type="button" class="photo-item skeleton" data-index="' + i + '" aria-label="View photo">' +
+          '<img src="' + photo.src + '" alt="' + photo.alt + '" loading="lazy" onload="this.classList.add(\'loaded\'); this.parentElement.classList.remove(\'skeleton\');">' +
+        '</button>';
+      }).join('');
 
       // Add click handlers
-      tabsContainer.querySelectorAll('.filter-tab').forEach(function(tab) {
-        tab.onclick = function() {
-          currentFilter = tab.dataset.filter;
-          tabsContainer.querySelectorAll('.filter-tab').forEach(function(t) { t.classList.remove('active'); });
-          tab.classList.add('active');
-          renderGrid();
+      grid.querySelectorAll('.photo-item').forEach(function(item) {
+        item.onclick = function() {
+          openLightbox(parseInt(item.dataset.index));
         };
       });
     }
 
-    // Render photo grid with skeleton loading
-    function renderGrid() {
-      var filtered = currentFilter === 'all'
-        ? PHOTOS
-        : PHOTOS.filter(function(p) { return p.location === currentFilter; });
-
-      document.getElementById('photosGrid').innerHTML = filtered.map(function(p, i) {
-        var layoutClass = p.layout === 'tall' ? 'tall' : p.layout === 'wide' ? 'wide' : '';
-        var idx = PHOTOS.indexOf(p);
-        return '<button type="button" class="photo-item skeleton ' + layoutClass + '" onclick="openLb(' + idx + ')" aria-label="View photo: ' + p.caption + '">' +
-          '<img src="' + p.src + '" alt="' + p.caption + '" width="400" height="400" loading="lazy" onload="this.classList.add(\'loaded\'); this.parentElement.classList.remove(\'skeleton\');">' +
-          '<div class="photo-overlay">' +
-            '<div class="photo-location">' +
-              '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>' +
-              p.location + ', ' + p.year +
-            '</div>' +
-            '<div class="photo-caption">' + p.caption + '</div>' +
-          '</div>' +
-        '</button>';
-      }).join('');
-
-      // Staggered fade-in animation
-      setTimeout(function() {
-        document.querySelectorAll('.photo-item').forEach(function(item, i) {
-          item.style.animationDelay = (i * 50) + 'ms';
-          item.classList.add('fade-in');
-        });
-      }, 100);
-    }
-
     // Lightbox
-    var lb = document.getElementById('lightbox');
-    var lbImg = document.getElementById('lightboxImg');
-    var lbCap = document.getElementById('lightboxCaption');
-    var lbCounter = document.getElementById('lightboxCounter');
-    var idx = 0;
+    var lightbox = document.getElementById('lightbox');
+    var lightboxImage = document.getElementById('lightboxImage');
 
-    function openLb(i) {
-      idx = i;
-      updateLightbox();
-      lb.classList.add('active');
-      lb.setAttribute('aria-hidden', 'false');
+    function openLightbox(index) {
+      currentIndex = index;
+      lightboxImage.src = PHOTOS[index].src;
+      lightboxImage.alt = PHOTOS[index].alt;
+      lightbox.classList.add('active');
       document.body.style.overflow = 'hidden';
     }
 
-    function updateLightbox() {
-      lbImg.src = PHOTOS[idx].src;
-      lbImg.alt = PHOTOS[idx].caption + ' - ' + PHOTOS[idx].location;
-      lbCap.textContent = PHOTOS[idx].caption + ' — ' + PHOTOS[idx].location + ', ' + PHOTOS[idx].year;
-      lbCounter.textContent = (idx + 1) + ' / ' + PHOTOS.length;
-    }
-
-    function closeLb() {
-      lb.classList.remove('active');
-      lb.setAttribute('aria-hidden', 'true');
+    function closeLightbox() {
+      lightbox.classList.remove('active');
       document.body.style.overflow = '';
     }
 
-    function navLb(d) {
-      idx = (idx + d + PHOTOS.length) % PHOTOS.length;
-      updateLightbox();
+    function navigate(direction) {
+      currentIndex = (currentIndex + direction + PHOTOS.length) % PHOTOS.length;
+      lightboxImage.src = PHOTOS[currentIndex].src;
+      lightboxImage.alt = PHOTOS[currentIndex].alt;
     }
 
-    lb.querySelector('.photos-lightbox-close').onclick = closeLb;
-    lb.querySelector('.photos-lightbox-prev').onclick = function() { navLb(-1); };
-    lb.querySelector('.photos-lightbox-next').onclick = function() { navLb(1); };
-    lb.onclick = function(e) { if (e.target === lb) closeLb(); };
+    document.getElementById('lightboxClose').onclick = closeLightbox;
+    document.getElementById('lightboxPrev').onclick = function() { navigate(-1); };
+    document.getElementById('lightboxNext').onclick = function() { navigate(1); };
 
-    document.onkeydown = function(e) {
-      if (!lb.classList.contains('active')) return;
-      if (e.key === 'Escape') closeLb();
-      if (e.key === 'ArrowLeft') navLb(-1);
-      if (e.key === 'ArrowRight') navLb(1);
-    };
+    // Click outside to close
+    lightbox.addEventListener('click', function(e) {
+      if (e.target === lightbox) closeLightbox();
+    });
 
-    // Touch/swipe support for lightbox
+    // Keyboard navigation
+    document.addEventListener('keydown', function(e) {
+      if (!lightbox.classList.contains('active')) return;
+      if (e.key === 'Escape') closeLightbox();
+      if (e.key === 'ArrowLeft') navigate(-1);
+      if (e.key === 'ArrowRight') navigate(1);
+    });
+
+    // Touch/swipe support
     var touchStartX = 0;
-    lb.addEventListener('touchstart', function(e) {
+    var touchEndX = 0;
+
+    lightbox.addEventListener('touchstart', function(e) {
       touchStartX = e.changedTouches[0].screenX;
     }, { passive: true });
-    lb.addEventListener('touchend', function(e) {
-      var diff = e.changedTouches[0].screenX - touchStartX;
+
+    lightbox.addEventListener('touchend', function(e) {
+      touchEndX = e.changedTouches[0].screenX;
+      var diff = touchStartX - touchEndX;
       if (Math.abs(diff) > 50) {
-        navLb(diff > 0 ? -1 : 1);
+        if (diff > 0) navigate(1);
+        else navigate(-1);
       }
     }, { passive: true });
 
-    // Service Worker
-    if ('serviceWorker' in navigator) {
-      window.addEventListener('load', function() {
-        navigator.serviceWorker.register('/sw.js').catch(function() {});
-      });
-    }
-
     // Initialize
-    renderFilters();
     renderGrid();
   </script>
-  <!-- Cloudflare Web Analytics --><script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "a17b25b9d9f24af88869c5f81d7e12be"}'></script><!-- End Cloudflare Web Analytics -->
+
+  <!-- Cloudflare Web Analytics -->
+  <script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "a17b25b9d9f24af88869c5f81d7e12be"}'></script>
 </body>
 </html>
