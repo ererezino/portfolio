@@ -82,7 +82,12 @@
   <!-- Page-specific styles -->
   <style>
     /* Ensure main has padding for fixed header */
-    main { padding-top: 100px; }
+    main {
+      padding-top: 100px;
+      position: relative;
+      z-index: 1;
+      background: var(--bg);
+    }
 
     .content-wrapper {
       max-width: 560px;
@@ -769,5 +774,6 @@
       });
     }
   </script>
+  <!-- Cloudflare Web Analytics --><script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "a17b25b9d9f24af88869c5f81d7e12be"}'></script><!-- End Cloudflare Web Analytics -->
 </body>
 </html>
