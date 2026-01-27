@@ -325,7 +325,7 @@ header {
   right: 0;
   z-index: 100;
   padding: 20px 0;
-  background: transparent;
+  background: var(--bg);
   transition: padding var(--duration) var(--ease), background-color var(--duration) var(--ease), border-color var(--duration) var(--ease);
 }
 
