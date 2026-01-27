@@ -13,9 +13,10 @@ var PHOTOS = [
   { src: "/assets/photos/photo-6.jpg", caption: "Architecture", alt: "Frankfurt architecture", location: "Frankfurt", year: 2025 }
 ];
 
-// Helper to generate responsive image HTML
+// Helper to generate responsive image HTML with lazy loading
 function getResponsiveImage(photo, lazy) {
-  return '<img src="' + photo.src + '" alt="' + (photo.alt || '') + '" width="400" height="400" style="width:100%;height:100%;object-fit:cover;" />';
+  var lazyAttr = lazy !== false ? ' loading="lazy"' : '';
+  return '<img src="' + photo.src + '" alt="' + (photo.alt || '') + '" width="400" height="400"' + lazyAttr + ' style="width:100%;height:100%;object-fit:cover;" />';
 }
 
 var ARTICLES = [

@@ -21,7 +21,8 @@
   <link rel="preload" href="/assets/fonts/inter-v20-latin-regular.woff2" as="font" type="font/woff2" crossorigin />
   <link rel="preload" href="/assets/fonts/instrument-serif-v5-latin-regular.woff2" as="font" type="font/woff2" crossorigin />
   
-  <!-- PERFORMANCE: DNS prefetch for external images -->
+  <!-- PERFORMANCE: DNS prefetch and preconnect for external resources -->
+  <link rel="preconnect" href="https://static.cloudflareinsights.com" crossorigin />
   <link rel="dns-prefetch" href="https://upload.wikimedia.org" />
   <link rel="dns-prefetch" href="https://i.scdn.co" />
   <link rel="dns-prefetch" href="https://m.media-amazon.com" />
@@ -33,7 +34,7 @@
   <!-- Security headers (supplement server headers) -->
   <meta http-equiv="X-Content-Type-Options" content="nosniff">
   <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin">
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' https: data: blob:; connect-src 'self'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests;">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://static.cloudflareinsights.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' https: data: blob:; connect-src 'self' https://cloudflareinsights.com; frame-ancestors 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests;">
   <meta http-equiv="Permissions-Policy" content="accelerometer=(), camera=(), geolocation=(), gyroscope=(), magnetometer=(), microphone=(), payment=(), usb=()">
 
   <!-- Meta & SEO -->
