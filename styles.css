@@ -361,19 +361,13 @@ header.scrolled {
   letter-spacing: -0.01em; 
 }
 
-.logo-img { 
-  width: 36px; 
-  height: 36px; 
-  border-radius: 50%; 
-  object-fit: cover; 
-  border: 2px solid var(--border); 
-  transition: border-color var(--duration), transform var(--duration); 
-}
-
-header.scrolled .logo-img { width: 32px; height: 32px; }
-
-@media (max-width: 768px) {
-  header.scrolled .logo-img { width: 28px; height: 28px; }
+.logo-img {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid var(--border);
+  transition: border-color var(--duration), transform var(--duration);
 }
 
 .logo:hover .logo-img {
