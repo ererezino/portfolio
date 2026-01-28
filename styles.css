@@ -206,6 +206,11 @@ body {
   position: relative;
 }
 
+/* Slightly larger font on mobile for better readability */
+@media (max-width: 600px) {
+  body { font-size: 17px; }
+}
+
 /* Theme transition - only active during theme switch */
 html.theme-transition,
 html.theme-transition *,
@@ -2103,6 +2108,13 @@ footer {
   text-transform: uppercase;
   letter-spacing: 0.1em;
   color: var(--text-tertiary);
+}
+
+/* Ensure no separator dots appear between footer items */
+.footer-status::after,
+.footer-copy::before {
+  content: none;
+  display: none;
 }
 
 .footer-copy {
