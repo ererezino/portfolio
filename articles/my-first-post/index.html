@@ -11,18 +11,74 @@
   <meta property="og:title" content="My First Post - Zino Asamaige">
   <meta property="og:description" content="This is my first post on this blog. Just testing things out and seeing how it all works.">
   <meta property="og:type" content="article">
-  <meta property="og:image" content="/articles/assets/thumbnails/first-post.jpg">
+  <meta property="og:image" content="https://www.ererezino.com/assets/og-image.jpg">
   <meta property="article:published_time" content="2026-01-15">
   <meta property="article:author" content="Zino Asamaige">
   <meta name="twitter:card" content="summary_large_image">
 
+  <!-- JSON-LD Structured Data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "My First Post",
+    "description": "This is my first post on this blog. Just testing things out and seeing how it all works.",
+    "image": "https://www.ererezino.com/assets/og-image.jpg",
+    "datePublished": "2026-01-15",
+    "dateModified": "2026-01-15",
+    "author": {
+      "@type": "Person",
+      "name": "Zino Asamaige",
+      "url": "https://www.ererezino.com"
+    },
+    "publisher": {
+      "@type": "Person",
+      "name": "Zino Asamaige"
+    },
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": "https://www.ererezino.com/articles/my-first-post/"
+    }
+  }
+  </script>
+
+  <!-- Breadcrumb Structured Data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": "https://www.ererezino.com/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Articles",
+        "item": "https://www.ererezino.com/articles/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
+        "name": "My First Post",
+        "item": "https://www.ererezino.com/articles/my-first-post/"
+      }
+    ]
+  }
+  </script>
+
   <link rel="icon" type="image/png" href="/assets/logo.png">
-  <link rel="apple-touch-icon" href="/assets/logo.png">
+  <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
   <meta name="theme-color" content="#FAFAF8">
 
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,wght@0,400;0,500;1,400&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <!-- Self-hosted fonts -->
+  <link rel="preload" href="/assets/fonts/inter-v20-latin-regular.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/assets/fonts/space-mono-v17-latin-regular.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/assets/fonts/instrument-serif-v5-latin-regular.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="/assets/fonts.css?v=20260127">
 
   <style>
     :root {
@@ -65,7 +121,7 @@
     body {
       background: var(--bg);
       color: var(--text);
-      font-family: 'Outfit', -apple-system, system-ui, sans-serif;
+      font-family: 'Inter', -apple-system, system-ui, sans-serif;
       font-weight: 400;
       line-height: 1.65;
       -webkit-font-smoothing: antialiased;
@@ -196,7 +252,7 @@
     }
 
     h1 {
-      font-family: 'Newsreader', Georgia, serif;
+      font-family: 'Instrument Serif', Georgia, serif;
       font-weight: 400;
       font-size: clamp(32px, 5vw, 42px);
       letter-spacing: -0.02em;
@@ -249,7 +305,7 @@
     }
 
     .article-content h2 {
-      font-family: 'Newsreader', Georgia, serif;
+      font-family: 'Instrument Serif', Georgia, serif;
       font-weight: 500;
       font-size: 26px;
       letter-spacing: -0.01em;
@@ -365,7 +421,7 @@
   <header>
     <div class="container head">
       <a class="brand" href="/" aria-label="Home">
-        <span class="logo"><img src="/assets/logo.png" alt=""></span>
+        <span class="logo"><img src="/assets/logo.png" alt="" width="32" height="32"></span>
         <div class="brandtext">
           <strong>Zino Asamaige</strong>
         </div>
@@ -401,7 +457,7 @@
         </div>
 
         <div class="article-author">
-          <span class="author-avatar"><img src="/assets/logo.png" alt=""></span>
+          <span class="author-avatar"><img src="/assets/logo.png" alt="" width="40" height="40"></span>
           <div class="author-info">
             <a href="/" class="author-name">Zino Asamaige</a>
             <p class="author-bio">Building things in Lagos</p>
@@ -488,6 +544,10 @@
     function setTheme(dark) {
       document.documentElement.setAttribute('data-theme', dark ? 'dark' : 'light');
       localStorage.setItem('theme', dark ? 'dark' : 'light');
+      // Force repaint on mobile
+      document.body.style.transform = 'translateZ(0)';
+      
+      requestAnimationFrame(function() { document.body.style.transform = ''; });
     }
 
     if (savedTheme) {
@@ -503,5 +563,6 @@
 
     document.getElementById('year').textContent = new Date().getFullYear();
   </script>
+  <!-- Cloudflare Web Analytics --><script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "a17b25b9d9f24af88869c5f81d7e12be"}'></script><!-- End Cloudflare Web Analytics -->
 </body>
 </html>
