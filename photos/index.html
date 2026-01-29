@@ -466,14 +466,14 @@
     var closeBtn = document.getElementById('mobileMenuClose');
 
     function openMenu() {
-      mobileMenu.classList.add('active');
+      mobileMenu.classList.add('open');
       mobileMenu.setAttribute('aria-hidden', 'false');
       menuBtn.setAttribute('aria-expanded', 'true');
       document.body.style.overflow = 'hidden';
     }
 
     function closeMenu() {
-      mobileMenu.classList.remove('active');
+      mobileMenu.classList.remove('open');
       mobileMenu.setAttribute('aria-hidden', 'true');
       menuBtn.setAttribute('aria-expanded', 'false');
       document.body.style.overflow = '';
@@ -487,7 +487,7 @@
     });
 
     document.addEventListener('keydown', function(e) {
-      if (e.key === 'Escape' && mobileMenu.classList.contains('active')) closeMenu();
+      if (e.key === 'Escape' && mobileMenu.classList.contains('open')) closeMenu();
     });
 
     // Header scroll
