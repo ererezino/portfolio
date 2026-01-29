@@ -144,6 +144,39 @@ function throttle(fn, limit) {
 }
 
 // =============================================================================
+// SCROLL MANAGER - Centralized scroll event handling
+// =============================================================================
+
+var ScrollManager = {
+  callbacks: [],
+  ticking: false,
+
+  init: function() {
+    var self = this;
+    window.addEventListener('scroll', function() {
+      if (!self.ticking) {
+        requestAnimationFrame(function() {
+          var scrollY = window.pageYOffset || document.documentElement.scrollTop;
+          for (var i = 0; i < self.callbacks.length; i++) {
+            self.callbacks[i](scrollY);
+          }
+          self.ticking = false;
+        });
+        self.ticking = true;
+      }
+    }, { passive: true });
+  },
+
+  subscribe: function(callback) {
+    this.callbacks.push(callback);
+    var self = this;
+    return function() {
+      self.callbacks = self.callbacks.filter(function(cb) { return cb !== callback; });
+    };
+  }
+};
+
+// =============================================================================
 // PAGE LOADER - Removed for performance
 // =============================================================================
 
@@ -253,19 +286,16 @@ function initTimeGreeting() {
 function initHeader() {
   var header = $('#header');
   var backToTop = $('#backToTop');
-  
-  var handleScroll = throttle(function() {
-    var scrollY = window.pageYOffset || document.documentElement.scrollTop;
+
+  ScrollManager.subscribe(function(scrollY) {
     if (header) header.classList.toggle('scrolled', scrollY > 50);
     if (backToTop) backToTop.classList.toggle('visible', scrollY > 600);
-  }, 100);
-
-  window.addEventListener('scroll', handleScroll, { passive: true });
+  });
 
   if (backToTop) {
     backToTop.addEventListener('click', function() {
       window.scrollTo(0, 0);
-          });
+    });
   }
 }
 
@@ -814,29 +844,54 @@ function initMagneticButtons() {
 
   magneticElements.forEach(function(el) {
     var strength = 0.3;
-    var boundingRect;
+    var ease = 0.12; // Lower = smoother/slower
+    var currentX = 0;
+    var currentY = 0;
+    var targetX = 0;
+    var targetY = 0;
+    var isHovering = false;
+    var animating = false;
+
+    function animate() {
+      // Interpolate toward target
+      currentX += (targetX - currentX) * ease;
+      currentY += (targetY - currentY) * ease;
+
+      el.style.transform = 'translate(' + currentX + 'px, ' + currentY + 'px)';
+
+      // Continue if still moving or hovering
+      var stillMoving = Math.abs(targetX - currentX) > 0.1 || Math.abs(targetY - currentY) > 0.1;
+      if (isHovering || stillMoving) {
+        requestAnimationFrame(animate);
+      } else {
+        // Snap to zero when done
+        currentX = 0;
+        currentY = 0;
+        el.style.transform = '';
+        animating = false;
+      }
+    }
 
     el.addEventListener('mouseenter', function() {
-      boundingRect = el.getBoundingClientRect();
+      isHovering = true;
+      if (!animating) {
+        animating = true;
+        requestAnimationFrame(animate);
+      }
     });
 
     el.addEventListener('mousemove', function(e) {
-      if (!boundingRect) return;
-
-      var centerX = boundingRect.left + boundingRect.width / 2;
-      var centerY = boundingRect.top + boundingRect.height / 2;
-      var deltaX = (e.clientX - centerX) * strength;
-      var deltaY = (e.clientY - centerY) * strength;
-
-      el.style.transform = 'translate(' + deltaX + 'px, ' + deltaY + 'px)';
+      var rect = el.getBoundingClientRect();
+      var centerX = rect.left + rect.width / 2;
+      var centerY = rect.top + rect.height / 2;
+      targetX = (e.clientX - centerX) * strength;
+      targetY = (e.clientY - centerY) * strength;
     });
 
     el.addEventListener('mouseleave', function() {
-      el.style.transform = '';
-      el.style.transition = 'transform 0.3s cubic-bezier(0.16, 1, 0.3, 1)';
-      setTimeout(function() {
-        el.style.transition = '';
-      }, 300);
+      isHovering = false;
+      targetX = 0;
+      targetY = 0;
     });
   });
 }
@@ -972,19 +1027,11 @@ function initScrollIndicator() {
   var indicator = $('.scroll-indicator');
   if (!indicator) return;
 
-  var handleScroll = throttle(function() {
-    var scrollY = window.pageYOffset || document.documentElement.scrollTop;
+  ScrollManager.subscribe(function(scrollY) {
     var opacity = Math.max(0, 1 - (scrollY / 300));
     indicator.style.opacity = opacity;
-
-    if (scrollY > 300) {
-      indicator.style.pointerEvents = 'none';
-    } else {
-      indicator.style.pointerEvents = '';
-    }
-  }, 16);
-
-  window.addEventListener('scroll', handleScroll, { passive: true });
+    indicator.style.pointerEvents = scrollY > 300 ? 'none' : '';
+  });
 }
 
 // =============================================================================
@@ -997,18 +1044,23 @@ function initHeroParallax() {
   var heroContent = $('.hero-content');
   var heroVisual = $('.hero-visual');
   var heroTitle = $('.hero-title');
+  var hero = $('.hero');
 
   if (!heroContent || !heroVisual) return;
 
-  var handleScroll = throttle(function() {
-    var scrollY = window.pageYOffset || document.documentElement.scrollTop;
+  function isHeroVisible() {
+    if (!hero) return true;
+    var rect = hero.getBoundingClientRect();
+    return rect.bottom > 0;
+  }
+
+  ScrollManager.subscribe(function(scrollY) {
+    // Skip calculations if hero is off-screen
+    if (!isHeroVisible()) return;
+
     var windowHeight = window.innerHeight;
-
-    if (scrollY > windowHeight) return;
-
     var progress = scrollY / (windowHeight * 0.5);
 
-    // Parallax effect on hero elements
     if (heroTitle) {
       heroTitle.style.transform = 'translateY(' + (scrollY * 0.15) + 'px)';
       heroTitle.style.opacity = Math.max(0, 1 - progress * 0.8);
@@ -1017,9 +1069,7 @@ function initHeroParallax() {
     if (heroVisual) {
       heroVisual.style.transform = 'translateY(' + (scrollY * 0.08) + 'px) scale(' + (1 - progress * 0.05) + ')';
     }
-  }, 16);
-
-  window.addEventListener('scroll', handleScroll, { passive: true });
+  });
 }
 
 // =============================================================================
@@ -1112,6 +1162,76 @@ function initTextScramble() {
 }
 
 // =============================================================================
+// ARTICLE HOVER PREVIEW
+// =============================================================================
+
+function initArticlePreview() {
+  if (prefersReducedMotion) return;
+
+  // Only on desktop
+  if (window.innerWidth < 768) return;
+
+  // Create preview element
+  var preview = document.createElement('div');
+  preview.className = 'article-preview';
+  preview.innerHTML = '<img src="" alt="" />';
+  document.body.appendChild(preview);
+
+  var img = preview.querySelector('img');
+  var currentX = 0;
+  var currentY = 0;
+  var targetX = 0;
+  var targetY = 0;
+  var isVisible = false;
+  var animating = false;
+  var ease = 0.08;
+
+  function animate() {
+    currentX += (targetX - currentX) * ease;
+    currentY += (targetY - currentY) * ease;
+
+    preview.style.transform = 'translate(' + currentX + 'px, ' + currentY + 'px)';
+
+    var stillMoving = Math.abs(targetX - currentX) > 0.5 || Math.abs(targetY - currentY) > 0.5;
+    if (isVisible || stillMoving) {
+      requestAnimationFrame(animate);
+    } else {
+      animating = false;
+    }
+  }
+
+  // Find article cards with images
+  var cards = $$('.article-card-image-card');
+
+  cards.forEach(function(card) {
+    var cardImg = card.querySelector('.article-card-image img');
+    if (!cardImg) return;
+
+    var imageSrc = cardImg.getAttribute('src');
+
+    card.addEventListener('mouseenter', function() {
+      img.src = imageSrc;
+      preview.classList.add('visible');
+      isVisible = true;
+      if (!animating) {
+        animating = true;
+        requestAnimationFrame(animate);
+      }
+    });
+
+    card.addEventListener('mousemove', function(e) {
+      targetX = e.clientX + 20;
+      targetY = e.clientY - 60;
+    });
+
+    card.addEventListener('mouseleave', function() {
+      preview.classList.remove('visible');
+      isVisible = false;
+    });
+  });
+}
+
+// =============================================================================
 // INIT
 // =============================================================================
 
@@ -1132,12 +1252,15 @@ document.addEventListener('DOMContentLoaded', function() {
   initPageLoader();
   initTheme();
   initSystemThemeListener();
-  
+
+  // Initialize scroll manager first (other inits subscribe to it)
+  ScrollManager.init();
+
   var themeToggle = $('#themeToggle');
   var mobileThemeToggle = $('#mobileThemeToggle');
   if (themeToggle) themeToggle.addEventListener('click', toggleTheme);
   if (mobileThemeToggle) mobileThemeToggle.addEventListener('click', toggleTheme);
-  
+
   initTimeGreeting();
   initHeader();
   initMobileMenu();
@@ -1161,4 +1284,5 @@ document.addEventListener('DOMContentLoaded', function() {
   initScrollIndicator();
   initHeroParallax();
   initTextScramble();
+  initArticlePreview();
 });
