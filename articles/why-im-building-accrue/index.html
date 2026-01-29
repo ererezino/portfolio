@@ -1202,10 +1202,40 @@
       border: 1px solid var(--border);
       padding: 20px;
       transition: all var(--transition);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+    }
+    .recommended-card.has-image {
+      padding: 0;
+    }
+    .recommended-card.has-image .recommended-card-meta,
+    .recommended-card.has-image .recommended-card-title,
+    .recommended-card.has-image .recommended-card-author {
+      padding: 0 16px;
+    }
+    .recommended-card.has-image .recommended-card-meta {
+      padding-top: 16px;
+    }
+    .recommended-card.has-image .recommended-card-author {
+      padding-bottom: 16px;
     }
     .recommended-card:hover {
       border-color: var(--text-secondary);
       transform: translateY(-2px);
+    }
+    .recommended-card-image {
+      width: 100%;
+      height: 140px;
+      overflow: hidden;
+    }
+    .recommended-card-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.3s ease;
+    }
+    .recommended-card:hover .recommended-card-image img {
+      transform: scale(1.05);
     }
     .recommended-card-meta {
       font-family: var(--font-mono);
@@ -2155,6 +2185,7 @@
 
     // Recommended Reading
     const RECOMMENDED_ARTICLES = [
+      { title: "Happy 4th Birthday!", url: "https://adesuwa.substack.com/p/happy-4th-birthday", date: "Jan 2026", author: "Adesuwa Omoruyi", external: true, image: "https://substackcdn.com/image/fetch/f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2Fe5750dcb-9f05-4d83-9918-b6fdbee62059_2076x1488.png" },
       { title: "On Walking", url: "/articles/on-walking/", date: "Jan 2026", author: "Zino Asamaige" },
       { title: "Accrue's Big Day!", url: "/articles/accrues-big-day/", date: "Jan 2022", author: "Zino Asamaige" },
       { title: "Stablecoin Agents Will Onboard Billions", url: "https://www.clintonmbah.com/posts/stablecoin_agents_will_onboard_billions_of_africans_to_the_global_economy.html", date: "2025", author: "Clinton Mbah", external: true },
@@ -2168,12 +2199,13 @@
     filtered.forEach(article => {
       const card = document.createElement('a');
       card.href = article.url;
-      card.className = 'recommended-card';
+      card.className = 'recommended-card' + (article.image ? ' has-image' : '');
       if (article.external) {
         card.target = '_blank';
         card.rel = 'noopener noreferrer';
       }
       card.innerHTML = `
+        ${article.image ? `<div class="recommended-card-image"><img src="${article.image}" alt="" loading="lazy" /></div>` : ''}
         <div class="recommended-card-meta">${article.date}${article.external ? ' · External' : ''}</div>
         <div class="recommended-card-title">${article.title}</div>
         <div class="recommended-card-author">by <span>${article.author}</span></div>
