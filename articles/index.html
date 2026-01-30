@@ -1665,24 +1665,6 @@
     renderArticles();
     renderRecommended();
 
-    // Accrue Promo Banner
-    (function() {
-      var promo = document.getElementById('accruePromo');
-      var closeBtn = document.getElementById('accruePromoClose');
-      if (!promo) return;
-      var dismissed = false;
-      try { dismissed = sessionStorage.getItem('accruePromoDismissed') === 'true'; } catch (e) {}
-      if (dismissed) return;
-      setTimeout(function() { promo.classList.add('visible'); }, 3000);
-      if (closeBtn) {
-        closeBtn.addEventListener('click', function(e) {
-          e.preventDefault();
-          e.stopPropagation();
-          promo.classList.remove('visible');
-          try { sessionStorage.setItem('accruePromoDismissed', 'true'); } catch (e) {}
-        });
-      }
-    })();
   </script>
 
   <!-- Accrue Promo Banner -->
