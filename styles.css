@@ -717,35 +717,38 @@ header.scrolled {
 .hero-text a:hover::after { transform: scaleX(1); transform-origin: left; }
 
 /* Inline Accrue logo in hero text */
-.accrue-inline-logo {
-  display: inline-flex;
-  align-items: center;
-  vertical-align: baseline;
-  position: relative;
-  top: 0.15em;
+.hero-text .accrue-inline-logo {
+  display: inline !important;
+  vertical-align: baseline !important;
+  text-decoration: none !important;
 }
 
-.accrue-inline-logo::after {
-  display: none;
+.hero-text .accrue-inline-logo::after {
+  display: none !important;
+  content: none !important;
 }
 
-.accrue-inline-logo img {
-  height: 1.1em;
-  width: auto;
-  display: inline-block;
-  transition: transform 0.3s var(--ease), opacity 0.3s ease;
+.hero-text .accrue-inline-logo img {
+  display: inline !important;
+  height: 14px !important;
+  width: auto !important;
+  max-height: 14px !important;
+  vertical-align: middle !important;
+  position: relative !important;
+  top: -1px !important;
+  transition: transform 0.3s var(--ease);
 }
 
-.accrue-inline-logo:hover img {
+.hero-text .accrue-inline-logo:hover img {
   transform: scale(1.05);
 }
 
-/* Theme-aware wordmark switching */
-.accrue-wordmark-light { display: inline-block; }
-.accrue-wordmark-dark { display: none; }
+/* Theme-aware wordmark switching for inline logo */
+.hero-text .accrue-inline-logo .accrue-wordmark-light { display: inline !important; }
+.hero-text .accrue-inline-logo .accrue-wordmark-dark { display: none !important; }
 
-[data-theme="dark"] .accrue-wordmark-light { display: none; }
-[data-theme="dark"] .accrue-wordmark-dark { display: inline-block; }
+[data-theme="dark"] .hero-text .accrue-inline-logo .accrue-wordmark-light { display: none !important; }
+[data-theme="dark"] .hero-text .accrue-inline-logo .accrue-wordmark-dark { display: inline !important; }
 
 /* Hero CTAs */
 .hero-ctas {
