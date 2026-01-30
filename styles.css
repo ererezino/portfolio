@@ -718,9 +718,11 @@ header.scrolled {
 
 /* Inline Accrue logo in hero text */
 .hero-text .accrue-inline-logo {
-  display: inline !important;
-  vertical-align: baseline !important;
+  display: inline-block !important;
+  vertical-align: middle !important;
   text-decoration: none !important;
+  position: relative;
+  overflow: hidden;
 }
 
 .hero-text .accrue-inline-logo::after {
@@ -730,17 +732,41 @@ header.scrolled {
 
 .hero-text .accrue-inline-logo img {
   display: inline !important;
-  height: 14px !important;
+  height: 22px !important;
   width: auto !important;
-  max-height: 14px !important;
+  max-height: 22px !important;
   vertical-align: middle !important;
   position: relative !important;
-  top: -1px !important;
+  top: -2px !important;
   transition: transform 0.3s var(--ease);
 }
 
 .hero-text .accrue-inline-logo:hover img {
   transform: scale(1.05);
+}
+
+/* Shimmer effect for Accrue logo */
+.hero-text .accrue-inline-logo::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.4) 50%,
+    transparent 100%
+  );
+  animation: shimmer 1.5s ease-in-out 1s forwards;
+  pointer-events: none;
+  z-index: 1;
+}
+
+@keyframes shimmer {
+  0% { left: -100%; opacity: 1; }
+  100% { left: 100%; opacity: 0; }
 }
 
 /* Theme-aware wordmark switching for inline logo */
