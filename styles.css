@@ -2422,6 +2422,180 @@ footer {
 }
 
 /* =============================================================================
+   ACCRUE PROMO BANNER
+   ============================================================================= */
+
+.accrue-promo {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 99;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.4s var(--ease), transform 0.4s var(--ease), visibility 0.4s;
+}
+
+.accrue-promo.visible {
+  opacity: 1;
+  visibility: visible;
+}
+
+.accrue-promo-link {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 20px 10px 14px;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-full);
+  box-shadow: var(--shadow-lg), 0 0 0 1px rgba(0, 0, 0, 0.02);
+  text-decoration: none;
+  transition: all 0.3s var(--ease);
+  position: relative;
+  overflow: hidden;
+}
+
+.accrue-promo-link::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, var(--accent-subtle) 0%, transparent 50%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.accrue-promo-link:hover {
+  border-color: var(--accent);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg), var(--shadow-glow);
+}
+
+.accrue-promo-link:hover::before {
+  opacity: 1;
+}
+
+.accrue-promo-link:active {
+  transform: translateY(0) scale(0.98);
+}
+
+.accrue-promo-logo {
+  width: 28px;
+  height: 28px;
+  position: relative;
+  z-index: 1;
+  flex-shrink: 0;
+}
+
+.accrue-promo-logo img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+/* Theme-aware logo switching */
+.accrue-logo-light { display: block; }
+.accrue-logo-dark { display: none; }
+
+[data-theme="dark"] .accrue-logo-light { display: none; }
+[data-theme="dark"] .accrue-logo-dark { display: block; }
+
+.accrue-promo-content {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  position: relative;
+  z-index: 1;
+}
+
+.accrue-promo-label {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--accent);
+}
+
+.accrue-promo-text {
+  font-family: var(--font-sans);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text);
+  white-space: nowrap;
+}
+
+.accrue-promo-arrow {
+  width: 16px;
+  height: 16px;
+  color: var(--text-tertiary);
+  transition: transform 0.3s var(--ease), color 0.3s ease;
+  position: relative;
+  z-index: 1;
+  flex-shrink: 0;
+}
+
+.accrue-promo-link:hover .accrue-promo-arrow {
+  transform: translateX(3px);
+  color: var(--accent);
+}
+
+.accrue-promo-close {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  opacity: 0;
+  transform: scale(0.8);
+  transition: all 0.2s ease;
+  z-index: 2;
+}
+
+.accrue-promo:hover .accrue-promo-close {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.accrue-promo-close:hover {
+  background: var(--text);
+  border-color: var(--text);
+  color: var(--bg);
+}
+
+.accrue-promo-close svg {
+  width: 12px;
+  height: 12px;
+}
+
+/* Mobile adjustments */
+@media (max-width: 480px) {
+  .accrue-promo {
+    bottom: 16px;
+    left: 16px;
+    right: 16px;
+    transform: none;
+  }
+
+  .accrue-promo-link {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+/* Hide when back-to-top is visible to avoid overlap */
+.back-to-top.visible ~ .accrue-promo {
+  bottom: 80px;
+}
+
+/* =============================================================================
    REDUCED MOTION - Fallback for safety
    ============================================================================= */
 

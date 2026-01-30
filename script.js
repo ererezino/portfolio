@@ -1285,4 +1285,41 @@ document.addEventListener('DOMContentLoaded', function() {
   initHeroParallax();
   initTextScramble();
   initArticlePreview();
+  initAccruePromo();
 });
+
+// =============================================================================
+// ACCRUE PROMO BANNER
+// =============================================================================
+
+function initAccruePromo() {
+  var promo = $('#accruePromo');
+  var closeBtn = $('#accruePromoClose');
+
+  if (!promo) return;
+
+  // Check if user has dismissed the promo
+  var dismissed = false;
+  try {
+    dismissed = sessionStorage.getItem('accruePromoDismissed') === 'true';
+  } catch (e) {}
+
+  if (dismissed) return;
+
+  // Show after a delay (let user engage with content first)
+  setTimeout(function() {
+    promo.classList.add('visible');
+  }, 3000);
+
+  // Handle close
+  if (closeBtn) {
+    closeBtn.addEventListener('click', function(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      promo.classList.remove('visible');
+      try {
+        sessionStorage.setItem('accruePromoDismissed', 'true');
+      } catch (e) {}
+    });
+  }
+}
