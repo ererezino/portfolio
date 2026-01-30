@@ -97,7 +97,7 @@
   <link rel="stylesheet" href="/assets/fonts.css?v=20260125f">
 
   <!-- Shared styles -->
-  <link rel="stylesheet" href="/styles.css?v=20260125f">
+  <link rel="stylesheet" href="/styles.css?v=20260129h">
 
   <!-- Page-specific styles -->
   <style>
@@ -1664,7 +1664,81 @@
     renderTagFilter();
     renderArticles();
     renderRecommended();
+
+    // Accrue Promo Banner
+    (function() {
+      var promo = document.getElementById('accruePromo');
+      var closeBtn = document.getElementById('accruePromoClose');
+      if (!promo) return;
+      var dismissed = false;
+      try { dismissed = sessionStorage.getItem('accruePromoDismissed') === 'true'; } catch (e) {}
+      if (dismissed) return;
+      setTimeout(function() { promo.classList.add('visible'); }, 3000);
+      if (closeBtn) {
+        closeBtn.addEventListener('click', function(e) {
+          e.preventDefault();
+          e.stopPropagation();
+          promo.classList.remove('visible');
+          try { sessionStorage.setItem('accruePromoDismissed', 'true'); } catch (e) {}
+        });
+      }
+    })();
   </script>
+
+  <!-- Accrue Promo Banner -->
+  <div class="accrue-promo" id="accruePromo">
+    <a href="https://useaccrue.com" target="_blank" rel="noopener noreferrer" class="accrue-promo-link">
+      <div class="accrue-promo-logo">
+        <img src="/assets/accrue-logos/icon-dark.png" alt="Accrue" class="accrue-logo-light" />
+        <img src="/assets/accrue-logos/icon-light.png" alt="Accrue" class="accrue-logo-dark" />
+      </div>
+      <span class="accrue-promo-text">Send money across Africa</span>
+      <svg class="accrue-promo-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M5 12h14M12 5l7 7-7 7"/>
+      </svg>
+    </a>
+    <button class="accrue-promo-close" id="accruePromoClose" aria-label="Dismiss">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M18 6L6 18M6 6l12 12"/>
+      </svg>
+    </button>
+  </div>
+
+  <script>
+    (function() {
+      var promo = document.getElementById('accruePromo');
+      var closeBtn = document.getElementById('accruePromoClose');
+      if (!promo) return;
+
+      var dismissed = false;
+      try {
+        var dismissedTime = localStorage.getItem('accruePromoDismissedAt');
+        if (dismissedTime) {
+          var oneDayMs = 24 * 60 * 60 * 1000;
+          var timeSinceDismissed = Date.now() - parseInt(dismissedTime, 10);
+          dismissed = timeSinceDismissed < oneDayMs;
+        }
+      } catch (e) {}
+
+      if (dismissed) return;
+
+      setTimeout(function() {
+        promo.classList.add('visible');
+      }, 3000);
+
+      if (closeBtn) {
+        closeBtn.addEventListener('click', function(e) {
+          e.preventDefault();
+          e.stopPropagation();
+          promo.classList.remove('visible');
+          try {
+            localStorage.setItem('accruePromoDismissedAt', Date.now().toString());
+          } catch (e) {}
+        });
+      }
+    })();
+  </script>
+
   <!-- Cloudflare Web Analytics --><script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "a17b25b9d9f24af88869c5f81d7e12be"}'></script><!-- End Cloudflare Web Analytics -->
 </body>
 </html>
