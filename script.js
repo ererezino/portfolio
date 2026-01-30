@@ -1298,10 +1298,15 @@ function initAccruePromo() {
 
   if (!promo) return;
 
-  // Check if user has dismissed the promo
+  // Check if user has dismissed the promo (expires after 1 day)
   var dismissed = false;
   try {
-    dismissed = sessionStorage.getItem('accruePromoDismissed') === 'true';
+    var dismissedTime = localStorage.getItem('accruePromoDismissedAt');
+    if (dismissedTime) {
+      var oneDayMs = 24 * 60 * 60 * 1000;
+      var timeSinceDismissed = Date.now() - parseInt(dismissedTime, 10);
+      dismissed = timeSinceDismissed < oneDayMs;
+    }
   } catch (e) {}
 
   if (dismissed) return;
@@ -1318,7 +1323,7 @@ function initAccruePromo() {
       e.stopPropagation();
       promo.classList.remove('visible');
       try {
-        sessionStorage.setItem('accruePromoDismissed', 'true');
+        localStorage.setItem('accruePromoDismissedAt', Date.now().toString());
       } catch (e) {}
     });
   }
