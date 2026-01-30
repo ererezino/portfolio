@@ -744,11 +744,11 @@ header.scrolled {
 }
 
 /* Theme-aware wordmark switching for inline logo */
-.hero-text .accrue-inline-logo .accrue-wordmark-light { display: inline !important; }
-.hero-text .accrue-inline-logo .accrue-wordmark-dark { display: none !important; }
+.hero-text .accrue-inline-logo img.accrue-wordmark-light { display: inline !important; }
+.hero-text .accrue-inline-logo img.accrue-wordmark-dark { display: none !important; }
 
-[data-theme="dark"] .hero-text .accrue-inline-logo .accrue-wordmark-light { display: none !important; }
-[data-theme="dark"] .hero-text .accrue-inline-logo .accrue-wordmark-dark { display: inline !important; }
+[data-theme="dark"] .hero-text .accrue-inline-logo img.accrue-wordmark-light { display: none !important; }
+[data-theme="dark"] .hero-text .accrue-inline-logo img.accrue-wordmark-dark { display: inline !important; }
 
 /* Hero CTAs */
 .hero-ctas {
