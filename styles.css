@@ -2500,29 +2500,14 @@ footer {
 [data-theme="dark"] .accrue-logo-light { display: none; }
 [data-theme="dark"] .accrue-logo-dark { display: block; }
 
-.accrue-promo-content {
-  display: flex;
-  flex-direction: column;
-  gap: 1px;
-  position: relative;
-  z-index: 1;
-}
-
-.accrue-promo-label {
-  font-family: var(--font-mono);
-  font-size: 9px;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  color: var(--accent);
-}
-
 .accrue-promo-text {
   font-family: var(--font-sans);
   font-size: 13px;
   font-weight: 500;
   color: var(--text);
   white-space: nowrap;
+  position: relative;
+  z-index: 1;
 }
 
 .accrue-promo-arrow {
