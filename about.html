@@ -535,24 +535,6 @@
       });
     }
 
-    // Accrue Promo Banner
-    (function() {
-      var promo = document.getElementById('accruePromo');
-      var closeBtn = document.getElementById('accruePromoClose');
-      if (!promo) return;
-      var dismissed = false;
-      try { dismissed = sessionStorage.getItem('accruePromoDismissed') === 'true'; } catch (e) {}
-      if (dismissed) return;
-      setTimeout(function() { promo.classList.add('visible'); }, 3000);
-      if (closeBtn) {
-        closeBtn.addEventListener('click', function(e) {
-          e.preventDefault();
-          e.stopPropagation();
-          promo.classList.remove('visible');
-          try { sessionStorage.setItem('accruePromoDismissed', 'true'); } catch (e) {}
-        });
-      }
-    })();
   </script>
 
   <!-- Accrue Promo Banner -->
@@ -573,6 +555,41 @@
       </svg>
     </button>
   </div>
+
+  <script>
+    (function() {
+      var promo = document.getElementById('accruePromo');
+      var closeBtn = document.getElementById('accruePromoClose');
+      if (!promo) return;
+
+      var dismissed = false;
+      try {
+        var dismissedTime = localStorage.getItem('accruePromoDismissedAt');
+        if (dismissedTime) {
+          var oneDayMs = 24 * 60 * 60 * 1000;
+          var timeSinceDismissed = Date.now() - parseInt(dismissedTime, 10);
+          dismissed = timeSinceDismissed < oneDayMs;
+        }
+      } catch (e) {}
+
+      if (dismissed) return;
+
+      setTimeout(function() {
+        promo.classList.add('visible');
+      }, 3000);
+
+      if (closeBtn) {
+        closeBtn.addEventListener('click', function(e) {
+          e.preventDefault();
+          e.stopPropagation();
+          promo.classList.remove('visible');
+          try {
+            localStorage.setItem('accruePromoDismissedAt', Date.now().toString());
+          } catch (e) {}
+        });
+      }
+    })();
+  </script>
 
   <!-- Cloudflare Web Analytics --><script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "a17b25b9d9f24af88869c5f81d7e12be"}'></script><!-- End Cloudflare Web Analytics -->
 </body>
