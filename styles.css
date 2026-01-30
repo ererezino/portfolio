@@ -2659,14 +2659,28 @@ footer {
 @media (max-width: 480px) {
   .accrue-promo {
     bottom: 16px;
-    left: 16px;
-    right: 16px;
-    transform: none;
+    left: 50%;
+    right: auto;
+    transform: translateX(-50%);
   }
 
   .accrue-promo-link {
-    width: 100%;
-    justify-content: center;
+    padding: 10px 16px 10px 12px;
+    gap: 8px;
+  }
+
+  .accrue-promo-logo {
+    width: 22px;
+    height: 22px;
+  }
+
+  .accrue-promo-text {
+    font-size: 13px;
+  }
+
+  .accrue-promo-arrow {
+    width: 14px;
+    height: 14px;
   }
 }
 
