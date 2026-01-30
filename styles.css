@@ -781,6 +781,40 @@ header.scrolled {
 [data-theme="dark"] .hero-text .accrue-inline-logo img.accrue-wordmark-light { display: none !important; }
 [data-theme="dark"] .hero-text .accrue-inline-logo img.accrue-wordmark-dark { display: inline !important; }
 
+/* Inline Cashramp logo in hero text */
+.hero-text .cashramp-inline-logo {
+  display: inline-block !important;
+  vertical-align: baseline !important;
+  text-decoration: none !important;
+  position: relative;
+}
+
+.hero-text .cashramp-inline-logo::after {
+  display: none !important;
+  content: none !important;
+}
+
+.hero-text .cashramp-inline-logo img {
+  display: inline-block !important;
+  height: 1.15em !important;
+  width: auto !important;
+  max-height: 1.15em !important;
+  vertical-align: text-bottom !important;
+  position: relative !important;
+  top: 0 !important;
+  transition: transform 0.3s var(--ease), filter 0.3s ease;
+  filter: brightness(1);
+}
+
+.hero-text .cashramp-inline-logo:hover img {
+  transform: scale(1.05);
+}
+
+/* Invert Cashramp logo for dark mode */
+[data-theme="dark"] .hero-text .cashramp-inline-logo img {
+  filter: invert(1) brightness(1);
+}
+
 /* Hero CTAs */
 .hero-ctas {
   display: flex;
