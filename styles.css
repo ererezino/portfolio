@@ -731,12 +731,12 @@ header.scrolled {
 
 .hero-text .accrue-inline-logo img {
   display: inline-block !important;
-  height: 1em !important;
+  height: 1.15em !important;
   width: auto !important;
-  max-height: 1em !important;
-  vertical-align: baseline !important;
+  max-height: 1.15em !important;
+  vertical-align: text-bottom !important;
   position: relative !important;
-  top: 0.1em !important;
+  top: 0 !important;
   transition: transform 0.3s var(--ease);
 }
 
@@ -744,29 +744,34 @@ header.scrolled {
   transform: scale(1.05);
 }
 
-/* Shimmer effect for Accrue logo */
-@keyframes accrue-shimmer {
+/* Attention-grabbing animation for Accrue logo */
+.hero-text .accrue-inline-logo.shimmer img {
+  animation: accrue-attention 1s ease-in-out 1.5s;
+}
+
+@keyframes accrue-attention {
   0% {
-    transform: translateX(-100%);
-    opacity: 1;
+    transform: scale(1);
+    filter: brightness(1);
+  }
+  20% {
+    transform: scale(1.3);
+    filter: brightness(1.4) drop-shadow(0 0 12px rgba(255, 255, 255, 0.8));
+  }
+  40% {
+    transform: scale(0.95);
+  }
+  60% {
+    transform: scale(1.15);
+    filter: brightness(1.2) drop-shadow(0 0 8px rgba(255, 255, 255, 0.5));
+  }
+  80% {
+    transform: scale(1);
   }
   100% {
-    transform: translateX(100%);
-    opacity: 0;
+    transform: scale(1);
+    filter: brightness(1);
   }
-}
-
-.hero-text .accrue-inline-logo img {
-  overflow: hidden;
-}
-
-.hero-text .accrue-inline-logo.shimmer img {
-  animation: accrue-glow 2s ease-in-out 1.5s;
-}
-
-@keyframes accrue-glow {
-  0%, 100% { filter: brightness(1); }
-  50% { filter: brightness(1.5) drop-shadow(0 0 8px rgba(255, 255, 255, 0.6)); }
 }
 
 /* Theme-aware wordmark switching for inline logo */
