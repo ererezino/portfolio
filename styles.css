@@ -702,19 +702,50 @@ header.scrolled {
 @media (min-width: 1000px) { .hero-text { margin: 0 0 clamp(24px, 4vw, 32px); } }
 
 .hero-text a { color: var(--text); font-weight: 500; position: relative; }
-.hero-text a::after { 
-  content: ''; 
-  position: absolute; 
-  bottom: -1px; 
-  left: 0; 
-  width: 100%; 
-  height: 1px; 
-  background: var(--accent); 
-  transform: scaleX(0); 
-  transform-origin: right; 
-  transition: transform var(--duration) var(--ease); 
+.hero-text a::after {
+  content: '';
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  background: var(--accent);
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform var(--duration) var(--ease);
 }
 .hero-text a:hover::after { transform: scaleX(1); transform-origin: left; }
+
+/* Inline Accrue logo in hero text */
+.accrue-inline-logo {
+  display: inline-flex;
+  align-items: center;
+  vertical-align: baseline;
+  position: relative;
+  top: 0.15em;
+}
+
+.accrue-inline-logo::after {
+  display: none;
+}
+
+.accrue-inline-logo img {
+  height: 1.1em;
+  width: auto;
+  display: inline-block;
+  transition: transform 0.3s var(--ease), opacity 0.3s ease;
+}
+
+.accrue-inline-logo:hover img {
+  transform: scale(1.05);
+}
+
+/* Theme-aware wordmark switching */
+.accrue-wordmark-light { display: inline-block; }
+.accrue-wordmark-dark { display: none; }
+
+[data-theme="dark"] .accrue-wordmark-light { display: none; }
+[data-theme="dark"] .accrue-wordmark-dark { display: inline-block; }
 
 /* Hero CTAs */
 .hero-ctas {
