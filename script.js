@@ -1039,37 +1039,9 @@ function initScrollIndicator() {
 // =============================================================================
 
 function initHeroParallax() {
-  if (prefersReducedMotion) return;
-
-  var heroContent = $('.hero-content');
-  var heroVisual = $('.hero-visual');
-  var heroTitle = $('.hero-title');
-  var hero = $('.hero');
-
-  if (!heroContent || !heroVisual) return;
-
-  function isHeroVisible() {
-    if (!hero) return true;
-    var rect = hero.getBoundingClientRect();
-    return rect.bottom > 0;
-  }
-
-  ScrollManager.subscribe(function(scrollY) {
-    // Skip calculations if hero is off-screen
-    if (!isHeroVisible()) return;
-
-    var windowHeight = window.innerHeight;
-    var progress = scrollY / (windowHeight * 0.5);
-
-    if (heroTitle) {
-      heroTitle.style.transform = 'translateY(' + (scrollY * 0.15) + 'px)';
-      heroTitle.style.opacity = Math.max(0, 1 - progress * 0.8);
-    }
-
-    if (heroVisual) {
-      heroVisual.style.transform = 'translateY(' + (scrollY * 0.08) + 'px) scale(' + (1 - progress * 0.05) + ')';
-    }
-  });
+  // Disabled for cleaner, more professional experience
+  // Parallax effects can cause overlap issues and feel dated
+  return;
 }
 
 // =============================================================================
