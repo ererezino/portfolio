@@ -649,6 +649,9 @@ header.scrolled {
   margin-bottom: clamp(16px, 3vw, 24px);
   font-optical-sizing: auto;
   text-wrap: balance;
+  position: relative;
+  z-index: 2;
+  background: var(--bg);
 }
 
 .hero-title .line { display: block; overflow: hidden; }
@@ -689,6 +692,8 @@ header.scrolled {
   color: var(--text-secondary);
   max-width: 480px;
   margin: 0 auto clamp(24px, 4vw, 32px);
+  position: relative;
+  z-index: 1;
 }
 
 /* Only animate if user permits */
