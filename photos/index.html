@@ -179,10 +179,16 @@
       display: block;
       width: 100%;
       height: auto;
-      max-height: 70vh;
+      max-height: 50vh;
       object-fit: cover;
       opacity: 0;
       transition: opacity 0.5s ease;
+    }
+
+    @media (max-width: 768px) {
+      .photo-hero .photo-item img {
+        max-height: 40vh;
+      }
     }
 
     .photo-hero .photo-item img.loaded {
