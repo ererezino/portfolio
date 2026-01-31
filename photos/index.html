@@ -69,6 +69,9 @@
   <!-- Preconnect for analytics -->
   <link rel="preconnect" href="https://static.cloudflareinsights.com" crossorigin>
 
+  <!-- Preload hero image for faster LCP -->
+  <link rel="preload" href="/assets/photos/photo-1.jpg" as="image" fetchpriority="high">
+
   <!-- Self-hosted fonts -->
   <link rel="preload" href="/assets/fonts/inter-v20-latin-regular.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="/assets/fonts/space-mono-v17-latin-regular.woff2" as="font" type="font/woff2" crossorigin>
@@ -76,7 +79,7 @@
   <link rel="stylesheet" href="/assets/fonts.css?v=20260127">
 
   <!-- Shared styles -->
-  <link rel="stylesheet" href="/styles.css?v=20260129j">
+  <link rel="stylesheet" href="/styles.css?v=20260129l">
 
   <!-- Page-specific styles -->
   <style>
@@ -110,33 +113,112 @@
       line-height: 1.6;
     }
 
-    /* Masonry Grid */
+    /* Category Filters */
+    .photos-filters {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 24px;
+    }
+
+    .filter-btn {
+      font-family: var(--font-sans);
+      font-size: 13px;
+      font-weight: 500;
+      padding: 8px 18px;
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      background: transparent;
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: all 0.25s var(--ease);
+      text-transform: capitalize;
+    }
+
+    .filter-btn:hover {
+      border-color: var(--text);
+      color: var(--text);
+    }
+
+    .filter-btn.active {
+      background: var(--text);
+      color: var(--bg);
+      border-color: var(--text);
+    }
+
+    [data-theme="dark"] .filter-btn.active {
+      background: #fff;
+      color: #000;
+      border-color: #fff;
+    }
+
+    /* Hero/Featured Photo */
+    .photo-hero {
+      margin-bottom: 48px;
+    }
+
+    .photo-hero .photo-item {
+      border-radius: 16px;
+      overflow: hidden;
+      cursor: pointer;
+      position: relative;
+      background: var(--bg-elevated);
+      transition: transform 0.4s var(--ease), box-shadow 0.4s var(--ease);
+    }
+
+    .photo-hero .photo-item:hover {
+      transform: scale(1.01);
+      box-shadow: 0 32px 64px rgba(0, 0, 0, 0.2);
+    }
+
+    [data-theme="dark"] .photo-hero .photo-item:hover {
+      box-shadow: 0 32px 64px rgba(0, 0, 0, 0.5);
+    }
+
+    .photo-hero .photo-item img {
+      display: block;
+      width: 100%;
+      height: auto;
+      max-height: 70vh;
+      object-fit: cover;
+      opacity: 0;
+      transition: opacity 0.5s ease;
+    }
+
+    .photo-hero .photo-item img.loaded {
+      opacity: 1;
+    }
+
+    /* CSS Grid Gallery */
     .photos-grid {
-      columns: 3;
-      column-gap: 16px;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
     }
 
     @media (max-width: 1000px) {
       .photos-grid {
-        columns: 2;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
       }
     }
 
     @media (max-width: 600px) {
       .photos-grid {
-        columns: 1;
-        column-gap: 12px;
+        grid-template-columns: 1fr;
+        gap: 16px;
       }
       .photos-header {
         margin-bottom: 48px;
+      }
+      .photo-hero {
+        margin-bottom: 32px;
       }
     }
 
     /* Photo Item */
     .photo-item {
-      break-inside: avoid;
-      margin-bottom: 16px;
-      border-radius: 8px;
+      border-radius: 12px;
       overflow: hidden;
       cursor: pointer;
       position: relative;
@@ -144,19 +226,24 @@
       transition: transform 0.3s var(--ease), box-shadow 0.3s var(--ease);
     }
 
+    /* Featured (large) photos span 2 columns */
+    .photo-item.featured {
+      grid-column: span 2;
+    }
+
     @media (max-width: 600px) {
-      .photo-item {
-        margin-bottom: 12px;
+      .photo-item.featured {
+        grid-column: span 1;
       }
     }
 
     .photo-item:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+      transform: translateY(-6px);
+      box-shadow: 0 24px 48px rgba(0, 0, 0, 0.12);
     }
 
     [data-theme="dark"] .photo-item:hover {
-      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+      box-shadow: 0 24px 48px rgba(0, 0, 0, 0.4);
     }
 
     .photo-item:focus-visible {
@@ -167,9 +254,19 @@
     .photo-item img {
       display: block;
       width: 100%;
-      height: auto;
+      height: 100%;
+      object-fit: cover;
+      aspect-ratio: 4/3;
       opacity: 0;
-      transition: opacity 0.4s ease;
+      transition: opacity 0.4s ease, transform 0.4s var(--ease);
+    }
+
+    .photo-item.featured img {
+      aspect-ratio: 16/9;
+    }
+
+    .photo-item:hover img {
+      transform: scale(1.03);
     }
 
     .photo-item img.loaded {
@@ -189,6 +286,7 @@
       );
       background-size: 200% 100%;
       animation: shimmer 1.5s infinite;
+      z-index: 1;
     }
 
     @keyframes shimmer {
@@ -201,18 +299,48 @@
       min-height: 200px;
     }
 
-    /* Lightbox */
+    .photo-item.featured.skeleton {
+      min-height: 280px;
+    }
+
+    /* Filtering Animation */
+    .photo-item {
+      animation: fadeIn 0.4s var(--ease) forwards;
+    }
+
+    .photo-item.hiding {
+      opacity: 0;
+      transform: scale(0.95);
+      pointer-events: none;
+    }
+
+    .photo-item.hidden {
+      display: none;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: scale(0.95);
+      }
+      to {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+
+    /* Full-Bleed Lightbox */
     .lightbox {
       position: fixed;
       inset: 0;
       z-index: 1000;
-      background: rgba(0, 0, 0, 0.95);
+      background: #000;
       display: flex;
       align-items: center;
       justify-content: center;
       opacity: 0;
       visibility: hidden;
-      transition: opacity 0.3s ease, visibility 0.3s ease;
+      transition: opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1), visibility 0.4s;
     }
 
     .lightbox.active {
@@ -220,19 +348,50 @@
       visibility: visible;
     }
 
+    .lightbox-image-container {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
     .lightbox-image {
-      max-width: 90vw;
-      max-height: 90vh;
+      max-width: 100vw;
+      max-height: 100vh;
+      width: auto;
+      height: auto;
       object-fit: contain;
-      border-radius: 4px;
       opacity: 0;
-      transform: scale(0.95);
-      transition: opacity 0.3s ease, transform 0.3s ease;
+      transform: scale(0.96);
+      transition: opacity 0.4s ease, transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
     .lightbox.active .lightbox-image {
       opacity: 1;
       transform: scale(1);
+    }
+
+    .lightbox-image.loading {
+      opacity: 0.3;
+    }
+
+    /* Image Counter */
+    .lightbox-counter {
+      position: absolute;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-family: var(--font-mono);
+      font-size: 13px;
+      color: rgba(255, 255, 255, 0.7);
+      background: rgba(0, 0, 0, 0.5);
+      padding: 8px 16px;
+      border-radius: 20px;
+      letter-spacing: 0.05em;
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
     }
 
     .lightbox-close {
@@ -249,6 +408,9 @@
       align-items: center;
       justify-content: center;
       transition: background 0.2s ease, transform 0.2s ease;
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      z-index: 10;
     }
 
     .lightbox-close:hover {
@@ -270,17 +432,20 @@
       width: 56px;
       height: 56px;
       border: none;
-      background: rgba(255, 255, 255, 0.1);
+      background: rgba(255, 255, 255, 0.08);
       border-radius: 50%;
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
-      transition: background 0.2s ease, transform 0.2s ease;
+      transition: background 0.2s ease, transform 0.2s ease, opacity 0.2s ease;
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      z-index: 10;
     }
 
     .lightbox-nav:hover {
-      background: rgba(255, 255, 255, 0.2);
+      background: rgba(255, 255, 255, 0.15);
     }
 
     .lightbox-nav:active {
@@ -301,9 +466,33 @@
       right: 24px;
     }
 
+    /* Hide controls initially, show on hover/touch */
+    .lightbox .lightbox-nav,
+    .lightbox .lightbox-close,
+    .lightbox .lightbox-counter {
+      opacity: 0;
+      transition: opacity 0.3s ease, background 0.2s ease, transform 0.2s ease;
+    }
+
+    .lightbox:hover .lightbox-nav,
+    .lightbox:hover .lightbox-close,
+    .lightbox:hover .lightbox-counter,
+    .lightbox.controls-visible .lightbox-nav,
+    .lightbox.controls-visible .lightbox-close,
+    .lightbox.controls-visible .lightbox-counter {
+      opacity: 1;
+    }
+
     @media (max-width: 768px) {
       .lightbox-nav {
-        display: none;
+        width: 44px;
+        height: 44px;
+      }
+      .lightbox-prev {
+        left: 12px;
+      }
+      .lightbox-next {
+        right: 12px;
       }
       .lightbox-close {
         top: 16px;
@@ -314,6 +503,17 @@
       .lightbox-close svg {
         width: 20px;
         height: 20px;
+      }
+      .lightbox-counter {
+        bottom: 16px;
+        font-size: 12px;
+        padding: 6px 12px;
+      }
+      /* Always show controls on mobile */
+      .lightbox .lightbox-nav,
+      .lightbox .lightbox-close,
+      .lightbox .lightbox-counter {
+        opacity: 1;
       }
     }
 
@@ -406,10 +606,13 @@
     <button class="lightbox-nav lightbox-prev" id="lightboxPrev" aria-label="Previous photo">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg>
     </button>
-    <img class="lightbox-image" id="lightboxImage" src="" alt="">
+    <div class="lightbox-image-container">
+      <img class="lightbox-image" id="lightboxImage" src="" alt="">
+    </div>
     <button class="lightbox-nav lightbox-next" id="lightboxNext" aria-label="Next photo">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
     </button>
+    <div class="lightbox-counter" id="lightboxCounter" aria-live="polite">1 / 33</div>
   </div>
 
   <main id="main" role="main">
@@ -417,8 +620,18 @@
       <div class="photos-header">
         <h1 class="photos-title">Photos</h1>
         <p class="photos-lead">Street and travel photography.</p>
+        <div class="photos-filters" id="photosFilters" role="tablist" aria-label="Filter photos by category">
+          <button class="filter-btn active" data-filter="all" role="tab" aria-selected="true">All</button>
+          <button class="filter-btn" data-filter="street" role="tab" aria-selected="false">Street</button>
+          <button class="filter-btn" data-filter="travel" role="tab" aria-selected="false">Travel</button>
+          <button class="filter-btn" data-filter="architecture" role="tab" aria-selected="false">Architecture</button>
+        </div>
       </div>
 
+      <!-- Hero Photo -->
+      <div class="photo-hero" id="photoHero"></div>
+
+      <!-- Photo Grid -->
       <div class="photos-grid" id="photosGrid"></div>
     </div>
   </main>
@@ -495,51 +708,85 @@
       document.getElementById('header').classList.toggle('scrolled', window.scrollY > 50);
     });
 
-    // Photos data
+    // Photos data with categories and featured status
     var PHOTOS = [
-      { src: "/assets/photos/photo-1.jpg", alt: "Morning light in Lagos" },
-      { src: "/assets/photos/photo-2.jpg", alt: "City streets in Frankfurt" },
-      { src: "/assets/photos/photo-3.jpg", alt: "Market day in Accra" },
-      { src: "/assets/photos/photo-4.jpg", alt: "Urban life in Lagos" },
-      { src: "/assets/photos/photo-5.jpg", alt: "Cathedral view in Durham" },
-      { src: "/assets/photos/photo-6.jpg", alt: "Architecture in Frankfurt" },
-      { src: "/assets/photos/photo-7.jpg", alt: "Street photography" },
-      { src: "/assets/photos/photo-8.jpg", alt: "Street photography" },
-      { src: "/assets/photos/photo-9.jpg", alt: "Street photography" },
-      { src: "/assets/photos/photo-10.jpg", alt: "Street photography" },
-      { src: "/assets/photos/photo-33.jpeg", alt: "Travel photography" },
-      { src: "/assets/photos/photo-34.jpeg", alt: "Travel photography" },
-      { src: "/assets/photos/photo-35.jpeg", alt: "Travel photography" },
-      { src: "/assets/photos/photo-36.jpeg", alt: "Travel photography" },
-      { src: "/assets/photos/photo-37.jpeg", alt: "Travel photography" },
-      { src: "/assets/photos/photo-38.jpeg", alt: "Travel photography" },
-      { src: "/assets/photos/photo-39.jpeg", alt: "Travel photography" },
-      { src: "/assets/photos/photo-40.jpeg", alt: "Travel photography" },
-      { src: "/assets/photos/photo-41.jpeg", alt: "Travel photography" },
-      { src: "/assets/photos/photo-42.jpeg", alt: "Travel photography" },
-      { src: "/assets/photos/photo-43.jpeg", alt: "Travel photography" },
-      { src: "/assets/photos/photo-44.jpeg", alt: "Travel photography" },
-      { src: "/assets/photos/photo-45.jpeg", alt: "Travel photography" },
-      { src: "/assets/photos/photo-46.jpeg", alt: "Travel photography" },
-      { src: "/assets/photos/photo-47.jpeg", alt: "Travel photography" },
-      { src: "/assets/photos/photo-48.jpeg", alt: "Travel photography" },
-      { src: "/assets/photos/photo-49.jpeg", alt: "Travel photography" },
-      { src: "/assets/photos/photo-50.jpeg", alt: "Travel photography" },
-      { src: "/assets/photos/photo-51.jpeg", alt: "Travel photography" },
-      { src: "/assets/photos/photo-52.jpeg", alt: "Travel photography" },
-      { src: "/assets/photos/photo-53.png", alt: "Travel photography" },
-      { src: "/assets/photos/photo-54.png", alt: "Travel photography" },
-      { src: "/assets/photos/photo-55.png", alt: "Travel photography" }
+      { src: "/assets/photos/photo-1.jpg", alt: "Morning light in Lagos", category: "street", featured: true },
+      { src: "/assets/photos/photo-2.jpg", alt: "City streets in Frankfurt", category: "travel" },
+      { src: "/assets/photos/photo-3.jpg", alt: "Market day in Accra", category: "street", featured: true },
+      { src: "/assets/photos/photo-4.jpg", alt: "Urban life in Lagos", category: "street" },
+      { src: "/assets/photos/photo-5.jpg", alt: "Cathedral view in Durham", category: "travel" },
+      { src: "/assets/photos/photo-6.jpg", alt: "Architecture in Frankfurt", category: "architecture", featured: true },
+      { src: "/assets/photos/photo-7.jpg", alt: "Street photography", category: "street" },
+      { src: "/assets/photos/photo-8.jpg", alt: "Street photography", category: "street" },
+      { src: "/assets/photos/photo-9.jpg", alt: "Street photography", category: "street" },
+      { src: "/assets/photos/photo-10.jpg", alt: "Street photography", category: "street" },
+      { src: "/assets/photos/photo-33.jpeg", alt: "Travel photography", category: "travel" },
+      { src: "/assets/photos/photo-34.jpeg", alt: "Travel photography", category: "travel", featured: true },
+      { src: "/assets/photos/photo-35.jpeg", alt: "Travel photography", category: "travel" },
+      { src: "/assets/photos/photo-36.jpeg", alt: "Travel photography", category: "travel" },
+      { src: "/assets/photos/photo-37.jpeg", alt: "Travel photography", category: "travel" },
+      { src: "/assets/photos/photo-38.jpeg", alt: "Travel photography", category: "travel" },
+      { src: "/assets/photos/photo-39.jpeg", alt: "Travel photography", category: "travel" },
+      { src: "/assets/photos/photo-40.jpeg", alt: "Travel photography", category: "travel" },
+      { src: "/assets/photos/photo-41.jpeg", alt: "Travel photography", category: "travel", featured: true },
+      { src: "/assets/photos/photo-42.jpeg", alt: "Travel photography", category: "travel" },
+      { src: "/assets/photos/photo-43.jpeg", alt: "Travel photography", category: "travel" },
+      { src: "/assets/photos/photo-44.jpeg", alt: "Travel photography", category: "travel" },
+      { src: "/assets/photos/photo-45.jpeg", alt: "Travel photography", category: "travel" },
+      { src: "/assets/photos/photo-46.jpeg", alt: "Travel photography", category: "travel" },
+      { src: "/assets/photos/photo-47.jpeg", alt: "Travel photography", category: "travel" },
+      { src: "/assets/photos/photo-48.jpeg", alt: "Travel photography", category: "travel" },
+      { src: "/assets/photos/photo-49.jpeg", alt: "Travel photography", category: "travel" },
+      { src: "/assets/photos/photo-50.jpeg", alt: "Travel photography", category: "travel" },
+      { src: "/assets/photos/photo-51.jpeg", alt: "Travel photography", category: "travel" },
+      { src: "/assets/photos/photo-52.jpeg", alt: "Travel photography", category: "travel" },
+      { src: "/assets/photos/photo-53.png", alt: "Travel photography", category: "travel" },
+      { src: "/assets/photos/photo-54.png", alt: "Travel photography", category: "travel" },
+      { src: "/assets/photos/photo-55.png", alt: "Travel photography", category: "travel" }
     ];
 
     var currentIndex = 0;
 
-    // Render photo grid
+    // Render hero photo (first photo from filtered set)
+    function renderHero() {
+      var heroContainer = document.getElementById('photoHero');
+      var heroPhoto = filteredPhotos[0];
+
+      if (!heroPhoto) {
+        heroContainer.style.display = 'none';
+        return;
+      }
+
+      heroContainer.style.display = 'block';
+      var globalIndex = PHOTOS.indexOf(heroPhoto);
+
+      // Hero gets priority loading for LCP optimization
+      heroContainer.innerHTML = '<button type="button" class="photo-item skeleton" data-index="' + globalIndex + '" aria-label="View photo: ' + heroPhoto.alt + '">' +
+        '<img src="' + heroPhoto.src + '" alt="' + heroPhoto.alt + '" loading="eager" decoding="async" fetchpriority="high" onload="this.classList.add(\'loaded\'); this.parentElement.classList.remove(\'skeleton\');">' +
+      '</button>';
+
+      heroContainer.querySelector('.photo-item').onclick = function() {
+        openLightbox(globalIndex);
+      };
+    }
+
+    // Render photo grid (skip first photo - it's in hero)
     function renderGrid() {
       var grid = document.getElementById('photosGrid');
-      grid.innerHTML = PHOTOS.map(function(photo, i) {
-        return '<button type="button" class="photo-item skeleton" data-index="' + i + '" aria-label="View photo">' +
-          '<img src="' + photo.src + '" alt="' + photo.alt + '" loading="lazy" onload="this.classList.add(\'loaded\'); this.parentElement.classList.remove(\'skeleton\');">' +
+      var gridPhotos = filteredPhotos.slice(1); // Skip hero photo
+
+      if (gridPhotos.length === 0 && filteredPhotos.length <= 1) {
+        grid.innerHTML = '';
+        return;
+      }
+
+      grid.innerHTML = gridPhotos.map(function(photo, i) {
+        var globalIndex = PHOTOS.indexOf(photo);
+        var featuredClass = photo.featured ? ' featured' : '';
+        // First 6 images load eagerly for above-fold content
+        var loadingAttr = i < 6 ? 'eager' : 'lazy';
+        return '<button type="button" class="photo-item skeleton' + featuredClass + '" data-index="' + globalIndex + '" data-category="' + photo.category + '" aria-label="View photo: ' + photo.alt + '">' +
+          '<img src="' + photo.src + '" alt="' + photo.alt + '" loading="' + loadingAttr + '" decoding="async" onload="this.classList.add(\'loaded\'); this.parentElement.classList.remove(\'skeleton\');">' +
         '</button>';
       }).join('');
 
@@ -554,33 +801,82 @@
     // Lightbox
     var lightbox = document.getElementById('lightbox');
     var lightboxImage = document.getElementById('lightboxImage');
+    var lightboxCounter = document.getElementById('lightboxCounter');
+    var preloadedImages = {};
+
+    // Preload adjacent images
+    function preloadAdjacent(index) {
+      var prevIndex = (index - 1 + PHOTOS.length) % PHOTOS.length;
+      var nextIndex = (index + 1) % PHOTOS.length;
+
+      [prevIndex, nextIndex].forEach(function(i) {
+        if (!preloadedImages[i]) {
+          var img = new Image();
+          img.src = PHOTOS[i].src;
+          preloadedImages[i] = img;
+        }
+      });
+    }
+
+    // Update counter display
+    function updateCounter() {
+      lightboxCounter.textContent = (currentIndex + 1) + ' / ' + PHOTOS.length;
+    }
 
     function openLightbox(index) {
       currentIndex = index;
+      lightboxImage.classList.add('loading');
       lightboxImage.src = PHOTOS[index].src;
       lightboxImage.alt = PHOTOS[index].alt;
+      updateCounter();
       lightbox.classList.add('active');
       document.body.style.overflow = 'hidden';
+
+      // Remove loading state when image loads
+      lightboxImage.onload = function() {
+        lightboxImage.classList.remove('loading');
+      };
+
+      // Preload adjacent images
+      preloadAdjacent(index);
+
+      // Show controls briefly on open
+      lightbox.classList.add('controls-visible');
+      setTimeout(function() {
+        lightbox.classList.remove('controls-visible');
+      }, 2000);
     }
 
     function closeLightbox() {
       lightbox.classList.remove('active');
+      lightbox.classList.remove('controls-visible');
       document.body.style.overflow = '';
     }
 
     function navigate(direction) {
       currentIndex = (currentIndex + direction + PHOTOS.length) % PHOTOS.length;
+      lightboxImage.classList.add('loading');
       lightboxImage.src = PHOTOS[currentIndex].src;
       lightboxImage.alt = PHOTOS[currentIndex].alt;
+      updateCounter();
+
+      lightboxImage.onload = function() {
+        lightboxImage.classList.remove('loading');
+      };
+
+      // Preload adjacent images
+      preloadAdjacent(currentIndex);
     }
 
     document.getElementById('lightboxClose').onclick = closeLightbox;
     document.getElementById('lightboxPrev').onclick = function() { navigate(-1); };
     document.getElementById('lightboxNext').onclick = function() { navigate(1); };
 
-    // Click outside to close
+    // Click outside image to close
     lightbox.addEventListener('click', function(e) {
-      if (e.target === lightbox) closeLightbox();
+      if (e.target === lightbox || e.target.classList.contains('lightbox-image-container')) {
+        closeLightbox();
+      }
     });
 
     // Keyboard navigation
@@ -597,6 +893,8 @@
 
     lightbox.addEventListener('touchstart', function(e) {
       touchStartX = e.changedTouches[0].screenX;
+      // Show controls on touch
+      lightbox.classList.add('controls-visible');
     }, { passive: true });
 
     lightbox.addEventListener('touchend', function(e) {
@@ -606,9 +904,142 @@
         if (diff > 0) navigate(1);
         else navigate(-1);
       }
+      // Hide controls after swipe
+      setTimeout(function() {
+        lightbox.classList.remove('controls-visible');
+      }, 2000);
     }, { passive: true });
 
+    // Filter functionality
+    var currentFilter = 'all';
+    var filteredPhotos = PHOTOS;
+
+    function getFilteredPhotos(filter) {
+      if (filter === 'all') return PHOTOS;
+      return PHOTOS.filter(function(photo) {
+        return photo.category === filter;
+      });
+    }
+
+    function updateFilterButtons(filter) {
+      var buttons = document.querySelectorAll('.filter-btn');
+      buttons.forEach(function(btn) {
+        var isActive = btn.dataset.filter === filter;
+        btn.classList.toggle('active', isActive);
+        btn.setAttribute('aria-selected', isActive ? 'true' : 'false');
+      });
+    }
+
+    function filterPhotos(filter, updateHash) {
+      if (filter === currentFilter) return;
+      currentFilter = filter;
+      filteredPhotos = getFilteredPhotos(filter);
+
+      updateFilterButtons(filter);
+
+      // Update URL hash
+      if (updateHash !== false) {
+        if (filter === 'all') {
+          history.pushState(null, '', window.location.pathname);
+        } else {
+          history.pushState(null, '', '#' + filter);
+        }
+      }
+
+      // Animate hero
+      var heroContainer = document.getElementById('photoHero');
+      var heroPhoto = filteredPhotos[0];
+
+      if (heroPhoto) {
+        heroContainer.style.display = 'block';
+        var heroItem = heroContainer.querySelector('.photo-item');
+        if (heroItem) {
+          heroItem.classList.add('hiding');
+          setTimeout(function() {
+            renderHeroFiltered(heroPhoto, filteredPhotos.indexOf(heroPhoto));
+          }, 200);
+        }
+      } else {
+        heroContainer.style.display = 'none';
+      }
+
+      // Animate grid items
+      var gridItems = document.querySelectorAll('#photosGrid .photo-item');
+      gridItems.forEach(function(item) {
+        item.classList.add('hiding');
+      });
+
+      // After animation, update grid
+      setTimeout(function() {
+        renderGridFiltered();
+      }, 200);
+    }
+
+    function renderHeroFiltered(photo, index) {
+      var heroContainer = document.getElementById('photoHero');
+      var globalIndex = PHOTOS.indexOf(photo);
+
+      heroContainer.innerHTML = '<button type="button" class="photo-item skeleton" data-index="' + globalIndex + '" aria-label="View photo: ' + photo.alt + '">' +
+        '<img src="' + photo.src + '" alt="' + photo.alt + '" loading="eager" onload="this.classList.add(\'loaded\'); this.parentElement.classList.remove(\'skeleton\');">' +
+      '</button>';
+
+      heroContainer.querySelector('.photo-item').onclick = function() {
+        openLightbox(globalIndex);
+      };
+    }
+
+    function renderGridFiltered() {
+      var grid = document.getElementById('photosGrid');
+      var gridPhotos = filteredPhotos.slice(1); // Skip hero photo
+
+      if (gridPhotos.length === 0) {
+        grid.innerHTML = '<p style="grid-column: 1/-1; text-align: center; color: var(--text-secondary); padding: 48px 0;">No photos in this category.</p>';
+        return;
+      }
+
+      grid.innerHTML = gridPhotos.map(function(photo) {
+        var globalIndex = PHOTOS.indexOf(photo);
+        var featuredClass = photo.featured ? ' featured' : '';
+        return '<button type="button" class="photo-item skeleton' + featuredClass + '" data-index="' + globalIndex + '" data-category="' + photo.category + '" aria-label="View photo: ' + photo.alt + '">' +
+          '<img src="' + photo.src + '" alt="' + photo.alt + '" loading="lazy" onload="this.classList.add(\'loaded\'); this.parentElement.classList.remove(\'skeleton\');">' +
+        '</button>';
+      }).join('');
+
+      // Add click handlers
+      grid.querySelectorAll('.photo-item').forEach(function(item) {
+        item.onclick = function() {
+          openLightbox(parseInt(item.dataset.index));
+        };
+      });
+    }
+
+    // Set up filter button handlers
+    document.querySelectorAll('.filter-btn').forEach(function(btn) {
+      btn.onclick = function() {
+        filterPhotos(btn.dataset.filter);
+      };
+    });
+
+    // Handle browser back/forward
+    window.addEventListener('popstate', function() {
+      var hash = window.location.hash.replace('#', '') || 'all';
+      filterPhotos(hash, false);
+    });
+
+    // Initialize with hash or default
+    function initFromHash() {
+      var hash = window.location.hash.replace('#', '');
+      var validFilters = ['all', 'street', 'travel', 'architecture'];
+      if (hash && validFilters.includes(hash)) {
+        currentFilter = hash;
+        filteredPhotos = getFilteredPhotos(hash);
+        updateFilterButtons(hash);
+      }
+    }
+
     // Initialize
+    initFromHash();
+    renderHero();
     renderGrid();
 
   </script>
