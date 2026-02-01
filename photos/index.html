@@ -776,6 +776,8 @@
     ];
 
     var currentIndex = 0;
+    var currentFilter = 'all';
+    var filteredPhotos = PHOTOS;
 
     // Render hero photo (first photo from filtered set)
     function renderHero() {
@@ -941,9 +943,6 @@
     }, { passive: true });
 
     // Filter functionality
-    var currentFilter = 'all';
-    var filteredPhotos = PHOTOS;
-
     function getFilteredPhotos(filter) {
       if (filter === 'all') return PHOTOS;
       return PHOTOS.filter(function(photo) {
