@@ -152,70 +152,38 @@
       border-color: #fff;
     }
 
-    /* Hero/Featured Photo */
-    .photo-hero {
-      margin-bottom: 48px;
-    }
-
-    .photo-hero .photo-item {
-      border-radius: 16px;
-      overflow: hidden;
-      cursor: pointer;
-      position: relative;
-      background: var(--bg-elevated);
-      transition: transform 0.4s var(--ease), box-shadow 0.4s var(--ease);
-    }
-
-    .photo-hero .photo-item:hover {
-      transform: scale(1.01);
-      box-shadow: 0 32px 64px rgba(0, 0, 0, 0.2);
-    }
-
-    [data-theme="dark"] .photo-hero .photo-item:hover {
-      box-shadow: 0 32px 64px rgba(0, 0, 0, 0.5);
-    }
-
-    .photo-hero .photo-item img {
-      display: block;
-      width: 100%;
-      height: auto;
-      opacity: 0;
-      transition: opacity 0.5s ease;
-    }
-
-    .photo-hero .photo-item img.loaded {
-      opacity: 1;
-    }
-
-    /* CSS Grid Gallery */
+    /* Masonry-style Grid Gallery */
     .photos-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 24px;
+      column-count: 4;
+      column-gap: 16px;
     }
 
-    @media (max-width: 1000px) {
+    @media (max-width: 1200px) {
       .photos-grid {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 20px;
+        column-count: 3;
       }
     }
 
-    @media (max-width: 600px) {
+    @media (max-width: 800px) {
       .photos-grid {
-        grid-template-columns: 1fr;
-        gap: 16px;
+        column-count: 2;
+        column-gap: 12px;
+      }
+    }
+
+    @media (max-width: 500px) {
+      .photos-grid {
+        column-count: 1;
       }
       .photos-header {
-        margin-bottom: 48px;
-      }
-      .photo-hero {
         margin-bottom: 32px;
       }
     }
 
     /* Photo Item */
     .photo-item {
+      break-inside: avoid;
+      margin-bottom: 16px;
       border-radius: 12px;
       overflow: hidden;
       cursor: pointer;
@@ -224,24 +192,19 @@
       transition: transform 0.3s var(--ease), box-shadow 0.3s var(--ease);
     }
 
-    /* Featured (large) photos span 2 columns */
-    .photo-item.featured {
-      grid-column: span 2;
-    }
-
-    @media (max-width: 600px) {
-      .photo-item.featured {
-        grid-column: span 1;
+    @media (max-width: 800px) {
+      .photo-item {
+        margin-bottom: 12px;
       }
     }
 
     .photo-item:hover {
-      transform: translateY(-6px);
-      box-shadow: 0 24px 48px rgba(0, 0, 0, 0.12);
+      transform: translateY(-4px);
+      box-shadow: 0 16px 32px rgba(0, 0, 0, 0.12);
     }
 
     [data-theme="dark"] .photo-item:hover {
-      box-shadow: 0 24px 48px rgba(0, 0, 0, 0.4);
+      box-shadow: 0 16px 32px rgba(0, 0, 0, 0.4);
     }
 
     .photo-item:focus-visible {
@@ -252,19 +215,9 @@
     .photo-item img {
       display: block;
       width: 100%;
-      height: 100%;
-      object-fit: cover;
-      aspect-ratio: 4/3;
+      height: auto;
       opacity: 0;
-      transition: opacity 0.4s ease, transform 0.4s var(--ease);
-    }
-
-    .photo-item.featured img {
-      aspect-ratio: 16/9;
-    }
-
-    .photo-item:hover img {
-      transform: scale(1.03);
+      transition: opacity 0.4s ease;
     }
 
     .photo-item img.loaded {
@@ -626,9 +579,6 @@
         </div>
       </div>
 
-      <!-- Hero Photo -->
-      <div class="photo-hero" id="photoHero"></div>
-
       <!-- Photo Grid -->
       <div class="photos-grid" id="photosGrid"></div>
     </div>
@@ -779,45 +729,20 @@
     var currentFilter = 'all';
     var filteredPhotos = PHOTOS;
 
-    // Render hero photo (first photo from filtered set)
-    function renderHero() {
-      var heroContainer = document.getElementById('photoHero');
-      var heroPhoto = filteredPhotos[0];
-
-      if (!heroPhoto) {
-        heroContainer.style.display = 'none';
-        return;
-      }
-
-      heroContainer.style.display = 'block';
-      var globalIndex = PHOTOS.indexOf(heroPhoto);
-
-      // Hero gets priority loading for LCP optimization
-      heroContainer.innerHTML = '<button type="button" class="photo-item skeleton" data-index="' + globalIndex + '" aria-label="View photo: ' + heroPhoto.alt + '">' +
-        '<img src="' + heroPhoto.src + '" alt="' + heroPhoto.alt + '" loading="eager" decoding="async" fetchpriority="high" onload="this.classList.add(\'loaded\'); this.parentElement.classList.remove(\'skeleton\');">' +
-      '</button>';
-
-      heroContainer.querySelector('.photo-item').onclick = function() {
-        openLightbox(globalIndex);
-      };
-    }
-
-    // Render photo grid (skip first photo - it's in hero)
+    // Render photo grid (all photos)
     function renderGrid() {
       var grid = document.getElementById('photosGrid');
-      var gridPhotos = filteredPhotos.slice(1); // Skip hero photo
 
-      if (gridPhotos.length === 0 && filteredPhotos.length <= 1) {
-        grid.innerHTML = '';
+      if (filteredPhotos.length === 0) {
+        grid.innerHTML = '<p style="text-align: center; color: var(--text-secondary); padding: 48px 0;">No photos in this category.</p>';
         return;
       }
 
-      grid.innerHTML = gridPhotos.map(function(photo, i) {
+      grid.innerHTML = filteredPhotos.map(function(photo, i) {
         var globalIndex = PHOTOS.indexOf(photo);
-        var featuredClass = photo.featured ? ' featured' : '';
-        // First 6 images load eagerly for above-fold content
-        var loadingAttr = i < 6 ? 'eager' : 'lazy';
-        return '<button type="button" class="photo-item skeleton' + featuredClass + '" data-index="' + globalIndex + '" data-category="' + photo.category + '" aria-label="View photo: ' + photo.alt + '">' +
+        // First 8 images load eagerly for above-fold content
+        var loadingAttr = i < 8 ? 'eager' : 'lazy';
+        return '<button type="button" class="photo-item skeleton" data-index="' + globalIndex + '" data-category="' + photo.category + '" aria-label="View photo: ' + photo.alt + '">' +
           '<img src="' + photo.src + '" alt="' + photo.alt + '" loading="' + loadingAttr + '" decoding="async" onload="this.classList.add(\'loaded\'); this.parentElement.classList.remove(\'skeleton\');">' +
         '</button>';
       }).join('');
@@ -975,23 +900,6 @@
         }
       }
 
-      // Animate hero
-      var heroContainer = document.getElementById('photoHero');
-      var heroPhoto = filteredPhotos[0];
-
-      if (heroPhoto) {
-        heroContainer.style.display = 'block';
-        var heroItem = heroContainer.querySelector('.photo-item');
-        if (heroItem) {
-          heroItem.classList.add('hiding');
-          setTimeout(function() {
-            renderHeroFiltered(heroPhoto, filteredPhotos.indexOf(heroPhoto));
-          }, 200);
-        }
-      } else {
-        heroContainer.style.display = 'none';
-      }
-
       // Animate grid items
       var gridItems = document.querySelectorAll('#photosGrid .photo-item');
       gridItems.forEach(function(item) {
@@ -1000,46 +908,8 @@
 
       // After animation, update grid
       setTimeout(function() {
-        renderGridFiltered();
+        renderGrid();
       }, 200);
-    }
-
-    function renderHeroFiltered(photo, index) {
-      var heroContainer = document.getElementById('photoHero');
-      var globalIndex = PHOTOS.indexOf(photo);
-
-      heroContainer.innerHTML = '<button type="button" class="photo-item skeleton" data-index="' + globalIndex + '" aria-label="View photo: ' + photo.alt + '">' +
-        '<img src="' + photo.src + '" alt="' + photo.alt + '" loading="eager" onload="this.classList.add(\'loaded\'); this.parentElement.classList.remove(\'skeleton\');">' +
-      '</button>';
-
-      heroContainer.querySelector('.photo-item').onclick = function() {
-        openLightbox(globalIndex);
-      };
-    }
-
-    function renderGridFiltered() {
-      var grid = document.getElementById('photosGrid');
-      var gridPhotos = filteredPhotos.slice(1); // Skip hero photo
-
-      if (gridPhotos.length === 0) {
-        grid.innerHTML = '<p style="grid-column: 1/-1; text-align: center; color: var(--text-secondary); padding: 48px 0;">No photos in this category.</p>';
-        return;
-      }
-
-      grid.innerHTML = gridPhotos.map(function(photo) {
-        var globalIndex = PHOTOS.indexOf(photo);
-        var featuredClass = photo.featured ? ' featured' : '';
-        return '<button type="button" class="photo-item skeleton' + featuredClass + '" data-index="' + globalIndex + '" data-category="' + photo.category + '" aria-label="View photo: ' + photo.alt + '">' +
-          '<img src="' + photo.src + '" alt="' + photo.alt + '" loading="lazy" onload="this.classList.add(\'loaded\'); this.parentElement.classList.remove(\'skeleton\');">' +
-        '</button>';
-      }).join('');
-
-      // Add click handlers
-      grid.querySelectorAll('.photo-item').forEach(function(item) {
-        item.onclick = function() {
-          openLightbox(parseInt(item.dataset.index));
-        };
-      });
     }
 
     // Set up filter button handlers
@@ -1068,7 +938,6 @@
 
     // Initialize
     initFromHash();
-    renderHero();
     renderGrid();
 
   </script>
