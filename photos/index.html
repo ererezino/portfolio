@@ -70,7 +70,7 @@
   <link rel="preconnect" href="https://static.cloudflareinsights.com" crossorigin>
 
   <!-- Preload hero image for faster LCP -->
-  <link rel="preload" href="/assets/photos/photo-1.jpg" as="image" fetchpriority="high">
+  <link rel="preload" href="/assets/photos/photo-56.jpeg" as="image" fetchpriority="high">
 
   <!-- Self-hosted fonts -->
   <link rel="preload" href="/assets/fonts/inter-v20-latin-regular.woff2" as="font" type="font/woff2" crossorigin>
@@ -656,73 +656,64 @@
       document.getElementById('header').classList.toggle('scrolled', window.scrollY > 50);
     });
 
-    // Photos data with categories and featured status
+    // Photos data - ordered by visual impact (best first)
     var PHOTOS = [
+      // Top tier - strongest compositions
+      { src: "/assets/photos/photo-56.jpeg", alt: "Annecy canal France", category: "travel", featured: true },
+      { src: "/assets/photos/photo-60.jpg", alt: "Bologna cathedral interior", category: "architecture", featured: true },
       { src: "/assets/photos/photo-1.jpg", alt: "Morning light in Lagos", category: "street", featured: true },
-      { src: "/assets/photos/photo-2.jpg", alt: "City streets in Frankfurt", category: "travel" },
+      { src: "/assets/photos/photo-73.jpg", alt: "Montenegro bay view", category: "travel", featured: true },
+      { src: "/assets/photos/photo-45.jpeg", alt: "Burj Al Arab Dubai", category: "architecture", featured: true },
+      { src: "/assets/photos/photo-66.jpg", alt: "French Alps panorama", category: "travel", featured: true },
       { src: "/assets/photos/photo-3.jpg", alt: "Market day in Accra", category: "street", featured: true },
-      { src: "/assets/photos/photo-4.jpg", alt: "Urban life in Lagos", category: "street" },
-      { src: "/assets/photos/photo-5.jpg", alt: "Cathedral view in Durham", category: "travel" },
       { src: "/assets/photos/photo-6.jpg", alt: "Architecture in Frankfurt", category: "architecture", featured: true },
-      { src: "/assets/photos/photo-7.jpg", alt: "Street photography", category: "street" },
-      { src: "/assets/photos/photo-8.jpg", alt: "Street photography", category: "street" },
-      { src: "/assets/photos/photo-9.jpg", alt: "Street photography", category: "street" },
-      { src: "/assets/photos/photo-10.jpg", alt: "Street photography", category: "street" },
-      { src: "/assets/photos/photo-33.jpeg", alt: "Travel photography", category: "travel" },
+      { src: "/assets/photos/photo-81.jpg", alt: "Apartheid Museum entrance", category: "travel", featured: true },
+      { src: "/assets/photos/photo-41.jpeg", alt: "Travel photography", category: "travel", featured: true },
       { src: "/assets/photos/photo-34.jpeg", alt: "Travel photography", category: "travel", featured: true },
+      // Strong compositions
+      { src: "/assets/photos/photo-69.jpg", alt: "Annecy canal sunburst", category: "travel" },
+      { src: "/assets/photos/photo-61.jpg", alt: "Alpine chalet sunset", category: "travel" },
+      { src: "/assets/photos/photo-74.jpg", alt: "Aerial view Italy", category: "travel" },
+      { src: "/assets/photos/photo-42.jpeg", alt: "Stone archway in Tuscany", category: "architecture" },
+      { src: "/assets/photos/photo-71.jpg", alt: "Lunch at the Louvre", category: "travel" },
+      { src: "/assets/photos/photo-5.jpg", alt: "Cathedral view in Durham", category: "travel" },
+      { src: "/assets/photos/photo-86.jpeg", alt: "Frankfurt half-timber houses", category: "architecture" },
+      { src: "/assets/photos/photo-58.jpg", alt: "Frankfurt old town", category: "street" },
+      { src: "/assets/photos/photo-53.jpg", alt: "Apple Store architecture", category: "architecture" },
+      { src: "/assets/photos/photo-54.jpg", alt: "Alpine restaurant Switzerland", category: "travel" },
+      { src: "/assets/photos/photo-43.jpeg", alt: "Classical arch garden", category: "architecture" },
+      { src: "/assets/photos/photo-44.jpg", alt: "Architecture photography", category: "architecture" },
+      { src: "/assets/photos/photo-79.jpg", alt: "Apartheid Museum", category: "architecture" },
+      // Good compositions
+      { src: "/assets/photos/photo-63.jpg", alt: "Lake Annecy boat", category: "travel" },
+      { src: "/assets/photos/photo-64.jpg", alt: "Libellule ferry boat", category: "travel" },
+      { src: "/assets/photos/photo-68.jpg", alt: "Lakeside promenade", category: "travel" },
+      { src: "/assets/photos/photo-65.jpg", alt: "Lake Annecy pedal boats", category: "travel" },
+      { src: "/assets/photos/photo-55.jpg", alt: "Louvre souvenir in Rome", category: "travel" },
+      { src: "/assets/photos/photo-2.jpg", alt: "City streets in Frankfurt", category: "travel" },
+      { src: "/assets/photos/photo-80.jpg", alt: "Mandela Day mural", category: "street" },
+      { src: "/assets/photos/photo-76.jpg", alt: "Mandela House museum", category: "travel" },
+      { src: "/assets/photos/photo-77.jpg", alt: "Evelyn Mandela portrait", category: "travel" },
+      { src: "/assets/photos/photo-83.jpeg", alt: "Mandela red Mercedes", category: "travel" },
+      { src: "/assets/photos/photo-78.jpg", alt: "Mandela museum exhibit", category: "travel" },
+      { src: "/assets/photos/photo-49.jpeg", alt: "Lagos street life", category: "street" },
+      { src: "/assets/photos/photo-52.jpeg", alt: "Costain bus stop Lagos", category: "street" },
+      { src: "/assets/photos/photo-84.jpeg", alt: "Welcome to Nigeria", category: "street" },
+      { src: "/assets/photos/photo-4.jpg", alt: "Urban life in Lagos", category: "street" },
+      // Remaining photos
+      { src: "/assets/photos/photo-57.jpeg", alt: "Spanish rescue boat", category: "travel" },
+      { src: "/assets/photos/photo-33.jpeg", alt: "Travel photography", category: "travel" },
       { src: "/assets/photos/photo-35.jpeg", alt: "Travel photography", category: "travel" },
       { src: "/assets/photos/photo-36.jpeg", alt: "Travel photography", category: "travel" },
       { src: "/assets/photos/photo-37.jpeg", alt: "Travel photography", category: "travel" },
       { src: "/assets/photos/photo-38.jpeg", alt: "Travel photography", category: "travel" },
       { src: "/assets/photos/photo-39.jpeg", alt: "Travel photography", category: "travel" },
       { src: "/assets/photos/photo-40.jpg", alt: "Travel photography", category: "travel" },
-      { src: "/assets/photos/photo-41.jpeg", alt: "Travel photography", category: "travel", featured: true },
-      { src: "/assets/photos/photo-42.jpeg", alt: "Travel photography", category: "travel" },
-      { src: "/assets/photos/photo-43.jpeg", alt: "Travel photography", category: "travel" },
-      { src: "/assets/photos/photo-44.jpg", alt: "Travel photography", category: "travel" },
-      { src: "/assets/photos/photo-45.jpeg", alt: "Travel photography", category: "travel" },
-      { src: "/assets/photos/photo-46.jpeg", alt: "Travel photography", category: "travel" },
-      { src: "/assets/photos/photo-47.jpg", alt: "Travel photography", category: "travel" },
-      { src: "/assets/photos/photo-48.jpg", alt: "Travel photography", category: "travel" },
-      { src: "/assets/photos/photo-49.jpeg", alt: "Travel photography", category: "travel" },
-      { src: "/assets/photos/photo-50.jpeg", alt: "Travel photography", category: "travel" },
-      { src: "/assets/photos/photo-51.jpg", alt: "Travel photography", category: "travel" },
-      { src: "/assets/photos/photo-52.jpeg", alt: "Travel photography", category: "travel" },
-      { src: "/assets/photos/photo-53.jpg", alt: "Travel photography", category: "travel" },
-      { src: "/assets/photos/photo-54.jpg", alt: "Travel photography", category: "travel" },
-      { src: "/assets/photos/photo-55.jpg", alt: "Travel photography", category: "travel" },
-      { src: "/assets/photos/photo-56.jpeg", alt: "Travel photography", category: "travel" },
-      { src: "/assets/photos/photo-57.jpeg", alt: "Travel photography", category: "travel", featured: true },
-      { src: "/assets/photos/photo-58.jpg", alt: "Travel photography", category: "travel" },
-      { src: "/assets/photos/photo-59.jpg", alt: "Travel photography", category: "travel" },
-      { src: "/assets/photos/photo-60.jpg", alt: "Travel photography", category: "travel" },
-      { src: "/assets/photos/photo-61.jpg", alt: "Travel photography", category: "travel" },
-      { src: "/assets/photos/photo-62.jpg", alt: "Travel photography", category: "travel" },
-      { src: "/assets/photos/photo-63.jpg", alt: "Travel photography", category: "travel", featured: true },
-      { src: "/assets/photos/photo-64.jpg", alt: "Travel photography", category: "travel" },
-      { src: "/assets/photos/photo-65.jpg", alt: "Travel photography", category: "travel" },
-      { src: "/assets/photos/photo-66.jpg", alt: "Travel photography", category: "travel" },
-      { src: "/assets/photos/photo-67.jpg", alt: "Travel photography", category: "travel" },
-      { src: "/assets/photos/photo-68.jpg", alt: "Travel photography", category: "travel" },
-      { src: "/assets/photos/photo-69.jpg", alt: "Travel photography", category: "travel", featured: true },
-      { src: "/assets/photos/photo-70.jpg", alt: "Travel photography", category: "travel" },
-      { src: "/assets/photos/photo-71.jpg", alt: "Travel photography", category: "travel" },
-      { src: "/assets/photos/photo-72.jpg", alt: "Travel photography", category: "travel" },
-      { src: "/assets/photos/photo-73.jpg", alt: "Travel photography", category: "travel" },
-      { src: "/assets/photos/photo-74.jpg", alt: "Travel photography", category: "travel" },
-      { src: "/assets/photos/photo-75.jpg", alt: "Travel photography", category: "travel", featured: true },
-      { src: "/assets/photos/photo-76.jpg", alt: "Travel photography", category: "travel" },
-      { src: "/assets/photos/photo-77.jpg", alt: "Travel photography", category: "travel" },
-      { src: "/assets/photos/photo-78.jpg", alt: "Travel photography", category: "travel" },
-      { src: "/assets/photos/photo-79.jpg", alt: "Travel photography", category: "travel" },
-      { src: "/assets/photos/photo-80.jpg", alt: "Travel photography", category: "travel" },
-      { src: "/assets/photos/photo-81.jpg", alt: "Travel photography", category: "travel" },
-      { src: "/assets/photos/photo-82.jpg", alt: "Travel photography", category: "travel" },
-      { src: "/assets/photos/photo-83.jpeg", alt: "Travel photography", category: "travel" },
-      { src: "/assets/photos/photo-84.jpeg", alt: "Travel photography", category: "travel" },
-      { src: "/assets/photos/photo-85.jpg", alt: "Travel photography", category: "travel" },
-      { src: "/assets/photos/photo-86.jpeg", alt: "Travel photography", category: "travel" },
-      { src: "/assets/photos/photo-87.jpg", alt: "Travel photography", category: "travel" }
+      { src: "/assets/photos/photo-7.jpg", alt: "Street photography", category: "street" },
+      { src: "/assets/photos/photo-8.jpg", alt: "Street photography", category: "street" },
+      { src: "/assets/photos/photo-9.jpg", alt: "Street photography", category: "street" },
+      { src: "/assets/photos/photo-10.jpg", alt: "Street photography", category: "street" },
+      { src: "/assets/photos/photo-87.jpg", alt: "Chimamanda Adichie book", category: "travel" }
     ];
 
     var currentIndex = 0;
@@ -743,7 +734,7 @@
         // First 8 images load eagerly for above-fold content
         var loadingAttr = i < 8 ? 'eager' : 'lazy';
         return '<button type="button" class="photo-item skeleton" data-index="' + globalIndex + '" data-category="' + photo.category + '" aria-label="View photo: ' + photo.alt + '">' +
-          '<img src="' + photo.src + '" alt="' + photo.alt + '" loading="' + loadingAttr + '" decoding="async" onload="this.classList.add(\'loaded\'); this.parentElement.classList.remove(\'skeleton\');">' +
+          '<img src="' + photo.src + '" alt="' + photo.alt + '" loading="' + loadingAttr + '" decoding="async" onload="this.classList.add(\'loaded\'); this.parentElement.classList.remove(\'skeleton\');" onerror="this.parentElement.style.display=\'none\';">' +
         '</button>';
       }).join('');
 
