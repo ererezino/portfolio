@@ -33,7 +33,7 @@
   <link rel="stylesheet" href="/assets/fonts.css?v=20260125f">
 
   <!-- Shared styles -->
-  <link rel="stylesheet" href="/styles.css?v=20260205a">
+  <link rel="stylesheet" href="/styles.css?v=20260205b">
 
   <style>
     main {
@@ -232,47 +232,7 @@
     </div>
   </footer>
 
-  <script>
-    // Theme
-    function toggleTheme() {
-      const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
-      document.documentElement.setAttribute('data-theme', isDark ? 'light' : 'dark');
-      localStorage.setItem('theme', isDark ? 'light' : 'dark');
-      document.body.style.transform = 'translateZ(0)';
-      requestAnimationFrame(function() { document.body.style.transform = ''; });
-    }
-    document.getElementById('themeToggle').onclick = toggleTheme;
-    document.getElementById('mobileThemeToggle').onclick = toggleTheme;
-
-    // Mobile menu
-    const mm = document.getElementById('mobileMenu');
-    const menuBtn = document.getElementById('mobileMenuBtn');
-    const closeBtn = document.getElementById('mobileMenuClose');
-
-    function openMenu() {
-      mm.classList.add('open');
-      mm.setAttribute('aria-hidden', 'false');
-      menuBtn.setAttribute('aria-expanded', 'true');
-      document.body.style.overflow = 'hidden';
-    }
-
-    function closeMenu() {
-      mm.classList.remove('open');
-      mm.setAttribute('aria-hidden', 'true');
-      menuBtn.setAttribute('aria-expanded', 'false');
-      document.body.style.overflow = '';
-    }
-
-    menuBtn.onclick = openMenu;
-    closeBtn.onclick = closeMenu;
-    mm.querySelectorAll('a').forEach(a => a.onclick = closeMenu);
-
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape' && mm.classList.contains('open')) {
-        closeMenu();
-      }
-    });
-  </script>
+  <script src="/shared.js?v=20260205b"></script>
   <!-- Cloudflare Web Analytics --><script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "a17b25b9d9f24af88869c5f81d7e12be"}'></script><!-- End Cloudflare Web Analytics -->
 </body>
 </html>

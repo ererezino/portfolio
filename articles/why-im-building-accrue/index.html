@@ -85,7 +85,7 @@
   <link rel="stylesheet" href="/assets/fonts.css?v=20260125g">
 
   <!-- Shared styles -->
-  <link rel="stylesheet" href="/styles.css?v=20260205a">
+  <link rel="stylesheet" href="/styles.css?v=20260205b">
 
   <style>
     :root {
@@ -1679,7 +1679,7 @@
         <a href="/about.html" class="nav-link">About</a>
         <a href="/photos/" class="nav-link">Photos</a>
         <a href="/articles/" class="nav-link" aria-current="page">Articles</a>
-        <a href="/movement.html" class="nav-link">Movement</a>
+        <a href="/movement.html" class="nav-link">Walking</a>
         <a href="/travels.html" class="nav-link">Travels</a>
         <a href="/contact.html" class="nav-link">Contact</a>
         <button class="theme-btn" id="themeToggle" aria-label="Toggle dark mode" type="button">
@@ -1714,7 +1714,7 @@
       <a href="/about.html">About</a>
       <a href="/photos/">Photos</a>
       <a href="/articles/">Articles</a>
-      <a href="/movement.html">Movement</a>
+      <a href="/movement.html">Walking</a>
       <a href="/travels.html">Travels</a>
       <a href="/contact.html">Contact</a>
     </nav>
@@ -2114,65 +2114,8 @@
     </div>
   </footer>
 
+  <script src="/shared.js?v=20260205b"></script>
   <script>
-    // Theme toggle
-    const toggle = document.getElementById('themeToggle');
-    const mobileToggle = document.getElementById('mobileThemeToggle');
-
-    function toggleTheme() {
-      const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
-      document.documentElement.setAttribute('data-theme', isDark ? 'light' : 'dark');
-      localStorage.setItem('theme', isDark ? 'light' : 'dark');
-      document.body.style.transform = 'translateZ(0)';
-      requestAnimationFrame(function() { document.body.style.transform = ''; });
-    }
-
-    toggle.onclick = toggleTheme;
-    mobileToggle.onclick = toggleTheme;
-
-    // Header scroll state
-    const header = document.getElementById('header');
-    const scrollProgress = document.getElementById('scrollProgress');
-
-    function updateScroll() {
-      const scrolled = window.scrollY > 50;
-      header.classList.toggle('scrolled', scrolled);
-      const progress = (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100;
-      scrollProgress.style.width = Math.min(progress, 100) + '%';
-    }
-
-    window.addEventListener('scroll', updateScroll, { passive: true });
-    updateScroll();
-
-    // Mobile menu
-    const mm = document.getElementById('mobileMenu');
-    const menuBtn = document.getElementById('mobileMenuBtn');
-    const closeBtn = document.getElementById('mobileMenuClose');
-
-    function openMenu() {
-      mm.classList.add('open');
-      mm.setAttribute('aria-hidden', 'false');
-      menuBtn.setAttribute('aria-expanded', 'true');
-      document.body.style.overflow = 'hidden';
-    }
-
-    function closeMenu() {
-      mm.classList.remove('open');
-      mm.setAttribute('aria-hidden', 'true');
-      menuBtn.setAttribute('aria-expanded', 'false');
-      document.body.style.overflow = '';
-    }
-
-    menuBtn.onclick = openMenu;
-    closeBtn.onclick = closeMenu;
-    mm.querySelectorAll('a').forEach(a => a.onclick = closeMenu);
-
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape' && mm.classList.contains('open')) {
-        closeMenu();
-      }
-    });
-
     // Scroll animations for graphics
     const graphics = document.querySelectorAll('.article-graphic');
     const observerOptions = { root: null, rootMargin: '0px 0px -100px 0px', threshold: 0.1 };
@@ -2526,41 +2469,6 @@
       </svg>
     </button>
   </div>
-
-  <script>
-    (function() {
-      var promo = document.getElementById('accruePromo');
-      var closeBtn = document.getElementById('accruePromoClose');
-      if (!promo) return;
-
-      var dismissed = false;
-      try {
-        var dismissedTime = localStorage.getItem('accruePromoDismissedAt');
-        if (dismissedTime) {
-          var oneDayMs = 24 * 60 * 60 * 1000;
-          var timeSinceDismissed = Date.now() - parseInt(dismissedTime, 10);
-          dismissed = timeSinceDismissed < oneDayMs;
-        }
-      } catch (e) {}
-
-      if (dismissed) return;
-
-      setTimeout(function() {
-        promo.classList.add('visible');
-      }, 3000);
-
-      if (closeBtn) {
-        closeBtn.addEventListener('click', function(e) {
-          e.preventDefault();
-          e.stopPropagation();
-          promo.classList.remove('visible');
-          try {
-            localStorage.setItem('accruePromoDismissedAt', Date.now().toString());
-          } catch (e) {}
-        });
-      }
-    })();
-  </script>
 
   <!-- Cloudflare Web Analytics --><script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "a17b25b9d9f24af88869c5f81d7e12be"}'></script><!-- End Cloudflare Web Analytics -->
 </body>

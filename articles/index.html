@@ -97,7 +97,7 @@
   <link rel="stylesheet" href="/assets/fonts.css?v=20260125f">
 
   <!-- Shared styles -->
-  <link rel="stylesheet" href="/styles.css?v=20260205a">
+  <link rel="stylesheet" href="/styles.css?v=20260205b">
 
   <!-- Page-specific styles -->
   <style>
@@ -1007,7 +1007,7 @@
         <a href="/about.html" class="nav-link">About</a>
         <a href="/photos/" class="nav-link">Photos</a>
         <a href="/articles/" class="nav-link" aria-current="page">Articles</a>
-        <a href="/movement.html" class="nav-link">Movement</a>
+        <a href="/movement.html" class="nav-link">Walking</a>
         <a href="/travels.html" class="nav-link">Travels</a>
         <a href="/contact.html" class="nav-link">Contact</a>
 
@@ -1045,7 +1045,7 @@
       <a href="/about.html">About</a>
       <a href="/photos/">Photos</a>
       <a href="/articles/">Articles</a>
-      <a href="/movement.html">Movement</a>
+      <a href="/movement.html">Walking</a>
       <a href="/travels.html">Travels</a>
       <a href="/contact.html">Contact</a>
     </nav>
@@ -1126,6 +1126,7 @@
     </div>
   </footer>
 
+  <script src="/shared.js?v=20260205b"></script>
   <script>
     // Articles Data
     var ARTICLES = [
@@ -1597,65 +1598,6 @@
       searchInput.focus();
     });
 
-    // Theme Toggle
-    function setTheme(dark) {
-      document.documentElement.setAttribute('data-theme', dark ? 'dark' : 'light');
-      localStorage.setItem('theme', dark ? 'dark' : 'light');
-      // Force repaint on mobile
-      document.body.style.transform = 'translateZ(0)';
-      
-      requestAnimationFrame(function() { document.body.style.transform = ''; });
-    }
-
-    function toggleTheme() {
-      var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
-      setTheme(!isDark);
-    }
-
-    document.getElementById('themeToggle').onclick = toggleTheme;
-    document.getElementById('mobileThemeToggle').onclick = toggleTheme;
-
-    // Header scroll
-    window.addEventListener('scroll', function() {
-      document.getElementById('header').classList.toggle('scrolled', window.scrollY > 50);
-    });
-
-    // Mobile menu
-    var mm = document.getElementById('mobileMenu');
-    var mmBtn = document.getElementById('mobileMenuBtn');
-    var mmClose = document.getElementById('mobileMenuClose');
-
-    function openMobileMenu() {
-      if (!mm) return;
-      mm.classList.add('open');
-      mm.setAttribute('aria-hidden', 'false');
-      if (mmBtn) mmBtn.setAttribute('aria-expanded', 'true');
-      document.body.style.overflow = 'hidden';
-    }
-
-    function closeMobileMenu() {
-      if (!mm) return;
-      mm.classList.remove('open');
-      mm.setAttribute('aria-hidden', 'true');
-      if (mmBtn) mmBtn.setAttribute('aria-expanded', 'false');
-      document.body.style.overflow = '';
-    }
-
-    if (mmBtn) mmBtn.onclick = openMobileMenu;
-    if (mmClose) mmClose.onclick = closeMobileMenu;
-    if (mm) {
-      var links = mm.querySelectorAll('a');
-      for (var i = 0; i < links.length; i++) {
-        links[i].onclick = closeMobileMenu;
-      }
-    }
-
-    document.addEventListener('keydown', function(e) {
-      if (e.key === 'Escape' && mm && mm.classList.contains('open')) {
-        closeMobileMenu();
-      }
-    });
-
     // Service Worker Registration
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', function() {
@@ -1688,41 +1630,6 @@
       </svg>
     </button>
   </div>
-
-  <script>
-    (function() {
-      var promo = document.getElementById('accruePromo');
-      var closeBtn = document.getElementById('accruePromoClose');
-      if (!promo) return;
-
-      var dismissed = false;
-      try {
-        var dismissedTime = localStorage.getItem('accruePromoDismissedAt');
-        if (dismissedTime) {
-          var oneDayMs = 24 * 60 * 60 * 1000;
-          var timeSinceDismissed = Date.now() - parseInt(dismissedTime, 10);
-          dismissed = timeSinceDismissed < oneDayMs;
-        }
-      } catch (e) {}
-
-      if (dismissed) return;
-
-      setTimeout(function() {
-        promo.classList.add('visible');
-      }, 3000);
-
-      if (closeBtn) {
-        closeBtn.addEventListener('click', function(e) {
-          e.preventDefault();
-          e.stopPropagation();
-          promo.classList.remove('visible');
-          try {
-            localStorage.setItem('accruePromoDismissedAt', Date.now().toString());
-          } catch (e) {}
-        });
-      }
-    })();
-  </script>
 
   <!-- Cloudflare Web Analytics --><script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "a17b25b9d9f24af88869c5f81d7e12be"}'></script><!-- End Cloudflare Web Analytics -->
 </body>

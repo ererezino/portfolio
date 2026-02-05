@@ -79,7 +79,7 @@
   <link rel="stylesheet" href="/assets/fonts.css?v=20260127">
 
   <!-- Shared styles -->
-  <link rel="stylesheet" href="/styles.css?v=20260205a">
+  <link rel="stylesheet" href="/styles.css?v=20260205b">
 
   <!-- Page-specific styles -->
   <style>
@@ -510,7 +510,7 @@
         <a href="/about.html" class="nav-link">About</a>
         <a href="/photos/" class="nav-link" aria-current="page">Photos</a>
         <a href="/articles/" class="nav-link">Articles</a>
-        <a href="/movement.html" class="nav-link">Movement</a>
+        <a href="/movement.html" class="nav-link">Walking</a>
         <a href="/travels.html" class="nav-link">Travels</a>
         <a href="/contact.html" class="nav-link">Contact</a>
         <button class="theme-btn" id="themeToggle" aria-label="Toggle dark mode" type="button">
@@ -545,14 +545,14 @@
       <a href="/about.html">About</a>
       <a href="/photos/">Photos</a>
       <a href="/articles/">Articles</a>
-      <a href="/movement.html">Movement</a>
+      <a href="/movement.html">Walking</a>
       <a href="/travels.html">Travels</a>
       <a href="/contact.html">Contact</a>
     </nav>
   </div>
 
   <!-- Lightbox -->
-  <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Photo viewer">
+  <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Photo viewer" aria-hidden="true">
     <button class="lightbox-close" id="lightboxClose" aria-label="Close photo viewer">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
     </button>
@@ -573,11 +573,11 @@
       <div class="photos-header">
         <h1 class="photos-title">Photos</h1>
         <p class="photos-lead">Street and travel photography.</p>
-        <div class="photos-filters" id="photosFilters" role="tablist" aria-label="Filter photos by category">
-          <button class="filter-btn active" data-filter="all" role="tab" aria-selected="true">All</button>
-          <button class="filter-btn" data-filter="street" role="tab" aria-selected="false">Street</button>
-          <button class="filter-btn" data-filter="travel" role="tab" aria-selected="false">Travel</button>
-          <button class="filter-btn" data-filter="architecture" role="tab" aria-selected="false">Architecture</button>
+        <div class="photos-filters" id="photosFilters" role="group" aria-label="Filter photos by category">
+          <button class="filter-btn active" data-filter="all" aria-pressed="true">All</button>
+          <button class="filter-btn" data-filter="street" aria-pressed="false">Street</button>
+          <button class="filter-btn" data-filter="travel" aria-pressed="false">Travel</button>
+          <button class="filter-btn" data-filter="architecture" aria-pressed="false">Architecture</button>
         </div>
       </div>
 
@@ -614,51 +614,8 @@
     </div>
   </footer>
 
+  <script src="/shared.js?v=20260205b"></script>
   <script>
-    // Theme toggle
-    function toggleTheme() {
-      var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
-      document.documentElement.setAttribute('data-theme', isDark ? 'light' : 'dark');
-      localStorage.setItem('theme', isDark ? 'light' : 'dark');
-    }
-    document.getElementById('themeToggle').onclick = toggleTheme;
-    document.getElementById('mobileThemeToggle').onclick = toggleTheme;
-
-    // Mobile menu
-    var mobileMenu = document.getElementById('mobileMenu');
-    var menuBtn = document.getElementById('mobileMenuBtn');
-    var closeBtn = document.getElementById('mobileMenuClose');
-
-    function openMenu() {
-      mobileMenu.classList.add('open');
-      mobileMenu.setAttribute('aria-hidden', 'false');
-      menuBtn.setAttribute('aria-expanded', 'true');
-      document.body.style.overflow = 'hidden';
-    }
-
-    function closeMenu() {
-      mobileMenu.classList.remove('open');
-      mobileMenu.setAttribute('aria-hidden', 'true');
-      menuBtn.setAttribute('aria-expanded', 'false');
-      document.body.style.overflow = '';
-    }
-
-    menuBtn.onclick = openMenu;
-    closeBtn.onclick = closeMenu;
-
-    mobileMenu.addEventListener('click', function(e) {
-      if (e.target === mobileMenu || e.target.tagName === 'A') closeMenu();
-    });
-
-    document.addEventListener('keydown', function(e) {
-      if (e.key === 'Escape' && mobileMenu.classList.contains('open')) closeMenu();
-    });
-
-    // Header scroll
-    window.addEventListener('scroll', function() {
-      document.getElementById('header').classList.toggle('scrolled', window.scrollY > 50);
-    });
-
     // Photos data - ordered by visual impact (best first)
     var PHOTOS = [
       // Top tier - strongest compositions
@@ -775,14 +732,21 @@
       lightboxCounter.textContent = (currentIndex + 1) + ' / ' + PHOTOS.length;
     }
 
+    var lastFocusedElement = null;
+
     function openLightbox(index) {
+      lastFocusedElement = document.activeElement;
       currentIndex = index;
       lightboxImage.classList.add('loading');
       lightboxImage.src = PHOTOS[index].src;
       lightboxImage.alt = PHOTOS[index].alt;
       updateCounter();
       lightbox.classList.add('active');
+      lightbox.setAttribute('aria-hidden', 'false');
       document.body.style.overflow = 'hidden';
+
+      // Focus the close button for keyboard users
+      document.getElementById('lightboxClose').focus();
 
       // Remove loading state when image loads
       lightboxImage.onload = function() {
@@ -802,7 +766,14 @@
     function closeLightbox() {
       lightbox.classList.remove('active');
       lightbox.classList.remove('controls-visible');
+      lightbox.setAttribute('aria-hidden', 'true');
       document.body.style.overflow = '';
+
+      // Restore focus to the element that triggered the lightbox
+      if (lastFocusedElement) {
+        lastFocusedElement.focus();
+        lastFocusedElement = null;
+      }
     }
 
     function navigate(direction) {
@@ -831,12 +802,30 @@
       }
     });
 
-    // Keyboard navigation
+    // Keyboard navigation + focus trap
     document.addEventListener('keydown', function(e) {
       if (!lightbox.classList.contains('active')) return;
       if (e.key === 'Escape') closeLightbox();
       if (e.key === 'ArrowLeft') navigate(-1);
       if (e.key === 'ArrowRight') navigate(1);
+
+      // Focus trap: keep Tab cycling within lightbox
+      if (e.key === 'Tab') {
+        var focusable = lightbox.querySelectorAll('button:not([disabled])');
+        var first = focusable[0];
+        var last = focusable[focusable.length - 1];
+        if (e.shiftKey) {
+          if (document.activeElement === first) {
+            e.preventDefault();
+            last.focus();
+          }
+        } else {
+          if (document.activeElement === last) {
+            e.preventDefault();
+            first.focus();
+          }
+        }
+      }
     });
 
     // Touch/swipe support
@@ -875,7 +864,7 @@
       buttons.forEach(function(btn) {
         var isActive = btn.dataset.filter === filter;
         btn.classList.toggle('active', isActive);
-        btn.setAttribute('aria-selected', isActive ? 'true' : 'false');
+        btn.setAttribute('aria-pressed', isActive ? 'true' : 'false');
       });
     }
 
@@ -955,41 +944,6 @@
       </svg>
     </button>
   </div>
-
-  <script>
-    (function() {
-      var promo = document.getElementById('accruePromo');
-      var closeBtn = document.getElementById('accruePromoClose');
-      if (!promo) return;
-
-      var dismissed = false;
-      try {
-        var dismissedTime = localStorage.getItem('accruePromoDismissedAt');
-        if (dismissedTime) {
-          var oneDayMs = 24 * 60 * 60 * 1000;
-          var timeSinceDismissed = Date.now() - parseInt(dismissedTime, 10);
-          dismissed = timeSinceDismissed < oneDayMs;
-        }
-      } catch (e) {}
-
-      if (dismissed) return;
-
-      setTimeout(function() {
-        promo.classList.add('visible');
-      }, 3000);
-
-      if (closeBtn) {
-        closeBtn.addEventListener('click', function(e) {
-          e.preventDefault();
-          e.stopPropagation();
-          promo.classList.remove('visible');
-          try {
-            localStorage.setItem('accruePromoDismissedAt', Date.now().toString());
-          } catch (e) {}
-        });
-      }
-    })();
-  </script>
 
   <!-- Cloudflare Web Analytics -->
   <script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "a17b25b9d9f24af88869c5f81d7e12be"}'></script>

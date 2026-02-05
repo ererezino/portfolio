@@ -1,0 +1,132 @@
+'use strict';
+
+// =============================================================================
+// SHARED UTILITIES - Loaded by all pages except index.html (which uses script.js)
+// =============================================================================
+
+// Theme toggle
+function toggleTheme() {
+  var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+  var next = isDark ? 'light' : 'dark';
+  document.documentElement.setAttribute('data-theme', next);
+  try { localStorage.setItem('theme', next); } catch(e) {}
+
+  // Update theme-color meta tags
+  var metas = document.querySelectorAll('meta[name="theme-color"]');
+  var color = next === 'dark' ? '#0A0A0A' : '#FAFAFA';
+  metas.forEach(function(meta) { meta.setAttribute('content', color); });
+}
+
+// Mobile menu with focus trap and focus restoration
+(function() {
+  var menu = document.getElementById('mobileMenu');
+  var openBtn = document.getElementById('mobileMenuBtn');
+  var closeBtn = document.getElementById('mobileMenuClose');
+  var previousActiveElement = null;
+
+  if (!menu || !openBtn) return;
+
+  function getFocusable() {
+    return Array.prototype.slice.call(
+      menu.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])')
+    ).filter(function(el) { return !el.disabled && el.offsetParent !== null; });
+  }
+
+  function open() {
+    previousActiveElement = document.activeElement;
+    menu.classList.add('open');
+    menu.setAttribute('aria-hidden', 'false');
+    openBtn.setAttribute('aria-expanded', 'true');
+    document.body.style.overflow = 'hidden';
+    var focusable = getFocusable();
+    if (focusable.length > 0) focusable[0].focus();
+  }
+
+  function close() {
+    menu.classList.remove('open');
+    menu.setAttribute('aria-hidden', 'true');
+    openBtn.setAttribute('aria-expanded', 'false');
+    document.body.style.overflow = '';
+    if (previousActiveElement) {
+      previousActiveElement.focus();
+      previousActiveElement = null;
+    }
+  }
+
+  openBtn.addEventListener('click', open);
+  if (closeBtn) closeBtn.addEventListener('click', close);
+
+  // Close on link click or backdrop click
+  menu.addEventListener('click', function(e) {
+    if (e.target === menu || e.target.tagName === 'A') close();
+  });
+
+  // Keyboard: Escape to close + focus trap
+  document.addEventListener('keydown', function(e) {
+    if (!menu.classList.contains('open')) return;
+    if (e.key === 'Escape') { close(); return; }
+    if (e.key === 'Tab') {
+      var focusable = getFocusable();
+      if (focusable.length === 0) return;
+      var first = focusable[0];
+      var last = focusable[focusable.length - 1];
+      if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault();
+        first.focus();
+      }
+    }
+  });
+})();
+
+// Theme toggle button bindings
+(function() {
+  var themeToggle = document.getElementById('themeToggle');
+  var mobileThemeToggle = document.getElementById('mobileThemeToggle');
+  if (themeToggle) themeToggle.addEventListener('click', toggleTheme);
+  if (mobileThemeToggle) mobileThemeToggle.addEventListener('click', toggleTheme);
+})();
+
+// Header scroll effect
+(function() {
+  var header = document.getElementById('header');
+  if (!header) return;
+  window.addEventListener('scroll', function() {
+    header.classList.toggle('scrolled', window.scrollY > 50);
+  }, { passive: true });
+})();
+
+// Accrue promo banner
+(function() {
+  var promo = document.getElementById('accruePromo');
+  var closeBtn = document.getElementById('accruePromoClose');
+  if (!promo) return;
+
+  var dismissed = false;
+  try {
+    var dismissedTime = localStorage.getItem('accruePromoDismissedAt');
+    if (dismissedTime) {
+      var oneDayMs = 24 * 60 * 60 * 1000;
+      dismissed = (Date.now() - parseInt(dismissedTime, 10)) < oneDayMs;
+    }
+  } catch (e) {}
+
+  if (dismissed) return;
+
+  setTimeout(function() {
+    promo.classList.add('visible');
+  }, 3000);
+
+  if (closeBtn) {
+    closeBtn.addEventListener('click', function(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      promo.classList.remove('visible');
+      try {
+        localStorage.setItem('accruePromoDismissedAt', Date.now().toString());
+      } catch (e) {}
+    });
+  }
+})();

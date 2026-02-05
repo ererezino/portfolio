@@ -97,7 +97,7 @@
   <link rel="stylesheet" href="/assets/fonts.css?v=20260125f">
 
   <!-- Shared styles -->
-  <link rel="stylesheet" href="/styles.css?v=20260205a">
+  <link rel="stylesheet" href="/styles.css?v=20260205b">
 
   <!-- Page-specific styles -->
   <style>
@@ -526,58 +526,9 @@
     </div>
   </footer>
 
+  <script src="/shared.js?v=20260205b"></script>
+
   <script>
-    // Theme toggle
-    const toggle = document.getElementById('themeToggle');
-    const mobileToggle = document.getElementById('mobileThemeToggle');
-
-    function toggleTheme() {
-      const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
-      document.documentElement.setAttribute('data-theme', isDark ? 'light' : 'dark');
-      localStorage.setItem('theme', isDark ? 'light' : 'dark');
-      // Force repaint on mobile
-      document.body.style.transform = 'translateZ(0)';
-      
-      requestAnimationFrame(function() { document.body.style.transform = ''; });
-    }
-    toggle.onclick = toggleTheme;
-    mobileToggle.onclick = toggleTheme;
-
-    // Mobile menu
-    const mm = document.getElementById('mobileMenu');
-    const menuBtn = document.getElementById('mobileMenuBtn');
-    const closeBtn = document.getElementById('mobileMenuClose');
-
-    function openMenu() {
-      mm.classList.add('open');
-      mm.setAttribute('aria-hidden', 'false');
-      menuBtn.setAttribute('aria-expanded', 'true');
-      document.body.style.overflow = 'hidden';
-    }
-
-    function closeMenu() {
-      mm.classList.remove('open');
-      mm.setAttribute('aria-hidden', 'true');
-      menuBtn.setAttribute('aria-expanded', 'false');
-      document.body.style.overflow = '';
-    }
-
-    menuBtn.onclick = openMenu;
-    closeBtn.onclick = closeMenu;
-    mm.querySelectorAll('a').forEach(a => a.onclick = closeMenu);
-
-    // Close menu on escape
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape' && mm.classList.contains('open')) {
-        closeMenu();
-      }
-    });
-
-    // Header scroll effect
-    window.addEventListener('scroll', () => {
-      document.getElementById('header').classList.toggle('scrolled', window.scrollY > 50);
-    });
-
     // Scroll animations with Intersection Observer
     const observerOptions = {
       root: null,
@@ -754,41 +705,6 @@
       </svg>
     </button>
   </div>
-
-  <script>
-    (function() {
-      var promo = document.getElementById('accruePromo');
-      var closeBtn = document.getElementById('accruePromoClose');
-      if (!promo) return;
-
-      var dismissed = false;
-      try {
-        var dismissedTime = localStorage.getItem('accruePromoDismissedAt');
-        if (dismissedTime) {
-          var oneDayMs = 24 * 60 * 60 * 1000;
-          var timeSinceDismissed = Date.now() - parseInt(dismissedTime, 10);
-          dismissed = timeSinceDismissed < oneDayMs;
-        }
-      } catch (e) {}
-
-      if (dismissed) return;
-
-      setTimeout(function() {
-        promo.classList.add('visible');
-      }, 3000);
-
-      if (closeBtn) {
-        closeBtn.addEventListener('click', function(e) {
-          e.preventDefault();
-          e.stopPropagation();
-          promo.classList.remove('visible');
-          try {
-            localStorage.setItem('accruePromoDismissedAt', Date.now().toString());
-          } catch (e) {}
-        });
-      }
-    })();
-  </script>
 
   <!-- Cloudflare Web Analytics --><script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "a17b25b9d9f24af88869c5f81d7e12be"}'></script><!-- End Cloudflare Web Analytics -->
 </body>

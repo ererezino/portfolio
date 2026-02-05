@@ -225,8 +225,9 @@ function toggleTheme() {
 }
 
 function updateThemeColorMeta(theme) {
-  var meta = document.querySelector('meta[name="theme-color"]');
-  if (meta) meta.setAttribute('content', theme === 'dark' ? '#0A0A0A' : '#FAFAFA');
+  var metas = document.querySelectorAll('meta[name="theme-color"]');
+  var color = theme === 'dark' ? '#0A0A0A' : '#FAFAFA';
+  metas.forEach(function(meta) { meta.setAttribute('content', color); });
 }
 
 function initSystemThemeListener() {

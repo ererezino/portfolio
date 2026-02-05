@@ -33,7 +33,7 @@
   <link rel="stylesheet" href="/assets/fonts.css?v=20260127">
 
   <!-- Shared styles -->
-  <link rel="stylesheet" href="/styles.css?v=20260205a">
+  <link rel="stylesheet" href="/styles.css?v=20260205b">
 
   <style>
     main {
@@ -217,50 +217,6 @@
     </div>
   </footer>
 
-  <script>
-    // Theme toggle
-    function toggleTheme() {
-      var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
-      document.documentElement.setAttribute('data-theme', isDark ? 'light' : 'dark');
-      localStorage.setItem('theme', isDark ? 'light' : 'dark');
-    }
-    document.getElementById('themeToggle').onclick = toggleTheme;
-    document.getElementById('mobileThemeToggle').onclick = toggleTheme;
-
-    // Mobile menu
-    var mobileMenu = document.getElementById('mobileMenu');
-    var menuBtn = document.getElementById('mobileMenuBtn');
-    var closeBtn = document.getElementById('mobileMenuClose');
-
-    function openMenu() {
-      mobileMenu.classList.add('active');
-      mobileMenu.setAttribute('aria-hidden', 'false');
-      menuBtn.setAttribute('aria-expanded', 'true');
-      document.body.style.overflow = 'hidden';
-    }
-
-    function closeMenu() {
-      mobileMenu.classList.remove('active');
-      mobileMenu.setAttribute('aria-hidden', 'true');
-      menuBtn.setAttribute('aria-expanded', 'false');
-      document.body.style.overflow = '';
-    }
-
-    menuBtn.onclick = openMenu;
-    closeBtn.onclick = closeMenu;
-
-    mobileMenu.addEventListener('click', function(e) {
-      if (e.target === mobileMenu || e.target.tagName === 'A') closeMenu();
-    });
-
-    document.addEventListener('keydown', function(e) {
-      if (e.key === 'Escape' && mobileMenu.classList.contains('active')) closeMenu();
-    });
-
-    // Header scroll
-    window.addEventListener('scroll', function() {
-      document.getElementById('header').classList.toggle('scrolled', window.scrollY > 50);
-    });
-  </script>
+  <script src="/shared.js?v=20260205b"></script>
 </body>
 </html>

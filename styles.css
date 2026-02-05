@@ -1972,11 +1972,18 @@ button.photo-item {
   justify-content: center;
   gap: 2px;
   transform: rotate(6deg);
-  box-shadow: 
+  box-shadow:
     0 2px 8px rgba(0, 0, 0, 0.3),
     inset 0 0 0 1px rgba(0, 0, 0, 0.1);
   z-index: 10;
   transition: transform 0.3s var(--ease);
+}
+
+[data-theme="dark"] .travel-postcard-stamp {
+  background: #2A2520;
+  box-shadow:
+    0 2px 8px rgba(0, 0, 0, 0.5),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.1);
 }
 
 .travel-postcard:hover .travel-postcard-stamp {
@@ -1993,6 +2000,10 @@ button.photo-item {
   z-index: -1;
 }
 
+[data-theme="dark"] .travel-postcard-stamp::before {
+  background: radial-gradient(circle, transparent 2px, #2A2520 2px) 0 0 / 8px 8px;
+}
+
 .travel-postcard-stamp-country {
   font-family: var(--font-mono);
   font-size: 9px;
@@ -2001,6 +2012,10 @@ button.photo-item {
   letter-spacing: 0.05em;
   color: #1a1a1a !important;
   display: block;
+}
+
+[data-theme="dark"] .travel-postcard-stamp-country {
+  color: #e0d8cf !important;
 }
 
 .travel-postcard-stamp-flag {
@@ -2015,6 +2030,10 @@ button.photo-item {
   color: #8B4513 !important;
   font-weight: 400;
   display: block;
+}
+
+[data-theme="dark"] .travel-postcard-stamp-value {
+  color: #C49A6C !important;
 }
 
 /* Postmark */
