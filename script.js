@@ -13,10 +13,17 @@ var PHOTOS = [
   { src: "/assets/photos/photo-6.jpg", caption: "Architecture", alt: "Frankfurt architecture", location: "Frankfurt", year: 2025 }
 ];
 
-// Helper to generate responsive image HTML with lazy loading
+// Helper to get thumbnail path from original
+function getThumbSrc(src) {
+  var lastSlash = src.lastIndexOf('/');
+  return src.substring(0, lastSlash) + '/thumbs' + src.substring(lastSlash);
+}
+
+// Helper to generate responsive image HTML with lazy loading and srcset
 function getResponsiveImage(photo, lazy) {
-  var lazyAttr = lazy !== false ? ' loading="lazy"' : '';
-  return '<img src="' + photo.src + '" alt="' + (photo.alt || '') + '" width="400" height="400"' + lazyAttr + ' style="width:100%;height:100%;object-fit:cover;" />';
+  var lazyAttr = lazy !== false ? ' loading="lazy" decoding="async"' : ' decoding="async"';
+  var thumb = getThumbSrc(photo.src);
+  return '<img src="' + thumb + '" srcset="' + thumb + ' 600w, ' + photo.src + ' 1200w" sizes="(max-width: 768px) 50vw, 400px" alt="' + (photo.alt || '') + '" width="400" height="400"' + lazyAttr + ' style="width:100%;height:100%;object-fit:cover;" />';
 }
 
 var ARTICLES = [
@@ -441,7 +448,7 @@ function initLightbox() {
       img.alt = PHOTOS[currentPhotoIndex].alt;
     }
     if (caption) caption.textContent = PHOTOS[currentPhotoIndex].caption;
-    if (counter) counter.textContent = (currentPhotoIndex + 1) + ' / ' + PHOTOS.length;
+    if (counter) counter.textContent = (currentPhotoIndex + 1) + ' / ' + PHOTOS.length + ' — ' + PHOTOS[currentPhotoIndex].alt;
       }
 
   var closeBtn = $('.lightbox-close', lightbox);
@@ -498,8 +505,9 @@ PhotoStack.prototype.render = function() {
       dotsHTML += '<span' + (j === 0 ? ' class="active"' : '') + '></span>';
     }
 
+    var thumbPath = getThumbSrc(photo.src);
     card.innerHTML =
-      '<img src="' + photo.src + '" alt="' + photo.alt + '" draggable="false" width="400" height="500" style="width:100%;height:100%;object-fit:cover;" />' +
+      '<img src="' + thumbPath + '" srcset="' + thumbPath + ' 600w, ' + photo.src + ' 1200w" sizes="(max-width: 768px) 90vw, 400px" alt="' + photo.alt + '" draggable="false" width="400" height="500" style="width:100%;height:100%;object-fit:cover;" />' +
       '<div class="stack-card-footer">' +
         '<span class="stack-card-caption">' + photo.caption + '</span>' +
         '<div class="stack-card-dots" aria-hidden="true">' + dotsHTML + '</div>' +

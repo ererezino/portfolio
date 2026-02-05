@@ -550,6 +550,7 @@ header.scrolled {
 .mobile-menu.open nav a:nth-child(4) { transition-delay: 0.2s; }
 .mobile-menu.open nav a:nth-child(5) { transition-delay: 0.25s; }
 .mobile-menu.open nav a:nth-child(6) { transition-delay: 0.3s; }
+.mobile-menu.open nav a:nth-child(7) { transition-delay: 0.35s; }
 
 /* =============================================================================
    HERO SECTION
@@ -1198,6 +1199,168 @@ section {
 }
 
 .photo-badge svg { width: 14px; height: 14px; }
+
+/* =============================================================================
+   WORK / PROJECTS SECTION
+   ============================================================================= */
+
+.work-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--grid-gap);
+}
+
+@media (min-width: 768px) {
+  .work-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.work-card {
+  display: block;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xl);
+  transition: all var(--duration) var(--ease);
+  overflow: hidden;
+}
+
+.work-card:hover {
+  border-color: var(--accent);
+  box-shadow: var(--shadow-lg);
+  transform: translateY(-4px);
+}
+
+.work-card:active {
+  transform: translateY(-2px) scale(0.99);
+}
+
+.work-card-inner {
+  padding: clamp(24px, 4vw, 32px);
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.work-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.work-card-logo {
+  height: 24px;
+}
+
+.work-card-logo img {
+  height: 100%;
+  width: auto;
+  display: inline-block;
+}
+
+.work-logo-light { display: inline-block; }
+.work-logo-dark { display: none; }
+[data-theme="dark"] .work-logo-light { display: none; }
+[data-theme="dark"] .work-logo-dark { display: inline-block; }
+
+.work-logo-cashramp {
+  display: inline-block;
+  transition: filter var(--duration);
+}
+
+[data-theme="dark"] .work-logo-cashramp {
+  filter: invert(1) brightness(1);
+}
+
+.work-card-badge {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  padding: 6px 12px;
+  background: var(--accent-subtle);
+  color: var(--accent);
+  border-radius: var(--radius-full);
+}
+
+.work-card-title {
+  font-family: var(--font-serif);
+  font-size: clamp(28px, 4vw, 36px);
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+  margin-bottom: 12px;
+}
+
+.work-card-description {
+  font-family: var(--font-sans);
+  font-size: 15px;
+  line-height: 1.7;
+  color: var(--text-secondary);
+  margin-bottom: 20px;
+  flex: 1;
+}
+
+.work-card-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 24px;
+}
+
+.work-tag {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  padding: 5px 10px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-full);
+  color: var(--text-tertiary);
+}
+
+.work-card:hover .work-tag {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.work-card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 20px;
+  border-top: 1px solid var(--border);
+  margin-top: auto;
+}
+
+.work-card-link-text {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-secondary);
+  transition: color var(--duration);
+}
+
+.work-card:hover .work-card-link-text {
+  color: var(--accent);
+}
+
+.work-card-arrow svg {
+  width: 16px;
+  height: 16px;
+  color: var(--text-tertiary);
+  transition: all var(--duration);
+}
+
+.work-card:hover .work-card-arrow svg {
+  color: var(--accent);
+  transform: translate(2px, -2px);
+}
 
 /* =============================================================================
    PHOTO GRID
@@ -2158,8 +2321,8 @@ footer {
 }
 
 .footer-social-link {
-  width: 44px;
-  height: 44px;
+  width: 48px;
+  height: 48px;
   display: flex;
   align-items: center;
   justify-content: center;

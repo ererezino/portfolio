@@ -506,6 +506,7 @@
         <span class="logo-text">Zino Asamaige</span>
       </a>
       <nav class="header-nav" aria-label="Primary navigation">
+        <a href="/#work" class="nav-link">Work</a>
         <a href="/about.html" class="nav-link">About</a>
         <a href="/photos/" class="nav-link" aria-current="page">Photos</a>
         <a href="/articles/" class="nav-link">Articles</a>
@@ -540,6 +541,7 @@
       </div>
     </div>
     <nav aria-label="Mobile navigation">
+      <a href="/#work">Work</a>
       <a href="/about.html">About</a>
       <a href="/photos/">Photos</a>
       <a href="/articles/">Articles</a>
@@ -587,6 +589,7 @@
   <footer role="contentinfo">
     <div class="container footer-inner">
       <nav class="footer-nav" aria-label="Footer navigation">
+        <a href="/#work">Work</a>
         <a href="/about.html">About</a>
         <a href="/photos/">Photos</a>
         <a href="/articles/">Articles</a>
@@ -733,8 +736,9 @@
         var globalIndex = PHOTOS.indexOf(photo);
         // First 8 images load eagerly for above-fold content
         var loadingAttr = i < 8 ? 'eager' : 'lazy';
+        var thumbSrc = photo.src.replace(/\/([^\/]+)$/, '/thumbs/$1');
         return '<button type="button" class="photo-item skeleton" data-index="' + globalIndex + '" data-category="' + photo.category + '" aria-label="View photo: ' + photo.alt + '">' +
-          '<img src="' + photo.src + '" alt="' + photo.alt + '" loading="' + loadingAttr + '" decoding="async" onload="this.classList.add(\'loaded\'); this.parentElement.classList.remove(\'skeleton\');" onerror="this.parentElement.style.display=\'none\';">' +
+          '<img src="' + thumbSrc + '" srcset="' + thumbSrc + ' 600w, ' + photo.src + ' 1200w" sizes="(max-width: 768px) 50vw, 400px" alt="' + photo.alt + '" loading="' + loadingAttr + '" decoding="async" onload="this.classList.add(\'loaded\'); this.parentElement.classList.remove(\'skeleton\');" onerror="this.parentElement.style.display=\'none\';">' +
         '</button>';
       }).join('');
 
