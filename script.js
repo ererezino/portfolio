@@ -24,13 +24,21 @@ function getWebpSrc(src) {
   return src.replace(/\.(jpe?g|png)$/i, '.webp');
 }
 
-// Helper to generate responsive image HTML with lazy loading, srcset, and WebP
+// Helper to get AVIF path from original
+function getAvifSrc(src) {
+  return src.replace(/\.(jpe?g|png)$/i, '.avif');
+}
+
+// Helper to generate responsive image HTML with lazy loading, srcset, and modern formats
 function getResponsiveImage(photo, lazy) {
   var lazyAttr = lazy !== false ? ' loading="lazy" decoding="async"' : ' decoding="async"';
   var thumb = getThumbSrc(photo.src);
   var thumbWebp = getWebpSrc(thumb);
   var fullWebp = getWebpSrc(photo.src);
+  var thumbAvif = getAvifSrc(thumb);
+  var fullAvif = getAvifSrc(photo.src);
   return '<picture>' +
+    '<source type="image/avif" srcset="' + thumbAvif + ' 600w, ' + fullAvif + ' 1200w" sizes="(max-width: 768px) 50vw, 400px">' +
     '<source type="image/webp" srcset="' + thumbWebp + ' 600w, ' + fullWebp + ' 1200w" sizes="(max-width: 768px) 50vw, 400px">' +
     '<img src="' + thumb + '" srcset="' + thumb + ' 600w, ' + photo.src + ' 1200w" sizes="(max-width: 768px) 50vw, 400px" alt="' + (photo.alt || '') + '" width="400" height="400"' + lazyAttr + ' style="width:100%;height:100%;object-fit:cover;" />' +
   '</picture>';
@@ -478,6 +486,118 @@ function initLightbox() {
     if (e.key === 'ArrowRight') navigate(1);
   });
 
+  // Touch gestures: swipe + pinch-to-zoom
+  if (img) {
+    img.style.touchAction = 'none';
+
+    var zoomScale = 1, lastZoomScale = 1;
+    var zoomPanX = 0, zoomPanY = 0, lastZPanX = 0, lastZPanY = 0;
+    var touchStartX = 0, touchStartY = 0;
+    var pinching = false, swiping = false, initDist = 0;
+
+    function dist(t) {
+      var dx = t[0].clientX - t[1].clientX;
+      var dy = t[0].clientY - t[1].clientY;
+      return Math.sqrt(dx * dx + dy * dy);
+    }
+
+    function applyZoom() {
+      img.style.transform = 'translate(' + zoomPanX + 'px, ' + zoomPanY + 'px) scale(' + zoomScale + ')';
+    }
+
+    function resetZoom() {
+      zoomScale = 1; lastZoomScale = 1;
+      zoomPanX = 0; zoomPanY = 0; lastZPanX = 0; lastZPanY = 0;
+      img.style.transform = '';
+      img.style.transition = '';
+    }
+
+    lightbox.addEventListener('touchstart', function(e) {
+      if (!lightbox.classList.contains('active')) return;
+      if (e.touches.length === 2) {
+        pinching = true; swiping = false;
+        initDist = dist(e.touches);
+        lastZoomScale = zoomScale;
+        lastZPanX = zoomPanX; lastZPanY = zoomPanY;
+        img.style.transition = 'none';
+        e.preventDefault();
+      } else if (e.touches.length === 1 && zoomScale <= 1) {
+        swiping = true; pinching = false;
+        touchStartX = e.touches[0].clientX;
+        touchStartY = e.touches[0].clientY;
+      } else if (e.touches.length === 1 && zoomScale > 1) {
+        swiping = false; pinching = false;
+        touchStartX = e.touches[0].clientX;
+        touchStartY = e.touches[0].clientY;
+        lastZPanX = zoomPanX; lastZPanY = zoomPanY;
+        img.style.transition = 'none';
+        e.preventDefault();
+      }
+    }, { passive: false });
+
+    lightbox.addEventListener('touchmove', function(e) {
+      if (!lightbox.classList.contains('active')) return;
+      if (pinching && e.touches.length === 2) {
+        zoomScale = Math.min(Math.max(lastZoomScale * (dist(e.touches) / initDist), 1), 4);
+        applyZoom();
+        e.preventDefault();
+      } else if (!pinching && e.touches.length === 1 && zoomScale > 1) {
+        zoomPanX = lastZPanX + (e.touches[0].clientX - touchStartX);
+        zoomPanY = lastZPanY + (e.touches[0].clientY - touchStartY);
+        applyZoom();
+        e.preventDefault();
+      }
+    }, { passive: false });
+
+    lightbox.addEventListener('touchend', function(e) {
+      if (!lightbox.classList.contains('active')) return;
+      if (pinching) {
+        pinching = false;
+        lastZoomScale = zoomScale;
+        if (zoomScale <= 1.05) resetZoom();
+        return;
+      }
+      if (swiping && e.changedTouches.length === 1) {
+        swiping = false;
+        var dx = touchStartX - e.changedTouches[0].clientX;
+        var dy = touchStartY - e.changedTouches[0].clientY;
+        if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy)) {
+          resetZoom();
+          navigate(dx > 0 ? 1 : -1);
+        }
+        if (dy < -80 && Math.abs(dy) > Math.abs(dx)) {
+          resetZoom();
+          close();
+        }
+      }
+      if (zoomScale > 1) { lastZPanX = zoomPanX; lastZPanY = zoomPanY; }
+    }, { passive: true });
+
+    // Double-tap to zoom
+    var lastTapTime = 0;
+    img.addEventListener('touchend', function(e) {
+      var now = Date.now();
+      if (now - lastTapTime < 300) {
+        e.preventDefault();
+        if (zoomScale > 1) {
+          img.style.transition = 'transform 0.3s cubic-bezier(0.4, 0, 0.2, 1)';
+          resetZoom();
+        } else {
+          zoomScale = 2.5; lastZoomScale = zoomScale;
+          img.style.transition = 'transform 0.3s cubic-bezier(0.4, 0, 0.2, 1)';
+          applyZoom();
+        }
+      }
+      lastTapTime = now;
+    });
+
+    // Reset zoom on navigate/close
+    var origNav = navigate;
+    navigate = function(dir) { resetZoom(); origNav(dir); };
+    var origClose = close;
+    close = function() { resetZoom(); origClose(); };
+  }
+
   window.openLightbox = open;
 }
 
@@ -519,8 +639,11 @@ PhotoStack.prototype.render = function() {
     var thumbPath = getThumbSrc(photo.src);
     var thumbWebpPath = getWebpSrc(thumbPath);
     var fullWebpPath = getWebpSrc(photo.src);
+    var thumbAvifPath = getAvifSrc(thumbPath);
+    var fullAvifPath = getAvifSrc(photo.src);
     card.innerHTML =
       '<picture>' +
+        '<source type="image/avif" srcset="' + thumbAvifPath + ' 600w, ' + fullAvifPath + ' 1200w" sizes="(max-width: 768px) 90vw, 400px">' +
         '<source type="image/webp" srcset="' + thumbWebpPath + ' 600w, ' + fullWebpPath + ' 1200w" sizes="(max-width: 768px) 90vw, 400px">' +
         '<img src="' + thumbPath + '" srcset="' + thumbPath + ' 600w, ' + photo.src + ' 1200w" sizes="(max-width: 768px) 90vw, 400px" alt="' + photo.alt + '" draggable="false" width="400" height="500" style="width:100%;height:100%;object-fit:cover;" />' +
       '</picture>' +

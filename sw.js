@@ -1,81 +1,154 @@
-// Service Worker for offline support
-const CACHE_NAME = 'zino-portfolio-v1';
+// Service Worker - Smart caching strategies
+const CACHE_VERSION = 'v2';
+const STATIC_CACHE = 'static-' + CACHE_VERSION;
+const PHOTO_CACHE = 'photos-' + CACHE_VERSION;
+const PAGES_CACHE = 'pages-' + CACHE_VERSION;
 const OFFLINE_URL = '/offline.html';
 
-// Assets to cache immediately on install
+// Core assets to precache on install
 const PRECACHE_ASSETS = [
   '/',
   '/index.html',
   '/styles.css',
   '/script.js',
-  '/assets/logo.png'
+  '/shared.js',
+  '/assets/logo.png',
+  '/assets/fonts/inter-v20-latin-regular.woff2',
+  '/assets/fonts/space-mono-v17-latin-regular.woff2',
+  '/assets/fonts/instrument-serif-v5-latin-regular.woff2',
+  '/assets/fonts.css'
 ];
 
-// Install event - precache core assets
-self.addEventListener('install', (event) => {
+// Install - precache core assets
+self.addEventListener('install', function(event) {
   event.waitUntil(
-    caches.open(CACHE_NAME)
-      .then((cache) => cache.addAll(PRECACHE_ASSETS))
-      .then(() => self.skipWaiting())
+    caches.open(STATIC_CACHE)
+      .then(function(cache) { return cache.addAll(PRECACHE_ASSETS); })
+      .then(function() { return self.skipWaiting(); })
   );
 });
 
-// Activate event - clean up old caches
-self.addEventListener('activate', (event) => {
+// Activate - clean old caches
+self.addEventListener('activate', function(event) {
+  var validCaches = [STATIC_CACHE, PHOTO_CACHE, PAGES_CACHE];
   event.waitUntil(
     caches.keys()
-      .then((cacheNames) => {
+      .then(function(cacheNames) {
         return Promise.all(
           cacheNames
-            .filter((name) => name !== CACHE_NAME)
-            .map((name) => caches.delete(name))
+            .filter(function(name) { return validCaches.indexOf(name) === -1; })
+            .map(function(name) { return caches.delete(name); })
         );
       })
-      .then(() => self.clients.claim())
+      .then(function() { return self.clients.claim(); })
   );
 });
 
-// Fetch event - network first, fallback to cache
-self.addEventListener('fetch', (event) => {
-  // Skip non-GET requests
-  if (event.request.method !== 'GET') return;
+// Determine caching strategy based on request type
+function getStrategy(url) {
+  var path = new URL(url).pathname;
 
-  // Skip cross-origin requests
+  // Fonts - cache first (immutable)
+  if (path.match(/\.(woff2?|ttf|otf)$/)) return 'cache-first';
+
+  // Photos/images - stale-while-revalidate
+  if (path.match(/\.(jpe?g|png|webp|avif|gif|svg)$/)) return 'stale-while-revalidate';
+
+  // CSS/JS - stale-while-revalidate (versioned via query strings)
+  if (path.match(/\.(css|js)$/)) return 'stale-while-revalidate';
+
+  // HTML pages - network first
+  return 'network-first';
+}
+
+// Choose cache bucket based on content type
+function getCacheName(url) {
+  var path = new URL(url).pathname;
+  if (path.match(/\.(jpe?g|png|webp|avif|gif|svg)$/)) return PHOTO_CACHE;
+  if (path.match(/\.(woff2?|ttf|otf|css|js)$/)) return STATIC_CACHE;
+  return PAGES_CACHE;
+}
+
+// Cache-first: serve from cache, only fetch if not cached
+function cacheFirst(request) {
+  return caches.match(request).then(function(cached) {
+    if (cached) return cached;
+    return fetch(request).then(function(response) {
+      if (response.status === 200) {
+        var clone = response.clone();
+        caches.open(getCacheName(request.url)).then(function(cache) {
+          cache.put(request, clone);
+        });
+      }
+      return response;
+    });
+  });
+}
+
+// Stale-while-revalidate: serve from cache immediately, update in background
+function staleWhileRevalidate(request) {
+  return caches.open(getCacheName(request.url)).then(function(cache) {
+    return cache.match(request).then(function(cached) {
+      var fetchPromise = fetch(request).then(function(response) {
+        if (response.status === 200) {
+          cache.put(request, response.clone());
+        }
+        return response;
+      }).catch(function() {
+        return cached;
+      });
+      return cached || fetchPromise;
+    });
+  });
+}
+
+// Network-first: try network, fall back to cache
+function networkFirst(request) {
+  return fetch(request).then(function(response) {
+    if (response.status === 200) {
+      var clone = response.clone();
+      caches.open(getCacheName(request.url)).then(function(cache) {
+        cache.put(request, clone);
+      });
+    }
+    return response;
+  }).catch(function() {
+    return caches.match(request).then(function(cached) {
+      if (cached) return cached;
+      if (request.mode === 'navigate') {
+        return caches.match(OFFLINE_URL);
+      }
+      return new Response('Offline', { status: 503, statusText: 'Service Unavailable' });
+    });
+  });
+}
+
+// Fetch handler
+self.addEventListener('fetch', function(event) {
+  if (event.request.method !== 'GET') return;
   if (!event.request.url.startsWith(self.location.origin)) return;
 
-  event.respondWith(
-    fetch(event.request)
-      .then((response) => {
-        // Clone the response before caching
-        const responseClone = response.clone();
+  var strategy = getStrategy(event.request.url);
 
-        // Cache successful responses
-        if (response.status === 200) {
-          caches.open(CACHE_NAME)
-            .then((cache) => cache.put(event.request, responseClone));
+  if (strategy === 'cache-first') {
+    event.respondWith(cacheFirst(event.request));
+  } else if (strategy === 'stale-while-revalidate') {
+    event.respondWith(staleWhileRevalidate(event.request));
+  } else {
+    event.respondWith(networkFirst(event.request));
+  }
+});
+
+// Limit photo cache size to 200 entries
+self.addEventListener('message', function(event) {
+  if (event.data === 'trim-caches') {
+    caches.open(PHOTO_CACHE).then(function(cache) {
+      cache.keys().then(function(keys) {
+        if (keys.length > 200) {
+          var toDelete = keys.slice(0, keys.length - 200);
+          toDelete.forEach(function(key) { cache.delete(key); });
         }
-
-        return response;
-      })
-      .catch(() => {
-        // Network failed, try cache
-        return caches.match(event.request)
-          .then((cachedResponse) => {
-            if (cachedResponse) {
-              return cachedResponse;
-            }
-
-            // For navigation requests, show offline page
-            if (event.request.mode === 'navigate') {
-              return caches.match(OFFLINE_URL);
-            }
-
-            // Return a simple offline response for other requests
-            return new Response('Offline', {
-              status: 503,
-              statusText: 'Service Unavailable'
-            });
-          });
-      })
-  );
+      });
+    });
+  }
 });
