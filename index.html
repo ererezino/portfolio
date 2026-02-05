@@ -17,19 +17,19 @@
     })();
   </script>
 
+  <!-- PERFORMANCE: Preload hero LCP image (highest priority) -->
+  <link rel="preload" href="/assets/photos/thumbs/photo-1.avif" as="image" type="image/avif" fetchpriority="high" />
+  <link rel="preload" href="/assets/photos/thumbs/photo-1.webp" as="image" type="image/webp" fetchpriority="high" />
+
   <!-- PERFORMANCE: Preload critical self-hosted fonts -->
   <link rel="preload" href="/assets/fonts/inter-v20-latin-regular.woff2" as="font" type="font/woff2" crossorigin />
   <link rel="preload" href="/assets/fonts/instrument-serif-v5-latin-regular.woff2" as="font" type="font/woff2" crossorigin />
-  
-  <!-- PERFORMANCE: DNS prefetch and preconnect for external resources -->
-  <link rel="preconnect" href="https://static.cloudflareinsights.com" crossorigin />
+
+  <!-- PERFORMANCE: DNS prefetch for external resources -->
+  <link rel="dns-prefetch" href="https://static.cloudflareinsights.com" />
   <link rel="dns-prefetch" href="https://upload.wikimedia.org" />
   <link rel="dns-prefetch" href="https://i.scdn.co" />
-  <link rel="dns-prefetch" href="https://m.media-amazon.com" />
 
-  <!-- PERFORMANCE: Preload critical CSS -->
-  <link rel="preload" href="styles.css?v=20260205d" as="style" />
-  
 
   <!-- Meta & SEO -->
   <meta name="description" content="Zino Asamaige - Co-founder building Accrue and Cashramp. Photographer, traveler, and walker based in Lagos, Nigeria. Photos, notes, and stories from the journey." />
@@ -113,7 +113,7 @@
   <header id="header" role="banner">
     <div class="header-inner">
       <a href="/" class="logo" data-magnetic aria-label="Zino Asamaige - Home">
-        <img src="/assets/logo.png" alt="" class="logo-img" width="32" height="32" fetchpriority="high" />
+        <img src="/assets/logo.png" alt="" class="logo-img" width="32" height="32" />
         <span class="logo-text">Zino Asamaige</span>
       </a>
 
@@ -225,6 +225,12 @@
           </div>
 
           <div class="hero-visual" id="heroPhotoStack" aria-label="Photo gallery preview">
+            <!-- Static fallback for LCP — replaced by JS PhotoStack -->
+            <picture>
+              <source type="image/avif" srcset="/assets/photos/thumbs/photo-1.avif" />
+              <source type="image/webp" srcset="/assets/photos/thumbs/photo-1.webp" />
+              <img src="/assets/photos/thumbs/photo-1.jpg" alt="Morning light in Lagos" width="400" height="500" fetchpriority="high" style="width:100%;height:auto;max-width:400px;border-radius:16px;object-fit:cover;" />
+            </picture>
           </div>
         </div>
       </div>
