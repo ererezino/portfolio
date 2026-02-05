@@ -19,11 +19,21 @@ function getThumbSrc(src) {
   return src.substring(0, lastSlash) + '/thumbs' + src.substring(lastSlash);
 }
 
-// Helper to generate responsive image HTML with lazy loading and srcset
+// Helper to get WebP path from original
+function getWebpSrc(src) {
+  return src.replace(/\.(jpe?g|png)$/i, '.webp');
+}
+
+// Helper to generate responsive image HTML with lazy loading, srcset, and WebP
 function getResponsiveImage(photo, lazy) {
   var lazyAttr = lazy !== false ? ' loading="lazy" decoding="async"' : ' decoding="async"';
   var thumb = getThumbSrc(photo.src);
-  return '<img src="' + thumb + '" srcset="' + thumb + ' 600w, ' + photo.src + ' 1200w" sizes="(max-width: 768px) 50vw, 400px" alt="' + (photo.alt || '') + '" width="400" height="400"' + lazyAttr + ' style="width:100%;height:100%;object-fit:cover;" />';
+  var thumbWebp = getWebpSrc(thumb);
+  var fullWebp = getWebpSrc(photo.src);
+  return '<picture>' +
+    '<source type="image/webp" srcset="' + thumbWebp + ' 600w, ' + fullWebp + ' 1200w" sizes="(max-width: 768px) 50vw, 400px">' +
+    '<img src="' + thumb + '" srcset="' + thumb + ' 600w, ' + photo.src + ' 1200w" sizes="(max-width: 768px) 50vw, 400px" alt="' + (photo.alt || '') + '" width="400" height="400"' + lazyAttr + ' style="width:100%;height:100%;object-fit:cover;" />' +
+  '</picture>';
 }
 
 var ARTICLES = [
@@ -417,7 +427,7 @@ function initLightbox() {
     previousActiveElement = document.activeElement;
 
     if (img) {
-      img.src = PHOTOS[index].src;
+      img.src = getWebpSrc(PHOTOS[index].src);
       img.alt = PHOTOS[index].alt;
     }
     if (caption) caption.textContent = PHOTOS[index].caption;
@@ -445,7 +455,7 @@ function initLightbox() {
   function navigate(dir) {
     currentPhotoIndex = (currentPhotoIndex + dir + PHOTOS.length) % PHOTOS.length;
     if (img) {
-      img.src = PHOTOS[currentPhotoIndex].src;
+      img.src = getWebpSrc(PHOTOS[currentPhotoIndex].src);
       img.alt = PHOTOS[currentPhotoIndex].alt;
     }
     if (caption) caption.textContent = PHOTOS[currentPhotoIndex].caption;
@@ -507,8 +517,13 @@ PhotoStack.prototype.render = function() {
     }
 
     var thumbPath = getThumbSrc(photo.src);
+    var thumbWebpPath = getWebpSrc(thumbPath);
+    var fullWebpPath = getWebpSrc(photo.src);
     card.innerHTML =
-      '<img src="' + thumbPath + '" srcset="' + thumbPath + ' 600w, ' + photo.src + ' 1200w" sizes="(max-width: 768px) 90vw, 400px" alt="' + photo.alt + '" draggable="false" width="400" height="500" style="width:100%;height:100%;object-fit:cover;" />' +
+      '<picture>' +
+        '<source type="image/webp" srcset="' + thumbWebpPath + ' 600w, ' + fullWebpPath + ' 1200w" sizes="(max-width: 768px) 90vw, 400px">' +
+        '<img src="' + thumbPath + '" srcset="' + thumbPath + ' 600w, ' + photo.src + ' 1200w" sizes="(max-width: 768px) 90vw, 400px" alt="' + photo.alt + '" draggable="false" width="400" height="500" style="width:100%;height:100%;object-fit:cover;" />' +
+      '</picture>' +
       '<div class="stack-card-footer">' +
         '<span class="stack-card-caption">' + photo.caption + '</span>' +
         '<div class="stack-card-dots" aria-hidden="true">' + dotsHTML + '</div>' +

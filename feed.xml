@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:dc="http://purl.org/dc/elements/1.1/">
   <channel>
     <title>Zino Asamaige</title>
     <description>Thoughts on building, creating, and living. Co-founder of Accrue and Cashramp.</description>
     <link>https://www.ererezino.com</link>
     <atom:link href="https://www.ererezino.com/feed.xml" rel="self" type="application/rss+xml"/>
     <language>en-us</language>
-    <lastBuildDate>Mon, 20 Jan 2026 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Mon, 26 Jan 2026 00:00:00 +0000</lastBuildDate>
     <image>
       <url>https://www.ererezino.com/assets/logo.png</url>
       <title>Zino Asamaige</title>
@@ -17,12 +17,47 @@
       <title>Why I'm Building Accrue</title>
       <link>https://www.ererezino.com/articles/why-im-building-accrue/</link>
       <guid isPermaLink="true">https://www.ererezino.com/articles/why-im-building-accrue/</guid>
-      <pubDate>Mon, 20 Jan 2026 00:00:00 +0000</pubDate>
-      <dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Zino Asamaige</dc:creator>
-      <description>Africa moves a lot of money. The problem is how. Cross-border payments hit $329 billion in 2025, but 75% moves through informal channels.</description>
+      <pubDate>Mon, 26 Jan 2026 00:00:00 +0000</pubDate>
+      <dc:creator>Zino Asamaige</dc:creator>
+      <description>Africa moves $329 billion in cross-border payments annually, but 75% flows through informal channels. The agent model already exists. It just needs better rails.</description>
       <category>Fintech</category>
       <category>Africa</category>
       <category>Startups</category>
+    </item>
+
+    <item>
+      <title>On Walking</title>
+      <link>https://www.ererezino.com/articles/on-walking/</link>
+      <guid isPermaLink="true">https://www.ererezino.com/articles/on-walking/</guid>
+      <pubDate>Sun, 25 Jan 2026 00:00:00 +0000</pubDate>
+      <dc:creator>Zino Asamaige</dc:creator>
+      <description>Moving through the world at five kilometers per hour.</description>
+      <category>Walking</category>
+      <category>Personal</category>
+    </item>
+
+    <item>
+      <title>The Friction Tax</title>
+      <link>https://www.ererezino.com/articles/the-friction-tax/</link>
+      <guid isPermaLink="true">https://www.ererezino.com/articles/the-friction-tax/</guid>
+      <pubDate>Mon, 15 Dec 2025 00:00:00 +0000</pubDate>
+      <dc:creator>Zino Asamaige</dc:creator>
+      <description>Why Intra-African Trade Remains Broken and What It Will Take to Fix It.</description>
+      <category>Fintech</category>
+      <category>Africa</category>
+      <category>Trade</category>
+    </item>
+
+    <item>
+      <title>Accrue's Big Day</title>
+      <link>https://www.ererezino.com/articles/accrues-big-day/</link>
+      <guid isPermaLink="true">https://www.ererezino.com/articles/accrues-big-day/</guid>
+      <pubDate>Wed, 26 Jan 2022 00:00:00 +0000</pubDate>
+      <dc:creator>Zino Asamaige</dc:creator>
+      <description>Today's a big day for everyone on the Accrue team. We're officially coming out of private beta and launching to the general public!</description>
+      <category>Product</category>
+      <category>Accrue</category>
+      <category>Launch</category>
     </item>
 
     <item>
@@ -30,7 +65,7 @@
       <link>https://medium.com/@ererezino/lived-it-loved-it-farewell-helicarrier-f112fd1c6302</link>
       <guid isPermaLink="true">https://medium.com/@ererezino/lived-it-loved-it-farewell-helicarrier-f112fd1c6302</guid>
       <pubDate>Sat, 01 Oct 2022 00:00:00 +0000</pubDate>
-      <dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Zino Asamaige</dc:creator>
+      <dc:creator>Zino Asamaige</dc:creator>
       <description>Today's my last day at Helicarrier. I joined in 2018, and I'm incredibly proud of how much growth has happened since then. I'm leaving to continue growing Accrue.</description>
       <category>Career</category>
       <category>Helicarrier</category>
@@ -42,7 +77,7 @@
       <link>https://medium.com/buycoins/trading-usdt-peer-to-peer-now-available-on-buycoins-44b08d7fae2b</link>
       <guid isPermaLink="true">https://medium.com/buycoins/trading-usdt-peer-to-peer-now-available-on-buycoins-44b08d7fae2b</guid>
       <pubDate>Tue, 17 Nov 2020 00:00:00 +0000</pubDate>
-      <dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Zino Asamaige</dc:creator>
+      <dc:creator>Zino Asamaige</dc:creator>
       <description>We're introducing support for USDT on our peer-to-peer exchange and wallet. You can buy or sell USDT at your preferred price.</description>
       <category>Product</category>
       <category>BuyCoins</category>
@@ -54,7 +89,7 @@
       <link>https://medium.com/buycoins/its-the-12th-e62f34e82c07</link>
       <guid isPermaLink="true">https://medium.com/buycoins/its-the-12th-e62f34e82c07</guid>
       <pubDate>Thu, 12 Dec 2019 00:00:00 +0000</pubDate>
-      <dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Zino Asamaige</dc:creator>
+      <dc:creator>Zino Asamaige</dc:creator>
       <description>One year ago today, I joined BuyCoins, and it's been the most amazing and busiest twelve months of my professional career.</description>
       <category>Career</category>
       <category>BuyCoins</category>

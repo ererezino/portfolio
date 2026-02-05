@@ -62,7 +62,7 @@
   <link rel="stylesheet" href="/assets/leaflet/leaflet.css">
 
   <!-- Shared styles -->
-  <link rel="stylesheet" href="/styles.css?v=20260205b">
+  <link rel="stylesheet" href="/styles.css?v=20260205c">
 
   <!-- Page-specific styles -->
   <style>
@@ -579,10 +579,9 @@
     </div>
   </footer>
 
-  <!-- Self-hosted Leaflet JS -->
-  <script src="/assets/leaflet/leaflet.min.js"></script>
+  <!-- Leaflet JS is lazy-loaded via IntersectionObserver when the map scrolls into view -->
 
-  <script src="/shared.js?v=20260205b"></script>
+  <script src="/shared.js?v=20260205c"></script>
 
   <script>
     // Country flags (emoji)
@@ -748,8 +747,39 @@
       });
     }
 
-    // Initialize map when page loads
-    window.addEventListener('load', initMap);
+    // Lazy-load Leaflet JS and initialize the map when the container scrolls into view
+    (function() {
+      var mapEl = document.getElementById('map');
+      if (!mapEl) return;
+
+      function loadLeafletAndInit() {
+        if (document.querySelector('script[src="/assets/leaflet/leaflet.min.js"]')) return;
+        var script = document.createElement('script');
+        script.src = '/assets/leaflet/leaflet.min.js';
+        script.onload = function() {
+          initMap();
+        };
+        script.onerror = function() {
+          console.error('Failed to load Leaflet JS');
+          mapEl.innerHTML = '<div style="display:flex;align-items:center;justify-content:center;height:100%;color:var(--text-tertiary);font-family:var(--font-mono);font-size:12px;">Map loading failed. Please refresh.</div>';
+        };
+        document.head.appendChild(script);
+      }
+
+      if ('IntersectionObserver' in window) {
+        var observer = new IntersectionObserver(function(entries) {
+          entries.forEach(function(entry) {
+            if (entry.isIntersecting) {
+              observer.unobserve(mapEl);
+              loadLeafletAndInit();
+            }
+          });
+        }, { rootMargin: '200px' });
+        observer.observe(mapEl);
+      } else {
+        window.addEventListener('load', loadLeafletAndInit);
+      }
+    })();
 
     // Update map tiles when theme changes (shared.js handles the toggle)
     new MutationObserver(function(mutations) {

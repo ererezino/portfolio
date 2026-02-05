@@ -33,7 +33,7 @@
   <link rel="stylesheet" href="/assets/fonts.css?v=20260127">
 
   <!-- Shared styles -->
-  <link rel="stylesheet" href="/styles.css?v=20260205b">
+  <link rel="stylesheet" href="/styles.css?v=20260205c">
 
   <style>
     main {
@@ -46,25 +46,47 @@
 
     .error-content {
       text-align: center;
-      max-width: 480px;
+      max-width: 520px;
+    }
+
+    .error-photo {
+      width: 200px;
+      height: 200px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin: 0 auto 32px;
+      display: block;
+      opacity: 0;
+      transform: scale(0.9);
+      animation: photoReveal 0.8s cubic-bezier(0.4, 0, 0.2, 1) 0.2s forwards;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+    }
+
+    [data-theme="dark"] .error-photo {
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+    }
+
+    @keyframes photoReveal {
+      to { opacity: 1; transform: scale(1); }
     }
 
     .error-code {
       font-family: var(--font-mono);
-      font-size: clamp(80px, 15vw, 140px);
-      font-weight: 600;
-      letter-spacing: -0.02em;
-      color: var(--text);
-      line-height: 1;
+      font-size: 14px;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-tertiary, var(--text-secondary));
       margin-bottom: 16px;
     }
 
     .error-title {
       font-family: var(--font-serif);
-      font-size: clamp(28px, 5vw, 36px);
+      font-size: clamp(28px, 5vw, 40px);
       font-weight: 400;
       font-style: italic;
-      margin-bottom: 16px;
+      margin-bottom: 12px;
+      line-height: 1.2;
     }
 
     .error-message {
@@ -72,7 +94,7 @@
       font-size: 16px;
       color: var(--text-secondary);
       line-height: 1.6;
-      margin-bottom: 32px;
+      margin-bottom: 40px;
     }
 
     .error-links {
@@ -109,6 +131,21 @@
     .error-link svg {
       width: 14px;
       height: 14px;
+    }
+
+    .error-link-primary {
+      background: var(--text);
+      color: var(--bg);
+      border-color: var(--text);
+    }
+
+    .error-link-primary:hover {
+      background: transparent;
+      color: var(--text);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .error-photo { animation: none; opacity: 1; transform: none; }
     }
   </style>
 </head>
@@ -170,25 +207,64 @@
 
   <main id="main" role="main">
     <div class="error-content">
-      <div class="error-code">404</div>
-      <h1 class="error-title">Page not found</h1>
-      <p class="error-message">The page you're looking for doesn't exist or has been moved. Let's get you back on track.</p>
+      <img class="error-photo" id="errorPhoto" src="" alt="A photo from my travels" width="200" height="200" />
+      <div class="error-code">Error 404</div>
+      <h1 class="error-title" id="errorTitle">Page not found</h1>
+      <p class="error-message" id="errorMessage">The page you are looking for does not exist or has been moved.</p>
       <div class="error-links">
-        <a href="/" class="error-link">
+        <a href="/" class="error-link error-link-primary">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-          Home
-        </a>
-        <a href="/articles/" class="error-link">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
-          Articles
+          Go home
         </a>
         <a href="/photos/" class="error-link">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
-          Photos
+          Browse photos
+        </a>
+        <a href="/articles/" class="error-link">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+          Read articles
         </a>
       </div>
     </div>
   </main>
+
+  <script>
+    (function() {
+      var photos = [
+        "/assets/photos/thumbs/photo-56.jpeg",
+        "/assets/photos/thumbs/photo-60.jpg",
+        "/assets/photos/thumbs/photo-73.jpg",
+        "/assets/photos/thumbs/photo-66.jpg",
+        "/assets/photos/thumbs/photo-69.jpg",
+        "/assets/photos/thumbs/photo-61.jpg",
+        "/assets/photos/thumbs/photo-1.jpg",
+        "/assets/photos/thumbs/photo-3.jpg",
+        "/assets/photos/thumbs/photo-45.jpeg",
+        "/assets/photos/thumbs/photo-81.jpg"
+      ];
+      var titles = [
+        "Wrong turn, beautiful view",
+        "Not all who wander are lost",
+        "This page took a detour",
+        "Page not found",
+        "Lost in translation",
+        "The page you seek has wandered off"
+      ];
+      var messages = [
+        "But hey, at least there is a nice photo. The page you are looking for has moved or does not exist.",
+        "Sometimes getting lost leads somewhere better. This page is not here, but there is plenty to explore.",
+        "This page does not exist, but the journey continues. Here is a photo from my travels while you find your way.",
+        "The page you are looking for does not exist or has been moved. Let us get you back on track.",
+        "This page seems to have wandered off. Maybe it is out taking photos somewhere.",
+        "Page missing, but the adventure continues. Pick a direction below."
+      ];
+      var i = Math.floor(Math.random() * photos.length);
+      var j = Math.floor(Math.random() * titles.length);
+      document.getElementById("errorPhoto").src = photos[i];
+      document.getElementById("errorTitle").textContent = titles[j];
+      document.getElementById("errorMessage").textContent = messages[j];
+    })();
+  </script>
 
   <footer role="contentinfo">
     <div class="container footer-inner">
@@ -217,6 +293,6 @@
     </div>
   </footer>
 
-  <script src="/shared.js?v=20260205b"></script>
+  <script src="/shared.js?v=20260205c"></script>
 </body>
 </html>

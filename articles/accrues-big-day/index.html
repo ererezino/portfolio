@@ -85,7 +85,7 @@
   <link rel="stylesheet" href="/assets/fonts.css?v=20260125f">
 
   <!-- Shared styles -->
-  <link rel="stylesheet" href="/styles.css?v=20260205b">
+  <link rel="stylesheet" href="/styles.css?v=20260205c">
 
   <style>
     :root {
@@ -1105,10 +1105,27 @@
       background: rgba(255, 255, 255, 0.2);
       margin: 0 4px;
     }
+
+    /* Reading progress bar */
+    .reading-progress {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 3px;
+      background: #C49A6C;
+      width: 0%;
+      z-index: 1001;
+      transition: width 50ms linear;
+      pointer-events: none;
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .reading-progress { transition: none; }
+    }
   </style>
 </head>
 
 <body>
+  <div class="reading-progress" id="readingProgress"></div>
   <!-- Text Selection Share Popup -->
   <div class="selection-share-popup" id="selectionSharePopup">
     <button id="shareSelectionTwitter" aria-label="Share selection on Twitter">
@@ -1371,7 +1388,7 @@
     </div>
   </footer>
 
-  <script src="/shared.js?v=20260205b"></script>
+  <script src="/shared.js?v=20260205c"></script>
   <script>
     // Recommended Reading - Curated list excluding current article
     const RECOMMENDED_ARTICLES = [
@@ -1705,5 +1722,26 @@
   </div>
 
   <!-- Cloudflare Web Analytics --><script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "a17b25b9d9f24af88869c5f81d7e12be"}'></script><!-- End Cloudflare Web Analytics -->
+
+  <script>
+  (function() {
+    var bar = document.getElementById("readingProgress");
+    var article = document.querySelector(".article-content") || document.querySelector("article") || document.querySelector("main");
+    if (!bar || !article) return;
+    var ticking = false;
+    window.addEventListener("scroll", function() {
+      if (!ticking) {
+        requestAnimationFrame(function() {
+          var rect = article.getBoundingClientRect();
+          var total = article.offsetHeight - window.innerHeight;
+          var progress = Math.min(Math.max((-rect.top) / total * 100, 0), 100);
+          bar.style.width = progress + "%";
+          ticking = false;
+        });
+        ticking = true;
+      }
+    }, { passive: true });
+  })();
+  </script>
 </body>
 </html>
