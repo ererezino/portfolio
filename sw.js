@@ -1,5 +1,5 @@
 // Service Worker - Smart caching strategies
-const CACHE_VERSION = 'v2';
+const CACHE_VERSION = 'v3';
 const STATIC_CACHE = 'static-' + CACHE_VERSION;
 const PHOTO_CACHE = 'photos-' + CACHE_VERSION;
 const PAGES_CACHE = 'pages-' + CACHE_VERSION;
@@ -13,6 +13,9 @@ const PRECACHE_ASSETS = [
   '/script.js',
   '/shared.js',
   '/assets/logo.png',
+  '/assets/logo-dark.png',
+  '/articles/recommended-articles.js',
+  '/articles/article-shared.css',
   '/assets/fonts/inter-v20-latin-regular.woff2',
   '/assets/fonts/space-mono-v17-latin-regular.woff2',
   '/assets/fonts/instrument-serif-v5-latin-regular.woff2',
