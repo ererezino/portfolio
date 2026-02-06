@@ -235,11 +235,11 @@ function toggleTheme() {
   storage.set('theme', next);
   updateThemeColorMeta(next);
 
-  // Force repaint on mobile browsers without flash
-  document.body.style.transform = 'translateZ(0)';
-  requestAnimationFrame(function() {
-    document.body.style.transform = '';
-  });
+  // Force repaint — some mobile browsers don't repaint when CSS custom
+  // properties change via data-attribute. Toggling display forces it.
+  document.body.style.display = 'none';
+  void document.body.offsetHeight;
+  document.body.style.display = '';
 }
 
 function updateThemeColorMeta(theme) {
