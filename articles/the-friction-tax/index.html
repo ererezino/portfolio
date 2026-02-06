@@ -709,7 +709,7 @@
                 </svg>
               </button>
               <div class="share-dropdown" id="shareDropdownTop">
-                <button onclick="copyLink()">
+                <button data-action="copy-link">
                   <svg class="copy-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
                   Copy link
                 </button>
@@ -1105,7 +1105,7 @@
                     </svg>
                   </button>
                   <div class="share-dropdown" id="shareDropdownBottom">
-                    <button onclick="copyLink()">
+                    <button data-action="copy-link">
                       <svg class="copy-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
                       Copy link
                     </button>
@@ -1272,6 +1272,10 @@
         }
       });
     }
+
+    document.querySelectorAll('[data-action="copy-link"]').forEach(function(btn) {
+      btn.addEventListener('click', copyLink);
+    });
 
     // Reading Progress
     (function() {

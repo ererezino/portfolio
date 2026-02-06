@@ -809,17 +809,33 @@
           '<picture>' +
             '<source type="image/avif" srcset="' + thumbAvif + ' 600w, ' + fullAvif + ' 1200w" sizes="' + sizesAttr + '">' +
             '<source type="image/webp" srcset="' + thumbWebp + ' 600w, ' + fullWebp + ' 1200w" sizes="' + sizesAttr + '">' +
-            '<img src="' + thumbSrc + '" srcset="' + thumbSrc + ' 600w, ' + photo.src + ' 1200w" sizes="' + sizesAttr + '" alt="' + photo.alt + '" width="' + photo.tw + '" height="' + photo.th + '" loading="' + loadingAttr + '" decoding="async" onload="this.classList.add(\'loaded\'); this.closest(\'.photo-item\').classList.remove(\'skeleton\');" onerror="this.closest(\'.photo-item\').style.display=\'none\';">' +
+            '<img src="' + thumbSrc + '" srcset="' + thumbSrc + ' 600w, ' + photo.src + ' 1200w" sizes="' + sizesAttr + '" alt="' + photo.alt + '" width="' + photo.tw + '" height="' + photo.th + '" loading="' + loadingAttr + '" decoding="async">' +
           '</picture>' +
           overlayHtml +
         '</button>';
       }).join('');
 
+      // Add load/error handlers for images
+      grid.querySelectorAll('.photo-item img').forEach(function(img) {
+        img.addEventListener('load', function() {
+          this.classList.add('loaded');
+          this.closest('.photo-item').classList.remove('skeleton');
+        });
+        img.addEventListener('error', function() {
+          this.closest('.photo-item').style.display = 'none';
+        });
+        // Handle images that loaded before listeners were attached
+        if (img.complete && img.naturalHeight > 0) {
+          img.classList.add('loaded');
+          img.closest('.photo-item').classList.remove('skeleton');
+        }
+      });
+
       // Add click handlers
       grid.querySelectorAll('.photo-item').forEach(function(item) {
-        item.onclick = function() {
+        item.addEventListener('click', function() {
           openLightbox(parseInt(item.dataset.index));
-        };
+        });
       });
     }
 
@@ -918,9 +934,9 @@
       preloadAdjacent(currentIndex);
     }
 
-    document.getElementById('lightboxClose').onclick = closeLightbox;
-    document.getElementById('lightboxPrev').onclick = function() { navigate(-1); };
-    document.getElementById('lightboxNext').onclick = function() { navigate(1); };
+    document.getElementById('lightboxClose').addEventListener('click', closeLightbox);
+    document.getElementById('lightboxPrev').addEventListener('click', function() { navigate(-1); });
+    document.getElementById('lightboxNext').addEventListener('click', function() { navigate(1); });
 
     // Click outside image to close
     lightbox.addEventListener('click', function(e) {
@@ -1171,9 +1187,9 @@
 
     // Set up filter button handlers
     document.querySelectorAll('.filter-btn').forEach(function(btn) {
-      btn.onclick = function() {
+      btn.addEventListener('click', function() {
         filterPhotos(btn.dataset.filter);
-      };
+      });
     });
 
     // Handle browser back/forward

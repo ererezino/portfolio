@@ -1532,19 +1532,19 @@
       // Render pagination
       if (totalPages > 1 && !searchQuery) {
         var paginationHtml = '';
-        paginationHtml += '<button class="pagination-btn" onclick="goToPage(' + (currentPage - 1) + ')" ' + (currentPage === 1 ? 'disabled' : '') + '>' +
+        paginationHtml += '<button class="pagination-btn" data-page="' + (currentPage - 1) + '" ' + (currentPage === 1 ? 'disabled' : '') + '>' +
           '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg>' +
         '</button>';
 
         for (var i = 1; i <= totalPages; i++) {
           if (i === 1 || i === totalPages || (i >= currentPage - 1 && i <= currentPage + 1)) {
-            paginationHtml += '<button class="pagination-btn' + (i === currentPage ? ' active' : '') + '" onclick="goToPage(' + i + ')">' + i + '</button>';
+            paginationHtml += '<button class="pagination-btn' + (i === currentPage ? ' active' : '') + '" data-page="' + i + '">' + i + '</button>';
           } else if (i === currentPage - 2 || i === currentPage + 2) {
             paginationHtml += '<span class="pagination-info">...</span>';
           }
         }
 
-        paginationHtml += '<button class="pagination-btn" onclick="goToPage(' + (currentPage + 1) + ')" ' + (currentPage === totalPages ? 'disabled' : '') + '>' +
+        paginationHtml += '<button class="pagination-btn" data-page="' + (currentPage + 1) + '" ' + (currentPage === totalPages ? 'disabled' : '') + '>' +
           '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>' +
         '</button>';
 
@@ -1553,6 +1553,16 @@
         paginationEl.innerHTML = '';
       }
     }
+
+    // Event delegation for pagination buttons
+    document.getElementById('pagination').addEventListener('click', function(e) {
+      var btn = e.target.closest('.pagination-btn');
+      if (!btn || btn.disabled) return;
+      var page = parseInt(btn.getAttribute('data-page'));
+      if (!isNaN(page)) {
+        goToPage(page);
+      }
+    });
 
     function goToPage(page) {
       currentPage = page;

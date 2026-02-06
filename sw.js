@@ -11,6 +11,7 @@ const PRECACHE_ASSETS = [
   '/index.html',
   '/styles.css',
   '/script.js',
+  '/script-deferred.js',
   '/shared.js',
   '/assets/logo.png',
   '/assets/logo-dark.png',
