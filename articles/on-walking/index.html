@@ -416,7 +416,7 @@
 
     /* Article Content */
     .article-content {
-      padding-bottom: 48px;
+      padding-bottom: 0;
     }
 
     .article-body p {
@@ -1169,6 +1169,13 @@
       font-weight: 600;
     }
 
+    /* Override global footer styles for article footer */
+    .article-footer {
+      padding: 0;
+      border-top: none;
+      background: none;
+    }
+
     /* Author Card - Compact Style */
     .author-card {
       display: flex;
@@ -1176,7 +1183,7 @@
       align-items: center;
       padding: 20px 0;
       border-top: 1px solid var(--border);
-      margin: 24px 0 0 0;
+      margin: 0;
     }
     .author-avatar {
       flex-shrink: 0;
