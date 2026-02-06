@@ -1923,42 +1923,12 @@
   </footer>
 
   <script src="/shared.js?v=20260206a"></script>
+  <script src="/articles/recommended-articles.js?v=20260206a"></script>
   <script>
-    // Recommended Reading
-    const RECOMMENDED_ARTICLES = [
-      {
-        title: "On Walking",
-        url: "/articles/on-walking/",
-        date: "Jan 2026",
-        author: "Zino Asamaige",
-        image: "/articles/on-walking/image.jpg"
-      },
-      {
-        title: "Why I'm Building Accrue",
-        url: "/articles/why-im-building-accrue/",
-        date: "Jan 2026",
-        author: "Zino Asamaige",
-        image: "/articles/why-im-building-accrue/team.png"
-      },
-      {
-        title: "Happy 4th Birthday!",
-        url: "https://adesuwa.substack.com/p/happy-4th-birthday",
-        date: "Jan 2026",
-        author: "Adesuwa Omoruyi",
-        external: true,
-        image: "https://substackcdn.com/image/fetch/f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2Fe5750dcb-9f05-4d83-9918-b6fdbee62059_2076x1488.png"
-      },
-      {
-        title: "Accrue's Big Day!",
-        url: "/articles/accrues-big-day/",
-        date: "Jan 2022",
-        author: "Zino Asamaige",
-        image: "/articles/why-im-building-accrue/team.png"
-      }
-    ];
-
+    // Recommended Reading — data loaded from shared recommended-articles.js
+    const articles = getRecommendedArticles('the-friction-tax');
     const grid = document.getElementById('recommendedGrid');
-    RECOMMENDED_ARTICLES.slice(0, 4).forEach(article => {
+    articles.forEach(article => {
       const card = document.createElement('a');
       card.href = article.url;
       card.className = 'recommended-card' + (article.image ? ' has-image' : '');
