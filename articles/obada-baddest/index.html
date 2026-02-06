@@ -559,12 +559,14 @@
       const articleHeight = articleBody.offsetHeight;
 
       function updateProgress() {
-        if (window.scrollY > 300 && window.scrollY < articleStart + articleHeight - 400) {
+        const viewportBottom = window.scrollY + window.innerHeight;
+        const articleEnd = articleStart + articleHeight;
+        if (window.scrollY > 300 && viewportBottom < articleEnd + 200) {
           progressInfo.classList.add('visible');
         } else {
           progressInfo.classList.remove('visible');
         }
-        const progress = Math.min(100, Math.max(0, Math.round(((window.scrollY - articleStart + 300) / articleHeight) * 100)));
+        const progress = Math.min(100, Math.max(0, Math.round(((viewportBottom - articleStart) / articleHeight) * 100)));
         percentEl.textContent = progress + '%';
       }
 
@@ -660,7 +662,7 @@
   <script>
   (function() {
     var bar = document.getElementById("readingProgress");
-    var article = document.querySelector(".article-content") || document.querySelector("article") || document.querySelector("main");
+    var article = document.querySelector(".article-body") || document.querySelector(".article-content") || document.querySelector("article") || document.querySelector("main");
     if (!bar || !article) return;
     var ticking = false;
     window.addEventListener("scroll", function() {
