@@ -597,8 +597,8 @@
     /* Walking Path Animation */
     .walking-path {
       position: relative;
-      padding: 32px 0;
-      margin: 48px 0;
+      padding: 16px 0;
+      margin: 24px 0;
     }
 
     .path-line {
@@ -613,10 +613,13 @@
     .path-item {
       position: relative;
       padding-left: 56px;
-      margin-bottom: 32px;
+      margin-bottom: 24px;
       opacity: 0;
       transform: translateX(-20px);
       transition: all 0.5s ease;
+    }
+    .path-item:last-child {
+      margin-bottom: 0;
     }
 
     .walking-path.visible .path-item {
