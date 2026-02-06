@@ -90,12 +90,12 @@
   <style>
     :root {
       --bg: #FAFAFA;
-      --bg-alt: #F0F0F0;
+      --bg-alt: #EFEFEF;
       --text: #0A0A0A;
-      --text-secondary: #555555;
-      --text-tertiary: #888888;
-      --border: #E0E0E0;
-      --green: #00D26A;
+      --text-secondary: #4A4A4A;
+      --text-tertiary: #595959;
+      --border: #E5E5E5;
+      --green: #10B981;
       --violet: #6D28D9;
       --container: 680px;
       --transition: 0.3s ease;
@@ -106,11 +106,11 @@
 
     [data-theme="dark"] {
       --bg: #0A0A0A;
-      --bg-alt: #141414;
-      --text: #FFFFFF;
-      --text-secondary: #AAAAAA;
-      --text-tertiary: #666666;
-      --border: #222222;
+      --bg-alt: #1F1F1F;
+      --text: #FAFAFA;
+      --text-secondary: #B3B3B3;
+      --text-tertiary: #9A9A9A;
+      --border: #262626;
       --violet: #A78BFA;
     }
 
@@ -162,17 +162,16 @@
       left: 0;
       right: 0;
       z-index: 100;
-      padding: 16px 0;
-      transition: all var(--transition);
+      padding: 20px 0;
+      background: var(--bg);
+      transition: padding var(--transition), background-color var(--transition), border-color var(--transition);
     }
     header.scrolled {
-      background: rgba(250, 250, 250, 0.8);
+      background: var(--header-bg, rgba(250, 250, 250, 0.85));
       backdrop-filter: blur(20px);
       -webkit-backdrop-filter: blur(20px);
       padding: 12px 0;
-    }
-    [data-theme="dark"] header.scrolled {
-      background: rgba(10, 10, 10, 0.8);
+      border-bottom: 1px solid var(--border-subtle, transparent);
     }
     @media (max-width: 768px) {
       header.scrolled { padding: 8px 0; }
@@ -244,8 +243,8 @@
     .nav-link[aria-current="page"]::after { transform: scaleX(1); }
 
     .theme-btn {
-      width: 40px;
-      height: 40px;
+      width: 48px;
+      height: 48px;
       border-radius: 50%;
       border: 1px solid var(--border);
       background: transparent;
