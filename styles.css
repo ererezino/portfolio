@@ -2611,6 +2611,53 @@ footer {
 .reveal { opacity: 0; transform: translateY(20px); transition: opacity 0.8s var(--ease), transform 0.8s var(--ease); }
 .reveal.visible { opacity: 1; transform: translateY(0); }
 
+/* Staggered photo grid reveal */
+.photo-grid-minimal .photo-item {
+  opacity: 0;
+  transform: translateY(24px) scale(0.95);
+  transition: opacity 0.6s var(--ease), transform 0.6s var(--ease);
+}
+.reveal.visible .photo-item {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+.reveal.visible .photo-item:nth-child(1) { transition-delay: 0ms; }
+.reveal.visible .photo-item:nth-child(2) { transition-delay: 80ms; }
+.reveal.visible .photo-item:nth-child(3) { transition-delay: 160ms; }
+.reveal.visible .photo-item:nth-child(4) { transition-delay: 240ms; }
+.reveal.visible .photo-item:nth-child(5) { transition-delay: 320ms; }
+.reveal.visible .photo-item:nth-child(6) { transition-delay: 400ms; }
+.reveal.visible .photo-item:nth-child(7) { transition-delay: 480ms; }
+.reveal.visible .photo-item:nth-child(8) { transition-delay: 560ms; }
+
+/* Staggered work card reveal */
+.work-grid .work-card {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.7s var(--ease), transform 0.7s var(--ease);
+}
+.reveal.visible .work-card:nth-child(1) { opacity: 1; transform: translateY(0); transition-delay: 0ms; }
+.reveal.visible .work-card:nth-child(2) { opacity: 1; transform: translateY(0); transition-delay: 120ms; }
+
+/* Staggered travel postcard reveal */
+.travel-postcards .travel-card {
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity 0.5s var(--ease), transform 0.5s var(--ease);
+}
+.reveal.visible .travel-card { opacity: 1; transform: translateY(0); }
+.reveal.visible .travel-card:nth-child(1) { transition-delay: 0ms; }
+.reveal.visible .travel-card:nth-child(2) { transition-delay: 60ms; }
+.reveal.visible .travel-card:nth-child(3) { transition-delay: 120ms; }
+.reveal.visible .travel-card:nth-child(4) { transition-delay: 180ms; }
+.reveal.visible .travel-card:nth-child(5) { transition-delay: 240ms; }
+.reveal.visible .travel-card:nth-child(6) { transition-delay: 300ms; }
+
+/* Override staggered items hover state (don't apply opacity: 0.92 before reveal) */
+.photo-item:hover { opacity: 0.92; }
+.reveal.visible .photo-item:hover { opacity: 0.92; }
+.reveal.visible .photo-item:active { transform: scale(0.98); }
+
 .hero-content.scrolled {
   filter: blur(2px);
   opacity: 0.5;
@@ -2702,174 +2749,6 @@ footer {
   }
 }
 
-/* =============================================================================
-   ACCRUE PROMO BANNER
-   ============================================================================= */
-
-.accrue-promo {
-  position: fixed;
-  bottom: 24px;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 99;
-  opacity: 0;
-  visibility: hidden;
-  transition: opacity 0.4s var(--ease), transform 0.4s var(--ease), visibility 0.4s;
-}
-
-.accrue-promo.visible {
-  opacity: 1;
-  visibility: visible;
-}
-
-.accrue-promo-link {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 12px 24px 12px 16px;
-  background: linear-gradient(135deg, #fd8b05 0%, #f5a623 100%);
-  border: none;
-  border-radius: 30px;
-  box-shadow: 0 4px 20px rgba(253, 139, 5, 0.35), 0 2px 8px rgba(0, 0, 0, 0.1);
-  text-decoration: none;
-  transition: all 0.3s var(--ease);
-  position: relative;
-  overflow: hidden;
-}
-
-.accrue-promo-link::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.2) 0%, transparent 50%);
-  opacity: 0;
-  transition: opacity 0.3s ease;
-}
-
-.accrue-promo-link:hover {
-  transform: translateY(-3px) scale(1.02);
-  box-shadow: 0 8px 30px rgba(253, 139, 5, 0.45), 0 4px 12px rgba(0, 0, 0, 0.15);
-}
-
-.accrue-promo-link:hover::before {
-  opacity: 1;
-}
-
-.accrue-promo-link:active {
-  transform: translateY(0) scale(0.98);
-}
-
-.accrue-promo-logo {
-  width: 28px;
-  height: 28px;
-  position: relative;
-  z-index: 1;
-  flex-shrink: 0;
-}
-
-.accrue-promo-logo img {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-}
-
-/* Always show white logo on orange background */
-.accrue-promo-logo .accrue-logo-light { display: none; }
-.accrue-promo-logo .accrue-logo-dark { display: block; }
-
-.accrue-promo-text {
-  font-family: var(--font-sans);
-  font-size: 14px;
-  font-weight: 600;
-  color: #fff;
-  white-space: nowrap;
-  position: relative;
-  z-index: 1;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
-}
-
-.accrue-promo-arrow {
-  width: 16px;
-  height: 16px;
-  color: #fff;
-  transition: transform 0.3s var(--ease);
-  position: relative;
-  z-index: 1;
-  flex-shrink: 0;
-}
-
-.accrue-promo-link:hover .accrue-promo-arrow {
-  transform: translateX(3px);
-}
-
-.accrue-promo-close {
-  position: absolute;
-  top: -8px;
-  right: -8px;
-  width: 22px;
-  height: 22px;
-  border-radius: 50%;
-  background: var(--bg);
-  border: 1px solid var(--border);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  opacity: 0;
-  transform: scale(0.8);
-  transition: all 0.2s ease;
-  z-index: 2;
-}
-
-.accrue-promo:hover .accrue-promo-close {
-  opacity: 1;
-  transform: scale(1);
-}
-
-.accrue-promo-close:hover {
-  background: var(--text);
-  border-color: var(--text);
-  color: var(--bg);
-}
-
-.accrue-promo-close svg {
-  width: 12px;
-  height: 12px;
-}
-
-/* Mobile adjustments */
-@media (max-width: 480px) {
-  .accrue-promo {
-    bottom: 16px;
-    left: 50%;
-    right: auto;
-    transform: translateX(-50%);
-  }
-
-  .accrue-promo-link {
-    padding: 10px 16px 10px 12px;
-    gap: 8px;
-  }
-
-  .accrue-promo-logo {
-    width: 22px;
-    height: 22px;
-  }
-
-  .accrue-promo-text {
-    font-size: 13px;
-  }
-
-  .accrue-promo-arrow {
-    width: 14px;
-    height: 14px;
-  }
-}
-
-/* Hide when back-to-top is visible to avoid overlap */
-.back-to-top.visible ~ .accrue-promo {
-  bottom: 80px;
-}
 
 /* =============================================================================
    REDUCED MOTION - Fallback for safety
@@ -2881,6 +2760,15 @@ footer {
 
   /* Ensure any remaining animations are disabled */
   .scroll-wheel { animation: none; }
+
+  /* Disable staggered reveal animations */
+  .photo-grid-minimal .photo-item,
+  .work-grid .work-card,
+  .travel-postcards .travel-card {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
 }
 
 /* =============================================================================

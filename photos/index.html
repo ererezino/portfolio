@@ -194,6 +194,11 @@
       transition: transform 0.3s var(--ease), box-shadow 0.3s var(--ease);
     }
 
+    /* Featured photos span full width on first column load */
+    .photo-item.featured {
+      break-inside: avoid;
+    }
+
     @media (max-width: 800px) {
       .photo-item {
         margin-bottom: 12px;
@@ -224,6 +229,45 @@
 
     .photo-item img.loaded {
       opacity: 1;
+    }
+
+    /* Photo overlay with metadata */
+    .photo-overlay {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 32px 16px 14px;
+      background: linear-gradient(to top, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0) 100%);
+      opacity: 0;
+      transition: opacity 0.3s var(--ease);
+      pointer-events: none;
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .photo-item:hover .photo-overlay {
+      opacity: 1;
+    }
+
+    .photo-overlay-location {
+      font-family: var(--font-sans);
+      font-size: 12px;
+      font-weight: 500;
+      color: #fff;
+      letter-spacing: 0.01em;
+    }
+
+    .photo-overlay-category {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: rgba(255,255,255,0.7);
+      flex-shrink: 0;
     }
 
     /* Skeleton Loading */
@@ -331,18 +375,52 @@
       opacity: 0.3;
     }
 
-    /* Image Counter */
-    .lightbox-counter {
+    /* Lightbox info bar */
+    .lightbox-info {
       position: absolute;
       bottom: 24px;
       left: 50%;
       transform: translateX(-50%);
-      font-family: var(--font-mono);
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      background: rgba(0, 0, 0, 0.6);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      padding: 10px 20px;
+      border-radius: 24px;
+      white-space: nowrap;
+    }
+
+    .lightbox-caption {
+      font-family: var(--font-sans);
       font-size: 13px;
-      color: rgba(255, 255, 255, 0.7);
-      background: rgba(0, 0, 0, 0.5);
-      padding: 8px 16px;
-      border-radius: 20px;
+      font-weight: 500;
+      color: rgba(255, 255, 255, 0.9);
+    }
+
+    .lightbox-caption:empty {
+      display: none;
+    }
+
+    .lightbox-caption:empty + .lightbox-counter {
+      /* No divider when caption is empty */
+    }
+
+    .lightbox-caption:not(:empty) + .lightbox-counter::before {
+      content: '';
+      display: inline-block;
+      width: 1px;
+      height: 12px;
+      background: rgba(255, 255, 255, 0.3);
+      margin-right: 16px;
+      vertical-align: middle;
+    }
+
+    .lightbox-counter {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      color: rgba(255, 255, 255, 0.5);
       letter-spacing: 0.05em;
       backdrop-filter: blur(10px);
       -webkit-backdrop-filter: blur(10px);
@@ -423,17 +501,17 @@
     /* Hide controls initially, show on hover/touch */
     .lightbox .lightbox-nav,
     .lightbox .lightbox-close,
-    .lightbox .lightbox-counter {
+    .lightbox .lightbox-info {
       opacity: 0;
       transition: opacity 0.3s ease, background 0.2s ease, transform 0.2s ease;
     }
 
     .lightbox:hover .lightbox-nav,
     .lightbox:hover .lightbox-close,
-    .lightbox:hover .lightbox-counter,
+    .lightbox:hover .lightbox-info,
     .lightbox.controls-visible .lightbox-nav,
     .lightbox.controls-visible .lightbox-close,
-    .lightbox.controls-visible .lightbox-counter {
+    .lightbox.controls-visible .lightbox-info {
       opacity: 1;
     }
 
@@ -458,15 +536,16 @@
         width: 20px;
         height: 20px;
       }
-      .lightbox-counter {
+      .lightbox-info {
         bottom: 16px;
-        font-size: 12px;
-        padding: 6px 12px;
+        padding: 8px 14px;
       }
+      .lightbox-caption { font-size: 12px; }
+      .lightbox-counter { font-size: 11px; }
       /* Always show controls on mobile */
       .lightbox .lightbox-nav,
       .lightbox .lightbox-close,
-      .lightbox .lightbox-counter {
+      .lightbox .lightbox-info {
         opacity: 1;
       }
     }
@@ -513,8 +592,6 @@
         <a href="/about.html" class="nav-link">About</a>
         <a href="/photos/" class="nav-link" aria-current="page">Photos</a>
         <a href="/articles/" class="nav-link">Articles</a>
-        <a href="/movement.html" class="nav-link">Walking</a>
-        <a href="/travels.html" class="nav-link">Travels</a>
         <a href="/contact.html" class="nav-link">Contact</a>
         <button class="theme-btn" id="themeToggle" aria-label="Toggle dark mode" type="button">
           <svg class="moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
@@ -548,8 +625,6 @@
       <a href="/about.html">About</a>
       <a href="/photos/">Photos</a>
       <a href="/articles/">Articles</a>
-      <a href="/movement.html">Walking</a>
-      <a href="/travels.html">Travels</a>
       <a href="/contact.html">Contact</a>
     </nav>
   </div>
@@ -568,7 +643,10 @@
     <button class="lightbox-nav lightbox-next" id="lightboxNext" aria-label="Next photo">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
     </button>
-    <div class="lightbox-counter" id="lightboxCounter" aria-live="polite">1 / 33</div>
+    <div class="lightbox-info">
+      <div class="lightbox-caption" id="lightboxCaption"></div>
+      <div class="lightbox-counter" id="lightboxCounter" aria-live="polite">1 / 33</div>
+    </div>
   </div>
 
   <main id="main" role="main">
@@ -623,49 +701,49 @@
     // tw/th = thumbnail width/height for CLS prevention
     var PHOTOS = [
       // Top tier - strongest compositions
-      { src: "/assets/photos/photo-56.jpeg", alt: "Annecy canal France", category: "travel", featured: true, tw: 337, th: 600 },
-      { src: "/assets/photos/photo-60.jpg", alt: "Bologna cathedral interior", category: "architecture", featured: true, tw: 434, th: 600 },
-      { src: "/assets/photos/photo-1.jpg", alt: "Morning light in Lagos", category: "street", featured: true, tw: 463, th: 600 },
-      { src: "/assets/photos/photo-73.jpg", alt: "Montenegro bay view", category: "travel", featured: true, tw: 450, th: 600 },
-      { src: "/assets/photos/photo-45.jpeg", alt: "Burj Al Arab Dubai", category: "architecture", featured: true, tw: 395, th: 600 },
-      { src: "/assets/photos/photo-66.jpg", alt: "French Alps panorama", category: "travel", featured: true, tw: 450, th: 600 },
-      { src: "/assets/photos/photo-3.jpg", alt: "Market day in Accra", category: "street", featured: true, tw: 447, th: 600 },
-      { src: "/assets/photos/photo-6.jpg", alt: "Architecture in Frankfurt", category: "architecture", featured: true, tw: 537, th: 600 },
-      { src: "/assets/photos/photo-81.jpg", alt: "Apartheid Museum entrance", category: "travel", featured: true, tw: 450, th: 600 },
-      { src: "/assets/photos/photo-41.jpeg", alt: "Travel photography", category: "travel", featured: true, tw: 600, th: 450 },
-      { src: "/assets/photos/photo-34.jpeg", alt: "Travel photography", category: "travel", featured: true, tw: 450, th: 600 },
+      { src: "/assets/photos/photo-56.jpeg", alt: "Annecy canal France", category: "travel", featured: true, tw: 337, th: 600, location: "Annecy, France" },
+      { src: "/assets/photos/photo-60.jpg", alt: "Bologna cathedral interior", category: "architecture", featured: true, tw: 434, th: 600, location: "Bologna, Italy" },
+      { src: "/assets/photos/photo-1.jpg", alt: "Morning light in Lagos", category: "street", featured: true, tw: 463, th: 600, location: "Lagos, Nigeria" },
+      { src: "/assets/photos/photo-73.jpg", alt: "Montenegro bay view", category: "travel", featured: true, tw: 450, th: 600, location: "Montenegro" },
+      { src: "/assets/photos/photo-45.jpeg", alt: "Burj Al Arab Dubai", category: "architecture", featured: true, tw: 395, th: 600, location: "Dubai, UAE" },
+      { src: "/assets/photos/photo-66.jpg", alt: "French Alps panorama", category: "travel", featured: true, tw: 450, th: 600, location: "French Alps" },
+      { src: "/assets/photos/photo-3.jpg", alt: "Market day in Accra", category: "street", featured: true, tw: 447, th: 600, location: "Accra, Ghana" },
+      { src: "/assets/photos/photo-6.jpg", alt: "Architecture in Frankfurt", category: "architecture", featured: true, tw: 537, th: 600, location: "Frankfurt, Germany" },
+      { src: "/assets/photos/photo-81.jpg", alt: "Apartheid Museum entrance", category: "travel", featured: true, tw: 450, th: 600, location: "Johannesburg, SA" },
+      { src: "/assets/photos/photo-41.jpeg", alt: "Travel photography", category: "travel", featured: true, tw: 600, th: 450, location: "Italy" },
+      { src: "/assets/photos/photo-34.jpeg", alt: "Travel photography", category: "travel", featured: true, tw: 450, th: 600, location: "Italy" },
       // Strong compositions
-      { src: "/assets/photos/photo-69.jpg", alt: "Annecy canal sunburst", category: "travel", tw: 450, th: 600 },
-      { src: "/assets/photos/photo-61.jpg", alt: "Alpine chalet sunset", category: "travel", tw: 450, th: 600 },
-      { src: "/assets/photos/photo-74.jpg", alt: "Aerial view Italy", category: "travel", tw: 450, th: 600 },
-      { src: "/assets/photos/photo-42.jpeg", alt: "Stone archway in Tuscany", category: "architecture", tw: 450, th: 600 },
-      { src: "/assets/photos/photo-71.jpg", alt: "Lunch at the Louvre", category: "travel", tw: 450, th: 600 },
-      { src: "/assets/photos/photo-5.jpg", alt: "Cathedral view in Durham", category: "travel", tw: 450, th: 600 },
-      { src: "/assets/photos/photo-86.jpeg", alt: "Frankfurt half-timber houses", category: "architecture", tw: 450, th: 600 },
-      { src: "/assets/photos/photo-58.jpg", alt: "Frankfurt old town", category: "street", tw: 480, th: 600 },
-      { src: "/assets/photos/photo-53.jpg", alt: "Apple Store architecture", category: "architecture", tw: 443, th: 600 },
-      { src: "/assets/photos/photo-54.jpg", alt: "Alpine restaurant Switzerland", category: "travel", tw: 509, th: 600 },
-      { src: "/assets/photos/photo-43.jpeg", alt: "Classical arch garden", category: "architecture", tw: 450, th: 600 },
-      { src: "/assets/photos/photo-44.jpg", alt: "Architecture photography", category: "architecture", tw: 395, th: 600 },
-      { src: "/assets/photos/photo-79.jpg", alt: "Apartheid Museum", category: "architecture", tw: 469, th: 600 },
+      { src: "/assets/photos/photo-69.jpg", alt: "Annecy canal sunburst", category: "travel", tw: 450, th: 600, location: "Annecy, France" },
+      { src: "/assets/photos/photo-61.jpg", alt: "Alpine chalet sunset", category: "travel", tw: 450, th: 600, location: "French Alps" },
+      { src: "/assets/photos/photo-74.jpg", alt: "Aerial view Italy", category: "travel", tw: 450, th: 600, location: "Italy" },
+      { src: "/assets/photos/photo-42.jpeg", alt: "Stone archway in Tuscany", category: "architecture", tw: 450, th: 600, location: "Tuscany, Italy" },
+      { src: "/assets/photos/photo-71.jpg", alt: "Lunch at the Louvre", category: "travel", tw: 450, th: 600, location: "Paris, France" },
+      { src: "/assets/photos/photo-5.jpg", alt: "Cathedral view in Durham", category: "travel", tw: 450, th: 600, location: "Durham, UK" },
+      { src: "/assets/photos/photo-86.jpeg", alt: "Frankfurt half-timber houses", category: "architecture", tw: 450, th: 600, location: "Frankfurt, Germany" },
+      { src: "/assets/photos/photo-58.jpg", alt: "Frankfurt old town", category: "street", tw: 480, th: 600, location: "Frankfurt, Germany" },
+      { src: "/assets/photos/photo-53.jpg", alt: "Apple Store architecture", category: "architecture", tw: 443, th: 600, location: "Dubai, UAE" },
+      { src: "/assets/photos/photo-54.jpg", alt: "Alpine restaurant Switzerland", category: "travel", tw: 509, th: 600, location: "Switzerland" },
+      { src: "/assets/photos/photo-43.jpeg", alt: "Classical arch garden", category: "architecture", tw: 450, th: 600, location: "Italy" },
+      { src: "/assets/photos/photo-44.jpg", alt: "Architecture photography", category: "architecture", tw: 395, th: 600, location: "Dubai, UAE" },
+      { src: "/assets/photos/photo-79.jpg", alt: "Apartheid Museum", category: "architecture", tw: 469, th: 600, location: "Johannesburg, SA" },
       // Good compositions
-      { src: "/assets/photos/photo-63.jpg", alt: "Lake Annecy boat", category: "travel", tw: 450, th: 600 },
-      { src: "/assets/photos/photo-64.jpg", alt: "Libellule ferry boat", category: "travel", tw: 454, th: 600 },
-      { src: "/assets/photos/photo-68.jpg", alt: "Lakeside promenade", category: "travel", tw: 450, th: 600 },
-      { src: "/assets/photos/photo-65.jpg", alt: "Lake Annecy pedal boats", category: "travel", tw: 600, th: 450 },
-      { src: "/assets/photos/photo-55.jpg", alt: "Louvre souvenir in Rome", category: "travel", tw: 504, th: 600 },
-      { src: "/assets/photos/photo-2.jpg", alt: "City streets in Frankfurt", category: "travel", tw: 551, th: 600 },
-      { src: "/assets/photos/photo-80.jpg", alt: "Mandela Day mural", category: "street", tw: 450, th: 600 },
-      { src: "/assets/photos/photo-76.jpg", alt: "Mandela House museum", category: "travel", tw: 450, th: 600 },
-      { src: "/assets/photos/photo-77.jpg", alt: "Evelyn Mandela portrait", category: "travel", tw: 450, th: 600 },
-      { src: "/assets/photos/photo-83.jpeg", alt: "Mandela red Mercedes", category: "travel", tw: 450, th: 600 },
-      { src: "/assets/photos/photo-78.jpg", alt: "Mandela museum exhibit", category: "travel", tw: 450, th: 600 },
-      { src: "/assets/photos/photo-49.jpeg", alt: "Lagos street life", category: "street", tw: 600, th: 297 },
-      { src: "/assets/photos/photo-52.jpeg", alt: "Costain bus stop Lagos", category: "street", tw: 600, th: 151 },
-      { src: "/assets/photos/photo-84.jpeg", alt: "Welcome to Nigeria", category: "street", tw: 450, th: 600 },
-      { src: "/assets/photos/photo-4.jpg", alt: "Urban life in Lagos", category: "street", tw: 600, th: 450 },
+      { src: "/assets/photos/photo-63.jpg", alt: "Lake Annecy boat", category: "travel", tw: 450, th: 600, location: "Annecy, France" },
+      { src: "/assets/photos/photo-64.jpg", alt: "Libellule ferry boat", category: "travel", tw: 454, th: 600, location: "Annecy, France" },
+      { src: "/assets/photos/photo-68.jpg", alt: "Lakeside promenade", category: "travel", tw: 450, th: 600, location: "Annecy, France" },
+      { src: "/assets/photos/photo-65.jpg", alt: "Lake Annecy pedal boats", category: "travel", tw: 600, th: 450, location: "Annecy, France" },
+      { src: "/assets/photos/photo-55.jpg", alt: "Louvre souvenir in Rome", category: "travel", tw: 504, th: 600, location: "Rome, Italy" },
+      { src: "/assets/photos/photo-2.jpg", alt: "City streets in Frankfurt", category: "travel", tw: 551, th: 600, location: "Frankfurt, Germany" },
+      { src: "/assets/photos/photo-80.jpg", alt: "Mandela Day mural", category: "street", tw: 450, th: 600, location: "Johannesburg, SA" },
+      { src: "/assets/photos/photo-76.jpg", alt: "Mandela House museum", category: "travel", tw: 450, th: 600, location: "Johannesburg, SA" },
+      { src: "/assets/photos/photo-77.jpg", alt: "Evelyn Mandela portrait", category: "travel", tw: 450, th: 600, location: "Johannesburg, SA" },
+      { src: "/assets/photos/photo-83.jpeg", alt: "Mandela red Mercedes", category: "travel", tw: 450, th: 600, location: "Johannesburg, SA" },
+      { src: "/assets/photos/photo-78.jpg", alt: "Mandela museum exhibit", category: "travel", tw: 450, th: 600, location: "Johannesburg, SA" },
+      { src: "/assets/photos/photo-49.jpeg", alt: "Lagos street life", category: "street", tw: 600, th: 297, location: "Lagos, Nigeria" },
+      { src: "/assets/photos/photo-52.jpeg", alt: "Costain bus stop Lagos", category: "street", tw: 600, th: 151, location: "Lagos, Nigeria" },
+      { src: "/assets/photos/photo-84.jpeg", alt: "Welcome to Nigeria", category: "street", tw: 450, th: 600, location: "Lagos, Nigeria" },
+      { src: "/assets/photos/photo-4.jpg", alt: "Urban life in Lagos", category: "street", tw: 600, th: 450, location: "Lagos, Nigeria" },
       // Remaining photos
-      { src: "/assets/photos/photo-57.jpeg", alt: "Spanish rescue boat", category: "travel", tw: 450, th: 600 },
+      { src: "/assets/photos/photo-57.jpeg", alt: "Spanish rescue boat", category: "travel", tw: 450, th: 600, location: "Spain" },
       { src: "/assets/photos/photo-33.jpeg", alt: "Travel photography", category: "travel", tw: 450, th: 600 },
       { src: "/assets/photos/photo-35.jpeg", alt: "Travel photography", category: "travel", tw: 450, th: 600 },
       { src: "/assets/photos/photo-36.jpeg", alt: "Travel photography", category: "travel", tw: 450, th: 600 },
@@ -673,11 +751,11 @@
       { src: "/assets/photos/photo-38.jpeg", alt: "Travel photography", category: "travel", tw: 450, th: 600 },
       { src: "/assets/photos/photo-39.jpeg", alt: "Travel photography", category: "travel", tw: 449, th: 600 },
       { src: "/assets/photos/photo-40.jpg", alt: "Travel photography", category: "travel", tw: 600, th: 450 },
-      { src: "/assets/photos/photo-7.jpg", alt: "Street photography", category: "street", tw: 600, th: 587 },
-      { src: "/assets/photos/photo-8.jpg", alt: "Street photography", category: "street", tw: 600, th: 450 },
-      { src: "/assets/photos/photo-9.jpg", alt: "Street photography", category: "street", tw: 450, th: 600 },
-      { src: "/assets/photos/photo-10.jpg", alt: "Street photography", category: "street", tw: 450, th: 600 },
-      { src: "/assets/photos/photo-87.jpg", alt: "Chimamanda Adichie book", category: "travel", tw: 450, th: 600 }
+      { src: "/assets/photos/photo-7.jpg", alt: "Street photography", category: "street", tw: 600, th: 587, location: "Lagos, Nigeria" },
+      { src: "/assets/photos/photo-8.jpg", alt: "Street photography", category: "street", tw: 600, th: 450, location: "Lagos, Nigeria" },
+      { src: "/assets/photos/photo-9.jpg", alt: "Street photography", category: "street", tw: 450, th: 600, location: "Lagos, Nigeria" },
+      { src: "/assets/photos/photo-10.jpg", alt: "Street photography", category: "street", tw: 450, th: 600, location: "Lagos, Nigeria" },
+      { src: "/assets/photos/photo-87.jpg", alt: "Chimamanda Adichie book", category: "travel", tw: 450, th: 600, location: "Lagos, Nigeria" }
     ];
 
     var currentIndex = 0;
@@ -701,12 +779,19 @@
         var fullWebp = photo.src.replace(/\.(jpe?g|png)$/i, '.webp');
         var thumbAvif = thumbSrc.replace(/\.(jpe?g|png)$/i, '.avif');
         var fullAvif = photo.src.replace(/\.(jpe?g|png)$/i, '.avif');
-        return '<button type="button" class="photo-item skeleton" data-index="' + globalIndex + '" data-category="' + photo.category + '" aria-label="View photo: ' + photo.alt + '">' +
+        var featuredClass = photo.featured ? ' featured' : '';
+        var overlayHtml = (photo.location || photo.category) ?
+          '<div class="photo-overlay">' +
+            (photo.location ? '<span class="photo-overlay-location">' + photo.location + '</span>' : '') +
+            '<span class="photo-overlay-category">' + photo.category + '</span>' +
+          '</div>' : '';
+        return '<button type="button" class="photo-item skeleton' + featuredClass + '" data-index="' + globalIndex + '" data-category="' + photo.category + '" aria-label="View photo: ' + photo.alt + '">' +
           '<picture>' +
             '<source type="image/avif" srcset="' + thumbAvif + ' 600w, ' + fullAvif + ' 1200w" sizes="(max-width: 768px) 50vw, 400px">' +
             '<source type="image/webp" srcset="' + thumbWebp + ' 600w, ' + fullWebp + ' 1200w" sizes="(max-width: 768px) 50vw, 400px">' +
             '<img src="' + thumbSrc + '" srcset="' + thumbSrc + ' 600w, ' + photo.src + ' 1200w" sizes="(max-width: 768px) 50vw, 400px" alt="' + photo.alt + '" width="' + photo.tw + '" height="' + photo.th + '" loading="' + loadingAttr + '" decoding="async" onload="this.classList.add(\'loaded\'); this.closest(\'.photo-item\').classList.remove(\'skeleton\');" onerror="this.closest(\'.photo-item\').style.display=\'none\';">' +
           '</picture>' +
+          overlayHtml +
         '</button>';
       }).join('');
 
@@ -738,9 +823,12 @@
       });
     }
 
-    // Update counter display
+    // Update counter and caption display
+    var lightboxCaption = document.getElementById('lightboxCaption');
     function updateCounter() {
       lightboxCounter.textContent = (currentIndex + 1) + ' / ' + PHOTOS.length;
+      var photo = PHOTOS[currentIndex];
+      lightboxCaption.textContent = photo.location || '';
     }
 
     var lastFocusedElement = null;
@@ -1091,24 +1179,6 @@
 
   </script>
 
-  <!-- Accrue Promo Banner -->
-  <div class="accrue-promo" id="accruePromo">
-    <a href="https://useaccrue.com" target="_blank" rel="noopener noreferrer" class="accrue-promo-link">
-      <div class="accrue-promo-logo">
-        <img src="/assets/accrue-logos/icon-dark.png" alt="Accrue" class="accrue-logo-light" />
-        <img src="/assets/accrue-logos/icon-light.png" alt="Accrue" class="accrue-logo-dark" />
-      </div>
-      <span class="accrue-promo-text">Send money across Africa</span>
-      <svg class="accrue-promo-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-        <path d="M5 12h14M12 5l7 7-7 7"/>
-      </svg>
-    </a>
-    <button class="accrue-promo-close" id="accruePromoClose" aria-label="Dismiss">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-        <path d="M18 6L6 18M6 6l12 12"/>
-      </svg>
-    </button>
-  </div>
 
   <!-- Cloudflare Web Analytics -->
   <script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "a17b25b9d9f24af88869c5f81d7e12be"}'></script>

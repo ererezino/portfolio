@@ -715,24 +715,31 @@
       outline-offset: 2px;
     }
 
-    /* Chart text summary */
-    .chart-text-summary {
-      margin-top: 32px;
-      padding: 24px;
+    /* Chart insight card */
+    .chart-insight {
+      margin-top: 24px;
+      padding: 16px 20px;
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
       background: var(--bg-alt);
       border: 1px solid var(--border);
-      border-radius: 8px;
+      border-radius: 10px;
+      border-left: 3px solid var(--green);
+    }
+    .chart-insight-icon {
+      flex-shrink: 0;
+      color: var(--green);
+      margin-top: 1px;
+    }
+    .chart-insight-text {
       font-family: var(--font-sans);
       font-size: 14px;
-      line-height: 1.7;
+      line-height: 1.6;
       color: var(--text-secondary);
     }
-    .chart-text-summary strong {
+    .chart-insight-text strong {
       color: var(--text);
-      font-weight: 600;
-    }
-    .chart-text-summary .summary-highlight {
-      color: var(--green);
       font-weight: 600;
     }
   </style>
@@ -753,8 +760,6 @@
         <a href="/about.html" class="nav-link">About</a>
         <a href="/photos/" class="nav-link">Photos</a>
         <a href="/articles/" class="nav-link">Articles</a>
-        <a href="/movement.html" class="nav-link" aria-current="page">Walking</a>
-        <a href="/travels.html" class="nav-link">Travels</a>
         <a href="/contact.html" class="nav-link">Contact</a>
 
         <button class="theme-btn" id="themeToggle" aria-label="Toggle dark mode" type="button">
@@ -791,8 +796,6 @@
       <a href="/about.html">About</a>
       <a href="/photos/">Photos</a>
       <a href="/articles/">Articles</a>
-      <a href="/movement.html">Walking</a>
-      <a href="/travels.html">Travels</a>
       <a href="/contact.html">Contact</a>
     </nav>
   </div>
@@ -892,8 +895,15 @@
         <div class="chart-summary visually-hidden" id="chartSummary" aria-live="polite">
           Monthly step data summary will be announced when data loads.
         </div>
-        <!-- Visible summary for all users -->
-        <div class="chart-text-summary" id="chartTextSummary"></div>
+        <!-- Visible insight card -->
+        <div class="chart-insight" id="chartInsight">
+          <div class="chart-insight-icon" aria-hidden="true">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/>
+            </svg>
+          </div>
+          <div class="chart-insight-text" id="chartInsightText"></div>
+        </div>
       </section>
 
       <section class="months-section" aria-labelledby="months-label">
@@ -1109,10 +1119,10 @@
       monthObserver.observe(card);
     });
 
-    // Generate accessible chart summary for screen readers and visible summary
+    // Generate accessible chart summary for screen readers and concise insight
     function generateChartSummary() {
       const summaryEl = document.getElementById('chartSummary');
-      const textSummaryEl = document.getElementById('chartTextSummary');
+      const insightEl = document.getElementById('chartInsightText');
 
       const current = currentMonth;
       const pctOfGoal = Math.round((current.steps / MONTHLY_GOAL) * 100);
@@ -1122,55 +1132,36 @@
       const currentDay = today.getDate();
       const daysRemaining = Math.max(0, daysInMonth - currentDay);
 
-      // Find best and worst months from 2025
       const months2025 = MONTHS.filter(m => m.year === 2025 && !m.isCurrent);
       const bestMonth = months2025.reduce((best, m) => m.steps > best.steps ? m : best, months2025[0]);
-      const worstMonth = months2025.reduce((worst, m) => m.steps < worst.steps ? m : worst, months2025[0]);
       const monthsMetGoal = months2025.filter(m => m.steps >= MONTHLY_GOAL).length;
 
-      // Screen reader summary (plain text)
+      // Screen reader summary (kept for accessibility)
       if (summaryEl) {
         let summary = `Walking statistics summary. `;
-        summary += `Current month: ${current.month} ${current.year}. `;
-        summary += `Steps so far: ${fmt(current.steps)}, which is ${pctOfGoal}% of the ${fmt(MONTHLY_GOAL)} monthly goal. `;
-        summary += `Distance covered: ${current.km} kilometers. `;
-        summary += `Daily average: ${fmt(current.avgStepsPerDay)} steps. `;
-
-        if (remaining > 0) {
-          summary += `${fmt(remaining)} steps remaining to reach the monthly goal with ${daysRemaining} days left in the month. `;
-        } else {
-          summary += `Monthly goal achieved! `;
-        }
-
-        summary += `2025 Year in Review: `;
-        summary += `Total steps: ${fmt(yearTotalSteps)}. `;
-        summary += `Total distance: ${yearTotalKm} kilometers. `;
-        summary += `Average per day: ${fmt(yearAvgPerDay)} steps. `;
-        summary += `${monthsMetGoal} out of 12 months met the ${fmt(MONTHLY_GOAL)} step goal. `;
-        summary += `Best month: ${bestMonth.month} with ${fmt(bestMonth.steps)} steps. `;
-        summary += `Lowest month: ${worstMonth.month} with ${fmt(worstMonth.steps)} steps.`;
-
+        summary += `Current month: ${current.month} ${current.year}. Steps: ${fmt(current.steps)}, ${pctOfGoal}% of goal. `;
+        summary += `Distance: ${current.km} km. Daily average: ${fmt(current.avgStepsPerDay)}. `;
+        if (remaining > 0) summary += `${fmt(remaining)} steps remaining, ${daysRemaining} days left. `;
+        else summary += `Monthly goal achieved. `;
+        summary += `Best 2025 month: ${bestMonth.month} at ${fmt(bestMonth.steps)} steps. ${monthsMetGoal}/12 goals met.`;
         summaryEl.textContent = summary;
       }
 
-      // Visible text summary with formatting
-      if (textSummaryEl) {
-        let statusText = '';
-        if (remaining > 0) {
-          statusText = `<strong>${fmt(remaining)}</strong> steps remaining to reach the goal with <strong>${daysRemaining} days</strong> left.`;
+      // Concise visible insight — one punchy line
+      if (insightEl) {
+        let insight = '';
+        if (remaining <= 0) {
+          insight = `<strong>Goal crushed.</strong> Already past ${fmt(MONTHLY_GOAL)} steps with ${daysRemaining} days still on the clock.`;
+        } else if (pctOfGoal >= 80) {
+          const dailyNeeded = Math.ceil(remaining / Math.max(daysRemaining, 1));
+          insight = `<strong>Almost there.</strong> ${fmt(remaining)} steps to go — that's ~${fmt(dailyNeeded)}/day for the next ${daysRemaining} days.`;
+        } else if (pctOfGoal >= 50) {
+          insight = `<strong>On pace.</strong> ${pctOfGoal}% done with ${daysRemaining} days remaining this month.`;
         } else {
-          statusText = `<span class="summary-highlight">Monthly goal achieved!</span>`;
+          const dailyNeeded = Math.ceil(remaining / Math.max(daysRemaining, 1));
+          insight = `<strong>Building momentum.</strong> Need ~${fmt(dailyNeeded)} steps/day to hit the ${fmt(MONTHLY_GOAL)} goal.`;
         }
-
-        textSummaryEl.innerHTML = `
-          In <strong>${current.month} ${current.year}</strong>, I've walked <strong>${fmt(current.steps)} steps</strong>
-          (<span class="summary-highlight">${pctOfGoal}%</span> of my ${fmt(MONTHLY_GOAL)} monthly goal),
-          covering <strong>${current.km} km</strong> with a daily average of <strong>${fmt(current.avgStepsPerDay)} steps</strong>.
-          ${statusText}
-          <br><br>
-          <strong>2025 highlights:</strong> Best month was <strong>${bestMonth.month}</strong> with ${fmt(bestMonth.steps)} steps.
-          <strong>${monthsMetGoal}/12</strong> months met the goal. Total distance: <strong>${yearTotalKm} km</strong>.
-        `;
+        insightEl.innerHTML = insight;
       }
     }
 
@@ -1191,24 +1182,6 @@
 
   </script>
 
-  <!-- Accrue Promo Banner -->
-  <div class="accrue-promo" id="accruePromo">
-    <a href="https://useaccrue.com" target="_blank" rel="noopener noreferrer" class="accrue-promo-link">
-      <div class="accrue-promo-logo">
-        <img src="/assets/accrue-logos/icon-dark.png" alt="Accrue" class="accrue-logo-light" />
-        <img src="/assets/accrue-logos/icon-light.png" alt="Accrue" class="accrue-logo-dark" />
-      </div>
-      <span class="accrue-promo-text">Send money across Africa</span>
-      <svg class="accrue-promo-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-        <path d="M5 12h14M12 5l7 7-7 7"/>
-      </svg>
-    </a>
-    <button class="accrue-promo-close" id="accruePromoClose" aria-label="Dismiss">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-        <path d="M18 6L6 18M6 6l12 12"/>
-      </svg>
-    </button>
-  </div>
 
   <!-- Cloudflare Web Analytics --><script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "a17b25b9d9f24af88869c5f81d7e12be"}'></script><!-- End Cloudflare Web Analytics -->
 </body>

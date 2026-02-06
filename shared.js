@@ -97,36 +97,3 @@ function toggleTheme() {
     header.classList.toggle('scrolled', window.scrollY > 50);
   }, { passive: true });
 })();
-
-// Accrue promo banner
-(function() {
-  var promo = document.getElementById('accruePromo');
-  var closeBtn = document.getElementById('accruePromoClose');
-  if (!promo) return;
-
-  var dismissed = false;
-  try {
-    var dismissedTime = localStorage.getItem('accruePromoDismissedAt');
-    if (dismissedTime) {
-      var oneDayMs = 24 * 60 * 60 * 1000;
-      dismissed = (Date.now() - parseInt(dismissedTime, 10)) < oneDayMs;
-    }
-  } catch (e) {}
-
-  if (dismissed) return;
-
-  setTimeout(function() {
-    promo.classList.add('visible');
-  }, 3000);
-
-  if (closeBtn) {
-    closeBtn.addEventListener('click', function(e) {
-      e.preventDefault();
-      e.stopPropagation();
-      promo.classList.remove('visible');
-      try {
-        localStorage.setItem('accruePromoDismissedAt', Date.now().toString());
-      } catch (e) {}
-    });
-  }
-})();
