@@ -1107,6 +1107,101 @@
       line-height: 1.5;
     }
 
+    /* Recommended Reading */
+    .recommended-section {
+      margin-top: 24px;
+      padding-top: 24px;
+      border-top: 1px solid var(--border);
+    }
+
+    .recommended-title {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--text-tertiary);
+      margin-bottom: 24px;
+    }
+
+    .recommended-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+    }
+
+    @media (max-width: 600px) {
+      .recommended-grid { grid-template-columns: 1fr; }
+    }
+
+    .recommended-card {
+      border: 1px solid var(--border);
+      padding: 20px;
+      transition: all var(--transition);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+    }
+    .recommended-card.has-image {
+      padding: 0;
+    }
+    .recommended-card.has-image .recommended-card-meta,
+    .recommended-card.has-image .recommended-card-title,
+    .recommended-card.has-image .recommended-card-author {
+      padding: 0 16px;
+    }
+    .recommended-card.has-image .recommended-card-meta {
+      padding-top: 16px;
+    }
+    .recommended-card.has-image .recommended-card-author {
+      padding-bottom: 16px;
+    }
+
+    .recommended-card:hover {
+      border-color: var(--text-secondary);
+      transform: translateY(-2px);
+    }
+
+    .recommended-card-image {
+      width: 100%;
+      height: 140px;
+      overflow: hidden;
+    }
+    .recommended-card-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.3s ease;
+    }
+    .recommended-card:hover .recommended-card-image img {
+      transform: scale(1.05);
+    }
+
+    .recommended-card-meta {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-tertiary);
+      margin-bottom: 8px;
+    }
+
+    .recommended-card-title {
+      font-family: var(--font-serif);
+      font-size: 18px;
+      line-height: 1.3;
+      margin-bottom: 8px;
+    }
+
+    .recommended-card-author {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--text-secondary);
+    }
+
+    .recommended-card-author span {
+      color: var(--green);
+    }
+
     /* Author Card - Single-line byline */
     .author-card {
       display: flex;
@@ -1794,6 +1889,14 @@
                 </div>
               </div>
             </footer>
+
+            <!-- Recommended Reading -->
+            <section class="recommended-section">
+              <h3 class="recommended-title">Recommended Reading</h3>
+              <div class="recommended-grid" id="recommendedGrid">
+                <!-- Populated by JavaScript -->
+              </div>
+            </section>
           </div>
         </div>
       </div>
@@ -1821,6 +1924,57 @@
 
   <script src="/shared.js?v=20260205d"></script>
   <script>
+    // Recommended Reading
+    const RECOMMENDED_ARTICLES = [
+      {
+        title: "On Walking",
+        url: "/articles/on-walking/",
+        date: "Jan 2026",
+        author: "Zino Asamaige",
+        image: "/articles/on-walking/image.jpg"
+      },
+      {
+        title: "Why I'm Building Accrue",
+        url: "/articles/why-im-building-accrue/",
+        date: "Jan 2026",
+        author: "Zino Asamaige",
+        image: "/articles/why-im-building-accrue/team.png"
+      },
+      {
+        title: "Happy 4th Birthday!",
+        url: "https://adesuwa.substack.com/p/happy-4th-birthday",
+        date: "Jan 2026",
+        author: "Adesuwa Omoruyi",
+        external: true,
+        image: "https://substackcdn.com/image/fetch/f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2Fe5750dcb-9f05-4d83-9918-b6fdbee62059_2076x1488.png"
+      },
+      {
+        title: "Accrue's Big Day!",
+        url: "/articles/accrues-big-day/",
+        date: "Jan 2022",
+        author: "Zino Asamaige",
+        image: "/articles/why-im-building-accrue/team.png"
+      }
+    ];
+
+    const grid = document.getElementById('recommendedGrid');
+    RECOMMENDED_ARTICLES.slice(0, 4).forEach(article => {
+      const card = document.createElement('a');
+      card.href = article.url;
+      card.className = 'recommended-card' + (article.image ? ' has-image' : '');
+      if (article.external) {
+        card.target = '_blank';
+        card.rel = 'noopener noreferrer';
+      }
+      card.innerHTML = `
+        ${article.image ? `<div class="recommended-card-image"><img src="${article.image}" alt="" loading="lazy" /></div>` : ''}
+        <div class="recommended-card-meta">${article.date}${article.external ? ' &middot; External' : ''}</div>
+        <div class="recommended-card-title">${article.title}</div>
+        <div class="recommended-card-author">by <span>${article.author}</span></div>
+      `;
+      grid.appendChild(card);
+    });
+
     // Share button functionality
     const shareBtnTop = document.getElementById('shareBtnTop');
     const shareDropdownTop = document.getElementById('shareDropdownTop');
