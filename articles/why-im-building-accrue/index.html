@@ -570,59 +570,68 @@
       background: none;
     }
 
-    /* Author Card - Compact Style */
+    /* Author Card - Single-line byline */
     .author-card {
       display: flex;
-      gap: 16px;
+      gap: 10px;
       align-items: center;
-      padding: 20px 0;
-      border-top: 1px solid var(--border);
+      padding: 0;
       margin: 0;
+    }
+    .author-card .share-btn {
+      width: 32px;
+      height: 32px;
+    }
+    .author-card .share-btn svg {
+      width: 15px;
+      height: 15px;
     }
     .author-avatar {
       flex-shrink: 0;
     }
     .author-avatar img {
-      width: 56px;
-      height: 56px;
+      width: 24px;
+      height: 24px;
       border-radius: 50%;
       object-fit: cover;
     }
     .author-info {
       flex: 1;
       min-width: 0;
+      display: flex;
+      align-items: center;
+      gap: 8px;
     }
     .author-written-by {
-      font-family: var(--font-mono);
-      font-size: 10px;
-      color: var(--text-tertiary);
-      margin: 0 0 2px 0;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
+      display: none;
+    }
+    .author-bio {
+      display: none;
     }
     .author-name-row {
       display: flex;
       align-items: center;
-      gap: 12px;
-      margin-bottom: 4px;
+      gap: 8px;
+      margin: 0;
     }
     .author-info h4 {
       font-family: var(--font-sans);
-      font-size: 16px;
+      font-size: 13px;
       font-weight: 600;
       margin: 0;
       color: var(--text);
+      white-space: nowrap;
     }
     .author-social {
       display: flex;
-      gap: 4px;
+      gap: 2px;
     }
     .author-social a {
       display: flex;
       align-items: center;
       justify-content: center;
-      width: 28px;
-      height: 28px;
+      width: 20px;
+      height: 20px;
       border-radius: 50%;
       color: var(--text-tertiary);
       transition: color 0.2s ease;
@@ -631,34 +640,8 @@
       color: var(--text);
     }
     .author-social svg {
-      width: 16px;
-      height: 16px;
-    }
-    .author-bio {
-      font-family: var(--font-sans);
-      font-size: 13px;
-      color: var(--text-secondary);
-      line-height: 1.5;
-      margin: 0;
-    }
-    @media (max-width: 500px) {
-      .author-card {
-        gap: 12px;
-      }
-      .author-avatar img {
-        width: 48px;
-        height: 48px;
-      }
-      .author-name-row {
-        flex-wrap: wrap;
-        gap: 8px;
-      }
-      .author-info h4 {
-        font-size: 15px;
-      }
-      .author-bio {
-        font-size: 12px;
-      }
+      width: 13px;
+      height: 13px;
     }
 
     /* Highlight Box */
