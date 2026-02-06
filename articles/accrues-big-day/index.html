@@ -644,16 +644,17 @@
       const progressInfo = document.getElementById('readingProgressInfo');
       const percentEl = document.getElementById('readingPercent');
       const articleBody = document.querySelector('.article-body');
+      const articleFooter = document.querySelector('.article-footer');
 
       if (!articleBody || !progressInfo) return;
 
       const articleStart = articleBody.offsetTop;
-      const articleHeight = articleBody.offsetHeight;
+      const articleEnd = articleFooter ? articleFooter.offsetTop : (articleStart + articleBody.offsetHeight);
+      const articleHeight = articleEnd - articleStart;
 
       function updateProgress() {
         // Show/hide progress based on scroll position
         const viewportBottom = window.scrollY + window.innerHeight;
-        const articleEnd = articleStart + articleHeight;
         if (window.scrollY > 300 && viewportBottom < articleEnd + 200) {
           progressInfo.classList.add('visible');
         } else {
@@ -778,15 +779,17 @@
   <script>
   (function() {
     var bar = document.getElementById("readingProgress");
-    var article = document.querySelector(".article-body") || document.querySelector(".article-content") || document.querySelector("article") || document.querySelector("main");
+    var article = document.querySelector(".article-body");
+    var footer = document.querySelector(".article-footer");
     if (!bar || !article) return;
+    var articleTop = article.offsetTop;
+    var readableHeight = (footer ? footer.offsetTop : (articleTop + article.offsetHeight)) - articleTop;
     var ticking = false;
     window.addEventListener("scroll", function() {
       if (!ticking) {
         requestAnimationFrame(function() {
-          var rect = article.getBoundingClientRect();
-          var total = article.offsetHeight - window.innerHeight;
-          var progress = Math.min(Math.max((-rect.top) / total * 100, 0), 100);
+          var scrolled = window.scrollY + window.innerHeight - articleTop;
+          var progress = Math.min(Math.max(scrolled / readableHeight * 100, 0), 100);
           bar.style.width = progress + "%";
           ticking = false;
         });
