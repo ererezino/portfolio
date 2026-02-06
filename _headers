@@ -46,7 +46,13 @@
 
 # HTML pages - short cache for fresh content
 /*.html
-  Cache-Control: public, max-age=3600
+  Cache-Control: public, max-age=300
 
 /
-  Cache-Control: public, max-age=3600
+  Cache-Control: public, max-age=300
+
+/photos/
+  Cache-Control: public, max-age=300
+
+/articles/
+  Cache-Control: public, max-age=300
