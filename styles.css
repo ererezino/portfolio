@@ -392,6 +392,11 @@ header.scrolled {
   border-color: var(--accent);
 }
 
+/* Dark mode logo swap */
+.logo-img-dark { display: none; }
+[data-theme="dark"] .logo-img-light { display: none; }
+[data-theme="dark"] .logo-img-dark { display: block; }
+
 .logo-text { transition: opacity var(--duration); }
 
 @media (max-width: 500px) {
