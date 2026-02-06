@@ -177,6 +177,18 @@ header.scrolled {
   transition: border-color var(--transition), transform var(--transition);
 }
 .logo:hover .logo-img { border-color: var(--green); }
+
+/* Dark mode logo swap */
+.logo .logo-img-dark {
+  display: none;
+}
+[data-theme="dark"] .logo .logo-img-light {
+  display: none;
+}
+[data-theme="dark"] .logo .logo-img-dark {
+  display: inline;
+}
+
 .logo-text { transition: opacity var(--transition); }
 @media (max-width: 500px) {
   .logo-text { display: none; }

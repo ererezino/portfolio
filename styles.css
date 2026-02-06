@@ -393,9 +393,15 @@ header.scrolled {
 }
 
 /* Dark mode logo swap */
-.logo-img-dark { display: none; }
-[data-theme="dark"] .logo-img-light { display: none; }
-[data-theme="dark"] .logo-img-dark { display: block; }
+.logo .logo-img-dark {
+  display: none;
+}
+[data-theme="dark"] .logo .logo-img-light {
+  display: none;
+}
+[data-theme="dark"] .logo .logo-img-dark {
+  display: inline;
+}
 
 .logo-text { transition: opacity var(--duration); }
 
