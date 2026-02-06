@@ -626,8 +626,8 @@
 
     /* Recommended Reading */
     .recommended-section {
-      margin-top: 24px;
-      padding-top: 24px;
+      margin-top: 16px;
+      padding-top: 20px;
       border-top: 1px solid var(--border);
     }
 
@@ -722,18 +722,26 @@
     /* Author Card - Compact Style */
     .author-card {
       display: flex;
-      gap: 16px;
+      gap: 14px;
       align-items: center;
-      padding: 20px 0;
+      padding: 16px 0;
       border-top: 1px solid var(--border);
-      margin: 24px 0 0 0;
+      margin: 16px 0 0 0;
+    }
+    .author-card .share-btn {
+      width: 36px;
+      height: 36px;
+    }
+    .author-card .share-btn svg {
+      width: 16px;
+      height: 16px;
     }
     .author-avatar {
       flex-shrink: 0;
     }
     .author-avatar img {
-      width: 56px;
-      height: 56px;
+      width: 44px;
+      height: 44px;
       border-radius: 50%;
       object-fit: cover;
     }
@@ -742,22 +750,17 @@
       min-width: 0;
     }
     .author-written-by {
-      font-family: var(--font-mono);
-      font-size: 10px;
-      color: var(--text-tertiary);
-      margin: 0 0 2px 0;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
+      display: none;
     }
     .author-name-row {
       display: flex;
       align-items: center;
-      gap: 12px;
-      margin-bottom: 4px;
+      gap: 10px;
+      margin-bottom: 2px;
     }
     .author-info h4 {
       font-family: var(--font-sans);
-      font-size: 16px;
+      font-size: 14px;
       font-weight: 600;
       margin: 0;
       color: var(--text);
@@ -770,8 +773,8 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      width: 28px;
-      height: 28px;
+      width: 24px;
+      height: 24px;
       border-radius: 50%;
       color: var(--text-tertiary);
       transition: color 0.2s ease;
@@ -780,30 +783,30 @@
       color: var(--text);
     }
     .author-social svg {
-      width: 16px;
-      height: 16px;
+      width: 14px;
+      height: 14px;
     }
     .author-bio {
       font-family: var(--font-sans);
-      font-size: 13px;
-      color: var(--text-secondary);
-      line-height: 1.5;
+      font-size: 12px;
+      color: var(--text-tertiary);
+      line-height: 1.4;
       margin: 0;
     }
     @media (max-width: 500px) {
       .author-card {
-        gap: 12px;
+        gap: 10px;
       }
       .author-avatar img {
-        width: 48px;
-        height: 48px;
+        width: 38px;
+        height: 38px;
       }
       .author-name-row {
         flex-wrap: wrap;
-        gap: 8px;
+        gap: 6px;
       }
       .author-info h4 {
-        font-size: 15px;
+        font-size: 14px;
       }
       .author-bio {
         font-size: 12px;
