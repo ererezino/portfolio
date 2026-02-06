@@ -66,6 +66,16 @@
       },
       {
         "@type": "BlogPosting",
+        "headline": "Obada Baddest",
+        "url": "https://www.ererezino.com/articles/obada-baddest/",
+        "datePublished": "2026-02-06",
+        "author": {
+          "@type": "Person",
+          "name": "Zino Asamaige"
+        }
+      },
+      {
+        "@type": "BlogPosting",
         "headline": "The Friction Tax",
         "url": "https://www.ererezino.com/articles/the-friction-tax/",
         "datePublished": "2025-12-15",
@@ -1138,6 +1148,17 @@
         featured: true
       },
       {
+        title: "Obada Baddest",
+        slug: "obada-baddest",
+        date: "2026-02-06",
+        excerpt: "A tribute to my father. The kindest man I've ever known.",
+        author: "Zino Asamaige",
+        readTime: "3 min read",
+        tags: [],
+        thumbnail: "/articles/obada-baddest/image.jpg",
+        hideNew: true
+      },
+      {
         title: "On Walking",
         slug: "on-walking",
         date: "2026-01-25",
@@ -1471,7 +1492,7 @@
         html += paginatedArticles.map(function(article) {
           var articleUrl = article.externalUrl || '/articles/' + esc(article.slug) + '/';
           var isExternal = !!article.externalUrl;
-          var recent = isRecent(article.date);
+          var recent = isRecent(article.date) && !article.hideNew;
 
           return '<a href="' + articleUrl + '" ' + (isExternal ? 'target="_blank" rel="noopener"' : '') + ' class="articles-article-card">' +
             '<div class="articles-article-card-content">' +
