@@ -91,7 +91,7 @@
   </style>
 
   <!-- Stylesheet loads synchronously to prevent FOUC -->
-  <link rel="stylesheet" href="styles.css?v=20260207a" />
+  <link rel="stylesheet" href="styles.css?v=20260207b" />
 </head>
 
 <body>
@@ -177,6 +177,8 @@
               <span class="hero-time" id="heroTime"></span>
             </div>
 
+            <p class="hero-subtitle">Co-founder &amp; COO at Accrue — stablecoin payments for Africa</p>
+
             <h1 class="hero-title" id="hero-title">
               <span class="line"><span class="line-inner">I take photos.</span></span>
               <span class="line"><span class="line-inner">I write sometimes.</span></span>
@@ -205,6 +207,15 @@
                 </svg>
               </a>
             </div>
+
+            <a href="/movement.html" class="hero-walking-widget" aria-label="Walking progress this month">
+              <span class="walking-icon" aria-hidden="true">🚶</span>
+              <span class="walking-value" id="heroSteps"></span>
+              <span class="walking-label">steps this month</span>
+              <span class="walking-progress-mini">
+                <span class="walking-progress-fill" id="heroStepsFill"></span>
+              </span>
+            </a>
           </div>
 
           <div class="hero-visual" id="heroPhotoStack" aria-label="Photo gallery preview">
@@ -290,12 +301,31 @@
       </div>
     </section>
 
+    <section id="writing" aria-labelledby="writing-title">
+      <div class="container">
+        <div class="section-header">
+          <div class="section-header-text">
+            <span class="section-label">Writing</span>
+            <h2 class="section-title" id="writing-title">Essays on building and life</h2>
+          </div>
+          <a href="/articles/" class="section-link">
+            View all
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <path d="M5 12h14M12 5l7 7-7 7"/>
+            </svg>
+          </a>
+        </div>
+
+        <div class="article-grid" id="articleGrid" role="list" aria-label="Recent articles"></div>
+      </div>
+    </section>
+
     <section id="photos" aria-labelledby="photos-title">
       <div class="container">
         <div class="section-header">
           <div class="section-header-text">
             <span class="section-label">Photography</span>
-            <h2 class="section-title" id="photos-title">Through my lens</h2>
+            <h2 class="section-title" id="photos-title">Street &amp; travel photography</h2>
           </div>
         </div>
 
@@ -314,25 +344,6 @@
             </span>
           </a>
         </div>
-      </div>
-    </section>
-
-    <section id="writing" aria-labelledby="writing-title">
-      <div class="container">
-        <div class="section-header">
-          <div class="section-header-text">
-            <span class="section-label">Writing</span>
-            <h2 class="section-title" id="writing-title">A few notes</h2>
-          </div>
-          <a href="/articles/" class="section-link">
-            View all
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-              <path d="M5 12h14M12 5l7 7-7 7"/>
-            </svg>
-          </a>
-        </div>
-
-        <div class="article-grid" id="articleGrid" role="list" aria-label="Recent articles"></div>
       </div>
     </section>
 
@@ -360,7 +371,7 @@
         <div class="section-header">
           <div class="section-header-text">
             <span class="section-label">Currently</span>
-            <h2 class="section-title" id="into-title">What I'm into</h2>
+            <h2 class="section-title" id="into-title">Currently reading, watching, listening</h2>
           </div>
         </div>
 
@@ -440,6 +451,8 @@
     </section>
   </main>
 
+  <div class="airmail-divider" aria-hidden="true"></div>
+
   <footer role="contentinfo">
     <div class="container footer-inner">
       <nav class="footer-nav" aria-label="Footer navigation">
@@ -476,7 +489,7 @@
 
 
   <!-- PERFORMANCE: Defer non-critical JavaScript -->
-  <script src="script.js?v=20260207a" defer></script>
+  <script src="script.js?v=20260207b" defer></script>
   <!-- Cloudflare Web Analytics --><script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "a17b25b9d9f24af88869c5f81d7e12be"}'></script><!-- End Cloudflare Web Analytics -->
 </body>
 </html>

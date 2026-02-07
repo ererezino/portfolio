@@ -62,7 +62,7 @@
   <link rel="stylesheet" href="/assets/leaflet/leaflet.css">
 
   <!-- Shared styles -->
-  <link rel="stylesheet" href="/styles.css?v=20260207a">
+  <link rel="stylesheet" href="/styles.css?v=20260207b">
 
   <!-- Page-specific styles -->
   <style>
@@ -138,8 +138,8 @@
       border: 1px solid var(--accent);
     }
     .stat-card.cities {
-      background: linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, var(--bg-subtle) 100%);
-      border: 1px solid #3B82F6;
+      background: linear-gradient(135deg, var(--accent-subtle) 0%, var(--bg-subtle) 100%);
+      border: 1px solid var(--accent);
     }
     .stat-card.continents {
       background: linear-gradient(135deg, var(--green-subtle) 0%, var(--bg-subtle) 100%);
@@ -164,7 +164,7 @@
       color: #fff;
     }
     .stat-card.cities .stat-icon {
-      background: #3B82F6;
+      background: var(--accent);
       color: #fff;
     }
     .stat-card.continents .stat-icon {
@@ -181,7 +181,7 @@
       margin-bottom: 8px;
     }
     .stat-card.countries .stat-value { color: var(--accent); }
-    .stat-card.cities .stat-value { color: #3B82F6; }
+    .stat-card.cities .stat-value { color: var(--accent); }
     .stat-card.continents .stat-value { color: var(--green); }
 
     .stat-label {
@@ -577,7 +577,7 @@
 
   <!-- Leaflet JS is lazy-loaded via IntersectionObserver when the map scrolls into view -->
 
-  <script src="/shared.js?v=20260207a"></script>
+  <script src="/shared.js?v=20260207b"></script>
 
   <script>
     // Country flags (emoji)
