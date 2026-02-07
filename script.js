@@ -230,9 +230,6 @@ function toggleTheme() {
   var current = html.getAttribute('data-theme');
   var next = current === 'dark' ? 'light' : 'dark';
 
-  // Enable smooth theme transition
-  html.classList.add('theme-transitioning');
-
   // Change theme
   html.setAttribute('data-theme', next);
   storage.set('theme', next);
@@ -240,11 +237,6 @@ function toggleTheme() {
 
   // Force repaint for browsers that don't repaint on data-attribute changes
   void document.body.offsetHeight;
-
-  // Remove transition class after animation completes
-  setTimeout(function() {
-    html.classList.remove('theme-transitioning');
-  }, 350);
 }
 
 function updateThemeColorMeta(theme) {
@@ -557,17 +549,6 @@ function renderStepsSimple() {
     '</div>';
 }
 
-function populateHeroSteps() {
-  var heroSteps = $('#heroSteps');
-  var heroFill = $('#heroStepsFill');
-  if (!heroSteps || !STEPS_DATA) return;
-  heroSteps.textContent = formatNumber(STEPS_DATA.currentMonth.steps);
-  if (heroFill) {
-    var pct = Math.min(100, Math.round((STEPS_DATA.currentMonth.steps / 310000) * 100));
-    heroFill.style.width = pct + '%';
-  }
-}
-
 function renderTravels() {
   var container = $('#travelGrid');
   if (!container) return;
@@ -733,7 +714,6 @@ document.addEventListener('DOMContentLoaded', function() {
   renderPhotoGrid();
   renderArticles();
   renderStepsSimple();
-  populateHeroSteps();
   renderTravels();
   renderInto();
 
@@ -742,7 +722,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
   // Lazy-load non-critical features (lightbox, photo stack, effects)
   var deferredScript = document.createElement('script');
-  deferredScript.src = '/script-deferred.js?v=20260207b';
+  deferredScript.src = '/script-deferred.js?v=20260206b';
   deferredScript.defer = true;
   document.body.appendChild(deferredScript);
 });

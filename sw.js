@@ -1,5 +1,5 @@
 // Service Worker - Smart caching strategies
-const CACHE_VERSION = 'v7';
+const CACHE_VERSION = 'v6';
 const STATIC_CACHE = 'static-' + CACHE_VERSION;
 const PHOTO_CACHE = 'photos-' + CACHE_VERSION;
 const PAGES_CACHE = 'pages-' + CACHE_VERSION;

@@ -6,14 +6,9 @@
 
 // Theme toggle
 function toggleTheme() {
-  var html = document.documentElement;
-  var isDark = html.getAttribute('data-theme') === 'dark';
+  var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
   var next = isDark ? 'light' : 'dark';
-
-  // Enable smooth theme transition
-  html.classList.add('theme-transitioning');
-
-  html.setAttribute('data-theme', next);
+  document.documentElement.setAttribute('data-theme', next);
   try { localStorage.setItem('theme', next); } catch(e) {}
 
   // Update theme-color meta tags
@@ -23,11 +18,6 @@ function toggleTheme() {
 
   // Force repaint for browsers that don't repaint on data-attribute changes
   void document.body.offsetHeight;
-
-  // Remove transition class after animation completes
-  setTimeout(function() {
-    html.classList.remove('theme-transitioning');
-  }, 350);
 }
 
 // Mobile menu with focus trap and focus restoration
