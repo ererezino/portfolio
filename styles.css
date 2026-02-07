@@ -91,7 +91,7 @@ svg {
   --border-subtle: #F0F0F0;
   --accent: #D97706;
   --accent-light: #F59E0B;
-  --accent-subtle: rgba(109, 40, 217, 0.08);
+  --accent-subtle: rgba(217, 119, 6, 0.08);
   --green: #10B981;
   --green-subtle: rgba(16, 185, 129, 0.1);
   --orange: #F59E0B;
@@ -135,7 +135,7 @@ svg {
   --shadow-sm: 0 1px 2px rgba(0,0,0,0.04);
   --shadow-md: 0 4px 12px rgba(0,0,0,0.06);
   --shadow-lg: 0 12px 40px rgba(0,0,0,0.08);
-  --shadow-glow: 0 0 40px rgba(109, 40, 217, 0.15);
+  --shadow-glow: 0 0 40px rgba(217, 119, 6, 0.15);
   
   /* Animation */
   --ease: cubic-bezier(0.16, 1, 0.3, 1);
@@ -155,12 +155,12 @@ svg {
   --text-tertiary: #9A9A9A; /* Improved from #808080 for AAA compliance */
   --border: #262626;
   --border-subtle: #1A1A1A;
-  --accent-subtle: rgba(139, 92, 246, 0.12);
+  --accent-subtle: rgba(217, 119, 6, 0.12);
   --green-subtle: rgba(16, 185, 129, 0.15);
   --orange-subtle: rgba(245, 158, 11, 0.15);
   --shadow-md: 0 4px 12px rgba(0,0,0,0.3);
   --shadow-lg: 0 12px 40px rgba(0,0,0,0.4);
-  --shadow-glow: 0 0 40px rgba(139, 92, 246, 0.2);
+  --shadow-glow: 0 0 40px rgba(217, 119, 6, 0.2);
 }
 
 /* =============================================================================
@@ -238,14 +238,6 @@ body {
   body { font-size: 17px; }
 }
 
-/* Theme transition - only active during theme switch */
-html.theme-transition,
-html.theme-transition *,
-html.theme-transition *::before,
-html.theme-transition *::after {
-  transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease, fill 0.3s ease !important;
-}
-
 /* Subtle background texture */
 body::before {
   content: '';
@@ -268,7 +260,6 @@ html, body {
 
 a { color: inherit; text-decoration: none; }
 img { display: block; max-width: 100%; height: auto; }
-svg { max-width: 100%; max-height: 100%; }
 button { font: inherit; color: inherit; background: none; border: none; cursor: pointer; }
 
 ::selection {
@@ -276,13 +267,7 @@ button { font: inherit; color: inherit; background: none; border: none; cursor: 
   color: white;
 }
 
-/* Page loader removed - content displays immediately for better performance */
-
-@keyframes spin {
-  to { transform: rotate(360deg); }
-}
-
-/* Noise overlay removed - adds nothing meaningful */
+/* Page loader & noise overlay removed - content displays immediately */
 
 /* =============================================================================
    ACCESSIBILITY
@@ -320,18 +305,6 @@ a:focus-visible,
   outline: 2px solid var(--accent);
   outline-offset: 3px;
   box-shadow: 0 0 0 4px var(--accent-subtle);
-}
-
-.sr-only {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  margin: -1px;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  white-space: nowrap;
-  border: 0;
 }
 
 /* Custom cursor removed - adds latency and breaks accessibility */
@@ -1943,8 +1916,9 @@ button.photo-item {
 .travel-postcard-bg {
   position: absolute;
   inset: 0;
-  background-size: cover;
-  background-position: center;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
   transition: transform 0.6s var(--ease);
 }
 

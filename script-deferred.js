@@ -31,7 +31,7 @@ function initLightbox() {
       img.alt = PHOTOS[index].alt;
     }
     if (caption) caption.textContent = PHOTOS[index].caption;
-    if (counter) counter.textContent = (index + 1) + ' / ' + PHOTOS.length;
+    if (counter) counter.textContent = (index + 1) + ' / ' + PHOTOS.length + ' — ' + PHOTOS[index].alt;
 
     lightbox.classList.add('active');
     lightbox.setAttribute('aria-hidden', 'false');
@@ -410,11 +410,11 @@ function initTiltEffect() {
 // =============================================================================
 
 function initKonamiCode() {
-  var konamiCode = [38, 38, 40, 40, 37, 39, 37, 39, 66, 65];
+  var konamiCode = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'b', 'a'];
   var konamiIndex = 0;
 
   document.addEventListener('keydown', function(e) {
-    if (e.keyCode === konamiCode[konamiIndex]) {
+    if (e.key === konamiCode[konamiIndex]) {
       konamiIndex++;
 
       if (konamiIndex === konamiCode.length) {
@@ -429,6 +429,9 @@ function initKonamiCode() {
   function activateEasterEgg() {
     var overlay = document.createElement('div');
     overlay.className = 'easter-egg-overlay';
+    overlay.setAttribute('role', 'dialog');
+    overlay.setAttribute('aria-modal', 'true');
+    overlay.setAttribute('aria-label', 'Easter egg found');
     overlay.innerHTML =
       '<div class="easter-egg-content">' +
         '<div class="easter-egg-emoji">🎉</div>' +
@@ -460,29 +463,6 @@ function initKonamiCode() {
     });
 
       }
-}
-
-// =============================================================================
-// PAGE TRANSITIONS (View Transitions API)
-// =============================================================================
-
-function initPageTransitions() {
-  if (!document.startViewTransition) return;
-
-  document.addEventListener('click', function(e) {
-    var link = e.target.closest('a');
-    if (!link) return;
-
-    var href = link.getAttribute('href');
-    if (!href || href.startsWith('#') || href.startsWith('mailto:') || href.startsWith('http')) return;
-    if (link.target === '_blank') return;
-
-    e.preventDefault();
-
-    document.startViewTransition(function() {
-      window.location.href = href;
-    });
-  });
 }
 
 // =============================================================================
@@ -691,7 +671,6 @@ function initArticlePreview() {
   initMagneticButtons();
   initTiltEffect();
   initKonamiCode();
-  initPageTransitions();
   initScrollIndicator();
   initHeroParallax();
   initTextScramble();

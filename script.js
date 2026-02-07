@@ -235,11 +235,8 @@ function toggleTheme() {
   storage.set('theme', next);
   updateThemeColorMeta(next);
 
-  // Force repaint — some mobile browsers don't repaint when CSS custom
-  // properties change via data-attribute. Toggling display forces it.
-  document.body.style.display = 'none';
+  // Force repaint for browsers that don't repaint on data-attribute changes
   void document.body.offsetHeight;
-  document.body.style.display = '';
 }
 
 function updateThemeColorMeta(theme) {
@@ -561,7 +558,7 @@ function renderTravels() {
     html += '<a href="' + travel.url + '" class="travel-postcard" role="listitem" data-tilt>' +
       '<div class="travel-postcard-frame">' +
         '<div class="travel-postcard-photo">' +
-          '<div class="travel-postcard-bg" style="background-image: url(\'' + travel.photo + '\')"></div>' +
+          '<img class="travel-postcard-bg" src="' + travel.photo + '" alt="' + travel.title + '" loading="lazy">' +
           '<div class="travel-postcard-overlay"></div>' +
           '<div class="travel-postcard-content">' +
             '<h3 class="travel-postcard-title">' + travel.title + '</h3>' +

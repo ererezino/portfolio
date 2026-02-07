@@ -97,7 +97,7 @@
   <link rel="stylesheet" href="/assets/fonts.css?v=20260125f">
 
   <!-- Shared styles -->
-  <link rel="stylesheet" href="/styles.css?v=20260206c">
+  <link rel="stylesheet" href="/styles.css?v=20260207a">
 
   <!-- Page-specific styles -->
   <style>
@@ -558,7 +558,7 @@
     </div>
   </footer>
 
-  <script src="/shared.js?v=20260206c"></script>
+  <script src="/shared.js?v=20260207a"></script>
 
   <script>
     // Scroll animations with Intersection Observer
@@ -688,7 +688,7 @@
         html += '<a href="' + travel.url + '" class="travel-postcard" role="listitem">' +
           '<div class="travel-postcard-frame">' +
             '<div class="travel-postcard-photo">' +
-              '<div class="travel-postcard-bg" style="background-image: url(\'' + travel.photo + '\')"></div>' +
+              '<img class="travel-postcard-bg" src="' + travel.photo + '" alt="' + travel.title + '" loading="lazy">' +
               '<div class="travel-postcard-overlay"></div>' +
               '<div class="travel-postcard-content">' +
                 '<h3 class="travel-postcard-title">' + travel.title + '</h3>' +

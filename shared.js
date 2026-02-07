@@ -16,11 +16,8 @@ function toggleTheme() {
   var color = next === 'dark' ? '#0A0A0A' : '#FAFAFA';
   metas.forEach(function(meta) { meta.setAttribute('content', color); });
 
-  // Force repaint — some mobile browsers don't repaint when CSS custom
-  // properties change via data-attribute. Toggling display forces it.
-  document.body.style.display = 'none';
+  // Force repaint for browsers that don't repaint on data-attribute changes
   void document.body.offsetHeight;
-  document.body.style.display = '';
 }
 
 // Mobile menu with focus trap and focus restoration
